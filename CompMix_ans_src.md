@@ -1,4 +1,4 @@
-table: 1057
+table: 1057 (326 simple, 731 non-simple)
 
 text: 2619
 
