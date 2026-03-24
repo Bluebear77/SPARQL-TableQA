@@ -16,8 +16,9 @@ from pathlib import Path
 
 def main():
     # Change these paths if your files are elsewhere.
-    input_jsonl = Path("CompMix_table_simple.jsonl")
-    output_csv = Path("CompMix_table_simple_qa_no_qid.csv")
+    # input_jsonl = Path("CompMix_table_simple.jsonl")
+    input_jsonl = Path("CompMix_infobox.jsonl")
+    output_csv = Path("CompMix_infobox.csv")
 
     rows = []
 
