@@ -14,16 +14,18 @@ for question, info in time_dep_data.items():
     time_dep_map[question] = info['is_time_dependent']
 
 # Filter out binary True/False pairs
-# Check if answer string matches patterns like '[True]', '[False]', 'True', 'False'
 binary_mask = ~df['answer'].str.contains(r'^\s*\[?(True|False)\]?\s*$', regex=True, na=False, case=False)
-
 df_clean = df[binary_mask].copy()
+
+# 🔹 Add answer length and sort (NEW PART)
+df_clean['answer_length'] = df_clean['answer'].astype(str).str.len()
+df_clean = df_clean.sort_values(by='answer_length', ascending=False)
 
 # Add time dependency column and categorize
 df_clean['is_time_dependent'] = df_clean['question'].map(time_dep_map).fillna(False)
 df_clean['category'] = df_clean['is_time_dependent'].map({True: 'time_dependent', False: 'non_time_dependent'})
 
-# Split into two CSVs
+# Split into two CSVs (already sorted by answer length)
 time_dependent_df = df_clean[df_clean['is_time_dependent'] == True][['question', 'answer']]
 non_time_dependent_df = df_clean[df_clean['is_time_dependent'] == False][['question', 'answer']]
 

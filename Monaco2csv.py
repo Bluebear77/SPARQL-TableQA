@@ -33,7 +33,7 @@ for question_key, info in data.items():
 
 # Create DataFrame and sort by actual number of answers (ascending)
 df = pd.DataFrame(qa_pairs)
-df_sorted = df.sort_values('num_answers', ascending=True)
+df_sorted = df.sort_values('num_answers', ascending=False)
 
 # Save ONLY question and answer columns to CSV
 df_sorted[['question', 'answer']].to_csv('Monaco.csv', index=False)
