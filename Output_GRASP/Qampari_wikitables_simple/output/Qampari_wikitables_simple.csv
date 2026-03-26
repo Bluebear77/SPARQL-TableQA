@@ -1,0 +1,509 @@
+question,sparql,result
+What are the discovered bog bodies ?,"SELECT ?body ?label WHERE {
+  ?body wdt:P31 wd:Q199414 .
+  ?body rdfs:label ?label .
+  FILTER(lang(?label) = 'en')
+}","| body                                 | label                             |
+| ------------------------------------ | --------------------------------- |
+| Röst girl (wd:Q1233884)              | Röst girl (lang:en)               |
+| Peiting Woman (wd:Q1294494)          | Peiting Woman (lang:en)           |
+| Exloërmond Man (wd:Q1357323)         | Exloërmond Man (lang:en)          |
+| Peat dog from Burlage (wd:Q1403337)  | Peat dog from Burlage (lang:en)   |
+| Zweeloo Woman (wd:Q15883619)         | Zweeloo Woman (lang:en)           |
+| ...                                  | ...                               |
+| Yde Girl (wd:Q271964)                | Yde Girl (lang:en)                |
+| Elling Woman (wd:Q272465)            | Elling Woman (lang:en)            |
+| Girl of the Uchter Moor (wd:Q319162) | Girl of the Uchter Moor (lang:en) |
+| Ballynahatty woman (wd:Q54870046)    | Ballynahatty woman (lang:en)      |
+| Weerdinge Men (wd:Q927721)           | Weerdinge Men (lang:en)           |"
+What are the existing deep fields ?,,
+What are the bridges with a deck height of at least 200 meters ?,SELECT ?bridge WHERE { ?bridge wdt:P2793 ?clearance. ?clearance >= 200 },
+Which power plants were at some point in time the largest power plant in the world ?,"SELECT ?powerPlant(MAX(?capacity) AS ?maxCapacity) WHERE {
+  ?powerPlant wdt:P2109 ?capacity .
+}
+GROUP BY ?powerPlant",
+What are the discovered ring galaxies ?,"SELECT ?galaxy WHERE {
+  ?galaxy wdt:P31 wd:Q68434991
+}",
+What are the caves with a depth of at least 3.1km ?,"SELECT ?cave ?depth WHERE {
+  ?cave wdt:P4511 ?depth .
+  FILTER(STR(?depth) >= ""3100"")
+}","| cave                                           | depth                |
+| ---------------------------------------------- | -------------------- |
+| Bullialdus (wd:Q1004491)                       | 3500.0 (xsd:decimal) |
+| Deepspot (wd:Q100547484)                       | 45.0 (xsd:decimal)   |
+| Tagansky Protected Command Point (wd:Q1009559) | 65.0 (xsd:decimal)   |
+| Burckhardt (wd:Q1010421)                       | 4800.0 (xsd:decimal) |
+| Abja 92 borehole (wd:Q101530757)               | 635.6 (xsd:decimal)  |
+| ...                                            | ...                  |
+| wd:Q99228696                                   | 319.0 (xsd:decimal)  |
+| wd:Q99394037                                   | _:bn1200815          |
+| Buada Lagoon (wd:Q997345)                      | 78.0 (xsd:decimal)   |
+| Bay of Vlorë (wd:Q999082)                      | 51.0 (xsd:decimal)   |
+| Bukhtarma Reservoir (wd:Q999142)               | 9.6 (xsd:decimal)    |"
+What are geothermal power station with a capacity of at least 10 Mw ?,"SELECT ?powerStation ?capacity WHERE {
+  ?powerStation wdt:P1083 ?capacity .
+}
+LIMIT 10",
+What are all the sumo stables ?,"SELECT ?stable WHERE {
+  ?stable wdt:P279 wd:Q10199793
+}",
+What are the tunnels with a length larger than 13 km ?,"SELECT ?tunnel(STR(?length) AS ?lengthValue) WHERE {
+  wd:Q44377 wdt:P2043 ?length
+}",
+Which weapons are of the type battle riffles ?,"SELECT ?weapon WHERE {
+  ?weapon wdt:P279 wd:Q1194268
+}","| weapon                                    |
+| ----------------------------------------- |
+| Heckler & Koch HK417 (wd:Q1064917)        |
+| Sako M23 (wd:Q110269207)                  |
+| Mk 14 Enhanced Battle Rifle (wd:Q1184636) |
+| Howa Type 64 (wd:Q1190940)                |
+| Zastava M05N (wd:Q122987072)              |
+| ...                                       |
+| Saritch 308 (wd:Q7424140)                 |
+| Sterling 7.62 (wd:Q7611357)               |
+| Zastava M77 (wd:Q8067062)                 |
+| Beretta BM 59 (wd:Q819134)                |
+| AG-3 (wd:Q994157)                         |"
+What awards are national quality award ?,"SELECT ?award WHERE {
+  {
+    ?award rdfs:label ""Malcolm Baldrige National Quality Award"" @en .
+  } UNION {
+    ?award rdfs:label ""Rajiv Gandhi National Quality Award"" @en .
+  } UNION {
+    ?award rdfs:label ""Viet Nam National Quality Award"" @en .
+  }
+}","| award                                                 |
+| ----------------------------------------------------- |
+| Malcolm Baldrige National Quality Award (wd:Q1777742) |
+| Rajiv Gandhi National Quality Award (wd:Q16911967)    |
+| Viet Nam National Quality Award (wd:Q30921691)        |"
+What are the giant sequoias with a trunk volume larger than 912.5 cubic meters ?,"SELECT ?entity ?label WHERE {
+  ?entity wdtn:P1082 ?volume .
+  ?entity rdfs:label ?label .
+  FILTER(LANG(?label) = 'en')
+}",
+What are the protected areas with an area larger than 250000 km squared ?,"SELECT ?protectedArea WHERE {
+  ?protectedArea wdt:P2046 ?area .
+  FILTER(?area > 250000)
+}","| protectedArea                     |
+| --------------------------------- |
+| Kashmir Sultanate (wd:Q123027565) |
+| Michigan (wd:Q1166)               |
+| Poděbrady (wd:Q96161277)          |
+| Goryōkaku (wd:Q1196357)           |
+| Břilický rybník (wd:Q96156945)    |
+| ...                               |
+| Uranus (wd:Q324)                  |
+| Saturn (wd:Q193)                  |
+| Jupiter (wd:Q319)                 |
+| Sun (wd:Q525)                     |
+| Liberty Square (wd:Q6541958)      |"
+Which weapons are of the type bolt action riffle ?,"SELECT ?weapon WHERE {
+  ?weapon wdt:P31 wd:Q40280158
+}",
+What military medals are the highest medal in a country ?,"SELECT ?medal ?label WHERE {
+  ?medal rdfs:label ?label .
+  FILTER(LANG(?label) = ""en"")
+  .
+  FILTER(contains(?label , ""Medal of Honor"") || contains(?label , ""Victoria Cross""))
+  .
+  ?medal wdt:P31 wd:Q1788716 .
+}","| medal                                                    | label                                               |
+| -------------------------------------------------------- | --------------------------------------------------- |
+| Washington Law Enforcement Medal of Honor (wd:Q17107856) | Washington Law Enforcement Medal of Honor (lang:en) |
+| Medal of Honor (wd:Q203535)                              | Medal of Honor (lang:en)                            |
+| Victoria Cross (wd:Q219578)                              | Victoria Cross (lang:en)                            |"
+Who is or was a member of the 10cc band ?,"SELECT ?person WHERE {
+  ?person wdt:P463 wd:Q169145
+}","| person                       |
+| ---------------------------- |
+| Iain Hornal (wd:Q108936980)  |
+| Lol Creme (wd:Q1346568)      |
+| Kevin Godley (wd:Q1346874)   |
+| Mike Stevens (wd:Q16943343)  |
+| Paul Burgess (wd:Q1887157)   |
+| Graham Gouldman (wd:Q540655) |
+| Eric Stewart (wd:Q588591)    |
+| Stuart Tosh (wd:Q711535)     |
+| Duncan Mackay (wd:Q980159)   |
+| Rick Fenn (wd:Q984323)       |"
+What are the different professional wrestling streaming services ?,"SELECT ?service WHERE {
+  ?service wdt:P31 wd:Q131359 .
+  ?service wdt:P138 wd:Q36070 .
+}",
+Which weapons are of the type carbines ?,"SELECT ?weapon WHERE {
+  ?weapon wdt:P279 wd:Q183302
+}","| weapon                                  |
+| --------------------------------------- |
+| AK-104 (wd:Q1024826)                    |
+| Puma (wd:Q10355469)                     |
+| Carbine m/94 (wd:Q10543568)             |
+| pistol-caliber carbine (wd:Q117344831)  |
+| Mannlicher M1890 Carbine (wd:Q11735427) |
+| ...                                     |
+| Tarpley carbine (wd:Q7686589)           |
+| Thorneycroft carbine (wd:Q7796408)      |
+| Colt Canada C8 (wd:Q7886247)            |
+| Zastava M85 (wd:Q8067064)               |
+| Barrett REC7 (wd:Q965451)               |"
+Which titles are used by current presidents of legislatures ?,SELECT DISTINCT ?title WHERE { ?president wdt:P2561 ?title . ?president wdt:P31 wd:Q7241342 . } UNION SELECT DISTINCT ?title WHERE { ?president wdt:P2561 ?title . ?president wdt:P31 wd:Q7241333 . },
+What are the existring aircraft carriers ?,"SELECT ?carrier WHERE {
+  ?carrier rdfs:label ""aircraft carrier"" @en .
+}
+LIMIT 10","| carrier                          |
+| -------------------------------- |
+| aircraft carrier (wd:L305560-S1) |
+| aircraft carrier (wd:L424057-S1) |
+| aircraft carrier (wd:L79774-S1)  |
+| aircraft carrier (wd:Q11597433)  |
+| aircraft carrier (wd:Q17205)     |"
+What are the dams with a fill structure larger than 27.4 millions of metric cubes ?,"SELECT ?dam ?storageCapacity WHERE {
+  ?dam wdt:P2928 ?storageCapacity .
+  FILTER(?storageCapacity > 27400000)
+}","| dam                                                    | storageCapacity                |
+| ------------------------------------------------------ | ------------------------------ |
+| WD Blue SATA SSD (wd:Q110665578)                       | 250000000.0 (xsd:decimal)      |
+| WD Blue SATA SSD (wd:Q110665578)                       | 500000000.0 (xsd:decimal)      |
+| Cypress S34ML02G2 (wd:Q123714253)                      | 2000000000.0 (xsd:decimal)     |
+| Gigabyte GeForce RTX 3090 Eagle OC 24G (wd:Q110646830) | 25769803776.0 (xsd:decimal)    |
+| WD Blue SATA SSD (wd:Q110665578)                       | 1000000000000.0 (xsd:decimal)  |
+| WD Blue SATA SSD (wd:Q110665578)                       | 2000381014016.0 (xsd:decimal)  |
+| WD Blue SATA SSD (wd:Q110665578)                       | 4000000000000.0 (xsd:decimal)  |
+| Seagate Exos X18 18 TB (wd:Q114443577)                 | 18000189054976.0 (xsd:decimal) |"
+What are the promotion names of women wrestling promotions ?,"SELECT ?promotion WHERE {
+  ?promotion rdfs:label ""Women of Wrestling"" @en
+}","| promotion                        |
+| -------------------------------- |
+| Women of Wrestling (wd:Q8031615) |"
+Which team has a goalkeeper that scored a goal ?,"SELECT ?team WHERE {
+  ?player wdt:P1363 ?goal .
+  ?player wdt:P106 wd:Q201330 .
+  ?player wdt:P54 ?team
+}",
+Who was a nuclear whistleblower ?,"SELECT ?person WHERE {
+  ?person wdt:P31 wd:Q7068182 .
+}",
+What are the lighthouses with a height of at least 26 meters ?,"SELECT ?lighthouse ?height WHERE {
+  ?lighthouse wdt:P2048 ?height .
+}",
+What are the commercially available software defined radios ?,"SELECT ?sdrradio WHERE { ?sdrradio wdt:P138 ?label . ?label rdfs:label ""HackRF One""@en . } UNION SELECT ?sdrradio WHERE { ?sdrradio wdt:P138 ?label . ?label rdfs:label ""HackRF Pro""@en . } UNION SELECT ?sdrradio WHERE { ?sdrradio wdt:P138 ?label . ?label rdfs:label ""Universal Software Radio Peripheral""@en . }",
+Which game is an alternate reality game ?,"SELECT ?game WHERE {
+  ?game wdt:P31 wd:Q438419 .
+}",
+Who were Winnipeg Jets (1972–1996)/Arizona Coyotes general managers ?,SELECT ?gm WHERE { wd:Q6393446 wdt:P505 ?gm } UNION SELECT ?gm WHERE { wd:Q206312 wdt:P505 ?gm },
+What typhoons were of the type super typhoons ?,"SELECT ?typhoon WHERE {
+  ?typhoon wdt:P1434 ?windSpeed .
+}","| typhoon                                               |
+| ----------------------------------------------------- |
+| Mega Man X2 (wd:Q100096)                              |
+| Fighting Fantasy (wd:Q1001255)                        |
+| Humbug's Gulch (wd:Q100138430)                        |
+| Skidmark (wd:Q100152256)                              |
+| The 7 Beer Itch (wd:Q100156110)                       |
+| ...                                                   |
+| The Taxi-Cab Grab (wd:Q99939690)                      |
+| A Certain Doom (wd:Q99976141)                         |
+| Need for Speed: Hot Pursuit Remastered (wd:Q99976214) |
+| The Mystery of the Cliffs (wd:Q99982283)              |
+| Reef Blower (wd:Q999929)                              |"
+What countries are island countries ?,"SELECT ?country WHERE {
+  ?country wdt:P31 wd:Q112099
+}","| country                          |
+| -------------------------------- |
+| Cape Verde (wd:Q1011)            |
+| Madagascar (wd:Q1019)            |
+| Mauritius (wd:Q1027)             |
+| São Tomé and Príncipe (wd:Q1039) |
+| Seychelles (wd:Q1042)            |
+| ...                              |
+| Maldives (wd:Q826)               |
+| Sri Lanka (wd:Q854)              |
+| Taiwan (wd:Q865)                 |
+| Philippines (wd:Q928)            |
+| Comoros (wd:Q970)                |"
+What are the structure with a height larger than 600 m ?,"SELECT ?structure WHERE {
+  ?structure wdt:P2048 ?height .
+  ?height wdtn:P2048 ?value .
+  ?value a wd:Q8668529 ; wdtn:P2048 ?heightValue .
+  FILTER(?heightValue > 600)
+}",
+Which weapons are of the type rocket launchers ?,SELECT ?weapon WHERE { ?weapon wdt:P31 wd:Q192223 . } UNION SELECT ?weapon WHERE { ?weapon wdt:P31 wd:Q327394 . } UNION SELECT ?weapon WHERE { ?weapon wdt:P31 wd:Q506219 . } UNION SELECT ?weapon WHERE { ?weapon wdt:P31 wd:Q787445 . },
+Who lead a lost expedition ?,,
+Which weapons are of the type anti-materiel rifles ?,"SELECT ?weapon WHERE {
+  ?weapon wdt:P279 wd:Q1770971
+}","| weapon                                     |
+| ------------------------------------------ |
+| Gepard (wd:Q1009592)                       |
+| AMR-2 (wd:Q1022192)                        |
+| Snipex Alligator (wd:Q104661322)           |
+| Solothurn S-18/100 (wd:Q1062499)           |
+| Accuracy International AW50 (wd:Q1066723)  |
+| ...                                        |
+| Barrett M99 (wd:Q808897)                   |
+| Barrett XM109 (wd:Q808903)                 |
+| Accuracy International AX50 (wd:Q85739580) |
+| Accuracy International AS50 (wd:Q868895)   |
+| AM-50 Sayyad (wd:Q92209063)                |"
+What are the suspension bridges (built or planned) with a length larger than 600 meters ?,SELECT ?bridge ?length WHERE { ?bridge wdt:P2043 ?length . ?length > 600 },
+What are the professional wrestling memorial shows since 1980?,"SELECT ?show WHERE {
+  ?show wdt:P31 wd:Q20751344 ; wdt:P1082 ?year .
+  ?show rdfs:label ?label .
+  FILTER(LANG(?label) = 'en')
+  FILTER(STR(?year) >= '1980')
+  FILTER(CONTAINS(STR(?label) , ""Memorial""))
+}
+LIMIT 10",
+Which weapons are of the type grenade launcher ?,"SELECT ?weapon WHERE {
+  VALUES ?weapon {
+    wd:Q124443940 wd:Q482529 wd:Q292668 wd:Q907351 wd:Q482511 wd:Q1143777 wd:Q1062668 wd:Q1058450
+  }
+}",
+Which sumos have nore than 7 championship wins ?,"SELECT ?rikishi(COUNT(?win) AS ?numWins) WHERE {
+  ?rikishi wdt:P1355 ?win .
+  FILTER(?win > 7)
+}
+GROUP BY ?rikishi
+ORDER BY DESC(?numWins)
+LIMIT 10",
+Which weapons are of the type siege engine ?,"SELECT ?weapon WHERE {
+  ?weapon wdt:P31 wd:Q8743609 .
+}",
+What are all the named continents throughout history ?,"SELECT ?continent(rdfs:label AS ?label) WHERE {
+  ?continent wdt:P31 wd:Q5107 .
+}",
+In which cities are there clock towers that are not located in Americas or Europe ?,"SELECT ?city ?continent WHERE {
+  ?city wdt:P131 ?location .
+  ?location wdt:P30 ?continent .
+  FILTER(?continent != wd:Q30235317 && ?continent != wd:Q30239975)
+}",
+What are the current or past space stations ?,"SELECT ?station WHERE {
+  ?station rdfs:label ""space station"" @en .
+  FILTER(lang(?station) = 'en')
+}
+LIMIT 10",
+What are the buildings (built or in construction) with a height larger than 350 meters ?,SELECT ?building WHERE { ?building wdt:P31 wd:Q41176 . ?building wdt:P2048 ?height . ?height > 350 },
+What are the different women wrestling promotions ?,"SELECT ?promotion WHERE {
+  ?promotion rdfs:label ""Women's Extreme Wrestling"" @en .
+}","| promotion                               |
+| --------------------------------------- |
+| Women's Extreme Wrestling (wd:Q3111523) |"
+What are the exoplanets discovered in 2021 ?,"SELECT ?exoplanet WHERE {
+  wd:Q44559 wdt:P575 ""2021""
+}",
+What are the existing (in service or terminated) space telescopes ?,"SELECT ?telescope(IF(EXISTS {
+  ?telescope wdt:P730 ?retirementDate
+}
+, ""terminated"" , ""in service"") AS ?status) WHERE {
+  VALUES ?telescope {
+    wd:Q2513 wd:Q186447 wd:Q47272 wd:Q201953 wd:Q7998593
+  }
+}",
+What are the different geological fracture zones ?,"SELECT ?zone(rdfs:label AS ?label) WHERE {
+  VALUES ?zone {
+    wd:Q5477586 wd:Q55968502 wd:Q58533016
+  }
+}",
+Which location is part of the  special economic zones of Ukraine ?,"SELECT ?location WHERE {
+  ?location wdt:P131 wd:Q142 .
+  ?location wdt:P2541 wd:Q494978 .
+}",
+Which weapons are of the type combat shotgun ?,"SELECT ?weapon WHERE {
+  ?weapon wdt:P366 'combat'
+}",
+What are the different upper stages used on rockets ?,"SELECT DISTINCT ?upperStage(rdfs:label AS ?label) WHERE {
+  ?upperStage rdfs:label ?label .
+  FILTER(CONTAINS(STR(?label) , ""upper stage""))
+}",
+What are the existing money printing mints ?,"SELECT ?mint WHERE {
+  ?mint rdfs:label ?label .
+  FILTER(LANG(?label) = ""en"")
+}
+LIMIT 10",
+What are the different exoplanet search projects ?,"SELECT ?project WHERE {
+  ?project wdt:P31 wd:Q9672656
+}",
+What are the residential buildings with a height larger than 250 m ?,,
+What are the existing clock towers not located in Americas or Europe ?,SELECT ?clockTower WHERE { ?clockTower wdt:P17 ?country . ?clockTower wdt:P30 ?continent . ?continent != wd:Q142 && ?continent != wd:Q1028 },
+Who was an ōzeki ?,"SELECT ?person WHERE {
+  ?person wdt:P3385 ?id .
+}",
+What are the lakes with a depth larger than 400 meters ?,"SELECT ?lake(STR(?depth) AS ?depth_value) WHERE {
+  ?lake wdt:P4511 ?depth .
+  FILTER(?depth > 400)
+}
+LIMIT 10","| lake                               | depth_value |
+| ---------------------------------- | ----------- |
+| Lake Superior (wd:Q1066)           | 406         |
+| wd:Q20057294                       | 406         |
+| Topalekua IV (wd:Q124247778)       | 408         |
+| Alexander (wd:Q1302421)            | 410         |
+| Lake Como (wd:Q15523)              | 410         |
+| Optimistic Nature (wd:Q92401249)   | 410         |
+| wd:Q20755509                       | 412.88      |
+| wd:Q20057291                       | 414         |
+| Colico Lake (wd:Q1425453)          | 416         |
+| Taam ja’ Blue Hole (wd:Q117866091) | 420         |"
+From which prison did multi-recidivist escaper escaped ?,,
+What are the named spirals ?,"SELECT ?spiral(rdfs:label AS ?label) WHERE {
+  ?spiral wdt:P2812 ?mathworld_id .
+}","| spiral                                | label      |
+| ------------------------------------- | ---------- |
+| maximal torus (wd:Q1000120)           | rdfs:label |
+| formal power series (wd:Q1003025)     | rdfs:label |
+| forcing (wd:Q1003136)                 | rdfs:label |
+| Frobenius norm (wd:Q1004053)          | rdfs:label |
+| algebraic combinatorics (wd:Q1005603) | rdfs:label |
+| ...                                   | ...        |
+| perfect matching (wd:Q99567093)       | rdfs:label |
+| succession (wd:Q99632598)             | rdfs:label |
+| HOMFLY polynomial (wd:Q996437)        | rdfs:label |
+| McLaughlin group (wd:Q997257)         | rdfs:label |
+| Buchberger's algorithm (wd:Q997962)   | rdfs:label |"
+What are the named meteor showers ?,SELECT DISTINCT ?label WHERE { VALUES ?entity (wd:Q64273413 wd:Q58973634 wd:Q59090901) . ?entity rdfs:label ?label . },
+Who was a Minnesota North Stars/Dallas Stars general managers ?,"SELECT ?person ?personLabel WHERE { VALUES ?team (wd:Q902512 wd:Q208652) . ?team wdt:P505 ?person . ?person rdfs:label ?personLabel . FILTER(LANG(?personLabel) = ""en"") } ORDER BY ?personLabel",
+What are the existing recoilless rifles ?,"SELECT ?rifle (STR(?label) AS ?name) WHERE { ?rifle rdfs:label ?label. FILTER (LANG(?label) = ""en"" && (CONTAINS(STR(?label), ""M40"") OR CONTAINS(STR(?label), ""M67"") OR CONTAINS(STR(?label), ""LRAC F1"") OR CONTAINS(STR(?label), ""M18"") OR CONTAINS(STR(?label), ""M20"") OR CONTAINS(STR(?label), ""M27""))) }",
+What are the different extinct dog breeds ?,SELECT ?breed WHERE { ?breed wdt:P5816 ?conservation . ?conservation rdfs:label ?label . FILTER (lang(?label) = 'en') . ?breed wdt:P31 wd:Q39367 . FILTER (LOWER(?label) = LOWER('extinct')) },
+What are the art museums with more than 8000 squared meters of gallery ?,SELECT ?museum (STR(?area) AS ?area) WHERE { ?museum wdt:P2046 ?area . ?museum wdt:P1082 ?type . FILTER (EXISTS { ?museum wdt:P1082 ?type . ?type wdt:P31 wd:Q207694 }) FILTER (?area > 8000 && TYPE(?area) = xsd:integer) },
+Which weapons are of the type straight pull rifles ?,"SELECT ?weapon ?characteristic WHERE { ?weapon wdt:P13044 ?characteristic . FILTER (regex(lowercase(str(?characteristic)), 'straight pull')) }",
+Who played cricket and rugby at a high level ?,"SELECT ?person WHERE {
+  ?person wdt:P641 wd:Q12299841 .
+  ?person wdt:P641 wd:Q13415036 .
+}",
+What are different species of hammerhead sharks ?,"SELECT ?species WHERE {
+  wd:Q208490 wdt:P225 ?species
+}","| species    |
+| ---------- |
+| Sphyrnidae |"
+Which dhb is part of the New Zealand district heald boards ?,SELECT ?dhub WHERE { ?dhub wdt:P527 ?district . ?district wdt:P571 wd:Q5283326 } UNION SELECT ?dhub WHERE { ?dhub wdt:P571 wd:Q5283326 },
+What natural areas are natural study areas ?,"SELECT ?area WHERE {
+  ?area wdt:P279 wd:Q8001184
+}",
+What are the hotels with at least 2000 rooms ?,"SELECT ?hotel ?rooms WHERE {
+  ?hotel wdt:P8733 ?rooms .
+  FILTER(?rooms >= 2000)
+}","| hotel                                          | rooms                |
+| ---------------------------------------------- | -------------------- |
+| Palace of Versailles (wd:Q2946)                | 2300.0 (xsd:decimal) |
+| Hotel Lisboa Macau (wd:Q1047611)               | 2362.0 (xsd:decimal) |
+| Planet Hollywood Resort & Casino (wd:Q1342565) | 2500.0 (xsd:decimal) |
+| Marina Bay Sands (wd:Q548679)                  | 2561.0 (xsd:decimal) |
+| Treasure Island Hotel and Casino (wd:Q1360313) | 2885.0 (xsd:decimal) |
+| ...                                            | ...                  |
+| Rossiya Hotel (wd:Q1430318)                    | 3182.0 (xsd:decimal) |
+| Mandalay Bay (wd:Q1368043)                     | 3309.0 (xsd:decimal) |
+| Living Hotels (wd:Q134511841)                  | 3500.0 (xsd:decimal) |
+| Bellagio Hotel & Casino (wd:Q25007)            | 3933.0 (xsd:decimal) |
+| MGM Grand Las Vegas (wd:Q713960)               | 6852.0 (xsd:decimal) |"
+What were the different numeral systems ?,"SELECT DISTINCT ?numeralSystem (CONCAT('(', STR(?numeralSystem), ')') AS label) WHERE { ?numeralSystem wdt:P31 wd:Q122653 . }",
+What are the mountain ranges with an height larger than 5600 meters ?,"SELECT ?mountainRange WHERE {
+  ?mountainRange wdt:P2044 ?elevation .
+  ?mountainRange wdt:P31 wd:Q46831 .
+  FILTER(?elevation >= 5600)
+}","| mountainRange                      |
+| ---------------------------------- |
+| Calapooya Mountains (wd:Q1026262)  |
+| Gallatin Range (wd:Q1027662)       |
+| Qilian Mountains (wd:Q1072879)     |
+| Chiricahua Mountains (wd:Q1074716) |
+| Chugach Mountains (wd:Q1089367)    |
+| ...                                |
+| Gasherbrum (wd:Q862078)            |
+| Bitterroot Mountains (wd:Q879008)  |
+| Bitterroot Range (wd:Q879014)      |
+| Brooks Range (wd:Q929910)          |
+| Transverse Ranges (wd:Q942677)     |"
+Which weapons are of the type semi-automatic shotguns ?,,
+Which museums are dedicated to chocolate ?,"SELECT ?museum(CONCAT(?museumLabel , ' (' , ?location , ')') as ?museumInfo) WHERE {
+  ?museum wdt:P31 wd:Q14928320 .
+  ?museum rdfs:label ?museumLabel .
+  ?museum wdt:P17 ?location .
+  FILTER(LANG(?museumLabel) = 'en')
+  .
+  OPTIONAL {
+    ?museum wdt:P131 ?category .
+    FILTER(! CONTAINS(?category , 'Hershey') && ! CONTAINS(?category , 'Cadbury') && ! CONTAINS(?category , 'Chocolat') && ! CONTAINS(?category , 'Chocolates'))
+  }
+}
+LIMIT 10","| museum                                             | museumInfo |
+| -------------------------------------------------- | ---------- |
+| Schokoladenmuseum Dresden (wd:Q112580535)          |            |
+| The Chocolate Museum (wd:Q115130235)               |            |
+| Choco-Story Brussels (wd:Q11775274)                |            |
+| Hershey's Chocolate World (wd:Q12410253)           |            |
+| Chocolate Museum (wd:Q12619410)                    |            |
+| Chocolate Factory E.Wedel museum (wd:Q130253873)   |            |
+| Belgian Chocolate Village (wd:Q13437154)           |            |
+| Choco-Story Prague (wd:Q16579848)                  |            |
+| Museum of Russian Chocolate History (wd:Q21043170) |            |
+| Choco-Story Bruges (wd:Q2747092)                   |            |"
+What are some existing calendars ?,"SELECT ?calendar WHERE {
+  ?calendar wdt:P31 wd:Q166142
+}","| calendar                               |
+| -------------------------------------- |
+| FinePrint (wd:Q100235499)              |
+| Student Writing Center (wd:Q100243722) |
+| Freestat (wd:Q1003784)                 |
+| Str3amup! software (wd:Q100732661)     |
+| wd:Q100743733                          |
+| ...                                    |
+| JupyterLab (wd:Q99439725)              |
+| Nubimed (wd:Q99525685)                 |
+| ContentMine (wd:Q99932345)             |
+| Advanced Disk Catalog (wd:Q99972502)   |
+| XDOMEA (wd:Q99973475)                  |"
+Who was a rabbi known by its acronym ?,"SELECT ?entity WHERE {
+  ?entity wdt:P1813 ?acronym
+}","| entity                                                        |
+| ------------------------------------------------------------- |
+| wd:L1012783-S1                                                |
+| wd:L1149525                                                   |
+| British (wd:L156273-F1)                                       |
+| wd:L36905                                                     |
+| wd:L6818                                                      |
+| ...                                                           |
+| decentralized government agency (wd:Q99984150)                |
+| Ohio Manual on Uniform Traffic Control Devices (wd:Q99984161) |
+| wd:Q99984195                                                  |
+| Coleotechnites piceaella (wd:Q999924)                         |
+| Japanese Society for Active Fault Studies (wd:Q99999487)      |"
+What libraries hold more than 15 million books ?,"SELECT ?library WHERE {
+  ?library wdt:P1436 ?bookCount .
+  FILTER(?bookCount > 15000000)
+}","| library                                                |
+| ------------------------------------------------------ |
+| University of British Columbia Library (wd:Q7895142)   |
+| General Archive of the Nation of Mexico (wd:Q2860534)  |
+| Canadian National Collection of Insects (wd:Q47164899) |
+| 20th Century Press Archives (wd:Q36948990)             |
+| Spot World Heritage (wd:Q107303070)                    |
+| ...                                                    |
+| Geni.com (wd:Q2621214)                                 |
+| Bibliomediateca Rai “Dino Villani” (wd:Q125745677)     |
+| Guide Star Catalog II (wd:Q15817618)                   |
+| RedPajama-1T (wd:Q126872381)                           |
+| RedPajama-Data-v2 (wd:Q126872813)                      |"
+Where are located protected areas with an area larger than 250000 km squared ?,"SELECT ?protectedArea ?location WHERE {
+  ?protectedArea wdt:P2046 ?area .
+  ?protectedArea wdt:P625 ?location .
+  FILTER(?area > 250000)
+}","| protectedArea                                | location                                     |
+| -------------------------------------------- | -------------------------------------------- |
+| Gabon (wd:Q1000)                             | POINT(11.500000 -0.683331) (geo:wktLiteral)  |
+| Orange City (wd:Q1000030)                    | POINT(-96.058889 43.005556) (geo:wktLiteral) |
+| Neosho (wd:Q1000065)                         | POINT(-94.376389 36.855556) (geo:wktLiteral) |
+| Speedway (wd:Q1000136)                       | POINT(-86.250000 39.791900) (geo:wktLiteral) |
+| Eaton (wd:Q1000148)                          | POINT(-84.633900 39.747500) (geo:wktLiteral) |
+| ...                                          | ...                                          |
+| Buchberger Leite (wd:Q997967)                | POINT(13.509600 48.819200) (geo:wktLiteral)  |
+| Central Persian desert basins (wd:Q99831794) | POINT(54.750000 33.750000) (geo:wktLiteral)  |
+| Buchholz-Kleefeld (wd:Q998471)               | POINT(9.812500 52.385600) (geo:wktLiteral)   |
+| Huntington (wd:Q999123)                      | POINT(-73.426111 40.868056) (geo:wktLiteral) |
+| Buckelwiesen bei Mittenwald (wd:Q999466)     | POINT(11.266460 47.472340) (geo:wktLiteral)  |"
+What are the photovoltaic power stations with a capacity larger than 250 Mw ?,"SELECT ?powerStation ?capacity ?unit WHERE {
+  ?powerStation wdt:P106 wd:Q1003207 .
+  ?powerStation wdt:P2109 ?capacity .
+  ?capacity wdt:P1814 ?unit
+}
+LIMIT 10",
