@@ -2,6 +2,8 @@
 
 Total JSON files: 78
 
+Valid cases with valid result: 25 (32.05%)
+
 - null_output: 4 (5.13%)
 - no_sparql_generated: 1 (1.28%)
 - empty_sparql_result: 32 (41.03%)
