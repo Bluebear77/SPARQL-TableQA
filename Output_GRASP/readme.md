@@ -7,9 +7,13 @@ Experiment evaluating GRASP SPARQL generation for table-based question answering
 **Total valid cases**: 1,165 (660 SimpleQA + 505 ComplexQA)
 
 **Model used for GRASP** 
-'''
+
+```
 vllm serve Qwen/Qwen3-4B-Instruct-2507 --tool-call-parser hermes --enable-auto-tool-choice --max-model-len 225136
-'''
+```
+
+Approximately 63 hours for 2870 questions, average 1.3 min/question.
+
 
 ## Datasets Summary
 
