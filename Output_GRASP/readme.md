@@ -6,6 +6,11 @@ Experiment evaluating GRASP SPARQL generation for table-based question answering
 **Total JSON files processed**: 2,926  
 **Total valid cases**: 1,165 (660 SimpleQA + 505 ComplexQA)
 
+**Model used for GRASP** 
+'''
+vllm serve Qwen/Qwen3-4B-Instruct-2507 --tool-call-parser hermes --enable-auto-tool-choice --max-model-len 225136
+'''
+
 ## Datasets Summary
 
 ### SimpleQA (660 valid / 1,370 total = 48.1%)
