@@ -28,6 +28,7 @@ Experiment evaluating GRASP SPARQL generation for table-based question answering
 ## File Structure
 For detailed structure see tree.txt.
 
+```
 ComplexQA/
 ├── all_valid_cases.csv # 505 valid rows combined
 ├── CompMix_infobox_complex/
@@ -62,6 +63,7 @@ SimpleQA/
 ├── Qampari_wikitables_simple/ # 78 files, 25 valid
 │   └── extracted_output/ # Same structure as above
 └── JSON2csv.py
+```
 
 ## Output File Formats
 
