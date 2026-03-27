@@ -1,7 +1,7 @@
 # SPARQL TableQA Experiment - Complex & Simple QA Datasets
 
 ## Overview
-Experiment evaluating SPARQL generation for table-based question answering across **9 datasets** split into **SimpleQA** (3 datasets) and **ComplexQA** (6 datasets). Each dataset contains JSON files with questions, gold answers, generated SPARQL queries, and execution results.
+Experiment evaluating GRASP SPARQL generation for table-based question answering across **9 datasets** split into **SimpleQA** (3 datasets) and **ComplexQA** (6 datasets). Each dataset contains JSON files with questions, gold answers, generated SPARQL queries, and execution results.
 
 **Total JSON files processed**: 2,926  
 **Total valid cases**: 1,165 (660 SimpleQA + 505 ComplexQA)
@@ -26,26 +26,42 @@ Experiment evaluating SPARQL generation for table-based question answering acros
 | Sportsreason_TANQ_complex | 200 | 25 | 12.5% |
 
 ## File Structure
+For detailed structure see tree.txt.
+
 ComplexQA/
 ├── all_valid_cases.csv # 505 valid rows combined
 ├── CompMix_infobox_complex/
-│ ├── *.json # Raw input files (300)
-│ └── extracted_output/
-│ ├── CompMix_infobox_complex.csv # ALL 300 rows
-│ ├── CompMix_infobox_complex_valid_cases.csv # 210 valid rows
-│ ├── CompMix_infobox_complex_invalid_cases.csv # 90 invalid rows
-│ ├── CompMix_infobox_complex_invalid_summary.md
-│ └── CompMix_infobox_complex_valid_vs_invalid_pie.png
-├── ... (5 more ComplexQA datasets)
+│   ├── *.json # Raw input files (300)
+│   └── extracted_output/
+│       ├── CompMix_infobox_complex.csv # ALL 300 rows
+│       ├── CompMix_infobox_complex_valid_cases.csv # 210 valid rows
+│       ├── CompMix_infobox_complex_invalid_cases.csv # 90 invalid rows
+│       ├── CompMix_infobox_complex_invalid_summary.md
+│       └── CompMix_infobox_complex_valid_vs_invalid_pie.png
+├── CompMix_table_complex/
+│   ├── *.json # Raw input files (300)
+│   └── extracted_output/ # Same structure as above
+├── Monaco_non_time_complex/ # 150 files, 50 valid
+├── Monaco_time_complex/ # 150 files, 47 valid
+├── OTT_QA_dev_complex/ # 400 files, 53 valid
+├── Sportsreason_TANQ_complex/ # 200 files, 25 valid
+└── JSON2csv.py
 
 SimpleQA/
 ├── all_valid_cases.csv # 660 valid rows combined
 ├── CompMix_table_simple_qa/
-│ ├── *.json # Raw input files (326)
-│ └── extracted_output/ # Same structure as above
+│   ├── *.json # Raw input files (326)
+│   └── extracted_output/
+│       ├── CompMix_table_simple_qa.csv # ALL 326 rows
+│       ├── CompMix_table_simple_qa_valid_cases.csv # 198 valid rows
+│       ├── CompMix_table_simple_qa_invalid_cases.csv # 128 invalid rows
+│       ├── CompMix_table_simple_qa_invalid_summary.md
+│       └── CompMix_table_simple_qa_valid_vs_invalid_pie.png
 ├── NQ_table_test_simple/ # 966 files, 437 valid
-└── Qampari_wikitables_simple/ # 78 files, 25 valid
-
+│   └── extracted_output/ # Same structure as above
+├── Qampari_wikitables_simple/ # 78 files, 25 valid
+│   └── extracted_output/ # Same structure as above
+└── JSON2csv.py
 
 ## Output File Formats
 
