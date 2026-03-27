@@ -15,21 +15,24 @@ from collections import Counter
 # Each parent folder may contain subdirectories with JSON files.
 #
 # For each parent folder:
-#   - It iterates into the folder and all its subdirectories.
-#   - It finds all JSON files under that parent.
+#   - It discovers all JSON files under that folder and subdirectories.
 #   - For each JSON:
-#       * extracts the question
-#       * extracts the SPARQL starting from SELECT (ignoring prefixes)
-#       * extracts the markdown table from output.result
-#   - It writes several files under a subfolder named `extracted_output/`:
+#       * extracts:
+#           - question
+#           - reference_answer (stored as gold_answer)
+#           - output.sparql (normalized to start from SELECT)
+#           - output.result (markdown table portion only)
+#   - It writes:
 #       1) <folder_name>.csv
+#           Columns: question, gold_answer, result, sparql
 #       2) <folder_name>_valid_cases.csv
+#           Columns: question, gold_answer, result, sparql, file_path
 #       3) <folder_name>_invalid_cases.csv
+#           Columns: file_name, invalid_label
 #       4) <folder_name>_invalid_summary.md
-#   - It also creates a pie chart PNG (`<folder_name>_valid_vs_invalid_pie.png`)
-#     in the same `extracted_output/` folder and references it in the markdown.
+#           With valid vs invalid pie chart and percentages
 #
-# Types of invalid cases:
+# Invalid cases:
 #   - null_output
 #   - no_sparql_generated
 #   - empty_sparql_result
@@ -46,7 +49,7 @@ def normalize_sparql(text: str) -> str:
     if not text:
         return ""
 
-    # Convert escaped newlines into real newlines.
+    # Convert escaped newlines to real newlines.
     text = text.replace("\\n", "\n")
 
     # Keep from the first SELECT to the end.
@@ -60,17 +63,6 @@ def normalize_sparql(text: str) -> str:
 def extract_table(text: str) -> str:
     """
     Extract only the markdown table portion from output.result.
-
-    Example input:
-      "Got 18 rows and 2 columns, showing the first 5 and last 5 rows below:\\n
-       | body | label |\\n
-       | ---  | ---   |\\n
-       | ..."
-
-    Desired output:
-       | body | label |
-       | ---  | ---   |
-       | ...
     """
     if not text:
         return ""
@@ -78,7 +70,7 @@ def extract_table(text: str) -> str:
     # Convert escaped newlines to real lines.
     text = text.replace("\\n", "\n")
 
-    # If the result contains execution or parsing error, do not extract a table.
+    # If the result is clearly an error, do not extract a table.
     if "Error executing SPARQL query" in text:
         return ""
     if "SPARQL parsing failed" in text:
@@ -88,7 +80,7 @@ def extract_table(text: str) -> str:
     table_lines = []
     started = False
 
-    # Start collecting as soon as we see the first markdown table row.
+    # Start collecting once we see the first markdown table row.
     for line in lines:
         if line.strip().startswith("|"):
             started = True
@@ -102,10 +94,7 @@ def extract_table(text: str) -> str:
 
 def classify_case(output_obj, sparql_text: str, result_raw: str):
     """
-    Classify the current JSON record into:
-      - an invalid label (one of the known error types), or
-      - a valid case (label = "").
-
+    Classify the record into valid or invalid.
     Returns (invalid_label, table_text).
     """
     # Case 1: output is null
@@ -124,10 +113,10 @@ def classify_case(output_obj, sparql_text: str, result_raw: str):
     if isinstance(result_raw, str) and "SPARQL parsing failed" in result_raw:
         return "sparql_parsing_failed", ""
 
-    # Try to extract the markdown table.
+    # Try to extract the table.
     table = extract_table(result_raw)
 
-    # Case 3: SPARQL exists but result is empty / no table found
+    # Case 3: SPARQL exists but no table found
     if not table:
         return "empty_sparql_result", ""
 
@@ -141,14 +130,10 @@ def pct(value: int, total: int) -> float:
 
 def create_pie_chart(valid: int, invalid: int, folder: str, output_dir: Path):
     """
-    Create and save a pie chart PNG showing valid vs invalid cases.
-
-    The pie chart image is saved as:
-        <output_dir>/<folder>_valid_vs_invalid_pie.png
+    Create and save a pie chart PNG: valid vs invalid cases.
     """
-    # Do not try to plot if both are zero.
     if valid == 0 and invalid == 0:
-        # Still create empty file so markdown reference is safe.
+        # Still create a small empty plot so the file exists.
         fig, _ = plt.subplots(figsize=(6, 4))
         fig.savefig(output_dir / f"{folder}_valid_vs_invalid_pie.png", dpi=150, bbox_inches="tight")
         plt.close(fig)
@@ -160,7 +145,7 @@ def create_pie_chart(valid: int, invalid: int, folder: str, output_dir: Path):
 
     fig, ax = plt.subplots(figsize=(6, 4))
 
-    # Safely format the pie labels so NaN is never passed to int().
+    # Safely format the autopct so NaN is never passed to int().
     def format_autopct(pct):
         total = sum(sizes)
         if total == 0:
@@ -189,32 +174,30 @@ def process_folder(base_folder: Path):
     """
     Process one parent folder (e.g., Qampari_wikitables_simple).
 
-    Steps:
-      - Collect all JSON files under base_folder and its subdirectories.
-      - For each JSON file:
-          * extract question, sparql, result
-          * classify as valid / invalid
-      - Write CSV files into `base_folder/extracted_output/`.
-      - Write a markdown summary with a pie chart and valid/invalid percentages.
+    Reads JSON files recursively, extracts:
+      question, reference_answer (as gold_answer),
+      result table, and normalized SPARQL.
+
+    Writes CSVs and markdown summary with pie chart.
     """
     folder_name = base_folder.name
 
-    # Create output folder: base_folder/extracted_output/
+    # Output directory: base_folder/extracted_output/
     output_dir = base_folder / "extracted_output"
     output_dir.mkdir(exist_ok=True)
 
-    # Paths for output files.
+    # Output file paths.
     main_csv = output_dir / f"{folder_name}.csv"
     valid_csv = output_dir / f"{folder_name}_valid_cases.csv"
     invalid_csv = output_dir / f"{folder_name}_invalid_cases.csv"
     md_file = output_dir / f"{folder_name}_invalid_summary.md"
 
-    # Collect all JSON files beneath base_folder (including subdirectories).
+    # Collect all JSON files recursively.
     json_files = []
     for root, _, files in os.walk(base_folder):
         root_path = Path(root)
 
-        # Skip the extracted_output subdirectory itself.
+        # Skip the extracted_output subdirectory.
         if root_path.name == "extracted_output" and root_path.parent == base_folder:
             continue
 
@@ -222,32 +205,32 @@ def process_folder(base_folder: Path):
             if Path(fname).suffix.lower() == ".json":
                 json_files.append(root_path / fname)
 
-    # Sort by path for deterministic output.
     json_files.sort(key=str)
     total_files = len(json_files)
 
-    # Container rows.
-    all_rows = []        # Every JSON file.
-    valid_rows = []      # Only valid cases.
-    invalid_rows = []    # Only invalid cases.
+    # Data containers.
+    all_rows = []        # [question, gold_answer, result, sparql]
+    valid_rows = []      # [question, gold_answer, result, sparql, file_path]
+    invalid_rows = []    # [file_name, invalid_label]
     counts = Counter()
     valid_total = 0
 
     # Process each JSON file.
     for fp in json_files:
-        # Read the file.
+        # Read data.
         try:
             data = json.loads(fp.read_text(encoding="utf-8"))
         except Exception:
             invalid_rows.append([fp.name, "invalid_json"])
             counts["invalid_json"] += 1
-            all_rows.append(["", "", ""])
+            all_rows.append(["", "", "", ""])
             continue
 
         question = data.get("question", "")
+        gold_answer = data.get("reference_answer", "")  # New 'gold_answer' column
         output_obj = data.get("output", None)
 
-        # If output exists and is a dict, extract sparql and result.
+        # If output is a dict, extract sparql and result.
         if isinstance(output_obj, dict):
             sparql = normalize_sparql(output_obj.get("sparql", ""))
             result_raw = output_obj.get("result", "")
@@ -255,7 +238,7 @@ def process_folder(base_folder: Path):
             sparql = ""
             result_raw = ""
 
-        # Classify the case and get the table text.
+        # Classify and extract table.
         invalid_label, result_table = classify_case(
             output_obj=output_obj,
             sparql_text=sparql,
@@ -267,31 +250,42 @@ def process_folder(base_folder: Path):
             counts[invalid_label] += 1
         else:
             valid_total += 1
-            # Store relative path from base_folder.
             rel_path = "/".join(fp.relative_to(base_folder).parts)
-            valid_rows.append([rel_path, question, sparql, result_table])
+            valid_rows.append([
+                question,
+                gold_answer,
+                result_table,
+                sparql,
+                rel_path,  # file_path as last column
+            ])
 
-        all_rows.append([question, sparql, result_table])
+        # All rows: question, gold_answer, result, sparql
+        all_rows.append([
+            question,
+            gold_answer,
+            result_table,
+            sparql,
+        ])
 
-    # Write the main CSV: all JSON rows.
+    # Write the main CSV: question, gold_answer, result, sparql
     with main_csv.open("w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
-        writer.writerow(["question", "sparql", "result"])
+        writer.writerow(["question", "gold_answer", "result", "sparql"])
         writer.writerows(all_rows)
 
-    # Write the valid cases CSV.
+    # Write valid cases CSV: question, gold_answer, result, sparql, file_path
     with valid_csv.open("w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
-        writer.writerow(["file_path", "question", "sparql", "result"])
+        writer.writerow(["question", "gold_answer", "result", "sparql", "file_path"])
         writer.writerows(valid_rows)
 
-    # Write the invalid cases CSV.
+    # Write invalid cases CSV
     with invalid_csv.open("w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow(["file_name", "invalid_label"])
         writer.writerows(invalid_rows)
 
-    # Build the markdown summary.
+    # Build markdown summary with valid/invalid percentages and pie chart reference.
     invalid_labels = [
         "null_output",
         "no_sparql_generated",
@@ -323,23 +317,19 @@ def process_folder(base_folder: Path):
     # Write the markdown file.
     md_file.write_text("\n".join(md_lines), encoding="utf-8")
 
-    # Create the pie chart PNG.
+    # Create the pie chart.
     create_pie_chart(valid_total, invalid_total, folder_name, output_dir)
 
     print(f"Processed {folder_name}: {main_csv}")
-    print(f"Valid cases CSV: {valid_csv}")
-    print(f"Invalid cases CSV: {invalid_csv}")
-    print(f"Summary markdown: {md_file}")
 
 
 def main(parents_dir: Path):
     """
-    Entry point that processes all parent folders inside `parents_dir`.
+    Process all parent folders inside parents_dir.
 
-    parents_dir: directory containing folders such as
-        CompMix_table_simple_qa, NQ_table_test_simple, Qampari_wikitables_simple.
+    parents_dir: directory containing:
+      CompMix_table_simple_qa, NQ_table_test_simple, Qampari_wikitables_simple
     """
-    # Find all subdirectories (parent folders).
     parent_folders = [p for p in parents_dir.iterdir() if p.is_dir()]
     parent_folders.sort(key=str)
 
@@ -349,12 +339,7 @@ def main(parents_dir: Path):
 
 def main_standalone():
     """
-    Run this script from the directory that contains the parent folders.
-
-    Example layout:
-        ./CompMix_table_simple_qa/
-        ./NQ_table_test_simple/
-        ./Qampari_wikitables_simple/
+    Run this script from the directory containing the parent folders.
     """
     current_dir = Path.cwd()
     main(parents_dir=current_dir)
