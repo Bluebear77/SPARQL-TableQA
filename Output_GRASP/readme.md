@@ -3,8 +3,11 @@
 ## Overview
 Experiment evaluating GRASP SPARQL generation for table-based question answering across **9 split of 6 datasets** divided into **SimpleQA** (3 datasets) and **ComplexQA** (6 datasets). Each dataset contains JSON files with questions, gold answers, generated SPARQL queries, and execution results.
 
+
+
 **Total JSON files processed**: 2,926  
 **Total valid cases**: 1,165 (660 SimpleQA + 505 ComplexQA)
+
 
 **Model used for GRASP** 
 
@@ -12,7 +15,7 @@ Experiment evaluating GRASP SPARQL generation for table-based question answering
 vllm serve Qwen/Qwen3-4B-Instruct-2507 --tool-call-parser hermes --enable-auto-tool-choice --max-model-len 225136
 ```
 
-Approximately 63 hours for 2870 questions, average 1.3 min/question.
+Approximately 63 hours for 2870 questions, **average 1.3 min/question.**
 
 
 ## Datasets Summary
