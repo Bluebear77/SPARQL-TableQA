@@ -81,7 +81,7 @@ Invalid types:
 - `sparql_execution_failed`, `sparql_parsing_failed`, `invalid_json`
 
 ### Summary: `<dataset>_invalid_summary.md`
-Markdown with valid/invalid percentages + ![pie chart](pie.png)
+Markdown with valid/invalid percentages wiht pie chart
 
 ## Processing Pipeline (JSON2csv.py)
 1. **Input**: JSON files with `{question, reference_answer, output: {sparql, result}}`
