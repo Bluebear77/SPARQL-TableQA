@@ -2,7 +2,7 @@
 
 Total JSON files: 326
 
-Valid cases with valid result: 198 (60.74%)
+Valid cases: 198 (60.74%)
 Invalid cases: 128 (39.26%)
 
 ![](extracted_output/CompMix_table_simple_qa_valid_vs_invalid_pie.png)

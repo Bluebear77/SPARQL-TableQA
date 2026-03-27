@@ -2,7 +2,7 @@
 
 Total JSON files: 78
 
-Valid cases with valid result: 25 (32.05%)
+Valid cases: 25 (32.05%)
 Invalid cases: 53 (67.95%)
 
 ![](extracted_output/Qampari_wikitables_simple_valid_vs_invalid_pie.png)
