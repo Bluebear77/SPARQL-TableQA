@@ -1,7 +1,7 @@
 # SPARQL TableQA Experiment - Complex & Simple QA Datasets
 
 ## Overview
-Experiment evaluating GRASP SPARQL generation for table-based question answering across **9 datasets** split into **SimpleQA** (3 datasets) and **ComplexQA** (6 datasets). Each dataset contains JSON files with questions, gold answers, generated SPARQL queries, and execution results.
+Experiment evaluating GRASP SPARQL generation for table-based question answering across **9 split of 6 datasets** divided into **SimpleQA** (3 datasets) and **ComplexQA** (6 datasets). Each dataset contains JSON files with questions, gold answers, generated SPARQL queries, and execution results.
 
 **Total JSON files processed**: 2,926  
 **Total valid cases**: 1,165 (660 SimpleQA + 505 ComplexQA)
