@@ -162,7 +162,7 @@ def main():
     folder = current_folder_name()
 
     # All output files go into ./output/
-    output_dir = Path.cwd() / "output"
+    output_dir = Path.cwd() / "extraction_output"
     output_dir.mkdir(exist_ok=True)
 
     main_csv = output_dir / f"{folder}.csv"
