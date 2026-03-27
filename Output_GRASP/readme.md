@@ -1,4 +1,4 @@
-# SPARQL TableQA Experiment - Complex & Simple QA Datasets
+# SPARQL TableQA Experiment - ComplexQA & SimpleQA Datasets
 
 ## Overview
 Experiment evaluating GRASP SPARQL generation for table-based question answering across **9 split of 6 datasets** divided into **SimpleQA** (3 datasets) and **ComplexQA** (6 datasets). 
@@ -18,6 +18,31 @@ Approximately 63 hours for 2870 questions, **average 1.3 min/question.**
 
 ## Dataset Selection
 The selected dataset are stored in [Input_GRSP](https://github.com/Bluebear77/SPARQL-TableQA/tree/main/Input_GRASP) folder.
+- [SimpleQA](https://github.com/Bluebear77/SPARQL-TableQA/tree/main/Output_GRASP/SimpleQA): focus on simple question answering with single hop structure asked in a strightforward way.
+- [ComplexQA](https://github.com/Bluebear77/SPARQL-TableQA/tree/main/Output_GRASP/ComplexQA): focus on complex question answering with complex structure, such as multi-hop, numerical operation,implicit reasoning,etc.
+
+## Dataset Source:
+- [NQ-Table](https://github.com/google-research/tapas)
+- [Qampari](https://samsam3232.github.io/qampari/)
+- [Compmix](https://qa.mpi-inf.mpg.de/compmix/)
+- [Monaco](https://huggingface.co/datasets/allenai/MoNaCo_Benchmark/tree/main)
+- 
+
+For Complex: 1.5 ~ 2k
+Compmix_infobox 2.8k >> 300
+Compmix table 732 >> 300
+Monaco 1315 >> 300 (Only Monaco select the simplest questions. 150 from Monaco_time_dependent.csv, 150 from Monaco_non_time_dependent.csv)
+OTT-QA-dev 2215 >> 400
+Sportsreason >> 200
+
+1500
+
+For simple: ~1k
+NQ_Table: 966
+Compmix_simple: 326
+Qampari:78
+
+1370 without Qampari: 1292
 
 
 ## Datasets Summary
