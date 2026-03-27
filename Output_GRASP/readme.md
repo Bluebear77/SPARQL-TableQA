@@ -4,8 +4,8 @@
 Experiment evaluating GRASP SPARQL generation for table-based question answering across **9 split of 6 datasets** divided into **SimpleQA** (3 datasets) and **ComplexQA** (6 datasets). 
 Each dataset contains JSON files with questions, gold answers, generated SPARQL queries, and execution results.
 
-**Total JSON files processed**: 2870 (1370 SimpleQA + 1500 ComplexQA)
-**Total valid cases**: 1,165 (660 SimpleQA + 505 ComplexQA)
+- **Total JSON files processed**: 2870 (1370 SimpleQA + 1500 ComplexQA)
+- **Total valid cases**: 1,165 (660 SimpleQA + 505 ComplexQA)
 
 
 **Model used for GRASP** 
@@ -15,6 +15,9 @@ vllm serve Qwen/Qwen3-4B-Instruct-2507 --tool-call-parser hermes --enable-auto-t
 ```
 
 Approximately 63 hours for 2870 questions, **average 1.3 min/question.**
+
+## Dataset Selection
+The selected dataset are stored in [Input_GRSP](https://github.com/Bluebear77/SPARQL-TableQA/tree/main/Input_GRASP) folder.
 
 
 ## Datasets Summary
@@ -37,7 +40,7 @@ Approximately 63 hours for 2870 questions, **average 1.3 min/question.**
 | Sportsreason_TANQ_complex | 200 | 25 | 12.5% |
 
 ## File Structure
-For detailed structure see tree.txt.
+For detailed structure see [tree.txt](https://github.com/Bluebear77/SPARQL-TableQA/blob/main/Output_GRASP/tree.txt).
 
 ```
 ComplexQA/
