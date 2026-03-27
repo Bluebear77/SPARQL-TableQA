@@ -22,12 +22,12 @@ The selected dataset are stored in [Input_GRSP](https://github.com/Bluebear77/SP
 - [ComplexQA](https://github.com/Bluebear77/SPARQL-TableQA/tree/main/Output_GRASP/ComplexQA): focus on complex question answering with complex structure, such as multi-hop, numerical operation,implicit reasoning,etc.
 
 ## Dataset Source:
-- [NQ-Table](https://github.com/google-research/tapas)
-- [Qampari](https://samsam3232.github.io/qampari/)
-- [Compmix](https://qa.mpi-inf.mpg.de/compmix/)
-- [Monaco](https://huggingface.co/datasets/allenai/MoNaCo_Benchmark/tree/main)
-- [OTT-QA](https://github.com/wenhuchen/OTT-QA)
-- [Sportsreason](https://github.com/kaiyuef/SportReason)
+- [NQ-Table](https://github.com/google-research/tapas): created by human, natural simple question, single short answer.
+- [Qampari](https://samsam3232.github.io/qampari/): created by template, where answers are **lists of entities**, spread across many paragraphs supported by text evidence.
+- [Compmix](https://qa.mpi-inf.mpg.de/compmix/): created by human, natural question range from simple to complex, single short answer.
+- [Monaco](https://huggingface.co/datasets/allenai/MoNaCo_Benchmark/tree/main): created by human, natural complex time-consuming questions that requires implict reasoning.
+- [OTT-QA](https://github.com/wenhuchen/OTT-QA):created by template, complex question designed in a way to test model's resoning ability, single short answer.
+- [Sportsreason](https://github.com/kaiyuef/SportReason): created by LLM RAG, complex question requires numerical operation, including [Multi-text, Multi-table, Single-table, Single-table + Multi-text, and Multi-table + Multi-text.] setting. We only considered table based questions; single short answer.
 
 
 ## Datasets Summary
