@@ -1,6 +1,10 @@
 
 ## Output File Formats
 Inside each foldre, there are:
+
+### all_valid_cases.csv: 
+- **ALL** valid cases in the ComplexQA folder.
+
 ### Main CSV: `<dataset>.csv` **[question, gold_answer, result_cleaned, result, sparql]**
 - **ALL** JSON files (valid + invalid)
 - `result_cleaned`: 1st column values from result table (QIDs removed, pipe-separated)
