@@ -1,7 +1,5 @@
-table: 1057 (326 simple, 731 non-simple)
-
-text: 2619
-
-infobox: 2816
-
-kb: 2891
+Counts by answer_src:
+  infobox: 2816
+  kb: 2891
+  table: 1057
+  text: 2619

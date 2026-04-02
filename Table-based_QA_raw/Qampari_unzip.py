@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 """
+Usage: 
+python extract_and_split_wikitables.py /path/to/qampari.zip --output_dir /path/to/output_dir
+
 This script extracts a ZIP archive, finds every `.jsonl` file inside it, reads all
 records line by line, and splits the records into two consolidated output files
 based on the value of the `qid` field.

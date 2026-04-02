@@ -13,8 +13,13 @@ time_dep_map = {}
 for question, info in time_dep_data.items():
     time_dep_map[question] = info['is_time_dependent']
 
-# Filter out binary True/False pairs
-binary_mask = ~df['answer'].str.contains(r'^\s*\[?(True|False)\]?\s*$', regex=True, na=False, case=False)
+# Filter out binary True/False/Yes/No pairs
+binary_mask = ~df['answer'].str.contains(
+    r'^\s*\[?(True|False|Yes|No)\]?\s*$',
+    regex=True,
+    na=False,
+    case=False
+)
 df_clean = df[binary_mask].copy()
 
 # 🔹 Add answer length and sort (NEW PART)
