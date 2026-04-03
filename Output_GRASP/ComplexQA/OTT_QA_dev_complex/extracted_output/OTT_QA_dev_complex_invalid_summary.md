@@ -5,13 +5,13 @@ Total JSON files: 400
 Valid cases: 53 (13.25%)
 Invalid cases: 347 (86.75%)
 
-![](extracted_output/OTT_QA_dev_complex_valid_vs_invalid_pie.png)
+!extracted_output/OTT_QA_dev_complex_valid_vs_invalid_pie.png
 
 ## Invalid case breakdown
 
 - null_output: 213 (53.25%)
 - no_sparql_generated: 20 (5.00%)
-- empty_sparql_result: 100 (25.00%)
-- sparql_execution_failed: 14 (3.50%)
-- sparql_parsing_failed: 0 (0.00%)
+- empty_sparql_result: 89 (22.25%)
+- sparql_execution_failed (execution): 13 (3.25%)
+- sparql_execution_failed (preprocessing): 12 (3.00%)
 - invalid_json: 0 (0.00%)
