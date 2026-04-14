@@ -49,20 +49,55 @@ How the Comparison Works
                   Paris  Berlin
         Gold Paris  1.00   0.32
              London 0.41   0.28
+             
+    Each cell represents how semantically similar a gold answer is to a predicted answer.
 
-4. Best-match strategy
+4. Bidirectional best-match strategy
    --------------------
-   For each gold answer, we select the highest similarity with any
-   predicted answer.
+  Instead of only matching gold → predicted (as in the previous version),
+  we now perform matching in BOTH directions:
 
-        Paris  -> max(1.00, 0.32) = 1.00
-        London -> max(0.41, 0.28) = 0.41
+    (A) Gold → Predicted  (Recall)
+        For each gold answer, select the highest similarity with any
+        predicted answer.
+
+            Paris  -> max(1.00, 0.32) = 1.00
+            London -> max(0.41, 0.28) = 0.41       
+        Recall = (1.00 + 0.41) / 2 = 0.705
+
+        This measures how well the predicted answers cover the ground truth.
+
+
+    (B) Predicted → Gold  (Precision)
+        For each predicted answer, select the highest similarity with any
+        gold answer.
+
+            Paris  -> max(1.00, 0.41) = 1.00
+            Berlin -> max(0.32, 0.28) = 0.32
+        Precision = (1.00 + 0.32) / 2 = 0.66
+
+    This measures:"How many predicted answers are actually correct?" 
+    Thus penalizes extra or incorrect predicted answers.
 
 5. Final similarity score
    ----------------------
-   We compute the average of these best matches.
+  We compute:
 
-        similarity_score = mean(best_matches)
+    recall    = mean(best matches from gold → predicted)
+    precision = mean(best matches from predicted → gold)
+
+    Then combine them using the F1 score:
+
+        similarity_score = 2 * (precision * recall) / (precision + recall)
+
+    This ensures:
+        - High score only if ALL gold answers are found (high recall)
+        - AND no extra incorrect answers are predicted (high precision)
+
+    Unlike the previous approach, this method penalizes cases where
+    extra answers are present in the prediction.
+
+    F1 = 2 × (0.66 × 0.705) / (0.66 + 0.705) = 2 × (0.4653) / 1.365 ≈ 0.681
 
 6. Label decision
    ---------------
@@ -172,46 +207,124 @@ def get_embedding(text):
     return embedding_cache[text]
 
 
-# =============================================================================
-# Similarity computation function
-# =============================================================================
-# This function compares two sets of answers:
-#
-#    gold answers vs predicted answers
-#
-# Steps:
-#   1. Split answers
-#   2. Convert to embeddings
-#   3. Compute cosine similarity matrix
-#   4. Select best predicted match for each gold answer
-#   5. Return the average similarity score
 
+"""
+    =============================================================================
+    Improved Similarity Function (F1-based)
+    =============================================================================
+
+    This function compares two sets of answers:
+        - gold (ground truth)
+        - pred (model prediction)
+
+    Unlike the previous version, this implementation considers BOTH:
+        ✔ Recall  (Did we find all correct answers?)
+        ✔ Precision (Did we avoid extra incorrect answers?)
+
+    This prevents false positives like:
+        gold = "Mercy Health"
+        pred = "Mercy Health|Toyota"
+
+    where the previous method incorrectly returned similarity = 1.0.
+
+    -----------------------------------------------------------------------------
+    Steps:
+    -----------------------------------------------------------------------------
+
+    1. Split answers by '|'
+    2. Convert each answer into embeddings
+    3. Compute cosine similarity matrix
+    4. Compute:
+        - Recall  (gold → pred)
+        - Precision (pred → gold)
+    5. Combine them using F1 score
+    6. Return final similarity score
+
+    -----------------------------------------------------------------------------
+    Output:
+        A float in [0, 1] representing semantic similarity
+    =============================================================================
+"""
 def compute_similarity(gold, pred):
 
+
+    # -------------------------------------------------------------------------
+    # Step 1: Split answers into lists
+    # -------------------------------------------------------------------------
     gold_list = split_answers(gold)
     pred_list = split_answers(pred)
 
+    # If either side is empty → no similarity
     if len(gold_list) == 0 or len(pred_list) == 0:
         return 0.0
 
-    # Convert answers to embeddings
+    # -------------------------------------------------------------------------
+    # Step 2: Convert answers into embeddings (with caching)
+    # -------------------------------------------------------------------------
     gold_embeddings = [get_embedding(x) for x in gold_list]
     pred_embeddings = [get_embedding(x) for x in pred_list]
 
+    # Convert tensors → numpy arrays for similarity computation
     gold_embeddings = np.stack([g.cpu().numpy() for g in gold_embeddings])
     pred_embeddings = np.stack([p.cpu().numpy() for p in pred_embeddings])
 
-    # Compute cosine similarity matrix
+    # -------------------------------------------------------------------------
+    # Step 3: Compute cosine similarity matrix
+    #
+    # Shape:
+    #   (num_gold_answers, num_pred_answers)
+    #
+    # Each cell (i, j) = similarity(gold[i], pred[j])
+    # -------------------------------------------------------------------------
     similarity_matrix = util.cos_sim(gold_embeddings, pred_embeddings)
 
-    # Best predicted match for each gold answer
-    best_scores = similarity_matrix.max(dim=1).values
+    # -------------------------------------------------------------------------
+    # Step 4A: Compute RECALL (gold → pred)
+    #
+    # For each gold answer:
+    #   find the most similar predicted answer
+    #
+    # This answers:
+    #   "Did we correctly recover each ground-truth answer?"
+    # -------------------------------------------------------------------------
+    recall_scores = similarity_matrix.max(dim=1).values
+    recall = float(recall_scores.mean())
 
-    # Final similarity score
-    final_score = float(best_scores.mean())
+    # -------------------------------------------------------------------------
+    # Step 4B: Compute PRECISION (pred → gold)
+    #
+    # For each predicted answer:
+    #   find the most similar gold answer
+    #
+    # This penalizes extra predictions that do not match anything in gold.
+    #
+    # Example:
+    #   pred = ["Mercy Health", "Toyota"]
+    #
+    #   "Toyota" will have low similarity → lowers precision
+    # -------------------------------------------------------------------------
+    precision_scores = similarity_matrix.max(dim=0).values
+    precision = float(precision_scores.mean())
 
-    return final_score
+    # -------------------------------------------------------------------------
+    # Step 5: Combine using F1 score
+    #
+    # F1 balances precision and recall:
+    #
+    #   - High recall + low precision → penalized
+    #   - High precision + low recall → penalized
+    #
+    # Prevents division by zero when both are 0.
+    # -------------------------------------------------------------------------
+    if precision + recall == 0:
+        return 0.0
 
+    f1_score = 2 * (precision * recall) / (precision + recall)
+
+    # -------------------------------------------------------------------------
+    # Step 6: Return final similarity score
+    # -------------------------------------------------------------------------
+    return f1_score
 
 # =============================================================================
 # Main evaluation loop
