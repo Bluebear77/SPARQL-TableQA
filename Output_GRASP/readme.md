@@ -89,4 +89,30 @@ SimpleQA/
 └── JSON2csv.py
 ```
 
+## JSON output Structure
+```
+root
+ ├─ type : string
+ ├─ task : string
+ ├─ output : object
+ │   ├─ sparql : string
+ │   ├─ kg : string
+ │   ├─ selections : string
+ │   ├─ result : string
+ │   ├─ endpoint : uri
+ │   ├─ type : string
+ │   ├─ explanation : string (appears only when result is null)
+ │   └─ formatted : string (final LLM response)
+ ├─ elapsed : number
+ ├─ error : string | null
+ ├─ messages : Message[]
+ ├─ known : string[]
+ ├─ id : string
+ ├─ source_csv : string
+ ├─ row_index : integer
+ ├─ question : string
+ └─ reference_answer : string
+```
+
+
 
