@@ -101,7 +101,8 @@ root
  │   ├─ result : string
  │   ├─ endpoint : uri
  │   ├─ type : string
- │   ├─ explanation : string (appears only when result is null)
+ │   ├─ answer : string (appears when there is a valid SPARQL execution)
+ │   ├─ explanation : string (appears when there is no valid SPARQL execution)
  │   └─ formatted : string (final LLM response)
  ├─ elapsed : number
  ├─ error : string | null
