@@ -46,70 +46,83 @@ def extract_table(text: str) -> str:
     lines = text.splitlines()
 
     table_lines = []
-
     started = False
 
     for line in lines:
-
         if line.strip().startswith("|"):
             started = True
             table_lines.append(line)
-
         elif started:
             break
 
     return "\n".join(table_lines).strip()
 
 
-def clean_result_all_first_column(result_table: str) -> str:
+def clean_result_all_cells(result_table: str) -> str:
     """
-    EXTRACT ALL VALUES FROM 1st COLUMN OF ALL DATA ROWS (starting from 2nd row):
+    Extract all cell values from all data rows in a markdown table.
 
-    Steps:
-    1. Split table into lines
-    2. Skip 1st row (header like "| followedBy |")
-    3. Skip separator row ("| --- |")
-    4. From 2nd+ data rows, extract 1st column values
-    5. Remove (wd:Q...) patterns from each cell
-    6. Clean punctuation, join with '|' separator
+    Rules:
+    1. Skip header row
+    2. Skip separator row
+    3. Extract every cell from each data row
+    4. Remove Wikidata entity suffixes like (wd:Q...)
+    5. Remove datatype suffixes like (xsd:dateTime)
+    6. Normalize whitespace
+    7. Join cells in each row with '|'
+    8. Join rows with '\\n'
+
+    Example:
+    Input table:
+    | book                                       | pubdate                             |
+    | ------------------------------------------ | ----------------------------------- |
+    | By the Shores of Silver Lake (wd:Q3427960) | 1939-10-20T00:00:00Z (xsd:dateTime) |
+
+    Output:
+    By the Shores of Silver Lake|1939-10-20T00:00:00Z
     """
 
     if not result_table:
         return ""
 
     lines = result_table.split("\n")
-
-    first_column_values = []
+    cleaned_rows = []
 
     for i, line in enumerate(lines):
-
         line = line.strip()
 
         if not line.startswith("|"):
             continue
 
+        # Skip header row
         if i == 0:
             continue
 
-        if line.startswith("| ---"):
+        # Skip markdown separator row
+        if re.match(r"^\|\s*[-: ]+(\|\s*[-: ]+)+\|?\s*$", line) or line.startswith("| ---"):
             continue
 
-        cells = [cell.strip() for cell in line.split("|") if cell.strip()]
+        # Extract inner cells only; ignore leading/trailing empty split parts
+        cells = [cell.strip() for cell in line.split("|")[1:-1]]
 
-        if cells:
+        cleaned_cells = []
 
-            first_cell = cells[0]
+        for cell in cells:
+            # Remove Wikidata entity suffixes like (wd:Q3427960)
+            cell = re.sub(r"\s*\(wd:Q[^)]*\)", "", cell).strip()
 
-            cleaned_cell = re.sub(r"\s*\(wd:Q[^)]*\)", "", first_cell).strip()
+            # Remove datatype suffixes like (xsd:dateTime)
+            cell = re.sub(r"\s*\(xsd:[^)]+\)", "", cell).strip()
 
-            cleaned_cell = re.sub(r"[^\w\säöüßÄÖÜ]", " ", cleaned_cell)
+            # Normalize whitespace
+            cell = " ".join(cell.split())
 
-            cleaned_cell = " ".join(cleaned_cell.split())
+            cleaned_cells.append(cell)
 
-            if cleaned_cell:
-                first_column_values.append(cleaned_cell)
+        if cleaned_cells:
+            cleaned_rows.append("|".join(cleaned_cells))
 
-    return "|".join(first_column_values)
+    return "\n".join(cleaned_rows)
 
 
 def classify_case(output_obj, sparql_text: str, result_raw: str):
@@ -193,47 +206,48 @@ def pct(value: int, total: int) -> float:
 def create_pie_chart(valid: int, invalid: int, folder: str, output_dir: Path):
     """
     Create pie chart PNG showing valid vs invalid case distribution.
+    Handles zero-total folders safely.
     """
 
     labels = ["Valid cases", "Invalid cases"]
-
     sizes = [valid, invalid]
-
     colors = ["#5CB85C", "#D9534F"]
 
     fig, ax = plt.subplots(figsize=(6, 4))
 
-    def format_autopct(pct_value):
+    total = sum(sizes)
 
-        total = sum(sizes)
+    if total == 0:
+        ax.text(
+            0.5,
+            0.5,
+            "No data available",
+            ha="center",
+            va="center",
+            fontsize=14,
+        )
+        ax.set_title(f"Valid vs Invalid cases ({folder})")
+        ax.axis("off")
+    else:
+        def format_autopct(pct_value):
+            count = int(round(pct_value / 100.0 * total))
+            return f"{pct_value:.1f}%\n({count})"
 
-        if total == 0:
-            return "0%"
-
-        count = int(round(pct_value / 100.0 * total))
-
-        return f"{pct_value:.1f}%\n({count})"
-
-    ax.pie(
-        sizes,
-        labels=labels,
-        autopct=format_autopct,
-        colors=colors,
-        startangle=90,
-    )
-
-    ax.set_title(f"Valid vs Invalid cases ({folder})")
-
-    ax.axis("equal")
+        ax.pie(
+            sizes,
+            labels=labels,
+            autopct=format_autopct,
+            colors=colors,
+            startangle=90,
+        )
+        ax.set_title(f"Valid vs Invalid cases ({folder})")
+        ax.axis("equal")
 
     png_path = output_dir / f"{folder}_valid_vs_invalid_pie.png"
-
     fig.savefig(png_path, bbox_inches="tight", dpi=150)
-
     plt.close(fig)
 
     return png_path
-
 
 def process_folder(base_folder: Path, all_valid_rows: list):
     """
@@ -249,28 +263,22 @@ def process_folder(base_folder: Path, all_valid_rows: list):
     folder_name = base_folder.name
 
     output_dir = base_folder / "extracted_output"
-
     output_dir.mkdir(exist_ok=True)
 
     main_csv = output_dir / f"{folder_name}.csv"
-
     valid_csv = output_dir / f"{folder_name}_valid_cases.csv"
-
     invalid_csv = output_dir / f"{folder_name}_invalid_cases.csv"
-
     md_file = output_dir / f"{folder_name}_invalid_summary.md"
 
     json_files = []
 
     for root, _, files in os.walk(base_folder):
-
         root_path = Path(root)
 
         if root_path.name == "extracted_output" and root_path.parent == base_folder:
             continue
 
         for fname in files:
-
             if Path(fname).suffix.lower() == ".json":
                 json_files.append(root_path / fname)
 
@@ -279,67 +287,44 @@ def process_folder(base_folder: Path, all_valid_rows: list):
     total_files = len(json_files)
 
     all_rows = []
-
     valid_rows = []
-
     invalid_rows = []
-
     counts = Counter()
-
     valid_total = 0
 
     for fp in json_files:
-
         try:
-
             data = json.loads(fp.read_text(encoding="utf-8"))
 
         except Exception:
-
             invalid_rows.append([fp.name, "invalid_json"])
-
             counts["invalid_json"] += 1
-
             all_rows.append(["", "", "", "", ""])
-
             continue
 
         question = data.get("question", "")
-
         gold_answer = data.get("reference_answer", "")
-
         output_obj = data.get("output", None)
 
         if isinstance(output_obj, dict):
-
             sparql = normalize_sparql(output_obj.get("sparql", ""))
-
             result_raw = output_obj.get("result", "")
-
         else:
-
             sparql = ""
-
             result_raw = ""
 
-        invalid_label, result_table = classify_case(
-            output_obj, sparql, result_raw
-        )
+        invalid_label, result_table = classify_case(output_obj, sparql, result_raw)
 
-        result_cleaned = clean_result_all_first_column(result_table)
+        # NEW: extract all cells from all data rows, not only first column
+        result_cleaned = clean_result_all_cells(result_table)
 
         if invalid_label:
-
             invalid_rows.append([fp.name, invalid_label])
-
             counts[invalid_label] += 1
-
         else:
-
             valid_total += 1
 
             rel_path = str(fp.relative_to(base_folder))
-
             folder_file_path = f"{folder_name}_{fp.name}"
 
             valid_rows.append(
@@ -360,31 +345,22 @@ def process_folder(base_folder: Path, all_valid_rows: list):
         all_rows.append([question, gold_answer, result_cleaned, result_table, sparql])
 
     with main_csv.open("w", newline="", encoding="utf-8") as f:
-
         writer = csv.writer(f)
-
         writer.writerow(
             ["question", "gold_answer", "result_cleaned", "result", "sparql"]
         )
-
         writer.writerows(all_rows)
 
     with valid_csv.open("w", newline="", encoding="utf-8") as f:
-
         writer = csv.writer(f)
-
         writer.writerow(
             ["question", "gold_answer", "result_cleaned", "result", "sparql", "file_path"]
         )
-
         writer.writerows(valid_rows)
 
     with invalid_csv.open("w", newline="", encoding="utf-8") as f:
-
         writer = csv.writer(f)
-
         writer.writerow(["file_name", "invalid_label"])
-
         writer.writerows(invalid_rows)
 
     invalid_labels = [
@@ -413,9 +389,7 @@ def process_folder(base_folder: Path, all_valid_rows: list):
     ]
 
     for lbl in invalid_labels:
-
         n = counts.get(lbl, 0)
-
         md_lines.append(f"- {lbl}: {n} ({pct(n, total_files):.2f}%)")
 
     md_file.write_text("\n".join(md_lines), encoding="utf-8")
@@ -426,11 +400,9 @@ def process_folder(base_folder: Path, all_valid_rows: list):
 
 
 def main(parents_dir: Path):
-
     all_valid_rows = []
 
     parent_folders = [p for p in parents_dir.iterdir() if p.is_dir()]
-
     parent_folders.sort(key=str)
 
     print(f"Found {len(parent_folders)} folders to process:")
@@ -439,33 +411,25 @@ def main(parents_dir: Path):
         print(f"  - {folder.name}")
 
     for parent_folder in parent_folders:
-
         process_folder(parent_folder, all_valid_rows)
 
     combined_csv = parents_dir / "all_valid_cases.csv"
 
     with combined_csv.open("w", newline="", encoding="utf-8") as f:
-
         writer = csv.writer(f)
-
         writer.writerow(
             ["question", "gold_answer", "result_cleaned", "result", "sparql", "file_path"]
         )
-
         writer.writerows(all_valid_rows)
 
     print("\n🎉 ALL DONE!")
-
     print(f"✓ Combined valid cases: {combined_csv}")
-
     print(f"✓ Total valid rows across all folders: {len(all_valid_rows)}")
 
 
 def main_standalone():
     """Run script from directory containing parent folders."""
-
     current_dir = Path.cwd()
-
     main(current_dir)
 
 
