@@ -29,11 +29,11 @@
 | Folder | Total | Valid | Valid % | Invalid | Invalid % |
 |---|---|---|---|---|---|
 | Sportsreason_TANQ_complex | 200 | 25 | 12.50% | 175 | 87.50% |
-| CompMix_table_complex | 300 | 120 | 40.00% | 180 | 60.00% |
-| OTT_QA_dev_complex | 400 | 53 | 13.25% | 347 | 86.75% |
-| Monaco_non_time_complex | 150 | 50 | 33.33% | 100 | 66.67% |
 | Monaco_time_complex | 150 | 47 | 31.33% | 103 | 68.67% |
+| Monaco_non_time_complex | 150 | 50 | 33.33% | 100 | 66.67% |
 | CompMix_infobox_complex | 300 | 210 | 70.00% | 90 | 30.00% |
+| OTT_QA_dev_complex | 400 | 53 | 13.25% | 347 | 86.75% |
+| CompMix_table_complex | 300 | 120 | 40.00% | 180 | 60.00% |
 | **Total** | 1500 | 505 | 33.67% | 995 | 66.33% |
 
 ![](error_distribution_per_folder.png)
