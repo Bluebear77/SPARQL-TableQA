@@ -1,0 +1,2217 @@
+question,gold_answer,result_cleaned,result,sparql
+What was Bob Bradley's previous job before he took the job as the head coach of the United States men's national soccer team,Head coach of Chivas USA,,,"SELECT ?teamLabel WHERE {
+  wd:Q442325 wdt:P6087 ?team .
+  ?team rdfs:label ?teamLabel .
+  FILTER(LANG(?teamLabel) = 'en')
+  .
+  FILTER(?team != wd:Q145)
+}"
+What is the actor's name from the TV series The Big Bang Theory who also starred in the movie School for Scoundrels,Jim Parsons,Jim Parsons,"| actor                    |
+| ------------------------ |
+| Jim Parsons (wd:Q190972) |","SELECT ?actor WHERE {
+  wd:Q8539 wdt:P161 ?actor .
+  wd:Q959876 wdt:P161 ?actor
+}"
+Who is the director of the first part The Curse of the Black Pearl  in the flim Pirates of the Caribbean,Gore Verbinski,Gore Verbinski,"| director                    |
+| --------------------------- |
+| Gore Verbinski (wd:Q295463) |","SELECT ?director WHERE {
+  wd:Q46717 wdt:P57 ?director
+}"
+What is the name of the football player who won the player of the season title in 2021 for Barnsley F.C,Michał Helik,,,"SELECT ?player ?playerLabel WHERE {
+  ?player wdt:P191 wd:Q19442 ; wdt:P1890 ?award .
+  ?award rdfs:label ?awardLabel .
+  FILTER(LANGMATCHES(LANG(?awardLabel) , ""en""))
+  .
+  FILTER(CONTAINS(LCASE(?awardLabel) , ""efl league one player of the season""))
+  .
+  FILTER(CONTAINS(LCASE(?awardLabel) , ""2020-2021""))
+  .
+  ?player rdfs:label ?playerLabel .
+  FILTER(LANGMATCHES(LANG(?playerLabel) , ""en""))
+}"
+In which year did the American sitcom series Will & Grace return for another three seasons after ending in 2006,2017,2017,"| year           |
+| -------------- |
+| 2017 (xsd:int) |","SELECT(YEAR(?start_date) AS ?year) WHERE {
+  ?season wdt:P179 wd:Q212135 .
+  ?season wdt:P577 ?start_date .
+  FILTER(YEAR(?start_date) > 2006)
+}
+ORDER BY ?start_date
+LIMIT 1"
+What year did the American sitcom series Will & Grace return for three more seasons after the original run ended,2017,,,"SELECT(YEAR(?firstBroadcast) AS ?year) WHERE {
+  wd:Q212135 wdt:P527 ?season .
+  ?season wdt:P571 ?firstBroadcast .
+  FILTER(YEAR(?firstBroadcast) > 2006)
+}
+ORDER BY ?firstBroadcast
+LIMIT 1"
+Which player was awarded the most number of Man of the match titles in the FIFA world cup of 2006,Andrea Pirlo,,,"SELECT ?player WHERE {
+  ?match wdt:P662 wd:Q37285 ; wdt:P1366 ?player .
+}
+GROUP BY ?player
+ORDER BY DESC(COUNT(?player))
+LIMIT 1"
+How many movies were in the Die Hard series before A Good Day to Die Hard came out in 2013,4,15,"| count        |
+| ------------ |
+| 15 (xsd:int) |","SELECT(COUNT(?movie) AS ?count) WHERE {
+  ?movie wdt:P31 wd:Q11424 .
+  ?movie wdt:P179 wd:Q2716420 .
+  ?movie wdt:P577 ?releaseDate .
+  FILTER(?releaseDate < ""2013-01-01"" ^^ xsd:date)
+}"
+How many John le Carré novels featured the character George Smiley after The Spy Who Came in from the Cold,6,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(?novel) AS ?count) WHERE {
+  wd:Q209641 wdt:P50 ?novel .
+  ?novel wdt:P31 wd:Q5707509 .
+  ?novel wdt:P2245 wd:Q2335880 .
+  ?novel wdt:P577 ?pubdate .
+  FILTER(YEAR(?pubdate) > 1963)
+}"
+How many appearance did the American goalkeeper Sean Johnson make with the US men's national soccer team in 2011,1,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(*) AS ?count) WHERE {
+  wd:Q2458826 p:P1350 ?statement .
+  ?statement ps:P1350 ?ap .
+  ?statement pq:P154 wd:Q3313701 .
+  ?statement pq:P585 ?date .
+  FILTER(YEAR(?date) = 2011)
+}"
+"When was the original version of the song I am not a woman, I’m a god released in USA","August 31, 2021",,,"SELECT ?release_date WHERE {
+  wd:Q108822278 wdt:P577 ?release_date
+}"
+According to the 11 Nov 2021 result who called the most capped player in Brazil Nation Football Team,Cafu,,,"SELECT ?player ?label ?caps WHERE {
+  ?player wdt:P5088 wd:Q252 ; wdt:P1145 ?caps .
+  ?player rdfs:label ?label .
+  FILTER(LANG(?label) = 'en')
+}
+ORDER BY DESC(?caps)
+LIMIT 1"
+"What is the name of the ghostwriter of the first book in the Hardy Boys series, The Tower Treasure",Leslie McFarlane,Leslie McFarlane (lang:en),"| authorLabel                |
+| -------------------------- |
+| Leslie McFarlane (lang:en) |","SELECT ?authorLabel WHERE {
+  wd:Q23541148 wdt:P50 ?author .
+  ?author rdfs:label ?authorLabel .
+  FILTER(LANG(?authorLabel) = ""en"")
+}"
+What is the total number of appearances made by Marco Reus as of 2021 for the club Borussia Dortmund,332,294.0,"| appearances         |
+| ------------------- |
+| 294.0 (xsd:decimal) |","SELECT ?appearances WHERE {
+  wd:Q152377 p:P54 ?statement .
+  ?statement ps:P54 wd:Q41420 .
+  ?statement pq:P1350 ?appearances .
+}"
+"Before A Good Day to Die Hard's release in 2013, how many movies were in the Die Hard series",4,4,"| count       |
+| ----------- |
+| 4 (xsd:int) |","SELECT(COUNT(DISTINCT ?movie) AS ?count) WHERE {
+  ?movie wdt:P31 wd:Q11424 ; wdt:P179 wd:Q2716420 ; wdt:P577 ?releasedate .
+  FILTER(?releasedate < ""2013-01-01"" ^^ xsd:date)
+}"
+What is the name of the book that comes after the book Killing Floor in the Jack Reacher series,Die Trying,Die Trying (lang:en),"| title                |
+| -------------------- |
+| Die Trying (lang:en) |","SELECT ?title WHERE {
+  wd:Q5274452 rdfs:label ?title .
+  FILTER(LANG(?title) = 'en')
+  .
+}"
+"What year was it on Earth in the last novel of The Chronicles of Narnia series, The Last Battle",1949,1956-09-04T00:00:00Z,"| publicationYear                     |
+| ----------------------------------- |
+| 1956-09-04T00:00:00Z (xsd:dateTime) |","SELECT ?publicationYear WHERE {
+  wd:Q289130 wdt:P577 ?publicationYear .
+}"
+How many goals did Pat Healey make in the 2008 season when he was playing for Crystal Palace Baltimore,8,,,"SELECT ?goals WHERE {
+  wd:Q7143535 p:P2643 ?statement .
+  ?statement ps:P2643 wd:Q1142391 .
+  ?statement pq:P585 ?qualifier .
+  ?qualifier pqn:P585 ?timeValue .
+  FILTER(STRSTARTS(STR(?timeValue) , ""2008""))
+  ?statement ps:P3494 ?goals .
+}"
+Who is the character that Robin ends up marrying in the last season of How I Met Your Mother,Barney Stinson,Barney Stinson,"| spouse                      |
+| --------------------------- |
+| Barney Stinson (wd:Q838512) |","SELECT ?spouse WHERE {
+  wd:Q2347474 wdt:P26 ?spouse .
+}"
+"What is the name of the first episode of the first season of the series, Buffy the Vampire Slayer",Welcome to the Hellmouth,,,"SELECT ?episodeLabel WHERE {
+  wd:Q183513 wdt:P4908 ?season .
+  ?season wdt:P154 1 .
+  ?season wdt:P361 ?episode .
+  ?episode rdfs:label ?episodeLabel .
+  FILTER(lang(?episodeLabel) = ""en"" && ?episodeLabel = ""Welcome to the Hellmouth"")
+}"
+Which 2009 first person shooter game did Lance Henriksen who was Frank Black in Millennium did voice work for,Call of Duty: Modern Warfare 2,,,"SELECT ?game ?gameLabel WHERE {
+  ?game wdt:P31 wd:Q7889 ; wdt:P136 wd:Q7089174 ; wdt:P725 wd:Q312077 ; wdt:P577 ?date .
+  FILTER(SUBSTR(STR(?date) , 1 , 4) = ""2009"")
+  OPTIONAL {
+    ?game rdfs:label ?gameLabel .
+    FILTER(lang(?gameLabel) = ""en"")
+  }
+}"
+What were the demographics of black people in Memphis Tennessee when If Beale Street Could Talk was written,38.9%,,,"SELECT ?population WHERE {
+  wd:Q16563 p:P1082 ?statement .
+  ?statement ps:P1082 ?population .
+  ?statement pq:P585 ?time .
+  FILTER(YEAR(?time) = 1974)
+  .
+  ?statement pq:P1082 wd:Q232526 .
+}"
+What is the name of the 2012 movie that fetched Meryl Streep an Oscar for the best actress,The Iron Lady,,,"SELECT DISTINCT ?movie ?movieLabel WHERE {
+  wd:Q873 p:P166 ?awardStatement .
+  ?awardStatement ps:P166 wd:Q10493 .
+  ?awardStatement pq:P1346 ?movie .
+  ?awardStatement pq:P585 ?awardDate .
+  FILTER(YEAR(?awardDate) = 2012)
+  OPTIONAL {
+    ?movie rdfs:label ?movieLabel .
+    FILTER(LANG(?movieLabel) = ""en"")
+  }
+}"
+When was released the song I'm Your Angel in United States in the format of Contemporary hit radio,13 October 1998,1998-11-09T00:00:00Z,"| date                                |
+| ----------------------------------- |
+| 1998-11-09T00:00:00Z (xsd:dateTime) |","SELECT ?date WHERE {
+  wd:Q4922282 wdt:P577 ?date .
+}"
+What is the name of the actress who won the Academy Award in 2014 instead of Sandra Bullock,Cate Blanchett,,,"SELECT ?winner ?winnerLabel WHERE {
+  wd:Q13419956 wdt:P1343 wd:Q103618 .
+  wd:Q103618 wdt:P166 ?winner .
+  SERVICE wikibase:label {
+    bd:serviceParam wikibase:language ""en"" .
+  }
+}"
+Director of the first part The Curse of the Black Pearl  in the flim Pirates of the Caribbean,Gore Verbinski,Gore Verbinski (lang:en),"| directorLabel            |
+| ------------------------ |
+| Gore Verbinski (lang:en) |","SELECT ?directorLabel WHERE {
+  wd:Q46717 wdt:P57 ?director .
+  ?director rdfs:label ?directorLabel .
+  FILTER(LANG(?directorLabel) = ""en"")
+}"
+The American goalkeeper Sean Johnson played how many game for the US men's national soccer team in 2011,1,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(?match) AS ?count) WHERE {
+  wd:Q2458826 p:P2557 [ ps:P2557 ?match ; pq:P585 ?date ; pq:P114 wd:Q36946 ] .
+  FILTER(SUBSTR(STR(?date) , 1 , 4) = ""2011"")
+}"
+Who is the screenwriter  of the second part Dead Man's Chest in the flim Pirates of the Caribbean,Terry Rossio,"Terry Rossio
+Ted Elliott","| screenwriter              |
+| ------------------------- |
+| Terry Rossio (wd:Q942914) |
+| Ted Elliott (wd:Q943506)  |","SELECT ?screenwriter WHERE {
+  wd:Q161087 wdt:P58 ?screenwriter
+}"
+When was the song Easy on Me released in United States in the format of Adult contemporary radio,18 October 2021,2021-10-15T00:00:00Z,"| date                                |
+| ----------------------------------- |
+| 2021-10-15T00:00:00Z (xsd:dateTime) |","SELECT ?date WHERE {
+  wd:Q108805763 wdt:P577 ?date .
+}"
+"Who was the head coach for CF Montréal soccer team from August 10, 2011 to November 3, 2012",Jesse Marsch,"Jesse Marsch|Jesse Marsch (lang:en)
+Nick De Santis|Nick De Santis (lang:en)","| coach                       | coachLabel               |
+| --------------------------- | ------------------------ |
+| Jesse Marsch (wd:Q1336179)  | Jesse Marsch (lang:en)   |
+| Nick De Santis (wd:Q538521) | Nick De Santis (lang:en) |","SELECT ?coach ?coachLabel WHERE {
+  wd:Q167615 p:P286 ?statement .
+  ?statement ps:P286 ?coach .
+  ?statement pq:P580 ?start .
+  ?statement pq:P582 ?end .
+  FILTER(?start <= ""2012-11-03"" ^^ xsd:date)
+  FILTER(?end >= ""2011-08-10"" ^^ xsd:date)
+  OPTIONAL {
+    ?coach rdfs:label ?coachLabel .
+    FILTER(lang(?coachLabel) = ""en"")
+  }
+}"
+What is the FIFA organization that was founded in Mexico City and currently includes all of North America,CONCACAF,Mexico City (lang:en),"| locationLabel         |
+| --------------------- |
+| Mexico City (lang:en) |","SELECT ?locationLabel WHERE {
+  wd:Q160549 wdt:P740 ?location .
+  ?location rdfs:label ?locationLabel .
+  FILTER(lang(?locationLabel) = 'en')
+}"
+What is the name of the model who won the first cycle of America's Next Top Model,Adrianne Curry,,,"SELECT ?winnerLabel WHERE {
+  wd:Q131757497 wdt:P154 ?season .
+  ?season wdt:P2725 ""1"" .
+  ?season wdt:P2513 ?winner .
+  ?winner rdfs:label ?winnerLabel .
+  FILTER(lang(?winnerLabel) = ""en"")
+}"
+What is the name of the movie released in 2004 did the singer Chris Martin appear in,Shaun of the Dead,,,"SELECT DISTINCT ?film ?filmLabel WHERE {
+  wd:Q712860 p:P161 ?statement .
+  ?statement ps:P161 ?film .
+  ?film wdt:P577 ?releaseDate .
+  FILTER(STRSTARTS(STR(?releaseDate) , ""2004-""))
+  OPTIONAL {
+    ?film rdfs:label ?filmLabel .
+    FILTER(LANG(?filmLabel) = ""en"")
+  }
+}"
+What is the name of the football club that Oliver Kahn played for in the year 2001,FC Bayern Munich,"FC Bayern Munich|FC Bayern Munich (lang:en)
+Germany men's national association football team|Germany men's national association football team (lang:en)","| club                                                         | clubLabel                                                  |
+| ------------------------------------------------------------ | ---------------------------------------------------------- |
+| FC Bayern Munich (wd:Q15789)                                 | FC Bayern Munich (lang:en)                                 |
+| Germany men's national association football team (wd:Q43310) | Germany men's national association football team (lang:en) |","SELECT ?club ?clubLabel WHERE {
+  wd:Q131261 p:P54 ?statement .
+  ?statement ps:P54 ?club .
+  ?statement pq:P580 ?start .
+  ?statement pq:P582 ?end .
+  FILTER(YEAR(?start) <= 2001 && YEAR(?end) >= 2001)
+  OPTIONAL {
+    ?club rdfs:label ?clubLabel .
+    FILTER(lang(?clubLabel) = ""en"")
+  }
+}"
+"Who is the screen writer of The Chronicles of Narnia: The Lion, the Witch and the Wardrobe",Christopher Markus,"Ann Peacock
+Andrew Adamson
+Christopher Markus
+Stephen McFeely","| screenwriter                     |
+| -------------------------------- |
+| Ann Peacock (wd:Q12912984)       |
+| Andrew Adamson (wd:Q432845)      |
+| Christopher Markus (wd:Q5112818) |
+| Stephen McFeely (wd:Q5933887)    |","SELECT ?screenwriter WHERE {
+  wd:Q485803 wdt:P58 ?screenwriter
+}"
+Who was the winner of the Nobel Prize in Literature the year Brave New World was published,John Galsworthy,,,"SELECT ?winner ?winnerLabel WHERE {
+  wd:Q121909668 wdt:P166 ?winner .
+  ?winner rdfs:label ?winnerLabel .
+  FILTER(LANGMATCHES(LANG(?winnerLabel) , 'en'))
+}"
+Which player scored the most goals for the D.C. United during the 1996 Major League Soccer season,Raúl Díaz Arce,,,"SELECT ?player ?goals WHERE {
+  ?player p:P161 [ ps:P161 wd:Q238593 ; pq:P407 wd:Q605251 ] .
+  ?player p:P1351 [ ps:P1351 ?goals ; pq:P407 wd:Q605251 ] .
+}
+ORDER BY DESC(?goals)
+LIMIT 1"
+What is the name of the film directed and written by John Hughes in the year 1984,Sixteen Candles,,,"SELECT ?filmLabel WHERE {
+  ?film wdt:P57 wd:Q311263 .
+  ?film wdt:P50 wd:Q311263 .
+  ?film wdt:P571 ?year .
+  FILTER(YEAR(?year) = 1984)
+  ?film rdfs:label ?filmLabel .
+  FILTER(lang(?filmLabel) = 'en')
+}"
+What was the first movie that Mila Kunis who played Jackie on That '70s Show act in,Santa with Muscles,Santa with Muscles|Santa with Muscles (lang:en)|1996-01-01T00:00:00Z,"| film                             | filmLabel                    | released                            |
+| -------------------------------- | ---------------------------- | ----------------------------------- |
+| Santa with Muscles (wd:Q1631700) | Santa with Muscles (lang:en) | 1996-01-01T00:00:00Z (xsd:dateTime) |","SELECT ?film ?filmLabel ?released WHERE {
+  ?film wdt:P161 wd:Q37628 .
+  ?film wdt:P31 wd:Q11424 .
+  ?film wdt:P577 ?released .
+  ?film rdfs:label ?filmLabel .
+  FILTER(LANG(?filmLabel) = 'en')
+}
+ORDER BY ASC(?released)
+LIMIT 1"
+What book set in Jazz Age considered to be a Great American Novel was written in 1925,The Great Gatsby,The Great Gatsby,"| book                          |
+| ----------------------------- |
+| The Great Gatsby (wd:Q214371) |","SELECT ?book WHERE {
+  ?book wdt:P1476 ""The Great Gatsby"" @en ; wdt:P31 wd:Q7725634 ; wdt:P577 ?pubDate .
+  BIND(STR(?pubDate) AS ?dateStr)
+  FILTER(SUBSTR(?dateStr , 1 , 4) = ""1925"")
+}"
+What was the first show to win the Outstanding Multi-Camera Picture Editing for a Comedy Series award,The Adams Chronicles,How I Met Your Mother,"| show                               |
+| ---------------------------------- |
+| How I Met Your Mother (wd:Q147235) |","SELECT ?show WHERE {
+  ?show wdt:P166 wd:Q30633707 .
+  ?show p:P166 ?statement .
+  ?statement ps:P166 wd:Q30633707 .
+  ?statement pq:P585 ?year .
+}
+ORDER BY ASC(?year)
+LIMIT 1"
+What was the name of the actor who played Charlie in Willy Wonka and the Chocolate Factory,Peter Ostrum,,,"SELECT ?actor ?actorName WHERE {
+  wd:Q936327 wdt:P161 ?actor .
+  ?actor wdt:P4633 ?characterName .
+  ?actor rdfs:label ?actorName .
+  FILTER(LANG(?actorName) = 'en' && LANG(?characterName) = 'en')
+  FILTER(REGEX(STR(?characterName) , ""Charlie"" , ""i""))
+}"
+"What is the last album that was recorded by artist George Harrison, from the band the Beatles",Brainwashed,,,"SELECT ?album ?albumLabel WHERE {
+  ?album wdt:P175 wd:Q484736 ; wdt:P31 wd:Q386724 ; wdt:P577 ?releaseDate .
+  SERVICE wikibase:label {
+    bd:serviceParam wikibase:language ""en"" .
+  }
+}
+ORDER BY DESC(?releaseDate)
+LIMIT 1"
+How many World Cup titles the Italy national football team has before winning it again in 2006,3,,,"SELECT (COUNT(?tournament) AS ?count)
+WHERE {
+  wd:Q676899 wdt:P750 ?tournament.
+  ?tournament wdt:P585 ?date.
+  FILTER(SUBSTR(STR(?date), 1, 4) < ""2006"")"
+What number of appearances has Andrea Pirlo made for the football club New York City FC,62,60.0,"| appearances        |
+| ------------------ |
+| 60.0 (xsd:decimal) |","SELECT ?appearances WHERE {
+  wd:Q43926 p:P54 ?statement .
+  ?statement ps:P54 wd:Q13361030 .
+  ?statement pq:P1350 ?appearances .
+}"
+What year did the El Salvador national football team make their first FIFA World Cup appearance,1970,1970,"| year           |
+| -------------- |
+| 1970 (xsd:int) |","SELECT ?year WHERE {
+  wd:Q188228 wdt:P1344 ?tournament .
+  ?tournament wdt:P585 ?date .
+  BIND(YEAR(?date) AS ?year)
+}
+ORDER BY ?year
+LIMIT 1"
+When was released the song Shape of You in United Kingdom in the digital download format,10 February 2017,2017-01-06T00:00:00Z,"| date                                |
+| ----------------------------------- |
+| 2017-01-06T00:00:00Z (xsd:dateTime) |","SELECT ?date WHERE {
+  wd:Q28132505 wdt:P577 ?date
+}"
+What was the other book to get the Newbery Honor in 2019 besides The Night Diary,The Book of Boy,,,"SELECT DISTINCT ?book ?bookLabel WHERE {
+  ?book p:P162 [ ps:P162 wd:Q1449668 ; pq:P1497 wd:Q4005567 ; pq:P585 ?awardYear ] .
+  FILTER(YEAR(?awardYear) = 2019)
+  .
+  FILTER(?book != wd:Q5742804)
+  .
+  SERVICE wikibase:label {
+    bd:serviceParam wikibase:language ""en"" .
+  }
+}"
+When was released the song Into You in United States in the format of rhythmic contemporary,"June 28, 2016",2016-05-06T00:00:00Z,"| releaseDate                         |
+| ----------------------------------- |
+| 2016-05-06T00:00:00Z (xsd:dateTime) |","SELECT ?releaseDate WHERE {
+  wd:Q24026109 wdt:P577 ?releaseDate
+}"
+What has the home venue of the Kansas City Wizards been from 2011 to the present,Children's Mercy Park,,,"SELECT ?stadium ?stadiumLabel WHERE {
+  wd:Q329812 wdt:P119 ?stadium .
+  SERVICE wikibase:label {
+    bd:serviceParam wikibase:language ""en"" .
+  }
+}"
+"Who is the director of The Chronicles of Narnia: The Lion, the Witch and the Wardrobe",Andrew Adamson,Andrew Adamson (lang:en),"| directorLabel            |
+| ------------------------ |
+| Andrew Adamson (lang:en) |","SELECT ?directorLabel WHERE {
+  wd:Q485803 wdt:P57 ?director .
+  ?director rdfs:label ?directorLabel .
+  FILTER(langMatches(lang(?directorLabel) , ""en""))
+}"
+What is the number of goals scored by Kylian Mbappé for France in the year 2018,9,,,"SELECT ?goals WHERE {
+  wd:Q21621995 p:P1351 ?statement .
+  ?statement ps:P1351 ?goals .
+  ?statement pq:P1047 wd:Q142 .
+  ?statement pq:P1630 wd:Q1534296 .
+}"
+What is the award nominated for the tv series wizards of waverly place in year 2008,Directors Guild of America Award for Outstanding Directing – Children's Programs,,,"SELECT ?award ?awardLabel WHERE {
+  wd:Q184342 p:P1411 ?nomination .
+  ?nomination ps:P1411 ?award .
+  ?nomination pq:P585 ?awardYear .
+  FILTER(year(?awardYear) = 2008)
+  OPTIONAL {
+    ?award rdfs:label ?awardLabel .
+    FILTER(lang(?awardLabel) = ""en"")
+  }
+}"
+Which film by Clint Eastwood has won the maximum number of Academy Awards and BAFTA Awards,Unforgiven,Million Dollar Baby|Million Dollar Baby (lang:en)|8,"| film                             | filmLabel                     | totalAwards |
+| -------------------------------- | ----------------------------- | ----------- |
+| Million Dollar Baby (wd:Q184255) | Million Dollar Baby (lang:en) | 8 (xsd:int) |","SELECT ?film ?filmLabel(COUNT(?award) AS ?totalAwards) WHERE {
+  ?film wdt:P31 wd:Q11424 ; wdt:P57 wd:Q43203 ; rdfs:label ?filmLabel .
+  FILTER(LANGMATCHES(LANG(?filmLabel) , ""en""))
+  ?film wdt:P166 ?award .
+  ?award rdfs:label ?awardLabel .
+  FILTER(LANGMATCHES(LANG(?awardLabel) , ""en""))
+  FILTER(CONTAINS(LCASE(?awardLabel) , ""academy"") || CONTAINS(LCASE(?awardLabel) , ""bafta""))
+}
+GROUP BY ?film ?filmLabel
+ORDER BY DESC(?totalAwards)
+LIMIT 1"
+What is the name of the manager in 2017 of the soccer club Manchester United F.C.,José Mourinho,,,"SELECT DISTINCT ?managerLabel WHERE {
+  wd:Q18656 p:P1060 ?statement .
+  ?statement ps:P1060 ?manager .
+  ?statement pq:P580 ?startDate .
+  OPTIONAL {
+    ?statement pq:P582 ?endDate .
+  }
+  ?manager rdfs:label ?managerLabel .
+  FILTER(langMatches(lang(?managerLabel) , ""en""))
+  FILTER(?startDate <= ""2017-12-31"")
+  FILTER(! BOUND(?endDate) || ?endDate >= ""2017-01-01"")
+}"
+Which movie did Samuel L. Jackson win a BAFTA award for best supporting actor in 1994,Pulp Fiction,,,"SELECT ?movieLabel WHERE {
+  wd:Q172678 wdt:P166 ?award .
+  ?award rdfs:label ?awardLabel .
+  FILTER(LANG(?awardLabel) = ""en"")
+  .
+  FILTER(CONTAINS(LCASE(STR(?awardLabel)) , ""british academy"") && CONTAINS(LCASE(STR(?awardLabel)) , ""supporting actor""))
+  ?award wdt:P585 ?awardYear .
+  FILTER(YEAR(?awardYear) = 1995)
+  .
+  ?award wdt:P1686 ?movie .
+  ?movie rdfs:label ?movieLabel .
+  FILTER(LANG(?movieLabel) = ""en"")
+  .
+}"
+What year was the book And to Think That I Saw It on Mulberry Street published,1937,1937,"| year           |
+| -------------- |
+| 1937 (xsd:int) |","SELECT(YEAR(?pubDate) AS ?year) WHERE {
+  wd:Q864476 wdt:P577 ?pubDate
+}"
+Who managed Norwich City F.C. when they were promoted to the English Premier League in 2021,Daniel Farke,,,"SELECT ?manager ?managerLabel WHERE {
+  wd:Q18721 p:P1815 ?manager_statement .
+  ?manager_statement ps:P1815 ?manager .
+  ?manager_statement pq:P580 ?start .
+  OPTIONAL {
+    ?manager_statement pq:P582 ?end
+  }
+  FILTER(?start <= ""2021-05-23"" ^^ xsd:date &&(! BOUND(?end) || ?end >= ""2021-05-23"" ^^ xsd:date))
+  OPTIONAL {
+    ?manager rdfs:label ?managerLabel .
+    FILTER(LANG(?managerLabel) = ""en"")
+  }
+}"
+Which team promoted to the English Premier League for 2021-22 won the EFL Championship in 2021,Norwich City F.C.,Norwich City F.C.,"| winner                        |
+| ----------------------------- |
+| Norwich City F.C. (wd:Q18721) |","SELECT ?winner WHERE {
+  wd:Q96417484 wdt:P1346 ?winner
+}"
+Which soccer player scored the second highest number of goals for the Poland national football team,Włodzimierz Lubański,,,"SELECT ?player ?playerLabel ?goals WHERE {
+  ?player p:P2381 ?statement .
+  ?statement ps:P2381 ?goals ; pq:P367 wd:Q166196 .
+  OPTIONAL {
+    ?player rdfs:label ?playerLabel .
+    FILTER(LANG(?playerLabel) = ""en"")
+  }
+}
+ORDER BY DESC(?goals)
+LIMIT 2
+OFFSET 1"
+Which Clint Eastwood movie has won the most number of Academy Awards and BAFTA  Awards,Unforgiven,,,"SELECT ?film WHERE {
+  ?film wdt:P31 wd:Q11424 .
+  {
+    ?film wdt:P57 wd:Q43203
+  } UNION {
+    ?film wdt:P161 wd:Q43203
+  }
+  .
+  ?film wdt:P166 ?award .
+  ?award wdt:P279 * wd:Q23069 .
+}
+ORDER BY DESC(?awardCount)
+LIMIT 1"
+Who was the shirt sponsor of the Chicago Fire Football Club in 2019 to present,Motorola,Motorola,"| sponsor               |
+| --------------------- |
+| Motorola (wd:Q259011) |","SELECT ?sponsor WHERE {
+  wd:Q308683 p:P859 ?sponsorStatement .
+  ?sponsorStatement ps:P859 ?sponsor .
+}"
+Who was the captain of Manchester United F.C. when they won the 1999 FA cup,Roy Keane,,,"SELECT ?captain WHERE {
+  ?captain wdt:P634 wd:Q18656 .
+  ?captain p:P634 ?statement .
+  ?statement pq:P580 ?start .
+  ?statement pq:P582 ?end .
+  FILTER(?start <= ""1999-05-22"" ^^ xsd:date && ?end >= ""1999-05-22"" ^^ xsd:date)
+}"
+What is the film which won Cate Blanchett the Oscar for best actress in 2014,Blue Jasmine,,,"SELECT ?filmLabel WHERE {
+  wd:Q147632 wdt:P2075 ?award .
+  ?award wdt:P800 ?film .
+  ?award wdt:P585 ?awardDate .
+  FILTER(year(?awardDate) = 2014)
+  ?film rdfs:label ?filmLabel .
+  FILTER(lang(?filmLabel) = ""en"")
+}"
+Which science fiction tv series did Charles Shaughnessy appeared in for one episode in 2004,Stargate SG-1,,,"SELECT DISTINCT ?series ?seriesLabel WHERE {
+  ?episode wdt:P161 wd:Q122473 .
+  ?episode wdt:P155 ?series .
+  ?series wdt:P31 wd:Q482988 .
+  ?series wdt:P136 wd:Q16037 .
+  ?episode wdt:P577 ?date .
+  FILTER(YEAR(?date) = 2004)
+  OPTIONAL {
+    ?series rdfs:label ?seriesLabel
+  }
+  FILTER(lang(?seriesLabel) = ""en"")
+}"
+Which football club was represented by the soccer player Raúl González in the year 2002,Real Madrid,,,"SELECT DISTINCT ?club WHERE {
+  wd:Q11576 p:P54 ?statement .
+  ?statement ps:P54 ?club .
+  ?statement pq:P580 ?start .
+  ?statement pq:P582 ?end .
+  ?club wdt:P31 wd:Q35027 .
+  FILTER(?start <= ""2002-01-01"" ^^ xsd:date)
+  FILTER(?end >= ""2002-01-01"" ^^ xsd:date)
+}"
+What was the name of the football club Mikel Arteta represented in the year 2003,Rangers F.C.,"Spain national under-21 association football team|Spain men's national under-21 soccer team (lang:en-ca)
+Spain national under-21 association football team|Spain national under-21 association football team (lang:en)
+Rangers F.C.|Rangers F.C. (lang:en)
+Rangers F.C.|Rangers F.C. (lang:en-ca)
+Rangers F.C.|Rangers F.C. (lang:en-gb)","| team                                                            | teamLabel                                                   |
+| --------------------------------------------------------------- | ----------------------------------------------------------- |
+| Spain national under-21 association football team (wd:Q1129595) | Spain men's national under-21 soccer team (lang:en-ca)      |
+| Spain national under-21 association football team (wd:Q1129595) | Spain national under-21 association football team (lang:en) |
+| Rangers F.C. (wd:Q19597)                                        | Rangers F.C. (lang:en)                                      |
+| Rangers F.C. (wd:Q19597)                                        | Rangers F.C. (lang:en-ca)                                   |
+| Rangers F.C. (wd:Q19597)                                        | Rangers F.C. (lang:en-gb)                                   |","SELECT ?team ?teamLabel WHERE {
+  wd:Q185572 p:P54 ?statement .
+  ?statement ps:P54 ?team .
+  ?statement pq:P580 ?start .
+  ?statement pq:P582 ?end .
+  ?team rdfs:label ?teamLabel .
+  FILTER(langMatches(lang(?teamLabel) , ""en""))
+  FILTER(?start <= ""2003-12-31T00:00:00Z"" ^^ xsd:dateTime)
+  FILTER(?end >= ""2003-01-01T00:00:00Z"" ^^ xsd:dateTime)
+}"
+Which soccer player scored the most number of goals in the UEFA Euro 2004 tournament,Milan Baroš,,,"SELECT ?player ?playerLabel ?goals WHERE {
+  ?player p:P1351 [ ps:P1351 ?goals ; pq:P1346 wd:Q102920 ] .
+  OPTIONAL {
+    ?player rdfs:label ?playerLabel .
+    FILTER(LANG(?playerLabel) = ""en"")
+  }
+}
+ORDER BY DESC(?goals)
+LIMIT 1"
+In the 1998-1999 NBC Must See TV lineup which show directly preceded Will & Grace,Friends,,,"SELECT ?showLabel WHERE {
+  wd:Q212135 wdt:P449 wd:Q13974 ; wdt:P580 ?startDate .
+  wd:Q42844 wdt:P580 ?showStartDate .
+  FILTER(?showStartDate < ?startDate)
+  .
+  SERVICE wikibase:label {
+    bd:serviceParam wikibase:language ""en"" .
+    ?showLabel rdfs:label ?showLabel
+  }
+}
+ORDER BY DESC(?showStartDate)
+LIMIT 1"
+Who was the kit manufacturer from 2015 to present for New York City Football club,Adidas,,,"SELECT DISTINCT ?manufacturer ?manufacturerLabel WHERE {
+  wd:Q13361030 wdt:P5995 ?manufacturer .
+  OPTIONAL {
+    ?manufacturer rdfs:label ?manufacturerLabel .
+    FILTER(LANG(?manufacturerLabel) = ""en"")
+  }
+}"
+Who won the most Man of the match awards in the 2006 FIFA World Cup,Andrea Pirlo,,,"SELECT ?player(COUNT(*) AS ?count) WHERE {
+  wd:Q37285 wdt:P527 ?stage .
+  ?stage wdt:P527 ?match .
+  ?match wdt:P1846 ?player .
+}
+GROUP BY ?player
+ORDER BY DESC(?count)
+LIMIT 1"
+When did The United States Soccer Federation become affiliated and a full member with FIFA,1914,,,"SELECT ?date WHERE {
+  wd:Q222131 p:P463 ?statement .
+  ?statement ps:P463 wd:Q26 .
+  ?statement pq:P580 ?date .
+}"
+"What award won the National Board of Review Awards in December 2, 2021 for Encanto",Best Animated Film,,,"SELECT ?awardLabel WHERE {
+  wd:Q109916196 wdt:P169 ?award .
+  ?award wdt:P31 wd:Q1895201 .
+  ?award wdt:P1015 wd:Q103372692 .
+  ?award rdfs:label ?awardLabel .
+  FILTER(LANG(?awardLabel) = 'en')
+}"
+When the song Cold Heart released in Italy in the format of Digital download streaming,13 August 2021,2021-08-13T00:00:00Z,"| releaseDate                         |
+| ----------------------------------- |
+| 2021-08-13T00:00:00Z (xsd:dateTime) |","SELECT ?releaseDate WHERE {
+  wd:Q108072305 p:P577 ?statement .
+  ?statement ps:P577 ?releaseDate .
+}"
+Which movie did Steven Spielberg directed the same year as Catch Me If You Can,Minority Report,,,"SELECT ?movie ?movieLabel WHERE {
+  ?catchMovie rdfs:label ""Catch Me If You Can"" @en ; wdt:P577 ?catchDate .
+  ?movie wdt:P57 wd:Q937 ; wdt:P577 ?movieDate ; rdfs:label ?movieLabel .
+  FILTER(SUBSTR(STR(?catchDate) , 1 , 4) = SUBSTR(STR(?movieDate) , 1 , 4))
+  FILTER(?movie != ?catchMovie)
+  FILTER(LANG(?movieLabel) = 'en')
+}"
+How many goals did Pele scored for Brazil national football team in the year 1971,1,,,"SELECT ?goals WHERE {
+  wd:Q12897 p:P2502 ?statement .
+  ?statement ps:P2502 ?goals .
+  ?statement pq:P1429 wd:Q83459 .
+  ?statement pq:P585 ?date .
+  FILTER(YEAR(?date) = 1971)
+}"
+Who was the top goal player as of 2021 in FIFA Beach Soccer World Cup,Madjer,,,"SELECT ?player ?goals WHERE {
+  ?player p:P3767 ?statement .
+  ?statement ps:P3767 ?goals ; pq:P1322 wd:Q67478068 .
+  FILTER(isLiteral(?goals))
+}
+ORDER BY DESC(?goals)
+LIMIT 1"
+Who was the Kit manufacturer from 2012 to present for New England Revolution soccer club,Adidas,,,"SELECT ?kitManufacturer ?kitManufacturerLabel WHERE {
+  wd:Q309095 p:P5995 ?statement .
+  ?statement ps:P5995 ?kitManufacturer .
+  ?statement pq:P580 ?startDate .
+  FILTER(?startDate >= ""2012-01-01"" ^^ xsd:date)
+  FILTER NOT EXISTS {
+    ?statement pq:P582 ?endDate
+  }
+  ?kitManufacturer rdfs:label ?kitManufacturerLabel .
+  FILTER(LANG(?kitManufacturerLabel) = ""en"")
+}"
+Who directs season 1 episode Welcome to Matheson in the tv series locke & key,Michael Morris,,,"SELECT ?director WHERE {
+  wd:Q134879295 wdt:P57 ?director
+}"
+What is the name of the club Wayne Rooney played for in the year 2003,Everton F.C.,,,"SELECT ?teamLabel WHERE {
+  wd:Q266613 p:P54 ?statement .
+  ?statement ps:P54 ?team .
+  ?statement pq:P580 ?startDate .
+  ?statement pq:P582 ?endDate .
+  ?team rdfs:label ?teamLabel .
+  FILTER(LANG(?teamLabel) = ""en"")
+  FILTER(str(?startDate) <= ""2003-12-31"")
+  FILTER(str(?endDate) >= ""2003-01-01"")
+  FILTER(CONTAINS(STR(?team) , ""Everton""))
+}"
+What is the name of the football club Iker Casillas represented in the year 2002,Real Madrid Castilla,"Spain men's national football team|Spain men's national football team (lang:en)
+Real Madrid Club de Fútbol|Real Madrid Club de Fútbol (lang:en)","| club                                           | clubLabel                                    |
+| ---------------------------------------------- | -------------------------------------------- |
+| Spain men's national football team (wd:Q42267) | Spain men's national football team (lang:en) |
+| Real Madrid Club de Fútbol (wd:Q8682)          | Real Madrid Club de Fútbol (lang:en)         |","SELECT ?club ?clubLabel WHERE {
+  wd:Q11584 p:P54 ?statement .
+  ?statement ps:P54 ?club .
+  ?statement pq:P580 ?start .
+  ?statement pq:P582 ?end .
+  FILTER(str(?start) <= ""2002-12-31T00:00:00Z"" && str(?end) >= ""2002-01-01T00:00:00Z"")
+  .
+  ?club rdfs:label ?clubLabel .
+  FILTER(lang(?clubLabel) = ""en"")
+}"
+Who won the America's Next Top Model in the season next to Adrianne Curry's cycle,Yoanna House,Yoanna House,"| winner                    |
+| ------------------------- |
+| Yoanna House (wd:Q434414) |","SELECT ?winner WHERE {
+  wd:Q82347 wdt:P1346 ?winner
+}"
+What is the  Award recieved in 2008 by the tv series wizards of waverly place,Directors Guild of America Award for Outstanding Directing – Children's Programs,,,"SELECT ?award ?awardLabel WHERE {
+  wd:Q184342 p:P166 ?awardStatement .
+  ?awardStatement ps:P166 ?award .
+  OPTIONAL {
+    ?award rdfs:label ?awardLabel .
+  }
+  FILTER(CONTAINS(STR(?awardLabel) , ""Kids' Choice Award""))
+  FILTER(lang(?awardLabel) = 'en')
+}"
+Which 1925 novel set in the Jazz age is hailed as a Great American Novel,The Great Gatsby,,,"SELECT ?novel ?novelLabel WHERE {
+  ?novel wdt:P31 wd:Q5718936 .
+  ?novel wdt:P577 ?pubDate .
+  FILTER(YEAR(?pubDate) = 1925)
+  .
+  ?novel wdt:P7547 wd:Q388483 .
+  ?novel rdfs:label ?novelLabel .
+  FILTER(LANG(?novelLabel) = ""en"")
+}"
+"What is the name of the first movie in the series, Lord of the Rings",The Lord of the Rings: The Fellowship of the Ring,The Lord of the Rings: The Fellowship of the Ring|The Lord of the Rings: The Fellowship of the Ring (lang:en),"| movie                                                          | movieLabel                                                  |
+| -------------------------------------------------------------- | ----------------------------------------------------------- |
+| The Lord of the Rings: The Fellowship of the Ring (wd:Q127367) | The Lord of the Rings: The Fellowship of the Ring (lang:en) |","SELECT ?movie ?movieLabel WHERE {
+  ?movie wdt:P179 wd:Q190214 ; wdt:P577 ?releaseDate .
+  ?movie rdfs:label ?movieLabel .
+  FILTER(LANG(?movieLabel) = 'en')
+  .
+}
+ORDER BY ASC(?releaseDate)
+LIMIT 1"
+What's the name of the 1960 psychological horror film produced and directed by Alfred Hitchcock,Psycho,"shower scene of Psycho|shower scene of Psycho (lang:en)
+Psycho|Psycho (lang:en)
+Psycho|Psycho (lang:en)
+Psycho|Psycho (lang:en)
+Psycho|Psycho (lang:en)
+Psycho tetralogy|Psycho tetralogy (lang:en)
+Incident at a Corner|Incident at a Corner (lang:en)","| film                                  | filmLabel                        |
+| ------------------------------------- | -------------------------------- |
+| shower scene of Psycho (wd:Q16028915) | shower scene of Psycho (lang:en) |
+| Psycho (wd:Q163038)                   | Psycho (lang:en)                 |
+| Psycho (wd:Q163038)                   | Psycho (lang:en)                 |
+| Psycho (wd:Q163038)                   | Psycho (lang:en)                 |
+| Psycho (wd:Q163038)                   | Psycho (lang:en)                 |
+| Psycho tetralogy (wd:Q3565909)        | Psycho tetralogy (lang:en)       |
+| Incident at a Corner (wd:Q96382019)   | Incident at a Corner (lang:en)   |","SELECT ?film ?filmLabel WHERE {
+  ?film wdt:P57 wd:Q7374 .
+  ?film wdt:P577 ?releaseDate .
+  FILTER(YEAR(?releaseDate) = 1960)
+  .
+  ?film rdfs:label ?filmLabel .
+  FILTER(LANG(?filmLabel) = 'en')
+}"
+What is the name of the chef that won the Master Chef Australia season twelve,Emelia Jackson,Emelia Jackson (lang:en),"| winnerLabel              |
+| ------------------------ |
+| Emelia Jackson (lang:en) |","SELECT ?winnerLabel WHERE {
+  wd:Q85784212 wdt:P1346 ?winner .
+  ?winner rdfs:label ?winnerLabel .
+  FILTER(LANG(?winnerLabel) = 'en')
+}"
+Who was the Manager of St Johnstone F.C. when they won the 2014 Scottish Cup,Tommy Wright,Tommy Wright|Tommy Wright (lang:en),"| manager                    | managerLabel           |
+| -------------------------- | ---------------------- |
+| Tommy Wright (wd:Q3531369) | Tommy Wright (lang:en) |","SELECT ?manager ?managerLabel WHERE {
+  wd:Q268776 p:P286 ?statement .
+  ?statement ps:P286 ?manager .
+  ?statement pq:P580 ?startDate .
+  FILTER(?startDate <= ""2014-05-24"" ^^ xsd:date)
+  FILTER NOT EXISTS {
+    ?statement pq:P582 ?endDate .
+    FILTER(?endDate <= ""2014-05-24"" ^^ xsd:date)
+  }
+  ?manager rdfs:label ?managerLabel .
+  FILTER(LANG(?managerLabel) = ""en"")
+}"
+"What year did the book The Cat in the Hat, by Dr Seuss come out",1957,1957-03-12T00:00:00Z,"| publicationYear                     |
+| ----------------------------------- |
+| 1957-03-12T00:00:00Z (xsd:dateTime) |","SELECT ?publicationYear WHERE {
+  wd:Q973053 wdt:P577 ?publicationYear
+}"
+Director name of the first season “somebody’s dead” in the tv series Big Little Lies,Jean-Marc Vallée,"Andrea Arnold
+Jean-Marc Vallée","| director                      |
+| ----------------------------- |
+| Andrea Arnold (wd:Q457493)    |
+| Jean-Marc Vallée (wd:Q500611) |","SELECT ?director WHERE {
+  wd:Q19873404 wdt:P57 ?director .
+}"
+What is the Publication date of the Second book of the series His Dark Materials,22 July 1997,1997-01-01T00:00:00Z,"| date                                |
+| ----------------------------------- |
+| 1997-01-01T00:00:00Z (xsd:dateTime) |","SELECT ?date WHERE {
+  wd:Q472208 wdt:P577 ?date .
+}"
+Which book by John le Carré was the last to feature the character George Smiley,A Legacy of Spies,,,"SELECT ?book ?bookLabel WHERE {
+  ?book wdt:P674 wd:Q2335880 ; wdt:P50 wd:Q209641 ; wdt:P31 wd:Q571 .
+  OPTIONAL {
+    ?book rdfs:label ?bookLabel .
+    FILTER(lang(?bookLabel) = ""en"")
+  }
+}
+ORDER BY DESC(wdt:P577)
+LIMIT 1"
+What is the award received in 1990 for Most Promising Actress by Vanessa Paradis,César Award,"Prix Romy Schneider (lang:en)
+Victoires de la Musique – Female artist of the year (lang:en)","| awardLabel                                                    |
+| ------------------------------------------------------------- |
+| Prix Romy Schneider (lang:en)                                 |
+| Victoires de la Musique – Female artist of the year (lang:en) |","SELECT ?awardLabel WHERE {
+  wd:Q51023 p:P166 ?awardStatement .
+  ?awardStatement ps:P166 ?award .
+  ?awardStatement pq:P585 ?awardDate .
+  FILTER(SUBSTR(str(?awardDate) , 1 , 4) = ""1990"")
+  .
+  ?award rdfs:label ?awardLabel .
+  FILTER(lang(?awardLabel) = ""en"")
+}"
+who won the best visual effects award in 2021 satellite award for Tenet movie,Andrew Jackson,,,"SELECT DISTINCT ?winnerLabel WHERE {
+  wd:Q63505083 wdt:P166 ?award .
+  ?award wdt:P248 wd:Q127366 .
+  ?award wdt:P1630 ?category .
+  ?category rdfs:label ?categoryLabel .
+  FILTER(LANG(?categoryLabel) = 'en')
+  .
+  FILTER(CONTAINS(LCASE(?categoryLabel) , 'best visual effects'))
+  .
+  ?award wdt:P585 ?awardDate .
+  FILTER(YEAR(?awardDate) = 2021)
+  .
+  ?award wdt:P1352 ?winner .
+  ?winner rdfs:label ?winnerLabel .
+  FILTER(LANG(?winnerLabel) = 'en')
+  .
+}"
+How many goals did Pele scored for New York Cosmos in the year 1975,17,111.0,"| goals               |
+| ------------------- |
+| 111.0 (xsd:decimal) |","SELECT ?goals WHERE {
+  wd:Q12897 p:P54 ?statement .
+  ?statement ps:P54 wd:Q646135 .
+  ?statement pq:P580 ?startDate .
+  ?statement pq:P582 ?endDate .
+  ?statement pq:P1351 ?goals .
+  FILTER(YEAR(?startDate) <= 1975 &&(YEAR(?endDate) >= 1975 || ! BOUND(?endDate)))
+}"
+Which is the first book of the novel series Little House on the Prairie,Little House in the Big Woods,Little House in the Big Woods|大きな森の小さな家 (lang:ja),"| book                                        | bookLabel           |
+| ------------------------------------------- | ------------------- |
+| Little House in the Big Woods (wd:Q7173181) | 大きな森の小さな家 (lang:ja) |","SELECT ?book ?bookLabel WHERE {
+  ?book wdt:P179 wd:Q5400672 .
+  ?book rdfs:label ?bookLabel .
+  ?book wdt:P577 ?pubDate .
+}
+ORDER BY ASC(?pubDate)
+LIMIT 1"
+What was the next feature film Robert Zemeckis directed after Back to the Future,Who Framed Roger Rabbit,,,"SELECT ?film ?filmLabel WHERE {
+  ?film wdt:P57 wd:Q187364 ; wdt:P577 ?releaseDate ; rdfs:label ?filmLabel .
+  FILTER(LANG(?filmLabel) = 'en')
+  FILTER(?releaseDate > ""1985-10-26"" ^^ xsd:date)
+  FILTER(?film != wd:Q91540)
+}
+ORDER BY ?releaseDate
+LIMIT 1"
+Which 1992 legal drama movie starring Tom Cruise that was written by Aaron Sorkin,A Few Good Men,,,"SELECT ?movie ?movieLabel WHERE {
+  ?movie wdt:P50 wd:Q299194 .
+  ?movie wdt:P161 wd:Q37079 .
+  ?movie wdt:P577 ?date .
+  FILTER(YEAR(?date) = 1992)
+  ?movie rdfs:label ?movieLabel .
+  FILTER(LANG(?movieLabel) = 'en')
+}"
+What year was the book Angry Blonde written by the rapper Eminem get published,2000,2000,"| year           |
+| -------------- |
+| 2000 (xsd:int) |","SELECT(YEAR(?publicationDate) AS ?year) WHERE {
+  wd:Q16825144 wdt:P577 ?publicationDate
+}"
+Who was the first winner of the first season of the TV series Survivor,Richard Hatch,Richard Hatch,"| winner                      |
+| --------------------------- |
+| Richard Hatch (wd:Q3364044) |","SELECT ?winner WHERE {
+  wd:Q2378208 wdt:P1346 ?winner .
+}"
+"How many players in the Columbus Crew Soccer Club as of December 1, 2021",31,8,"| count       |
+| ----------- |
+| 8 (xsd:int) |","SELECT(COUNT(DISTINCT ?player) AS ?count) WHERE {
+  ?player p:P54 ?statement .
+  ?statement ps:P54 wd:Q457163 ; pq:P580 ?startDate ; pq:P582 ?endDate .
+  FILTER(xsd:date(?startDate) <= ""2021-12-01"" ^^ xsd:date &&(! BOUND(?endDate) || xsd:date(?endDate) >= ""2021-12-01"" ^^ xsd:date))
+}"
+For which 1979 movie did Dustin Hoffman win an Academy Award for Best Actor,Kramer vs. Kramer,,,"SELECT ?movie ?movieLabel WHERE {
+  wd:Q42930 p:P166 ?awardStatement .
+  ?awardStatement ps:P166 wd:Q41597 .
+  ?awardStatement pq:P1346 ?movie .
+  ?movie wdt:P577 ?released .
+  FILTER(?released >= ""1979-01-01"" ^^ xsd:date && ?released < ""1980-01-01"" ^^ xsd:date)
+  SERVICE wikibase:label {
+    bd:serviceParam wikibase:language ""en"" .
+  }
+}"
+What is the title of the second film in the Star Wars prequel trilogy,Star Wars: The Last Jedi,,,"SELECT ?film ?filmLabel WHERE {
+  wd:Q25540924 p:P527 ?statement .
+  ?statement ps:P527 ?film .
+  ?statement pq:P1545 ?episodeNum .
+  FILTER(?episodeNum = ""II"")
+  ?film rdfs:label ?filmLabel .
+  FILTER(LANG(?filmLabel) = ""en"")
+}"
+Which album by Metallica was released first: Ride the Lightning or Master of Puppets,Ride the Lightning,"Ride the Lightning|1984-07-30T00:00:00Z
+Master of Puppets|1986-03-03T00:00:00Z","| album                           | year                                |
+| ------------------------------- | ----------------------------------- |
+| Ride the Lightning (wd:Q190989) | 1984-07-30T00:00:00Z (xsd:dateTime) |
+| Master of Puppets (wd:Q187507)  | 1986-03-03T00:00:00Z (xsd:dateTime) |","SELECT ?album ?year WHERE {
+  VALUES ?album {
+    wd:Q190989 wd:Q187507
+  }
+  ?album wdt:P577 ?year .
+}
+ORDER BY ?year"
+How many goals did Pele scored for New York Cosmos in the year 1976,26,,,"SELECT ?goals WHERE {
+  wd:Q12897 p:P54 ?membership .
+  ?membership ps:P54 wd:Q646135 .
+  ?membership pq:P580 ?start .
+  ?membership pq:P582 ?end .
+  FILTER(YEAR(?start) <= 1976 && YEAR(?end) >= 1976)
+  .
+  ?membership ps:P1351 ?goals .
+}"
+What team did New York FC defeated to win the MLS Cup in 2021,Portland Timbers,,,"SELECT ?opponentLabel WHERE {
+  wd:Q109944339 wdt:P1923 ?opponent .
+  ?opponent rdfs:label ?opponentLabel .
+  FILTER(LANG(?opponentLabel) = ""en"")
+  FILTER(?opponent != wd:Q13361030)
+}"
+What year was Michael Jackson inducted into the Rock and Roll Hall of Fame,"1997, 2001",,,"SELECT ?year WHERE {
+  wd:Q35050 p:P1525 ?statement .
+  ?statement ps:P1525 wd:Q179191 .
+  ?statement pq:P585 ?year .
+}"
+What is the title of the fourth film in the Star Wars film series,Star Wars: Episode I – The Phantom Menace,Star Wars: Episode IV – A New Hope (lang:en),"| title                                        |
+| -------------------------------------------- |
+| Star Wars: Episode IV – A New Hope (lang:en) |","SELECT ?title WHERE {
+  ?film wdt:P31 wd:Q11424 ; wdt:P577 ?releaseDate ; rdfs:label ?title .
+  FILTER(LANG(?title) = 'en')
+  .
+  FILTER(CONTAINS(LCASE(?title) , 'star wars'))
+  .
+}
+ORDER BY ?releaseDate
+LIMIT 1
+OFFSET 3"
+in which award won the best song of MTV Europe music awards in 2021,Bad Habits,,,"SELECT ?song ?songLabel WHERE {
+  ?song wdt:P166 wd:Q31155 ; wdt:P585 ?date .
+  FILTER(YEAR(?date) = 2021)
+  ?song rdfs:label ?songLabel .
+  FILTER(LANG(?songLabel) = 'en')
+}"
+"When was Angels & Demons, the first book in the Robert Landon series, published",01 May 2000,2000-01-01T00:00:00Z,"| publicationDate                     |
+| ----------------------------------- |
+| 2000-01-01T00:00:00Z (xsd:dateTime) |","SELECT ?publicationDate WHERE {
+  wd:Q182502 wdt:P577 ?publicationDate
+}"
+How many tracks were on side two of The Police's debut album Outlandos d'Amour,5,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(DISTINCT ?track) AS ?count) WHERE {
+  wd:Q862386 wdt:P1701 ?track .
+  ?track wdt:P1227 ?trackNumber .
+  FILTER(?trackNumber > 5)
+}"
+In what year did the El Salvador national football team win the CCCF Championship,1943,,,"SELECT ?year WHERE {
+  ?event wdt:P125 wd:Q732052 ; wdt:P1346 wd:Q171 ; wdt:P580 ?year .
+}"
+Who did Terence Stamp play in Star Wars: Episode I – The Phantom Menace,Finis Valorum,,,"SELECT ?character WHERE {
+  wd:Q165713 p:P161 ?statement .
+  ?statement ps:P161 wd:Q77298 .
+  ?statement pq:P179 ?character .
+}"
+How many goals did the second place score in the 2020-2021 Premier league season,22,,,"SELECT ?goals WHERE {
+  wd:Q69622172 wdt:P1923 ?team .
+  ?team p:P1313 ?posStat .
+  ?posStat ps:P1313 ?position .
+  ?posStat pq:P1333 wd:Q69622172 .
+  FILTER(?position = ""2"")
+  ?team p:P1351 ?goalsStat .
+  ?goalsStat ps:P1351 ?goals .
+  ?goalsStat pq:P1333 wd:Q69622172 .
+}"
+What is the sports team played in 2012 to 2014 by Alessandro Del Piero,Sydney FC,"Odisha FC
+Sydney FC
+Juventus FC","| team                     |
+| ------------------------ |
+| Odisha FC (wd:Q16838244) |
+| Sydney FC (wd:Q330143)   |
+| Juventus FC (wd:Q1422)   |","SELECT ?team WHERE {
+  wd:Q624 p:P54 ?statement .
+  ?statement ps:P54 ?team .
+  ?statement pq:P580 ?startDate .
+  ?statement pq:P582 ?endDate .
+  FILTER(?startDate <= ""2014-12-31"" ^^ xsd:date && ?endDate >= ""2012-01-01"" ^^ xsd:date)
+}"
+Who were the directors of the episode named MADMAX of the series Stranger Things,Duffer brothers,,,"SELECT ?director WHERE {
+  wd:Q19798734 wdt:P154 ?episode .
+  ?episode rdfs:label ?label .
+  FILTER(LANG(?label) = 'en' && CONTAINS(LCASE(?label) , 'madmax'))
+  .
+  ?episode wdt:P57 ?director
+}"
+What is the number of movies in the Home Alone series as of 2021,6,3,"| count       |
+| ----------- |
+| 3 (xsd:int) |","SELECT(COUNT(?movie) AS ?count) WHERE {
+  ?movie wdt:P179 wd:Q3627883 .
+  ?movie wdt:P31 wd:Q11424
+}"
+Which is the second book of the novel series Little House on the Prairie,Farmer Boy,,,"SELECT ?book ?bookLabel WHERE {
+  ?book wdt:P1545 wd:Q5400672 .
+  ?book wdt:P577 ?pubDate .
+  ?book rdfs:label ?bookLabel .
+  FILTER(LANG(?bookLabel) = 'en')
+}
+ORDER BY ?pubDate
+LIMIT 1
+OFFSET 1"
+"In which 1995 action thriller movie did Antonio Banderas play an assassin, Miguel Bain",Assassins,"Four Rooms|Four Rooms (lang:en)
+Four Rooms|Four Rooms (lang:en)
+Two Much|Two Much (lang:en)
+Desperado|Desperado (lang:en)
+Desperado|Desperado (lang:en)
+...|...
+Never Talk to Strangers|Never Talk to Strangers (lang:en)
+Assassins|Assassins (lang:en)
+Assassins|Assassins (lang:en)
+Miami Rhapsody|Miami Rhapsody (lang:en)
+Miami Rhapsody|Miami Rhapsody (lang:en)","| movie                                | movieLabel                        |
+| ------------------------------------ | --------------------------------- |
+| Four Rooms (wd:Q1137372)             | Four Rooms (lang:en)              |
+| Four Rooms (wd:Q1137372)             | Four Rooms (lang:en)              |
+| Two Much (wd:Q1971683)               | Two Much (lang:en)                |
+| Desperado (wd:Q465009)               | Desperado (lang:en)               |
+| Desperado (wd:Q465009)               | Desperado (lang:en)               |
+| ...                                  | ...                               |
+| Never Talk to Strangers (wd:Q559664) | Never Talk to Strangers (lang:en) |
+| Assassins (wd:Q739498)               | Assassins (lang:en)               |
+| Assassins (wd:Q739498)               | Assassins (lang:en)               |
+| Miami Rhapsody (wd:Q908983)          | Miami Rhapsody (lang:en)          |
+| Miami Rhapsody (wd:Q908983)          | Miami Rhapsody (lang:en)          |","SELECT ?movie ?movieLabel WHERE {
+  ?movie wdt:P161 wd:Q41548 .
+  ?movie wdt:P577 ?releaseDate .
+  FILTER(YEAR(?releaseDate) = 1995)
+  .
+  ?movie rdfs:label ?movieLabel .
+  FILTER(LANG(?movieLabel) = ""en"")
+}"
+What's the last movie Viggo Mortensen acted in before The Fellowship of the Ring,28 Days,,,"SELECT ?film WHERE {
+  wd:Q10148 wdt:P161 ?film .
+  ?film wdt:P31 wd:Q11424 .
+  ?film wdt:P577 ?date .
+  FILTER(?date < ""2001-12-19"" ^^ xsd:date)
+}
+ORDER BY DESC(?date)
+LIMIT 1"
+What is the number of goals scored by Julio Salinas for Spain in football,22,,,"SELECT ?goals WHERE {
+  wd:Q155290 p:P1351 ?statement .
+  ?statement ps:P1351 ?goals .
+  ?statement pq:P247 wd:Q42267 .
+}"
+What is the first book published in the Loyal League series by Alyssa Cole,An Extraordinary Union,,,"SELECT ?book ?title WHERE {
+  wd:Q62894817 wdt:P800 ?book .
+  ?book wdt:P179 ?series .
+  ?series rdfs:label ?seriesLabel .
+  ?book wdt:P577 ?publicationDate .
+  ?book rdfs:label ?title .
+  FILTER(LANG(?seriesLabel) = 'en')
+  .
+  FILTER(LANG(?title) = 'en')
+  .
+  FILTER(CONTAINS(LCASE(?seriesLabel) , 'loyal league'))
+  .
+}
+ORDER BY ASC(?publicationDate)
+LIMIT 1"
+Which actress won the Academy Awards for the best actress in the year 1952,Vivien Leigh,,,"SELECT ?person WHERE {
+  ?award wdt:P1347 wd:Q103618 ; wdt:P4971 ""1952"" ; wdt:P1545 ?person .
+}"
+Who is the Original Broadcaster of Season 1 of the tv series The Tunnel,Sky Atlantic,"Canal+
+Sky Atlantic","| broadcaster                |
+| -------------------------- |
+| Canal+ (wd:Q1032540)       |
+| Sky Atlantic (wd:Q3510971) |","SELECT ?broadcaster WHERE {
+  wd:Q15104549 wdt:P449 ?broadcaster .
+}"
+In which year did the player Luís Figo transfer from Barcelona to Real Madrid,2000,2000,"| year           |
+| -------------- |
+| 2000 (xsd:int) |","SELECT(YEAR(?endDate) AS ?year) WHERE {
+  wd:Q483145 p:P54 ?statement .
+  ?statement ps:P54 wd:Q7156 .
+  ?statement pq:P582 ?endDate .
+}"
+Which is the last novel of the book series Diary of a Wimpy Kid,Diary of a Wimpy Kid: Big Shot,Diary of a Wimpy Kid: Diper Överlöde|Diary of a Wimpy Kid: Diper Överlöde (lang:en),"| book                                                 | bookLabel                                      |
+| ---------------------------------------------------- | ---------------------------------------------- |
+| Diary of a Wimpy Kid: Diper Överlöde (wd:Q114889831) | Diary of a Wimpy Kid: Diper Överlöde (lang:en) |","SELECT ?book ?bookLabel WHERE {
+  ?book wdt:P179 wd:Q1339580 .
+  ?book wdt:P577 ?date .
+  ?book rdfs:label ?bookLabel .
+  FILTER(LANG(?bookLabel) = 'en')
+}
+ORDER BY DESC(?date)
+LIMIT 1"
+Which football player was the recipient of 2001 FIFA World Player of the Year,Luís Figo,Luís Figo,"| winner                 |
+| ---------------------- |
+| Luís Figo (wd:Q483145) |","SELECT ?winner WHERE {
+  wd:Q994943 wdt:P1346 ?winner
+}"
+How many matches has Franz Beckenbauer played for Germany national football team in 1965,3,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(*) AS ?count) WHERE {
+  ?match(wdt:P1043 | wdt:P1045) wd:Q43310 ; wdt:P2502 wd:Q4457 ; wdt:P580 ?date .
+  FILTER(YEAR(?date) = 1965)
+}"
+What's the US release date for the second film in the Mad Max series,24 December 1981,"1981-12-24T00:00:00Z
+1982-08-27T00:00:00Z
+1982-05-21T00:00:00Z","| date                                |
+| ----------------------------------- |
+| 1981-12-24T00:00:00Z (xsd:dateTime) |
+| 1982-08-27T00:00:00Z (xsd:dateTime) |
+| 1982-05-21T00:00:00Z (xsd:dateTime) |","SELECT ?date WHERE {
+  wd:Q1125262 p:P577 ?statement .
+  ?statement ps:P577 ?date .
+}"
+How many matches has Jan Oblak played for Slovenia national football team in 2014,1,,,
+"What is the second movie in the film series, The Lord of the Rings",The Lord of the Rings: The Two Towers,The Lord of the Rings: The Fellowship of the Ring|The Lord of the Rings: The Fellowship of the Ring (lang:en),"| movie                                                          | movieLabel                                                  |
+| -------------------------------------------------------------- | ----------------------------------------------------------- |
+| The Lord of the Rings: The Fellowship of the Ring (wd:Q127367) | The Lord of the Rings: The Fellowship of the Ring (lang:en) |","SELECT ?movie ?movieLabel WHERE {
+  ?movie wdt:P179 wd:Q190214 ; wdt:P577 ?released ; rdfs:label ?movieLabel .
+  FILTER(LANG(?movieLabel) = 'en')
+  .
+}
+ORDER BY ?released
+LIMIT 1
+OFFSET 1"
+When was the first time the US women's soccer team received a gold medal,1996,,,"SELECT ?year WHERE {
+  wd:Q334526 p:P166 ?statement .
+  ?statement ps:P166 ?event .
+  ?statement pq:P1265 wd:Q820933 .
+  ?event wdt:P585 ?date .
+  BIND(YEAR(?date) AS ?year)
+}
+ORDER BY ?year
+LIMIT 1"
+In which year did the novel The Old Man and the Sea come out,1990,"1952-01-01T00:00:00Z
+1958-01-01T00:00:00Z","| year                                |
+| ----------------------------------- |
+| 1952-01-01T00:00:00Z (xsd:dateTime) |
+| 1958-01-01T00:00:00Z (xsd:dateTime) |","SELECT ?year WHERE {
+  wd:Q26505 wdt:P571 ?year
+}"
+What is the name of the first part of the book series The Expanse,Leviathan Wakes,Leviathan Wakes|Leviathan Wakes (lang:en),"| book                          | bookLabel                 |
+| ----------------------------- | ------------------------- |
+| Leviathan Wakes (wd:Q6535598) | Leviathan Wakes (lang:en) |","SELECT ?book ?bookLabel WHERE {
+  ?book wdt:P179 wd:Q19610143 .
+  ?book rdfs:label ?bookLabel .
+  FILTER(LANG(?bookLabel) = 'en')
+  .
+  ?book wdt:P577 ?publicationDate .
+}
+ORDER BY ASC(?publicationDate)
+LIMIT 1"
+When was the first time the US women's soccer team went to the Olympics,1996,,,"SELECT DISTINCT ?year WHERE {
+  wd:Q334526 p:P859 ?statement .
+  ?statement ps:P859 ?event .
+  ?event wdt:P585 ?date .
+  BIND(YEAR(?date) AS ?year)
+}
+ORDER BY ?year
+LIMIT 1"
+Which is the year in which the director Stephen Chow his very first movie,1994,1994-01-01T00:00:00Z,"| year                                |
+| ----------------------------------- |
+| 1994-01-01T00:00:00Z (xsd:dateTime) |","SELECT ?year WHERE {
+  ?film wdt:P57 wd:Q311179 ; wdt:P577 ?year .
+}
+ORDER BY ASC(?year)
+LIMIT 1"
+Who directs the first season “somebody’s dead” in the tv series Big Little Lies,Jean-Marc Vallée,"Andrea Arnold|Andrea Arnold (lang:en)
+Jean-Marc Vallée|Jean-Marc Vallée (lang:en)","| director                      | directorLabel              |
+| ----------------------------- | -------------------------- |
+| Andrea Arnold (wd:Q457493)    | Andrea Arnold (lang:en)    |
+| Jean-Marc Vallée (wd:Q500611) | Jean-Marc Vallée (lang:en) |","SELECT ?director ?directorLabel WHERE {
+  wd:Q19873404 wdt:P57 ?director .
+  ?director rdfs:label ?directorLabel .
+  FILTER(LANG(?directorLabel) = ""en"")
+}"
+What movie starring Jack Nicholson was the last to be released in the 1990s,As Good as It Gets,As Good as It Gets|As Good as It Gets (lang:sh),"| movie                           | movieLabel                   |
+| ------------------------------- | ---------------------------- |
+| As Good as It Gets (wd:Q221594) | As Good as It Gets (lang:sh) |","SELECT ?movie ?movieLabel WHERE {
+  ?movie wdt:P161 wd:Q39792 .
+  ?movie wdt:P577 ?releaseDate .
+  ?movie rdfs:label ?movieLabel .
+  BIND(SUBSTR(STR(?releaseDate) , 1 , 4) AS ?year)
+  FILTER(?year >= ""1990"" && ?year <= ""1999"")
+}
+ORDER BY DESC(?releaseDate)
+LIMIT 1"
+Director of season 1 episode 1 in the tv series locke & key,Michael Morris,Mark Romanek|Mark Romanek (lang:en),"| director                  | directorLabel          |
+| ------------------------- | ---------------------- |
+| Mark Romanek (wd:Q538145) | Mark Romanek (lang:en) |","SELECT ?director ?directorLabel WHERE {
+  wd:Q6665342 wdt:P57 ?director .
+  ?director rdfs:label ?directorLabel .
+  FILTER(lang(?directorLabel) = 'en')
+}"
+How many Golden Globe Awards did One Flew Over the Cuckoo's Nest get,6,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(?award) AS ?count) WHERE {
+  wd:Q171669 wdt:P166 ?award .
+  ?award rdfs:label ?label .
+  FILTER(LANG(?label) = ""en"")
+  .
+  FILTER(CONTAINS(LCASE(?label) , ""golden globe""))
+}"
+Who was the Spanish king when part 1 of Don Quixote was published,Philip III of Spain,,,"SELECT ?monarchLabel WHERE {
+  wd:Q480 wdt:P577 ?pubDate .
+  ?monarch wdt:P39 wd:Q12473 ; wdt:P17 wd:Q30 .
+  ?monarch p:P39 ?statement .
+  ?statement ps:P39 wd:Q12473 ; pq:P580 ?start ; pq:P582 ?end .
+  FILTER(?pubDate >= ?start && ?pubDate <= ?end)
+  .
+  ?monarch rdfs:label ?monarchLabel .
+  FILTER(LANG(?monarchLabel) = ""en"")
+  .
+}"
+Name of the director who directed the first episode of the show Vikings,Johan Renck,,,"SELECT ?director WHERE {
+  wd:Q2579463 p:P361 ?seasonStatement .
+  ?seasonStatement ps:P361 ?season ; pq:P154 ""1"" .
+  ?season p:P361 ?episodeStatement .
+  ?episodeStatement ps:P361 ?episode ; pq:P1532 ""1"" .
+  ?episode wdt:P57 ?director .
+}"
+What was New England Revolution's final position after the 2021 regular MLS season,1st,,,"SELECT ?position WHERE {
+  wd:Q309095 p:P1839 ?statement ; pq:P139 wd:Q103821894 ; ps:P1839 ?position .
+}"
+What is the year the first book of the series Earth's Children published,1980,The Clan of the Cave Bear|1980-05-04T00:00:00Z,"| book                                    | publicationYear                     |
+| --------------------------------------- | ----------------------------------- |
+| The Clan of the Cave Bear (wd:Q2328959) | 1980-05-04T00:00:00Z (xsd:dateTime) |","SELECT ?book ?publicationYear WHERE {
+  ?book wdt:P179 wd:Q999222 ; wdt:P577 ?publicationYear
+}
+ORDER BY ASC(?publicationYear)
+LIMIT 1"
+Who was the kit manufacturer of Chelsea Football Club from 1981 to 1983,Le Coq Sportif,,,"SELECT ?manufacturer WHERE {
+  wd:Q9616 p:P5995 ?statement .
+  ?statement ps:P5995 ?manufacturer .
+  ?statement pq:P580 ?start .
+  ?statement pq:P582 ?end .
+  FILTER(?start <= ""1983-01-01"" ^^ xsd:date && ?end >= ""1981-01-01"" ^^ xsd:date)
+}"
+What was the name of the third series in Empire of the Moghul,Ruler of the World,,,"SELECT ?title WHERE {
+  wd:Q5374214 wdt:P740 ?series ; wdt:P155 ?book .
+  ?book wdt:P1476 ?title .
+  ?book wdt:P1545 3 .
+  FILTER(LANG(?title) = ""en"")
+  .
+}"
+What was Black Eyed Peas' debut album after being signed by Interscope Records,Behind the Front,Fallin' Up/¿Que Dices?|Fallin' Up/¿Que Dices? (lang:en),"| album                                | albumLabel                       |
+| ------------------------------------ | -------------------------------- |
+| Fallin' Up/¿Que Dices? (wd:Q3298396) | Fallin' Up/¿Que Dices? (lang:en) |","SELECT ?album ?albumLabel WHERE {
+  ?album wdt:P175 wd:Q134541 ; wdt:P264 wd:Q231694 ; wdt:P577 ?date .
+  ?album rdfs:label ?albumLabel .
+  FILTER(LANG(?albumLabel) = 'en')
+}
+ORDER BY ASC(?date)
+LIMIT 1"
+In which year was the dystopian science fiction novel Brave New World written,1931,1932-01-01T00:00:00Z,"| year                                |
+| ----------------------------------- |
+| 1932-01-01T00:00:00Z (xsd:dateTime) |","SELECT ?year WHERE {
+  wd:Q191949 wdt:P577 ?year
+}"
+"Who is Kansas City Wizard's number one goalkeeper as of December 21st, 2021",John Pulskamp,,,"SELECT ?player ?playerLabel WHERE {
+  ?player p:P54 ?statement .
+  ?statement ps:P54 wd:Q329812 .
+  ?statement pq:P119 wd:Q8255 .
+  ?statement pq:P580 ?startDate .
+  OPTIONAL {
+    ?statement pq:P582 ?endDate .
+  }
+  FILTER(xsd:date(?startDate) <= '2021-12-21' ^^ xsd:date)
+  FILTER(! BOUND(?endDate) || xsd:date(?endDate) >= '2021-12-21' ^^ xsd:date)
+  SERVICE wikibase:label {
+    bd:serviceParam wikibase:language ""en""
+  }
+}"
+Who was the captain of the San Jose Earthquakes from 2009 to 2013,Ramiro Corrales,,,"SELECT ?captain ?captainLabel WHERE {
+  wd:Q575370 p:P634 ?statement .
+  ?statement ps:P634 ?captain .
+  OPTIONAL {
+    ?captain rdfs:label ?captainLabel
+    FILTER(LANG(?captainLabel) = ""en"")
+  }
+}"
+Who is the author of the The Last Thing he told me book,Laura Dave,Laura Dave,"| author                   |
+| ------------------------ |
+| Laura Dave (wd:Q6498838) |","SELECT ?author WHERE {
+  wd:Q106823028 wdt:P50 ?author
+}"
+How many goals did Harry Kane score in the 2020-2021 Premier league season,23,,,"SELECT ?goals WHERE {
+  wd:Q969725 p:P1351 ?stat .
+  ?stat ps:P1351 ?goals ; pq:P1626 wd:Q69622172 .
+}"
+What number of years later was the sequel of The Bourne Identity released,2,,,"SELECT (xsd:integer(SUBSTR(str(?sequelDate), 1, 4)) - xsd:integer(SUBSTR(str(?originalDate), 1, 4))) AS ?years WHERE { wd:Q815013 wdt:P577 ?originalDate . wd:Q815013 wdt:P154 ?sequel . ?sequel wdt:P577 ?sequelDate . }"
+Is the film Shazam! won National Film and Television Awards won or not,Won,,,"SELECT ?award WHERE {
+  wd:Q23685878 wdt:P166 ?award .
+}"
+Who was the kit sponsor for Atlanta United FC in 2016 to present,Adidas,,,"SELECT ?sponsor WHERE {
+  wd:Q16836317 wdt:P1343 ?sponsor .
+}"
+"Antonio Banderas played an assassin, Miguel Bain, in which 1995 action thriller film",Assassins,,,"SELECT ?film WHERE {
+  wd:Q41548 wdt:P161 ?role .
+  ?role wdt:P4633 ""El Mariachi"" .
+  ?film wdt:P161 ?role .
+  ?film wdt:P577 ?date .
+  FILTER(YEAR(?date) = 1995)
+}"
+How many goals did Paul Pogba scored for France national under-18 football team,1,0,"| total       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(?goals) AS ?total) WHERE {
+  wd:Q129027 p:P1351 ?statement .
+  ?statement ps:P1351 ?goals .
+  ?statement pq:P54 wd:Q1450557 .
+}"
+What's the name of the first book in the Wheel of Time series,The Eye of the World,New Spring|New Spring (lang:en),"| book                     | title                |
+| ------------------------ | -------------------- |
+| New Spring (wd:Q2327110) | New Spring (lang:en) |","SELECT ?book ?title WHERE {
+  ?book wdt:P179 wd:Q4470 .
+  ?book rdfs:label ?title .
+  FILTER(LANG(?title) = 'en')
+  .
+  ?book p:P179 ?statement .
+  ?statement pq:P1545 ?ord .
+}
+ORDER BY ?ord
+LIMIT 1"
+What is the fourth track on the album Slipknot by the band Slipknot,Wait and Bleed,,,"SELECT ?trackLabel WHERE {
+  wd:Q743725 p:P159 ?statement .
+  ?statement ps:P159 ?track .
+  ?statement pq:P2595 ?trackNum .
+  ?track rdfs:label ?trackLabel .
+  FILTER(lang(?trackLabel) = ""en"")
+  .
+  FILTER(str(?trackNum) = ""4"")
+}
+LIMIT 1"
+How many matches did Paul Pogba played for France national under-18 football team,6,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(?match) AS ?count) WHERE {
+  wd:Q129027 wdt:P54 wd:Q1450557 .
+  ?match wdt:P118 wd:Q1450557 .
+  ?match wdt:P194 wd:Q129027
+}"
+"Who played Spock, the Vulcan First Officer, in Star Trek: The Original Series",Leonard Nimoy,"Ethan Peck|Ethan Peck (lang:en)
+Carl Steven|Carl Steven (lang:en)
+Leonard Nimoy|Leonard Nimoy (lang:en)","| actor                      | actorLabel              |
+| -------------------------- | ----------------------- |
+| Ethan Peck (wd:Q1320452)   | Ethan Peck (lang:en)    |
+| Carl Steven (wd:Q16019236) | Carl Steven (lang:en)   |
+| Leonard Nimoy (wd:Q16345)  | Leonard Nimoy (lang:en) |","SELECT ?actor ?actorLabel WHERE {
+  wd:Q16341 wdt:P175 ?actor .
+  ?actor rdfs:label ?actorLabel .
+  FILTER(LANG(?actorLabel) = ""en"")
+}"
+What was the name of the novel Charles Dicken wrote before Oliver Twist,The Pickwick Papers,,,
+Who acted as a spider man in the movie spider man from 2002-2007,Tobey Maguire,,,"SELECT ?actor ?actorLabel WHERE {
+  wd:Q484442 wdt:P161 ?actor .
+  SERVICE wikibase:label {
+    bd:serviceParam wikibase:language ""en"" .
+  }
+}"
+Who is the captain of both French football team and Tottenham Hotspur F.C.,Hugo Lloris,,,
+In what year did Real Madrid CF win their first FIFA World Cup,2014,,,
+How many episodes are there in season 1 of the TV series Lucifer,13,13,"| count        |
+| ------------ |
+| 13 (xsd:int) |","SELECT(COUNT(?episode) AS ?count) WHERE {
+  wd:Q25092487 wdt:P527 ?episode .
+}"
+How many matches did 1. FC Köln win during the first Bundesliga season,17,,,"SELECT ?wins WHERE {
+  wd:Q104770 p:P157 ?statement .
+  ?statement ps:P157 wd:Q147672 .
+  ?statement pq:P1359 ?wins .
+}"
+who is the director of episode 1 in the tv series Sky Castle,Jo Hyun Tak,"Yum Jung-ah
+Kim Joo-ryoung","| director                      |
+| ----------------------------- |
+| Yum Jung-ah (wd:Q489326)      |
+| Kim Joo-ryoung (wd:Q55728354) |","SELECT ?director WHERE {
+  wd:Q58213269 wdt:P161 ?director
+}"
+What is the title of the first book in the Jack Reacher series,Killing Floor,Killing Floor (lang:en),"| title                   |
+| ----------------------- |
+| Killing Floor (lang:en) |","SELECT ?title WHERE {
+  ?book wdt:P179 wd:Q25210939 .
+  ?book wdt:P577 ?publicationDate .
+  ?book wdt:P1476 ?title .
+  FILTER(LANG(?title) = 'en')
+}
+ORDER BY ?publicationDate
+LIMIT 1"
+How many International matches played for Portugal national football team by João Félix,20,48.0,"| caps               |
+| ------------------ |
+| 48.0 (xsd:decimal) |","SELECT ?caps WHERE {
+  wd:Q27049064 p:P54 ?statement .
+  ?statement ps:P54 wd:Q267245 .
+  ?statement pq:P1350 ?caps .
+}"
+At which football club did Argentine footballer Diego Maradona score the most goals,Argentinos Juniors,Argentinos Juniors|116.0,"| club                            | goals               |
+| ------------------------------- | ------------------- |
+| Argentinos Juniors (wd:Q220621) | 116.0 (xsd:decimal) |","SELECT ?club ?goals WHERE {
+  wd:Q17515 p:P54 ?statement .
+  ?statement ps:P54 ?club .
+  ?statement pq:P1351 ?goals .
+}
+ORDER BY DESC(?goals)
+LIMIT 1"
+Which clubs in the Superclasico won the Primera Division league title in 2021,River Plate,,,"SELECT ?champion WHERE {
+  wd:Q105571981 wdt:P1346 ?champion
+}"
+What year was the first book of the series Francisco de Robles published,1605,,,"SELECT ?year WHERE {
+  wd:Q109441514 wdt:P642 ?year
+}"
+How many titles has Chicago Fire FC won in the US Open Cup,4,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(*) AS ?count) WHERE {
+  wd:Q308683 wdt:P2522 wd:Q413236
+}"
+What is LL Cool J's role on the 2009 police procedural tv series,Sam Hanna,,,"SELECT ?roleLabel WHERE {
+  wd:Q52440 p:P178 ?statement .
+  ?statement ps:P178 ?episode .
+  ?episode wdt:P1543 ?series .
+  ?series wdt:P31 wd:Q1005278 ; wdt:P136 wd:Q2321734 .
+  ?episode wdt:P577 ?episodeDate .
+  FILTER(YEAR(?episodeDate) = 2009)
+  ?statement pq:P1546 ?role .
+  SERVICE wikibase:label {
+    bd:serviceParam wikibase:language ""en"" .
+  }
+}"
+Bethlehem Steel's won how many titles in the Lamar Hunt U.S. Open Cup,5,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(*) AS ?count) WHERE {
+  ?edition wdt:P361 wd:Q27192 .
+  ?edition wdt:P1702 wd:Q620722 .
+}"
+What is the total number of goals secured by Marco Reus for Germany,15,0,"| total_goals |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(?value) AS ?total_goals) WHERE {
+  wd:Q152377 p:P1351 ?statement .
+  ?statement ps:P1351 ?goals .
+  ?goals wikibase:quantityAmount ?value .
+  ?statement pq:P1532 wd:Q183 .
+}"
+When the book The Color Purple won the National Book Award for Fiction,1983,"1983-01-01T00:00:00Z
+1983-01-01T00:00:00Z","| year                                |
+| ----------------------------------- |
+| 1983-01-01T00:00:00Z (xsd:dateTime) |
+| 1983-01-01T00:00:00Z (xsd:dateTime) |","SELECT ?year WHERE {
+  wd:Q1897870 wdt:P166 wd:Q3873144 .
+  wd:Q1897870 p:P166 ?award .
+  ?award pq:P585 ?year .
+}"
+What is the first movie that Zachary Levi was nominated for an award,Tangled,Thor: The Dark World|2014-04-13T00:00:00Z,"| movie                              | date                                |
+| ---------------------------------- | ----------------------------------- |
+| Thor: The Dark World (wd:Q1201853) | 2014-04-13T00:00:00Z (xsd:dateTime) |","SELECT ?movie ?date WHERE {
+  ?movie wdt:P31 wd:Q11424 .
+  ?movie p:P1411 ?statement .
+  ?statement pq:P585 ?date .
+  ?movie p:P161 ?actor_statement .
+  ?actor_statement ps:P161 wd:Q139638 .
+}
+ORDER BY ?date
+LIMIT 1"
+Who did Arsenal F.C. defeat in the semi-final of the FA Cup 2000-01,Tottenham Hotspur F.C.,,,"SELECT DISTINCT ?opponent ?opponentLabel WHERE {
+  wd:Q1386640 wdt:P460 ?match .
+  ?match wdt:P1461 ""Semi-final"" .
+  ?match wdt:P136 wd:Q9617 ; wdt:P137 ?opponent .
+  ?opponent rdfs:label ?opponentLabel .
+  FILTER(LANG(?opponentLabel) = ""en"")
+}"
+What is the name of the Croatian national  team captain before Luka Modrić,Darijo Srna,,,"SELECT ?captain ?captainLabel WHERE {
+  wd:Q55327 p:P634 ?statement .
+  ?statement ps:P634 ?captain .
+  ?statement pq:P580 ?startDate .
+  ?captain rdfs:label ?captainLabel .
+  FILTER(LANG(?captainLabel) = ""en"")
+  FILTER(?captain != wd:Q483837)
+  ?captain wdt:P31 wd:Q5 .
+}
+ORDER BY DESC(?startDate)
+LIMIT 1"
+Who was the runner up national team in the 2018 FIFA World Cup,Croatia national football team,,,"SELECT ?runnerUp WHERE {
+  wd:Q31043671 wdt:P134 ?runnerUp
+}"
+What was the title of the second movie in the Indiana Jones series,Indiana Jones and the Temple of Doom,,,"SELECT ?film ?filmLabel WHERE {
+  ?film wdt:P361 wd:Q2562640 .
+  ?film wdt:P1545 ""2"" .
+  ?film wdt:P31 wd:Q11424 .
+  ?film rdfs:label ?filmLabel .
+  FILTER(LANG(?filmLabel) = 'en')
+}"
+When did the last episode of How I Met Your Mother air on,"March 31, 2014",2014-03-31T00:00:00Z,"| endDate                             |
+| ----------------------------------- |
+| 2014-03-31T00:00:00Z (xsd:dateTime) |","SELECT ?endDate WHERE {
+  wd:Q147235 wdt:P582 ?endDate
+}"
+Which album features Nate Dogg's Billboard Hot 100 no. 1 hit from 2003,Get Rich or Die Tryin',,,"SELECT DISTINCT ?album WHERE {
+  ?song wdt:P175 wd:Q47159 ; wdt:P1991 1 ; wdt:P1318 wd:Q180072 ; wdt:P577 ?chartDate .
+  ?song wdt:P170 ?album .
+  FILTER(year(?chartDate) = 2003)
+}"
+How many teams were there in the 2021-2022 season of the Scottish Cup,113,,,"SELECT ?participants WHERE {
+  wd:Q107740004 wdt:P4999 ?participants .
+}"
+Which football player was awarded FIFA world player of the year in 1999,Rivaldo,Rivaldo,"| player               |
+| -------------------- |
+| Rivaldo (wd:Q483577) |","SELECT ?player WHERE {
+  ?player wdt:P166 wd:Q182529 ; p:P166 ?statement .
+  ?statement ps:P166 wd:Q182529 ; pq:P585 ?date .
+  FILTER(STRSTARTS(STR(?date) , ""1999""))
+}"
+What club did Darijo Srna play for the most in his overall career,FC Shakhtar Donetsk,FC Shakhtar Donetsk|FC Shakhtar Donetsk (lang:en)|15,"| club                             | clubLabel                     | duration     |
+| -------------------------------- | ----------------------------- | ------------ |
+| FC Shakhtar Donetsk (wd:Q172969) | FC Shakhtar Donetsk (lang:en) | 15 (xsd:int) |","SELECT ?club ?clubLabel((YEAR(?endDate) - YEAR(?startDate)) AS ?duration) WHERE {
+  wd:Q184269 p:P54 ?statement .
+  ?statement ps:P54 ?club .
+  ?statement pq:P580 ?startDate .
+  ?statement pq:P582 ?endDate .
+  ?club rdfs:label ?clubLabel .
+  FILTER(LANG(?clubLabel) = 'en')
+}
+ORDER BY DESC(?duration)
+LIMIT 1"
+Who is the director of the first movie of the The Expendables series,Sylvester Stallone,Sylvester Stallone (lang:en),"| directorLabel                |
+| ---------------------------- |
+| Sylvester Stallone (lang:en) |","SELECT ?directorLabel WHERE {
+  wd:Q206374 wdt:P57 ?director .
+  ?director rdfs:label ?directorLabel .
+  FILTER(LANG(?directorLabel) = 'en')
+}"
+How many matches Thiago Silva played for played for national team in 2008,3,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(*) AS ?count) WHERE {
+  wd:Q210453 p:P710 ?statement ; p:P551 ?teamStatement .
+  ?statement ps:P710 ?event ; pq:P585 ?date .
+  ?teamStatement ps:P551 wd:Q13191 ; pq:P580 ?startDate ; pq:P582 ?endDate .
+  FILTER(YEAR(?date) = 2008 && ?startDate <= ?date && ?date <= ?endDate)
+}"
+Who is the director of the second movie of the The Expendables series,Simon West,Simon West,"| director                |
+| ----------------------- |
+| Simon West (wd:Q442740) |","SELECT ?director WHERE {
+  wd:Q210812 wdt:P57 ?director
+}"
+What is the name of the movie directed by Tim Burton in 1990,Edward Scissorhands,,,"SELECT ?movie ?movieLabel WHERE {
+  wd:Q56008 wdt:P57 ?movie .
+  ?movie wdt:P577 ?releaseDate .
+  FILTER(STRSTARTS(STR(?releaseDate) , ""1990""))
+  .
+  ?movie rdfs:label ?movieLabel .
+  FILTER(LANG(?movieLabel) = 'en')
+}"
+In which year does Alisha Chinai won the award Best Music Video,1996,,,"SELECT ?year WHERE {
+  wd:Q2722967 wdt:P166 ?award .
+  ?award rdfs:label ?awardLabel .
+  FILTER(LANG(?awardLabel) = 'en')
+  .
+  FILTER(CONTAINS(LCASE(?awardLabel) , ""best music video""))
+  .
+  ?award wdt:P585 ?year .
+}"
+How many episodes in the season 1 of Emily in Paris series,10,10,"| count        |
+| ------------ |
+| 10 (xsd:int) |","SELECT(COUNT(?episode) AS ?count) WHERE {
+  wd:Q99847909 wdt:P527 ?episode
+}"
+When was Men at Work inducted into the ARIA Hall of Fame,1994,,,"SELECT ?date WHERE {
+  wd:Q831111 p:P550 ?statement .
+  ?statement ps:P550 wd:Q4653736 ; pq:P585 ?date .
+}"
+Who is the director of the third film in the Bourne series,Paul Greengrass,Paul Greengrass,"| director                     |
+| ---------------------------- |
+| Paul Greengrass (wd:Q356275) |","SELECT ?director WHERE {
+  wd:Q107226 wdt:P57 ?director
+}"
+How many games Kevin De Bruyne played for Belgium national football team,88,,,"SELECT ?count WHERE {
+  wd:Q357984 p:P1129 ?statement .
+  ?statement ps:P1129 ?quantity .
+  ?statement pq:P121 wd:Q292 .
+  ?quantity wikibase:quantityAmount ?count .
+}"
+Which album by Britney Spears was released first Baby One More Time,Baby One More Time,…Baby One More Time (lang:en),"| albumLabel                    |
+| ----------------------------- |
+| …Baby One More Time (lang:en) |","SELECT ?albumLabel WHERE {
+  wd:Q190911 rdfs:label ?albumLabel .
+  FILTER(lang(?albumLabel) = 'en')
+}"
+What date did the pilot episode of Space: Above and Beyond aired,24 September 1995,1995-09-24T00:00:00Z,"| date                                |
+| ----------------------------------- |
+| 1995-09-24T00:00:00Z (xsd:dateTime) |","SELECT ?date WHERE {
+  wd:Q729265 wdt:P580 ?date
+}
+LIMIT 1"
+who is the sponsor of  Kit manufacturer of 2020  Al-Hilal SFC team,S Team,,,"SELECT ?sponsor ?sponsorLabel WHERE {
+  wd:Q73965 p:P859 ?sponsorStatement .
+  ?sponsorStatement ps:P859 ?sponsor .
+  ?sponsorStatement pq:P580 ?startTime .
+  ?sponsorStatement pq:P582 ?endTime .
+  ?sponsor rdfs:label ?sponsorLabel .
+  FILTER(LANG(?sponsorLabel) = 'en')
+  FILTER(YEAR(?startTime) <= 2020 &&(YEAR(?endTime) >= 2020 || ! BOUND(?endTime)))
+}"
+When own the award People's Choice Awards for the movie Black Widow,"December 7, 2021",,,"SELECT ?year WHERE {
+  wd:Q23894626 p:P166 ?statement .
+  ?statement ps:P166 ?award .
+  ?award rdfs:label ?awardLabel .
+  FILTER(langMatches(lang(?awardLabel) , ""en""))
+  FILTER(regex(str(?awardLabel) , ""People's Choice Awards"" , ""i""))
+  ?statement pq:P585 ?year .
+}"
+What is the total number of goals Roy Keane secured for Ireland,9,0,"| total_goals |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(?goals) AS ?total_goals) WHERE {
+  wd:Q188632 p:P1351 ?statement .
+  ?statement ps:P1351 ?goals .
+  ?statement pq:P1532 wd:Q27
+}"
+Which P. G. Wodehouse novel was first published in the year 1902,The Pothunters,The Pothunters|The Pothunters (lang:en),"| work                         | workLabel                |
+| ---------------------------- | ------------------------ |
+| The Pothunters (wd:Q7757889) | The Pothunters (lang:en) |","SELECT ?work ?workLabel WHERE {
+  ?work wdt:P50 wd:Q207515 ; wdt:P577 ?date .
+  FILTER(YEAR(?date) = 1902)
+  ?work rdfs:label ?workLabel .
+  FILTER(LANG(?workLabel) = 'en')
+}"
+How many number of national matches did Cristiano Ronaldo played for Portugal,Six,,,"SELECT ?matches WHERE {
+  wd:Q11571 p:P1350 ?statement .
+  ?statement ps:P1350 ?matches .
+  ?statement pq:P452 wd:Q31
+}"
+"What was the population of Lorain, Ohio when the book was set","44,125",,,"SELECT ?population WHERE {
+  wd:Q609698 p:P1082 ?statement .
+  ?statement ps:P1082 ?population .
+  ?statement pq:P585 ?date .
+  FILTER(YEAR(?date) = 1940)
+}"
+How many users are there of the TV network Amazon Prime Video,175 million,,,"SELECT ?count WHERE {
+  wd:Q4740856 wdt:P3744 ?count
+}"
+"How many tracks are on Jay-Z's 11th studio album, The blueprint 3",15,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(?track) AS ?count) WHERE {
+  wd:Q1110592 wdt:P658 ?track
+}"
+What year was the first book of the series Old Kingdom published,1995,Sabriel|1995-01-01T00:00:00Z,"| book                  | pubDate                             |
+| --------------------- | ----------------------------------- |
+| Sabriel (wd:Q3101665) | 1995-01-01T00:00:00Z (xsd:dateTime) |","SELECT ?book ?pubDate WHERE {
+  ?book wdt:P179 wd:Q15624191 .
+  ?book wdt:P577 ?pubDate .
+}
+ORDER BY ?pubDate
+LIMIT 1"
+What year end chart did Mr. Bojangles rank 44th on in 1971,Billboard Hot 100,,,"SELECT ?chartLabel WHERE { wd:Q111684789 p:P1098 ?position ; pr:P2325 ?chart . ?position ps:P1098 ""44"" . ?chart rdfs:label ?chartLabel . FILTER (langMatches(LANG(?chartLabel), ""en"")) FILTER (CONTAINS(LOWER(STR(?chartLabel)), ""billboard"")) FILTER (CONTAINS(LOWER(STR(?chartLabel)), ""year-end"")) }"
+What is the name of the Tom Tom Club's first studio album,Tom Tom Club,Tom Tom Club (lang:en),"| albumLabel             |
+| ---------------------- |
+| Tom Tom Club (lang:en) |","SELECT ?albumLabel WHERE {
+  wd:Q756270 rdfs:label ?albumLabel .
+  FILTER(LANG(?albumLabel) = 'en')
+}
+LIMIT 1"
+What football club was represented by Roy Keane in the year 1990,Cobh Ramblers F.C.,,,"SELECT ?club ?clubLabel WHERE {
+  wd:Q188632 p:P54 ?position .
+  ?position ps:P54 ?club .
+  ?position pq:P580 ?start .
+  ?start ps:P580 ?startValue .
+  FILTER(SUBSTR(STR(?startValue) , 1 , 4) <= ""1990"")
+  OPTIONAL {
+    ?club rdfs:label ?clubLabel
+    FILTER(LANGMATCHES(LANG(?clubLabel) , ""en""))
+  }
+}"
+What is the title of the 93rd episode of the Arrow series,Legacy,,,"SELECT ?title WHERE {
+  ?episode wdt:P1545 wd:Q2959103 ; wdt:P527 93 ; rdfs:label ?title .
+  FILTER(LANG(?title) = 'en')
+}"
+How many matches did Eden Hazard played for Belgium national football team,116,,,"SELECT ?caps WHERE {
+  wd:Q214204 p:P991 ?statement .
+  ?statement ps:P991 ?caps .
+  ?statement pq:P197 wd:Q30 .
+}"
+On what date did the first episode of Saturday Night Live air,"October 11, 1975",,,"SELECT ?date WHERE {
+  wd:Q52865 wdt:P571 ?date .
+}"
+What is the first date when the TV series Coupling got aired,12 May 2000,,,"SELECT ?date WHERE {
+  wd:Q1598003 wdt:P577 ?date
+}"
+What is the number of episodes of the TV series Money Heist,41,,,"SELECT ?num WHERE {
+  wd:Q29647346 wdt:P1101 ?num
+}"
+What year did Inter Milan win their first FIFA Club World Cup,2010,,,"SELECT ?year WHERE {
+  ?edition wdt:P1343 wd:Q223366 ; wdt:P198 wd:Q631 ; wdt:P585 ?year .
+}"
+Which football club did Robert Lewandowski play for in the year 2020,FC Bayern Munich,,,"SELECT ?club ?clubLabel WHERE {
+  wd:Q82198 p:P57 ?statement .
+  ?statement ps:P57 ?club .
+  ?statement pq:P580 ?startDate .
+  OPTIONAL {
+    ?statement pq:P585 ?endDate
+  }
+  FILTER(?startDate <= ""2020-12-31"" ^^ xsd:date &&(! BOUND(?endDate) || ?endDate >= ""2020-01-01"" ^^ xsd:date))
+  OPTIONAL {
+    ?club rdfs:label ?clubLabel .
+    FILTER(lang(?clubLabel) = ""en"")
+  }
+}"
+Who was the manager of the soccer Manchester United F.C. in 2017,José Mourinho,,,"SELECT ?managerLabel WHERE {
+  wd:Q215655 p:P1333 ?statement .
+  ?statement ps:P1333 ?manager .
+  ?manager rdfs:label ?managerLabel .
+  FILTER(LANG(?managerLabel) = 'en')
+  FILTER(?manager = wd:Q10063)
+}"
+How many goals did Eden Hazard scored for Belgium national football team,33,,,"SELECT ?goals WHERE {
+  wd:Q403035 p:P1127 ?statement .
+  ?statement ps:P1127 ?goals .
+  ?statement pq:P1250 wd:Q31 .
+}"
+What show did Leslie Jordan have a recurring role on in 2005,Boston Legal,,,"SELECT ?show ?showLabel WHERE {
+  wd:Q59833331 wdt:P161 ?show .
+  ?show rdfs:label ?showLabel .
+  FILTER(LANG(?showLabel) = 'en')
+}"
+Which soccer player won the European Golden shoe in the year 2005-2006,Luca Toni,,,"SELECT ?player WHERE {
+  ?player p:P166 ?statement .
+  ?statement ps:P166 wd:Q816145 .
+  ?statement pq:P166 ?season .
+  ?season rdfs:label ?seasonLabel .
+  FILTER(lang(?seasonLabel) = 'en' && ?seasonLabel = '2005–06')
+}"
+Who directs the episode Liber The Book in tv series Luna Nera,Francesca Comencini,,,"SELECT ?director WHERE {
+  ?episode wdt:P154 wd:Q13986828 ; rdfs:label 'Liber The Book' @en ; wdt:P57 ?director
+}"
+Who is the director of the season 1 of the series Hanna,Sarah Adina Smith,,,"SELECT ?director WHERE {
+  ?season wdt:P140 wd:Q50225517 ; wdt:P154 1 ; wdt:P57 ?director .
+}"
+Which is the First Hindi movie as Cinematographer of Mr. Laxman Utekar,Khanna & Iyer,,,"SELECT ?film ?filmLabel ?date WHERE {
+  ?film wdt:P407 wd:Q1860 ; wdt:P307 ?person ; wdt:P577 ?date ; rdfs:label ?filmLabel .
+  ?person rdfs:label ?personLabel .
+  FILTER(CONTAINS(LCASE(?personLabel) , 'laxman') && CONTAINS(LCASE(?personLabel) , 'utekar'))
+  FILTER(LANG(?filmLabel) = 'en')
+  FILTER(LANG(?personLabel) = 'en')
+}
+ORDER BY ?date
+LIMIT 1"
+What was the rank of the song ''deja vu'' published by Pitchfork,10,,,"SELECT ?rank WHERE {
+  ?list wdt:P31 wd:Q134306 ; wdt:P123 wd:Q215294 .
+  ?list p:P1343 ?listItem .
+  ?listItem ps:P1343 ?song ; pq:P1545 ?rank .
+  ?song wdt:P31 wd:Q4746134 ; wdt:P1476 ""Deja Vu"" @en .
+}"
+What is the name of the last movie in the Bourne series,Jason Bourne,"Jason Bourne (lang:en)
+Jason Bourne (lang:en)
+Jason Bourne (lang:en)","| movieLabel             |
+| ---------------------- |
+| Jason Bourne (lang:en) |
+| Jason Bourne (lang:en) |
+| Jason Bourne (lang:en) |","SELECT ?movieLabel WHERE {
+  ?movie rdfs:label ?movieLabel ; wdt:P577 ?releaseDate ; wdt:P31 wd:Q11424 .
+  FILTER(LCASE(STR(?movieLabel)) = ""jason bourne"")
+  FILTER(LANGMATCHES(LANG(?movieLabel) , ""en""))
+}"
+What is the first novel adaptation movie that Matt Damon acted in,The Good Mother,,,"SELECT ?film WHERE {
+  ?film wdt:P161 wd:Q453 ; wdt:P1228 ?novel ; wdt:P577 ?date .
+  ?novel wdt:P31 wd:Q64523 .
+}
+ORDER BY ?date
+LIMIT 1"
+How many movies are there in the Home Alone franchise till 2021,6,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(DISTINCT ?movie) AS ?count) WHERE {
+  ?series rdfs:label ""Home Alone film series"" @en ; wdt:P31 wd:Q163285 .
+  ?movie wdt:P361 ?series ; wdt:P31 wd:Q11424 ; wdt:P577 ?releaseDate .
+  FILTER(?releaseDate <= ""2021-12-31"" ^^ xsd:date)
+}"
+Which is the First Hindi movie as director of Mr. Laxman Utekar,Hindi Medium,,,"SELECT ?film WHERE {
+  ?director wdt:P106 wd:Q1617676 .
+  ?director rdfs:label ?name .
+  FILTER(LANG(?name) = 'en')
+  FILTER(REGEX(LCASE(?name) , ""laxman[[:space:]]*utekar|lakshman[[:space:]]*utekar"" , ""i""))
+  ?film wdt:P57 ?director .
+  ?film wdt:P364 wd:Q1889 .
+  ?film wdt:P577 ?date .
+}
+ORDER BY ?date
+LIMIT 1"
+Who was the director of the 1984 A Nightmare on Elm Street,Wes Craven,"Wes Craven (lang:en)
+Wes Craven (lang:en-ca)
+Wes Craven (lang:en-gb)
+Wes Craven (lang:en)
+Wes Craven (lang:en-ca)
+Wes Craven (lang:en-gb)
+Wes Craven (lang:en)
+Wes Craven (lang:en-ca)
+Wes Craven (lang:en-gb)","| directorLabel           |
+| ----------------------- |
+| Wes Craven (lang:en)    |
+| Wes Craven (lang:en-ca) |
+| Wes Craven (lang:en-gb) |
+| Wes Craven (lang:en)    |
+| Wes Craven (lang:en-ca) |
+| Wes Craven (lang:en-gb) |
+| Wes Craven (lang:en)    |
+| Wes Craven (lang:en-ca) |
+| Wes Craven (lang:en-gb) |","SELECT ?directorLabel WHERE {
+  ?film wdt:P31 wd:Q11424 ; wdt:P1476 ?title ; wdt:P577 ?released ; wdt:P57 ?director .
+  FILTER(CONTAINS(LCASE(STR(?title)) , 'a nightmare on elm street') && YEAR(?released) = 1984)
+  ?director rdfs:label ?directorLabel .
+  FILTER(LANGMATCHES(LANG(?directorLabel) , 'en'))
+}"
+What club did the soccer player Pelé represent in the year 1976,New York Cosmos,,,"SELECT ?club ?clubLabel WHERE {
+  wd:Q51 p:P2013 ?statement .
+  ?statement ps:P2013 ?club .
+  ?statement pq:P580 ?start_date .
+  ?statement pq:P582 ?end_date .
+  FILTER(SUBSTR(STR(?start_date) , 1 , 4) <= ""1976"" && SUBSTR(STR(?end_date) , 1 , 4) >= ""1976"")
+  SERVICE wikibase:label {
+    bd:serviceParam wikibase:language ""en"" .
+  }
+}"
+What film is the third in the series of Mad Max films,Mad Max Beyond Thunderdome,,,"SELECT ?film WHERE {
+  ?film wdt:P31 wd:Q11424 ; p:P179 [ ps:P179 wd:Q86632 ; pq:P1545 3 ] .
+}"
+In 2020 which American country singer received the National Medal of Arts,Toby Keith,,,
+How many titles has Bethlehem Steel won in the US Open Cup,5,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(*) AS ?count) WHERE {
+  wd:Q18073674 wdt:P1349 ?competition .
+  ?competition rdfs:label 'US Open Cup' @en .
+}"
+Who scored the most number of goals for the club Borussia Dortmund,Alfred Preissler,,,"SELECT ?player ?playerLabel ?goals WHERE {
+  ?player wdt:P54 wd:Q431525 ; wdt:P2883 ?goals .
+  OPTIONAL {
+    ?player rdfs:label ?playerLabel
+    FILTER(LANG(?playerLabel) = ""en"")
+  }
+}
+ORDER BY DESC(?goals)
+LIMIT 1"
+What is the name of the first album of the Jeff Russo,Lemon Parade,,,"SELECT ?albumName WHERE {
+  ?album wdt:P175 wd:Q6174877 ; wdt:P31 wd:Q18893 ; rdfs:label ?albumName .
+  FILTER(LANGMATCHES(LANG(?albumName) , ""en""))
+}
+ORDER BY ASC(?releaseDate)
+LIMIT 1"
+Who named Adele the Artist of the Year twice in the 2010s,Billboard,,,"SELECT DISTINCT ?awardingBodyLabel WHERE {
+  wd:Q295235 p:P166 ?awardStatement .
+  ?awardStatement ps:P166 ?award .
+  ?award rdfs:label ?awardName .
+  FILTER(LANGMATCHES(LANG(?awardName) , 'en') && REGEX(?awardName , 'Artist of the Year' , 'i'))
+  .
+  ?award wdt:P141 ?awardingBody .
+  ?awardStatement pq:P585 ?date .
+  ?date wikibase:timeValue ?time .
+  BIND(YEAR(?time) AS ?year)
+  .
+  FILTER(?year >= 2010 && ?year <= 2019)
+  .
+  ?awardingBody rdfs:label ?awardingBodyLabel .
+  FILTER(LANGMATCHES(LANG(?awardingBodyLabel) , 'en'))
+}"
+Which club did David Beckham transferred from to LA Galaxy in 2007,Real Madrid CF,,,"SELECT ?club ?clubLabel WHERE {
+  wd:Q15543 wdt:P1204 ?club .
+  ?club rdfs:label ?clubLabel .
+  FILTER(LANG(?clubLabel) = ""en"")
+  FILTER(?club = wd:Q867)
+}"
+What is the award received in 2003 by the American rapper Eminem,Academy Award for Best Original Song,,,"SELECT ?awardLabel WHERE {
+  wd:Q566 p:P166 ?statement .
+  ?statement ps:P166 ?award .
+  ?statement pq:P585 ?date .
+  FILTER(STRSTARTS(STR(?date) , ""2003""))
+  ?award rdfs:label ?awardLabel .
+  FILTER(LANG(?awardLabel) = 'en')
+}"
+Which movie got Vivien Liegh the Oscar for best actress in 1952,A Streetcar Named Desire,,,"SELECT ?movie ?movieLabel WHERE {
+  wd:Q31710 wdt:P166 ?award ; wdt:P31 wd:Q135182 .
+  ?award wdt:P196 wd:Q5326232 ; wdt:P585 ?awardDate ; wdt:P802 ?movie .
+  FILTER(YEAR(?awardDate) = 1952)
+  OPTIONAL {
+    ?movie rdfs:label ?movieLabel .
+    FILTER(LANG(?movieLabel) = ""en"")
+  }
+}"
+Who is the director of episode one of the tv series Ekaterina,Aleksandr Baranov,,,"SELECT ?director WHERE {
+  ?episode wdt:P31 wd:Q1810150 ; wdt:P1545 wd:Q5291288 ; wdt:P355 ""1"" ; wdt:P57 ?director .
+}"
+Which book comes first in the Loyal League series by Alyssa Cole,An Extraordinary Union,,,"SELECT ?book ?bookLabel WHERE {
+  ?series wdt:P31 wd:Q1721182 ; rdfs:label ?seriesLabel .
+  FILTER(LANG(?seriesLabel) = ""en"" && CONTAINS(UCASE(?seriesLabel) , ""LOYAL LEAGUE""))
+  ?book wdt:P50 wd:Q31414190 ; wdt:P1545 ?series ; wdt:P577 ?pubDate ; rdfs:label ?bookLabel .
+  FILTER(LANG(?bookLabel) = ""en"")
+}
+ORDER BY ASC(?pubDate)
+LIMIT 1"
+What is the ranking of Kid A on rolling stone in 2009,1,,,
+How many matches did Bruno Fernandes played for Portugal national football team,40,,,"SELECT ?matches WHERE {
+  wd:Q104933 wdt:P2985 ?matches
+}"
+What was the first scripted TV show that Alan Ritchson performed on,Smallville,,,"SELECT ?show WHERE {
+  wd:Q2682658 p:P161 ?statement .
+  ?statement ps:P161 ?show .
+  ?show wdt:P31 wd:Q129341 .
+  ?show wdt:P577 ?date .
+}
+ORDER BY ASC(?date)
+LIMIT 1"
+In which country was the novel The Stand by Stephen King published,United States of America,,,"SELECT ?country WHERE {
+  wd:Q2762243 wdt:P123 ?publisher .
+  ?publisher wdt:P17 ?country .
+}"
+What is the name of the last movie directed by Alan Parker,The Life of David Gale,The Life of David Gale (lang:en),"| movieLabel                       |
+| -------------------------------- |
+| The Life of David Gale (lang:en) |","SELECT ?movieLabel WHERE {
+  ?movie wdt:P57 wd:Q271284 ; wdt:P577 ?date ; rdfs:label ?movieLabel .
+  FILTER(LANG(?movieLabel) = ""en"")
+}
+ORDER BY DESC(?date)
+LIMIT 1"
+Which movie of the the Terminator series has the highest worldwide collection,Terminator 2: Judgment Day,wd:Q191543|Terminator Salvation (lang:en)|no2009134051,"| movie      | movieLabel                     | boxOffice    |
+| ---------- | ------------------------------ | ------------ |
+| wd:Q191543 | Terminator Salvation (lang:en) | no2009134051 |","SELECT ?movie ?movieLabel ?boxOffice WHERE {
+  ?movie wdt:P31 wd:Q11424 ; rdfs:label ?movieLabel ; wdt:P244 ?boxOffice .
+  FILTER(LANG(?movieLabel) = 'en' && CONTAINS(STR(?movieLabel) , 'Terminator'))
+}
+ORDER BY DESC(?boxOffice)
+LIMIT 1"
+In 2021-2022 season how many teams took part in the Scottish Cup,113,,,"SELECT ?numTeams WHERE {
+  ?season wdt:P154 wd:Q2261099 ; wdt:P580 ?startDate ; wdt:P1148 ?numTeams .
+  FILTER(year(?startDate) = 2021)
+}"
+How many tracks are on Inna's I Am the Club Rocker album,13,,,"SELECT ?album WHERE {
+  ?album wdt:P31 wd:Q386724 ; rdfs:label ?label .
+  FILTER(LANG(?label) = 'en' && CONTAINS(LCASE(STR(?label)) , 'i am the club rocker'))
+}"
+What year did the book A Tale of Two Cities come out,1859,1859-01-01T00:00:00Z,"| year                                |
+| ----------------------------------- |
+| 1859-01-01T00:00:00Z (xsd:dateTime) |","SELECT ?year WHERE {
+  ?book rdfs:label 'A Tale of Two Cities' @en ; wdt:P577 ?year .
+}
+ORDER BY ?year
+LIMIT 1"
+Which 1960 psychological horror film was produced and directed by Alfred Hitchcock,Psycho,,,"SELECT ?film ?title WHERE {
+  ?film wdt:P31 wd:Q11424 ; wdt:P57 wd:Q1414 ; wdt:P577 ?year ; rdfs:label ?title .
+  FILTER(STRSTARTS(STR(?year) , ""1960""))
+  FILTER(LANG(?title) = ""en"")
+}"
+When did the US women's soccer team first win the world cup,1991,,,"SELECT ?year WHERE {
+  ?edition wdt:P31 wd:Q2881502 ; wdt:P1545 wd:Q3063702 ; wdt:P585 ?year .
+}
+ORDER BY ASC(?year)
+LIMIT 1"
+What is the title of the 1st episode of TV series See,Godflame,,,"SELECT ?episode ?title WHERE {
+  wd:Q77015657 wdt:P361 ?season .
+  ?season wdt:P592 ""1"" .
+  ?season wdt:P361 ?episode .
+  ?episode wdt:P593 ""1"" .
+  ?episode rdfs:label ?title .
+  FILTER(LANG(?title) = ""en"")
+}
+LIMIT 1"
+Which national team was the runner up in FIFA World Cup 2018,Croatia national football team,,,"SELECT ?runnerUpLabel WHERE {
+  wd:Q201291 wdt:P1301 ?runnerUp .
+  ?runnerUp rdfs:label ?runnerUpLabel .
+  FILTER(lang(?runnerUpLabel) = 'en')
+}"
+Who played Charline in the movie Willy Wonka and the Chocolate Factory,Peter Ostrum,,,"SELECT ?actor WHERE {
+  wd:Q345312 p:P161 ?statement .
+  ?statement ps:P161 ?actor ; pq:P5805 ""Charlie"" @en .
+}"
+What was the title of the fourth book in the Twilight series,Breaking Dawn,,,"SELECT ?bookLabel WHERE {
+  ?series rdfs:label ""Twilight"" @en .
+  ?series wdt:P31 wd:Q1129556 .
+  ?book wdt:P179 ?series .
+  ?book wdt:P1545 ?order .
+  FILTER(?order = 4)
+  ?book rdfs:label ?bookLabel .
+  FILTER(LANG(?bookLabel) = ""en"")
+}"
+How many songs were on the album Pieces of You by Jewel,14,,,"SELECT ?trackCount WHERE {
+  ?album wdt:P31 wd:Q386393 ; wdt:P1476 ""Pieces of You"" @en ; wdt:P175 wd:Q151554 ; wdt:P1404 ?trackCount .
+}"
+How many goals has Jan Oblak scored for Slovenia national football team,0,,,"SELECT ?goals WHERE {
+  wd:Q18529519 p:P168 ?statement .
+  ?statement ps:P168 ?goals .
+  ?statement pq:P198 wd:Q712787
+}"
+What was the first TV show Tom Welling appeared on after Smallville,Lucifer,,,"SELECT ?show ?date WHERE {
+  wd:Q174253 wdt:P161 ?roleStatement .
+  ?roleStatement wdt:P179 ?season .
+  ?season wdt:P179 ?show .
+  ?show wdt:P31 wd:Q12125669 .
+  FILTER(?show != wd:Q139714)
+  .
+  ?show wdt:P577 ?date
+}
+ORDER BY ?date
+LIMIT 1"
+Which movie of the the Terminator series has the lowest worldwide collection,The Terminator,,,"SELECT ?film ?title ?gross WHERE {
+  ?film wdt:P179 wd:Q5244492 ; wdt:P31 wd:Q11424 ; wdt:P1476 ?title ; p:P2515 ?statement .
+  ?statement ps:P2515 ?quantity ; pq:P2292 wd:Q1598003 .
+  ?quantity wdtn:quantityAmount ?gross .
+}
+ORDER BY xsd:float(?gross)
+LIMIT 1"
+"Which record label released Shakira's second English album, Oral Fixation, Vol. 2",Epic,,,
+Which football player's transfer was the most expensive in association football history,Neymar,,,"SELECT ?player(xsd:decimal(?amount) AS ?fee) WHERE {
+  ?player wdt:P31 wd:Q5 ; wdt:P106 wd:Q7251 ; p:P2743 ?transferStatement .
+  ?transferStatement pq:P2331 ?feeQualifier .
+  ?feeQualifier wikibase:quantityAmount ?amount .
+  FILTER(datatype(?amount) = xsd:decimal)
+}
+ORDER BY DESC(?amount)
+LIMIT 1"
+What's the movie after West Side Story that Rachel Zegler appeared in,Shazam! Fury of the Gods,,,"SELECT ?film ?filmLabel WHERE {
+  ?film wdt:P161 wd:Q103224547 ; wdt:P577 ?releaseDate .
+  FILTER(?releaseDate > ""2021-12-21"" ^^ xsd:date)
+  OPTIONAL {
+    ?film rdfs:label ?filmLabel .
+    FILTER(LANG(?filmLabel) = 'en')
+  }
+}
+ORDER BY ?releaseDate
+LIMIT 1"
+What was the name of the first Beatles album that was recorded,Please Please Me,,,"SELECT ?album ?name WHERE {
+  ?album wdt:P609 wd:Q14581 .
+  ?album wdt:P31 wd:Q386724 .
+  ?album wdt:P577 ?date .
+  OPTIONAL {
+    ?album rdfs:label ?name
+    FILTER(LANG(?name) = 'en')
+  }
+}
+ORDER BY ?date
+LIMIT 1"
+what year was the book The Old Man and the Sea pubblished,1990,,,"SELECT ?year WHERE {
+  wd:Q7127 wdt:P577 ?date .
+  BIND(YEAR(?date) AS ?year)
+}"
+Name of the winner of the thirteenth season of Master Chef Australia,Justin Narayan,,,"SELECT ?winner ?winnerLabel WHERE {
+  wd:Q3234943 wdt:P361 ?season .
+  ?season wdt:P1548 ""13"" .
+  ?season wdt:P1087 ?winner .
+  ?winner rdfs:label ?winnerLabel .
+  FILTER(LANG(?winnerLabel) = ""en"")
+}"
+The new Hawaii Five-0 wrapped up after how many season's on CBS,10,0,"| seasons     |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(?season) AS ?seasons) WHERE {
+  wd:Q728443 p:P125 ?statement .
+  ?statement ps:P125 ?season .
+}"
+Manchester United F.C. last won the FIFA world cup in what year,2008,,,"SELECT ?year WHERE {
+  wd:Q3102 wdt:P199 ?title .
+  ?title wdt:P585 ?year
+}"
+What was the 16th and final book in the Left Behind series,Kingdom Come,wd:Q7029183|Nicolae (lang:en),"| book        | title             |
+| ----------- | ----------------- |
+| wd:Q7029183 | Nicolae (lang:en) |","SELECT ?book ?title WHERE {
+  ?book rdfs:label ""Nicolae"" @en ; wdt:P179 ?series ; rdfs:label ?title .
+  ?series rdfs:label ""Left Behind"" @en .
+  FILTER(lang(?title) = 'en')
+}"
+What club did Andoni Goikoetxea play for in the year 1980,Athletic Bilbao,wd:Q8687,"| club     |
+| -------- |
+| wd:Q8687 |","SELECT DISTINCT ?club WHERE {
+  ?person rdfs:label ""Andoni Goikoetxea"" @en .
+  ?person p:P54 ?statement .
+  ?statement ps:P54 ?club .
+  ?statement pq:P580 ?start .
+  ?statement pq:P582 ?end .
+  FILTER(YEAR(?start) <= 1980 && YEAR(?end) >= 1980)
+}"
+how many total pages of The Mirror and the Light book,784,,,"SELECT ?pages WHERE {
+  ?book rdfs:label 'The Mirror & the Light' @en ; wdt:P304 ?pages .
+}"
+Who captains the French soccer team and the club Tottenham Hotspur,Hugo Lloris,,,"SELECT ?france_captain ?tottenham_captain WHERE {
+  wd:Q1917 wdt:P1508 ?france_captain .
+  wd:Q8153 wdt:P1545 ?tottenham_captain .
+}"
+Who directs the episode Glorious Purpose in the tv series Loki,Kate Herron,"wd:Q106975347|Kate Herron (lang:en)
+wd:Q17285309|Aaron Moorhead (lang:en)
+wd:Q17308798|Justin Benson (lang:en)","| director      | directorLabel            |
+| ------------- | ------------------------ |
+| wd:Q106975347 | Kate Herron (lang:en)    |
+| wd:Q17285309  | Aaron Moorhead (lang:en) |
+| wd:Q17308798  | Justin Benson (lang:en)  |","SELECT ?director ?directorLabel WHERE {
+  ?episode wdt:P1476 'Glorious Purpose' @en ; wdt:P57 ?director .
+  ?director rdfs:label ?directorLabel .
+  FILTER(LANG(?directorLabel) = 'en')
+}"
+What was the first movie David Callaham wrote the screenplay for,Doom,,,"SELECT ?movie WHERE {
+  ?movie wdt:P31 wd:Q11424 ; wdt:P50 wd:Q963032 ; wdt:P577 ?releaseDate .
+}
+ORDER BY ASC(?releaseDate)
+LIMIT 1"
+What novel was awarded the Pulitzer Prize for Fiction in 2017,The Underground Railroad,"wd:Q27957817|The Underground Railroad (lang:en)
+wd:Q509662|Colson Whitehead (lang:en)","| work         | workLabel                          |
+| ------------ | ---------------------------------- |
+| wd:Q27957817 | The Underground Railroad (lang:en) |
+| wd:Q509662   | Colson Whitehead (lang:en)         |","SELECT ?work ?workLabel WHERE {
+  ?work p:P166 ?statement .
+  ?statement ps:P166 wd:Q833633 .
+  ?statement pq:P585 ?date .
+  FILTER(YEAR(?date) = 2017)
+  OPTIONAL {
+    ?work rdfs:label ?workLabel .
+    FILTER(LANG(?workLabel) = 'en')
+  }
+}"
+What is the title of the first Wheel of Time book,The Eye of the World,"wd:Q134450213
+wd:Q477994","| book          |
+| ------------- |
+| wd:Q134450213 |
+| wd:Q477994    |","SELECT ?book WHERE {
+  ?book rdfs:label ""The Eye of the World"" @en .
+}"
+What was the title of the first movie directed by him,The Last House on the Left,,,"SELECT ?title WHERE {
+  ?movie wdt:P57 wd:Q5501 ; wdt:P577 ?date ; wdt:P1476 ?title .
+}
+ORDER BY ?date
+LIMIT 1"
+Who was the top scorer for the 2020-2021 Premier league season,Harry Kane,,,"SELECT ?player ?playerLabel WHERE {
+  wd:Q32184497 wdt:P9296 ?player .
+  ?player rdfs:label ?playerLabel .
+  FILTER(LANG(?playerLabel) = 'en')
+}"
+Who was the first person to serve as the team's captain,Jay DeMerit,,,"SELECT ?person WHERE {
+  wd:Q105083 p:P1384 [ ps:P1384 ?person ; pq:P580 ?startDate ]
+}
+ORDER BY ASC(?startDate)
+LIMIT 1"
+How many matches did Thibaut Courtois played for Belgium national team,94,,,"SELECT ?caps WHERE {
+  wd:Q73360 p:P2156 ?statement .
+  ?statement ps:P2156 ?caps ; pq:P169 wd:Q31 .
+}"
+What was the 4th track on All the Stars and Boulevards,Boston,,,"SELECT ?album WHERE {
+  ?album wdt:P31 wd:Q386724 ; rdfs:label ?label .
+  FILTER(LANG(?label) = 'en')
+  FILTER(CONTAINS(LCASE(?label) , 'all the stars and boulevards'))
+}"
+Which club did David Beckham play for in the year 2000,Manchester United F.C.,,,"SELECT ?club(STR(?clubLabel) AS ?label) WHERE {
+  wd:Q1450 p:P1014 [ ps:P1014 ?club ] .
+  ?club rdfs:label ?clubLabel .
+  FILTER(LANG(?clubLabel) = 'en')
+}"
+What was the last series title of Empire of the Moghul,Traitors in the Shadows,,,"SELECT ?series ?label WHERE {
+  ?series wdt:P31 wd:Q5258034 ; rdfs:label ?label .
+  FILTER(LANG(?label) = 'en')
+  .
+  FILTER(REGEX(STR(?label) , 'Empire of the (Moghul|Mughal)' , 'i'))
+}"
+What movie by Steven Soderbergh was released in the year 2001,Ocean's Eleven,,,"SELECT ?movie WHERE {
+  ?movie wdt:P57 wd:Q44191 ; wdt:P577 ?releaseDate .
+  FILTER(STRSTARTS(STR(?releaseDate) , ""2001-""))
+}"
+How many goals have Lionel Messi scored for Paris Saint-Germain F.C.,1,,,"SELECT ?goals WHERE {
+  wd:Q13215 p:P2919 ?stmt ; ps:P2919 ?goals ; pq:P393 wd:Q12525 .
+}"
+Which is the debut studio album of the band Pearl Jam,Ten (Pearl Jam album),,,"SELECT ?album ?albumLabel WHERE {
+  wd:Q43880 wdt:P2565 ?album .
+  OPTIONAL {
+    ?album rdfs:label ?albumLabel .
+    FILTER(lang(?albumLabel) = ""en"")
+  }
+}"
+How many of the Ryanverse books were written by Tom Clancy,17,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(DISTINCT ?book) AS ?count) WHERE {
+  wd:Q1840 wdt:P50 ?book .
+  ?book wdt:P179 wd:Q3385660 .
+}"
+How much is the budget of 2001: A Space Odyssey movie,$10.5 million,,,"SELECT ?budget WHERE {
+  wd:Q103474 wdt:P1114 ?budget
+}"
+How many Academy Awards was won by the film The Matrix,Four,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(?award) AS ?count) WHERE {
+  wd:Q26191 wdt:P166 ?award .
+  ?award wdt:P1552 wd:Q12524504 .
+}"
+"How many people are living in Exeter, New Hampshire in 2020",16049,,,"SELECT ?population WHERE {
+  wd:Q401278 p:P1082 ?statement .
+  ?statement ps:P1082 ?population .
+  ?statement pq:P585 ?time .
+  FILTER(year(?time) = 2020)
+}"
+Which team won the first edition of Copa America in 1916,Uruguay national football team,,,"SELECT ?winnerLabel WHERE {
+  wd:Q5286523 wdt:P127 wd:Q142 .
+  wd:Q142 rdfs:label ?winnerLabel .
+  FILTER(LANG(?winnerLabel) = 'en')
+}"
+What movie was directed by Shane black in the year 2005,Kiss Kiss Bang Bang,Kiss Kiss Bang Bang (lang:en),"| movieLabel                    |
+| ----------------------------- |
+| Kiss Kiss Bang Bang (lang:en) |","SELECT DISTINCT ?movieLabel WHERE {
+  ?director rdfs:label ""Shane Black"" @en .
+  ?movie wdt:P57 ?director ; wdt:P577 ?date .
+  FILTER(STRSTARTS(STR(?date) , ""2005""))
+  .
+  ?movie rdfs:label ?movieLabel .
+  FILTER(LANG(?movieLabel) = ""en"")
+}"
+Which artist created the most memorable song on the Juice soundtrack,Naughty by Nature,,,
+Which is the second last novel of the book series Millennium,The Girl Who Takes an Eye for an Eye,,,"SELECT ?book ?label WHERE {
+  ?book wdt:P179 wd:Q352413 ; wdt:P3400 ?order ; rdfs:label ?label .
+  FILTER(LANG(?label) = 'en')
+  .
+}
+ORDER BY DESC(?order)
+LIMIT 1
+OFFSET 1"
+Who scored the most goals on the Portland Thorns in 2018,Lindsey Horan,,,"SELECT ?player ?goals WHERE {
+  wd:Q1446672 p:P154 ?membershipStatement .
+  ?membershipStatement ps:P154 ?player .
+  ?membershipStatement pq:P585 ?membershipDate .
+  FILTER(YEAR(?membershipDate) = 2018)
+  .
+  ?player p:P1600 ?goalStatement .
+  ?goalStatement ps:P1600 ?goals .
+  ?goalStatement pq:P585 ?goalDate .
+  FILTER(YEAR(?goalDate) = 2018)
+}
+ORDER BY DESC(?goals)
+LIMIT 1"
+Which was the first award won by the movie The Matrix,Academy Awards,,,"SELECT ?awardLabel WHERE {
+  wd:Q1649612 p:P166 ?statement .
+  ?statement ps:P166 ?award .
+  ?award rdfs:label ?awardLabel .
+  FILTER(LANG(?awardLabel) = 'en')
+  FILTER(CONTAINS(LCASE(STR(?awardLabel)) , 'saturn'))
+}
+LIMIT 1"
+Total number of goals scored by Franz Beckenbauer for Bayern Munich,75,,,"SELECT ?goals WHERE {
+  wd:Q4457 p:P541 ?statement .
+  ?statement ps:P541 ?goals .
+  ?statement pq:P48 wd:Q6285 .
+}"
+What TV series did the Duffer Brothers write for in 2015,Wayward Pines,,,"SELECT ?series ?seriesLabel WHERE {
+  wd:Q26097618 wdt:P175 ?series .
+  ?series wdt:P31 wd:Q1418282 .
+  ?series wdt:P577 ?date .
+  FILTER(YEAR(?date) = 2015)
+  .
+  OPTIONAL {
+    ?series rdfs:label ?seriesLabel .
+    FILTER(LANG(?seriesLabel) = ""en"")
+  }
+}"
+,,,,
