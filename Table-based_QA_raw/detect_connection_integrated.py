@@ -9,7 +9,7 @@
 # 2. Edit the hardcoded file paths in the CONFIG section below.
 #
 # 3. Run:
-#       python wikidata_bidirectional_paths.py
+#       python detect_connection_hardcoded_compmix.py
 #
 # ============================================================
 # INPUT CSV
@@ -101,9 +101,24 @@ from tqdm import tqdm
 # ============================================================
 
 INPUT_CSV_PATH = "input.csv"
-INPUT_JSON_PATHS = ["dev_set.json"]
-OUTPUT_CSV_PATH = "output.csv"
-OUTPUT_LABEL_CSV_PATH = "output_label_name.csv"
+
+# Hardcoded CompMix JSONL inputs.
+# Put these files in the same folder where you run this script,
+# or replace each filename with an absolute path.
+INPUT_JSON_PATHS: List[str] = []
+INPUT_JSONL_PATHS = [
+    "CompMix_infobox.jsonl",
+    "CompMix_table.jsonl",
+    "CompMix_text.jsonl",
+    "CompMix_kb.jsonl",
+]
+
+# Output files.
+OUTPUT_CSV_PATH = "CompMix_connections.csv"
+OUTPUT_LABEL_CSV_PATH = "CompMix_connections_label_name.csv"
+
+# True = only run connection detection when both question entity and gold answer are Wikidata QIDs.
+# This skips answers like Yes/No, dates, numbers, and plain text strings.
 SKIP_NON_QID_PAIRS = True
 
 LABEL_LANGUAGE = "en"
@@ -908,6 +923,19 @@ def normalize_label(value: Any) -> str:
 def build_qa_pair(question: str, answer: str) -> str:
     return f"Q: {normalize_label(question)} | A: {normalize_label(answer)}"
 
+def split_input_paths(paths: List[str]) -> List[str]:
+    """Accept both separate paths and comma-separated path strings."""
+    output: List[str] = []
+
+    for item in paths:
+        for part in str(item).split(","):
+            part = part.strip()
+            if part:
+                output.append(part)
+
+    return output
+
+
 def iter_json_records(json_path: str) -> List[Dict[str, Any]]:
     with open(json_path, "r", encoding="utf-8-sig") as infile:
         data = json.load(infile)
@@ -919,10 +947,38 @@ def iter_json_records(json_path: str) -> List[Dict[str, Any]]:
                 return data[key]
     raise ValueError(f"Unsupported JSON structure in {json_path}; expected a list of QA records.")
 
+
+def iter_jsonl_records(jsonl_path: str) -> List[Dict[str, Any]]:
+    records: List[Dict[str, Any]] = []
+
+    with open(jsonl_path, "r", encoding="utf-8-sig") as infile:
+        for line_number, line in enumerate(infile, start=1):
+            line = line.strip()
+
+            if not line:
+                continue
+
+            try:
+                record = json.loads(line)
+            except json.JSONDecodeError as exc:
+                raise ValueError(
+                    f"Invalid JSON on line {line_number} of {jsonl_path}: {exc}"
+                ) from exc
+
+            if not isinstance(record, dict):
+                raise ValueError(
+                    f"Unsupported JSONL record on line {line_number} of {jsonl_path}; "
+                    "expected one JSON object per line."
+                )
+
+            records.append(record)
+
+    return records
+
 def read_json_qa_rows(json_paths: List[str]) -> List[Dict[str, str]]:
     rows: List[Dict[str, str]] = []
     skipped_non_qid = 0
-    for json_path in json_paths:
+    for json_path in split_input_paths(json_paths):
         records = iter_json_records(json_path)
         for record_index, record in enumerate(records):
             if not isinstance(record, dict):
@@ -972,6 +1028,76 @@ def read_json_qa_rows(json_paths: List[str]) -> List[Dict[str, str]]:
                     })
     if skipped_non_qid:
         print(f"Skipped {skipped_non_qid} non-QID entity/answer values. Set SKIP_NON_QID_PAIRS=False if you want them kept with blank paths.", file=sys.stderr)
+    return rows
+
+
+def read_jsonl_qa_rows(jsonl_paths: List[str]) -> List[Dict[str, str]]:
+    rows: List[Dict[str, str]] = []
+    skipped_non_qid = 0
+
+    for jsonl_path in split_input_paths(jsonl_paths):
+        records = iter_jsonl_records(jsonl_path)
+
+        for record_index, record in enumerate(records):
+            question = normalize_label(record.get("question"))
+            answer_text = normalize_label(record.get("answer_text"))
+            question_id = normalize_label(record.get("question_id"))
+            convmix_question_id = normalize_label(record.get("convmix_question_id"))
+            domain = normalize_label(record.get("domain"))
+            entities = record.get("entities") or []
+            answers = record.get("answers") or []
+
+            if not isinstance(entities, list):
+                entities = []
+            if not isinstance(answers, list):
+                answers = []
+
+            for entity in entities:
+                if not isinstance(entity, dict):
+                    continue
+
+                entity_id = normalize_label(entity.get("id"))
+                entity_label = normalize_label(entity.get("label"))
+
+                if not is_wikidata_qid(entity_id):
+                    skipped_non_qid += 1
+                    continue
+
+                for answer in answers:
+                    if not isinstance(answer, dict):
+                        continue
+
+                    answer_id = normalize_label(answer.get("id"))
+                    answer_label = normalize_label(answer.get("label"))
+                    gold_answer = answer_text or answer_label or answer_id
+
+                    if not is_wikidata_qid(answer_id):
+                        skipped_non_qid += 1
+                        if SKIP_NON_QID_PAIRS:
+                            continue
+
+                    rows.append({
+                        "Source_JSON": jsonl_path,
+                        "Record_Index": str(record_index),
+                        "Question_ID": question_id,
+                        "Convmix_Question_ID": convmix_question_id,
+                        "Domain": domain,
+                        "Question": question,
+                        "Gold_Answer": gold_answer,
+                        "QA-Pairs": build_qa_pair(question, gold_answer),
+                        "Entity_1": entity_id,
+                        "Entity_1_Label": entity_label,
+                        "Entity_2": answer_id,
+                        "Entity_2_Label": answer_label,
+                    })
+
+    if skipped_non_qid:
+        print(
+            f"Skipped {skipped_non_qid} non-QID entity/answer values. "
+            "Set SKIP_NON_QID_PAIRS=False if you want them kept with blank paths.",
+            file=sys.stderr,
+        )
+
     return rows
 
 
@@ -1172,6 +1298,12 @@ def parse_args() -> argparse.Namespace:
         help="One or more train/test/dev JSON files, e.g. train_set.json test_set.json dev_set.json.",
     )
     input_group.add_argument(
+        "--input-jsonl",
+        nargs="+",
+        default=None,
+        help="One or more JSONL files, e.g. CompMix_infobox.jsonl CompMix_table.jsonl.",
+    )
+    input_group.add_argument(
         "--input-csv",
         default=None,
         help="Existing CSV with Entity_1 and Entity_2 columns.",
@@ -1187,8 +1319,12 @@ def main() -> int:
     try:
         if args.input_json:
             rows = read_json_qa_rows(args.input_json)
+        elif args.input_jsonl:
+            rows = read_jsonl_qa_rows(args.input_jsonl)
         elif args.input_csv:
             rows = read_input_rows(args.input_csv)
+        elif INPUT_JSONL_PATHS:
+            rows = read_jsonl_qa_rows(INPUT_JSONL_PATHS)
         else:
             rows = read_json_qa_rows(INPUT_JSON_PATHS)
 
