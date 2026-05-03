@@ -95,8 +95,24 @@ What is the Publication date of the second book of the novel series Little House
 | 1935-09-19T00:00:00Z (xsd:dateTime) |","SELECT ?pubDate WHERE {
   wd:Q687432 wdt:P577 ?pubDate
 }"
-Which fighting video game franchise developed by Midway Games was adapted into a live action movie in 1995,Mortal Kombat,,,
-What is the name of the political party that Clint Eastwood was affiliated to in the year 1970,Republican Party,,,
+Which fighting video game franchise developed by Midway Games was adapted into a live action movie in 1995,Mortal Kombat,,,"SELECT ?seriesName WHERE {
+  ?series wdt:P176 wd:Q25958 ; wdt:P136 wd:Q8205 .
+  ?movie wdt:P1992 ?series ; wdt:P31 wd:Q11424 ; wdt:P577 ?releaseDate .
+  FILTER(SUBSTR(STR(?releaseDate) , 1 , 4) = ""1995"")
+  OPTIONAL {
+    ?series rdfs:label ?seriesName .
+    FILTER(lang(?seriesName) = ""en"")
+  }
+}"
+What is the name of the political party that Clint Eastwood was affiliated to in the year 1970,Republican Party,,,"SELECT ?partyLabel WHERE {
+  wd:Q37308 p:P102 ?statement .
+  ?statement ps:P102 ?party ; pq:P580 ?start ; pq:P582 ?end .
+  FILTER(year(?start) <= 1970 &&(year(?end) >= 1970 || ! bound(?end)))
+  OPTIONAL {
+    ?party rdfs:label ?partyLabel .
+    FILTER(LANG(?partyLabel) = 'en')
+  }
+}"
 What is the publication date of the second book The Subtle Knife of the series His Dark Materials,22 July 1997,1997-01-01T00:00:00Z,"| publicationDate                     |
 | ----------------------------------- |
 | 1997-01-01T00:00:00Z (xsd:dateTime) |","SELECT ?publicationDate WHERE {
@@ -105,7 +121,12 @@ What is the publication date of the second book The Subtle Knife of the series H
 What is the name of the renowned singer who was part of the bands Aerosmith and Chain Reaction,Steven Tyler,,,"SELECT ?singer WHERE {
   ?singer wdt:P302 wd:Q126826 ; wdt:P302 wd:Q2947637 .
 }"
-What year did Tim Howard play his first game for the senior United Stated men's national soccer team,2002,,,
+What year did Tim Howard play his first game for the senior United Stated men's national soccer team,2002,,,"SELECT(YEAR(?date) AS ?year) WHERE {
+  wd:Q156615 p:P1511 ?statement .
+  ?statement ps:P1511 wd:Q228934 ; pq:P580 ?date .
+}
+ORDER BY ?date
+LIMIT 1"
 What was the name of the dog that played the character of Lassie in the TV series Lassie,Pal,,,"SELECT ?dog WHERE {
   wd:Q941640 wdt:P161 ?dog .
 }"
@@ -792,7 +813,12 @@ What is the date of publication of the first book of the Outland series,1 June 1
 }
 ORDER BY ASC(?pubDate)
 LIMIT 1"
-"What country was Gianni Infantino originally from, who is the current president of FIFA",Switzerland,,,
+"What country was Gianni Infantino originally from, who is the current president of FIFA",Switzerland,wd:Q39,"| country |
+| ------- |
+| wd:Q39  |","SELECT ?country WHERE {
+  wd:Q124138 wdt:P19 ?birthplace .
+  ?birthplace wdt:P17 ?country .
+}"
 Who composed the music for the opening theme of the tv series The X-Files,Mark Snow,Mark Snow|Mark Snow (lang:en),"| composer               | composerName        |
 | ---------------------- | ------------------- |
 | Mark Snow (wd:Q534413) | Mark Snow (lang:en) |","SELECT ?composer ?composerName WHERE {
@@ -1420,7 +1446,26 @@ What is the current FIFA ranking for the Germany National Football Team,12th,1.0
 }
 ORDER BY DESC(?date)
 LIMIT 1"
-which book does the tv series locke & key Based on,Locke & Key,,,
+which book does the tv series locke & key Based on,Locke & Key,"wd:Q27710023|Bulletin of the Los Angeles neurological societies (lang:ast)
+wd:Q27710023|Bulletin of the Los Angeles neurological societies (lang:en)
+wd:Q27710023|Bulletin of the Los Angeles neurological societies (lang:es)
+wd:Q27710023|Bulletin of the Los Angeles neurological societies (lang:fr)
+wd:Q27710023|Bulletin of the Los Angeles neurological societies (lang:ga)
+wd:Q27710023|Bulletin of the Los Angeles neurological societies (lang:it)
+wd:Q27710023|Bulletin of the Los Angeles neurological societies (lang:nl)","| book         | bookLabel                                                     |
+| ------------ | ------------------------------------------------------------- |
+| wd:Q27710023 | Bulletin of the Los Angeles neurological societies (lang:ast) |
+| wd:Q27710023 | Bulletin of the Los Angeles neurological societies (lang:en)  |
+| wd:Q27710023 | Bulletin of the Los Angeles neurological societies (lang:es)  |
+| wd:Q27710023 | Bulletin of the Los Angeles neurological societies (lang:fr)  |
+| wd:Q27710023 | Bulletin of the Los Angeles neurological societies (lang:ga)  |
+| wd:Q27710023 | Bulletin of the Los Angeles neurological societies (lang:it)  |
+| wd:Q27710023 | Bulletin of the Los Angeles neurological societies (lang:nl)  |","SELECT ?book ?bookLabel WHERE {
+  wd:Q70262859 wdt:P1433 ?book .
+  OPTIONAL {
+    ?book rdfs:label ?bookLabel
+  }
+}"
 Who is the original broadcaster of the Locke & Key television series,Netflix,Netflix (lang:en),"| broadcasterLabel  |
 | ----------------- |
 | Netflix (lang:en) |","SELECT ?broadcasterLabel WHERE {

@@ -1242,7 +1242,20 @@ Which actors have costarred with Zoe Kravitz in more than two films,"['Marc John
 }
 GROUP BY ?actor ?actorLabel
 HAVING(COUNT(?film) > 2)"
-,,,,
+What was the percentage of women Nobel prize laureates in Literature in each decade since 1950,"[['1950s', 0.0], ['1960s', 18.181818181818183], ['1970s', 0.0], ['1980s', 0.0], ['1990s', 30.0], ['2000s', 30.0], ['2010s', 30.0], ['2020s', 50.0]]",,,"SELECT ?decade(COUNT(*) AS ?total)(COUNT(?isFemale) AS ?women)((COUNT(?isFemale) * 100.0 / COUNT(*)) AS ?percentage) WHERE {
+  ?laureate p:P166 ?awardStatement .
+  ?awardStatement ps:P166 wd:Q13222 .
+  ?awardStatement pq:P585 ?awardDate .
+  ?awardDate wikibase:timeValue ?date .
+  BIND(xsd:integer(SUBSTR(STR(?date) , 1 , 4)) AS ?year)
+  FILTER(?year >= 1950)
+  OPTIONAL {
+    ?laureate wdt:P21 wd:Q6581072 .
+  }
+  BIND((xsd:integer(?year / 10)) * 10 AS ?decade)
+}
+GROUP BY ?decade
+ORDER BY ?decade"
 who is on the board of directors at Tesla,"['Robyn Denholm', 'Elon Musk', 'Kimbal Musk', 'Ira Ehrenpreis', 'James Murdoch', 'Kathleen Wilson-Thompson', 'Joe Gebbia', 'J. B. Straubel']",,,"SELECT ?boardMember ?boardMemberLabel WHERE {
   wd:Q3504 wdt:P3292 ?boardMember .
   ?boardMember rdfs:label ?boardMemberLabel .
@@ -1299,7 +1312,7 @@ Which of the former WNBA finals MVPs currently work as a basketball coach and fo
   ?team rdfs:label ?teamLabel .
   FILTER(LANG(?teamLabel) = ""en"")
 }"
-,,,,
+What was the average percentage of women Nobel prize laureates in Literature in each decade since 1950,"[['1960s', 9.090909090909093], ['1970s', 0.0], ['1980s', 0.0], ['1990s', 30.0], ['2000s', 30.0], ['2010s', 30.0], ['2020s', 50.0]]",,,
 Which countries have more than 3 nuclear power stations,"['France', 'Russia', 'United States', 'Canada', 'China', 'Spain', 'Japan', 'South Korea', 'United Kingdom', 'India', 'Ukraine']",,,"SELECT ?country WHERE {
   ?powerPlant wdt:P31 wd:Q541658 ; wdt:P17 ?country .
 }

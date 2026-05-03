@@ -622,6 +622,12 @@ What is the date of publication of the first book of the Outland series,1 June 1
 }
 ORDER BY ASC(?pubDate)
 LIMIT 1",ComplexQA/CompMix_infobox_complex/00105.json
+"What country was Gianni Infantino originally from, who is the current president of FIFA",Switzerland,wd:Q39,"| country |
+| ------- |
+| wd:Q39  |","SELECT ?country WHERE {
+  wd:Q124138 wdt:P19 ?birthplace .
+  ?birthplace wdt:P17 ?country .
+}",ComplexQA/CompMix_infobox_complex/00106.json
 Who composed the music for the opening theme of the tv series The X-Files,Mark Snow,Mark Snow|Mark Snow (lang:en),"| composer               | composerName        |
 | ---------------------- | ------------------- |
 | Mark Snow (wd:Q534413) | Mark Snow (lang:en) |","SELECT ?composer ?composerName WHERE {
@@ -1095,6 +1101,26 @@ What is the current FIFA ranking for the Germany National Football Team,12th,1.0
 }
 ORDER BY DESC(?date)
 LIMIT 1",ComplexQA/CompMix_infobox_complex/00188.json
+which book does the tv series locke & key Based on,Locke & Key,"wd:Q27710023|Bulletin of the Los Angeles neurological societies (lang:ast)
+wd:Q27710023|Bulletin of the Los Angeles neurological societies (lang:en)
+wd:Q27710023|Bulletin of the Los Angeles neurological societies (lang:es)
+wd:Q27710023|Bulletin of the Los Angeles neurological societies (lang:fr)
+wd:Q27710023|Bulletin of the Los Angeles neurological societies (lang:ga)
+wd:Q27710023|Bulletin of the Los Angeles neurological societies (lang:it)
+wd:Q27710023|Bulletin of the Los Angeles neurological societies (lang:nl)","| book         | bookLabel                                                     |
+| ------------ | ------------------------------------------------------------- |
+| wd:Q27710023 | Bulletin of the Los Angeles neurological societies (lang:ast) |
+| wd:Q27710023 | Bulletin of the Los Angeles neurological societies (lang:en)  |
+| wd:Q27710023 | Bulletin of the Los Angeles neurological societies (lang:es)  |
+| wd:Q27710023 | Bulletin of the Los Angeles neurological societies (lang:fr)  |
+| wd:Q27710023 | Bulletin of the Los Angeles neurological societies (lang:ga)  |
+| wd:Q27710023 | Bulletin of the Los Angeles neurological societies (lang:it)  |
+| wd:Q27710023 | Bulletin of the Los Angeles neurological societies (lang:nl)  |","SELECT ?book ?bookLabel WHERE {
+  wd:Q70262859 wdt:P1433 ?book .
+  OPTIONAL {
+    ?book rdfs:label ?bookLabel
+  }
+}",ComplexQA/CompMix_infobox_complex/00189.json
 Who is the original broadcaster of the Locke & Key television series,Netflix,Netflix (lang:en),"| broadcasterLabel  |
 | ----------------- |
 | Netflix (lang:en) |","SELECT ?broadcasterLabel WHERE {
@@ -2325,6 +2351,16 @@ What's the US release date for the second film in the Mad Max series,24 December
   wd:Q1125262 p:P577 ?statement .
   ?statement ps:P577 ?date .
 }",ComplexQA/CompMix_table_complex/00128.json
+How many matches has Jan Oblak played for Slovenia national football team in 2014,1,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(*) AS ?count) WHERE {
+  ?match wdt:P31 wd:Q39250 .
+  ?match p:P929 ?playerStatement .
+  ?playerStatement ps:P929 wd:Q635050 .
+  ?playerStatement pq:P176 wd:Q177587 .
+  ?match wdt:P585 ?date .
+  FILTER(SUBSTR(STR(?date) , 1 , 4) = ""2014"")
+}",ComplexQA/CompMix_table_complex/00129.json
 "What is the second movie in the film series, The Lord of the Rings",The Lord of the Rings: The Two Towers,The Lord of the Rings: The Fellowship of the Ring|The Lord of the Rings: The Fellowship of the Ring (lang:en),"| movie                                                          | movieLabel                                                  |
 | -------------------------------------------------------------- | ----------------------------------------------------------- |
 | The Lord of the Rings: The Fellowship of the Ring (wd:Q127367) | The Lord of the Rings: The Fellowship of the Ring (lang:en) |","SELECT ?movie ?movieLabel WHERE {
@@ -3423,3 +3459,559 @@ What is the population of protected areas of the Philippines that is in the prov
   ?protectedArea wdt:P31 wd:Q1909625 ; wdt:P131 ?province .
   ?province wdt:P31 wd:Q1086 ; wdt:P131 wd:Q291911 ; wdt:P1082 ?population .
 }",ComplexQA/OTT_QA_dev_complex/00304.json
+What is the 2004–05 ISU Junior Grand Prix 's country population where the 2004 JGP Ukrainian Souvenir was held on Sept. 29 - Oct. 3,42 million,340110988.0,"| population                |
+| ------------------------- |
+| 340110988.0 (xsd:decimal) |","SELECT DISTINCT ?population WHERE {
+  wd:Q30 wdt:P1082 ?population
+}",ComplexQA/OTT_QA_dev_complex/00306.json
+What is the competition during the Bangor City FC season that was the 57th season of Europe 's premier club football tournament organised by UEFA,UEFA Champions League,Eleutherius (lang:en),"| label                 |
+| --------------------- |
+| Eleutherius (lang:en) |","SELECT ?label WHERE {
+  wd:Q418282 rdfs:label ?label .
+  FILTER(LANG(?label) = 'en')
+}",ComplexQA/OTT_QA_dev_complex/00312.json
+What did members of the British military during WWI call the municipality that is home to the Belgian Fourth Division A team K.V.K . Westhoek,Wipers,Torso flexion loads and the fatigue failure of human lumbosacral motion segments (lang:en),"| label                                                                                      |
+| ------------------------------------------------------------------------------------------ |
+| Torso flexion loads and the fatigue failure of human lumbosacral motion segments (lang:en) |","SELECT ?label WHERE {
+  wd:Q23921179 rdfs:label ?label .
+  FILTER(LANG(?label) = 'en')
+}",ComplexQA/OTT_QA_dev_complex/00316.json
+How many historical buildings does the historical place off US Route 90 that was most recently added to the National Register of Historic Places have,47,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(?building) AS ?count) WHERE {
+  ?site wdt:P31 wd:Q255237 ; wdt:P403 wd:Q352413 ; wdt:P3295 ?nrhpRef ; wdt:P1201 ?date .
+  ?building wdt:P150 ?site ; wdt:P31 wd:Q1144842 .
+}
+ORDER BY DESC(?date)
+LIMIT 1",ComplexQA/OTT_QA_dev_complex/00322.json
+"The group whose guitarist is Billy Howerdel released an album that was photographed by Sean Murphy , and whose name means what in French",Sea of Names,"Ashes Divide (lang:fr)
+A Perfect Circle (lang:fr)","| frMeaning                  |
+| -------------------------- |
+| Ashes Divide (lang:fr)     |
+| A Perfect Circle (lang:fr) |","SELECT ?frMeaning WHERE {
+  wd:Q2350322 wdt:P463 ?band .
+  ?band rdfs:label ?frLabel .
+  FILTER(LANG(?frLabel) = 'fr')
+  .
+  BIND(REPLACE(?frLabel , ' ' , ' ') AS ?frMeaning)
+}",ComplexQA/OTT_QA_dev_complex/00332.json
+How many games did the 2013 New York Yankees American League Wild Card team who lost more than 100 games win against their rivals,2,0,"| wins        |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(*) AS ?wins) WHERE {
+  wd:Q24820 wdt:P120 ?season .
+  ?season wdt:P585 ""2013-01-01T00:00:00Z"" ^^ xsd:dateTime .
+  ?season wdt:P2127 ?losses .
+  FILTER(?losses > 100)
+}",ComplexQA/OTT_QA_dev_complex/00334.json
+When was this circular fortification constructed on the 172-acre island in New York Harbor 732 m away from Manhattan Island in New York City,early 19th century,1807-01-01T00:00:00Z,"| constructionYear                    |
+| ----------------------------------- |
+| 1807-01-01T00:00:00Z (xsd:dateTime) |","SELECT ?constructionYear WHERE {
+  wd:Q1049532 wdt:P571 ?constructionYear
+}",ComplexQA/OTT_QA_dev_complex/00339.json
+How many playable locations are there in the Aksys game developed by the company whose name means `` Soft development Innovation Multi Success ``,6,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(?location) AS ?count) WHERE {
+  wd:Q7303944 wdt:P176 ?game ; wdt:P1255 ?location .
+}",ComplexQA/OTT_QA_dev_complex/00342.json
+The Skip Magnus Ramsfjell is from a 2019 World Junior Curling Championship Men 's Round Robin country with a population of how many people,"5,312,300",5822863.0,"| population              |
+| ----------------------- |
+| 5822863.0 (xsd:decimal) |","SELECT ?population WHERE {
+  wd:Q35 wdt:P1082 ?population
+}",ComplexQA/OTT_QA_dev_complex/00346.json
+"How many medals has the female Italian athlete , who is a multiple winner , with the most titles won at an International competition",six medals,26,"| count        |
+| ------------ |
+| 26 (xsd:int) |","SELECT(COUNT(?medal) AS ?count) WHERE {
+  ?athlete wdt:P21 wd:Q6581072 .
+  ?athlete wdt:P27 wd:Q38 .
+  ?athlete wdt:P166 ?medal .
+}
+GROUP BY ?athlete
+ORDER BY DESC(?count)
+LIMIT 1",ComplexQA/OTT_QA_dev_complex/00378.json
+The Meeting de Marcha Atlética da Cidade de Olhao in the 2010 IAAF Race Walking Challenge was held in what region of southern Portugal,Algarve,"Olhão (lang:en)
+Faro (lang:en)
+Algarve (lang:en)
+Olhão (lang:en)","| regionLabel       |
+| ----------------- |
+| Olhão (lang:en)   |
+| Faro (lang:en)    |
+| Algarve (lang:en) |
+| Olhão (lang:en)   |","SELECT ?regionLabel WHERE {
+  ?place rdfs:label ""Olhão"" @en ; wdt:P131 ?region .
+  ?region rdfs:label ?regionLabel .
+  FILTER(LANG(?regionLabel) = 'en')
+  .
+  FILTER(?region NOT IN(wd:Q178073 , wd:Q176532))
+}",ComplexQA/OTT_QA_dev_complex/00379.json
+What is the area of the country represented in the 2018 Internazionali di Tennis Castel del Monte by the athlete coached by Claudio Galoppini,"301,340 km2",302068.0,"| area                   |
+| ---------------------- |
+| 302068.0 (xsd:decimal) |","SELECT ?area WHERE {
+  wd:Q38 wdt:P2046 ?area
+}",ComplexQA/OTT_QA_dev_complex/00386.json
+How many states are served by the Air-rail alliance train company that stops at the first major airport in the New York metropolitan area,46,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(DISTINCT ?state) AS ?count) WHERE {
+  wd:Q255413 wdt:P1337 ?line .
+  ?line wdt:P1136 ?station .
+  ?station wdt:P131 ?location .
+  ?location wdt:P131 ?state .
+  ?state wdt:P31 wd:Q3624078 .
+  FILTER(?state = wd:Q209)
+}",ComplexQA/OTT_QA_dev_complex/00390.json
+How many terms were served that were by the party with members in the Rajya Sabha from Maharashtra since 1952 once led by Ghandi,10,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(DISTINCT ?term) AS ?count) WHERE {
+  ?person p:P39 ?term .
+  ?term ps:P39 wd:Q14710699 .
+  ?term pq:P1291 wd:Q220578 .
+  ?term pq:P740 wd:Q281 .
+  ?term pq:P580 ?start .
+  FILTER(YEAR(?start) >= 1952)
+}",ComplexQA/OTT_QA_dev_complex/00394.json
+"How many games involving the St. Louis Cardinals are summarized across the game results for the 1982 National League Championship Series, 2006 National League Championship Series, 2011 World Series, 2013 National League Championship Series, and 2011 National League Championship Series",29,0,"| total       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(?game) AS ?total) WHERE {
+  VALUES ?label {
+    ""1982 National League Championship Series"" @en ""2006 National League Championship Series"" @en ""2011 World Series"" @en ""2013 National League Championship Series"" @en ""2011 National League Championship Series"" @en
+  }
+  ?series rdfs:label ?label .
+  ?series wdt:P586 wd:Q54347 .
+  ?game wdt:P155 ?series .
+}",ComplexQA/Sportsreason_TANQ_complex/00004.json
+Sort the people who worked for Brentford and were born on or before 1956 by their birth year from oldest to youngest. How many people in this sorted list have a total career appearances count listed in the table detailing Paul Smith's statistics,0,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(?person) AS ?count) WHERE {
+  ?person wdt:P162 wd:Q175075 .
+  ?person wdt:P569 ?birthDate .
+  BIND(YEAR(?birthDate) AS ?birthYear)
+  FILTER(?birthYear <= 1956)
+  ?person wdt:P178 ?appearances
+}",ComplexQA/Sportsreason_TANQ_complex/00016.json
+"What was the highest attendance recorded for any single game played by the Boston Red Sox during their winning 2018 World Series, 2013 American League Championship Series, or 1975 American League Championship Series appearances",54400,,"| max_attendance |
+| -------------- |","SELECT(MAX(?attendance) AS ?max_attendance) WHERE {
+  {
+    ?series wdt:P31 wd:Q253586 ; rdfs:label ""2018 World Series"" @en .
+    ?game wdt:P121 ?series ; wdt:P186 wd:Q11833 ; wdt:P2515 ?attendance .
+  } UNION {
+    ?series wdt:P31 wd:Q333619 ; rdfs:label ""2013 American League Championship Series"" @en .
+    ?game wdt:P121 ?series ; wdt:P186 wd:Q11833 ; wdt:P2515 ?attendance .
+  } UNION {
+    ?series wdt:P31 wd:Q333619 ; rdfs:label ""1975 American League Championship Series"" @en .
+    ?game wdt:P121 ?series ; wdt:P186 wd:Q11833 ; wdt:P2515 ?attendance .
+  }
+}",ComplexQA/Sportsreason_TANQ_complex/00024.json
+What was the difference in the number of races between the Formula One season with the most Grands Prix and the season with the fewest Grands Prix during the years Lewis Hamilton and Mercedes won the championship together,2,,"| difference |
+| ---------- |","SELECT(MAX(?numRaces) - MIN(?numRaces) AS ?difference) {
+  ?season wdt:P31 wd:Q498916 ; wdt:P191 wd:Q155383 ; wdt:P154 wd:Q1524788 ; wdt:P7233 ?numRaces .
+}",ComplexQA/Sportsreason_TANQ_complex/00031.json
+"How many games involving the St. Louis Cardinals were played at Busch Stadium or Busch Stadium (II) across their 1982, 2006, and 2013 National League Championship Series appearances and their 2011 World Series appearance",12,"wd:Q12002552
+wd:Q2938063
+wd:Q504309","| team         |
+| ------------ |
+| wd:Q12002552 |
+| wd:Q2938063  |
+| wd:Q504309   |","SELECT ?team WHERE {
+  ?team rdfs:label ""St. Louis Cardinals"" @en .
+}",ComplexQA/Sportsreason_TANQ_complex/00032.json
+"What is the total number of games featuring the St. Louis Cardinals played at Busch Stadium or Busch Stadium (II) across the 1982, 2006, 2011, and 2013 National League Championship Series and the 2011 World Series",15,0,"| total       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(*) AS ?total) WHERE {
+  ?game wdt:P1066 wd:Q3531707 , wd:Q238855 .
+  ?game wdt:P177 wd:Q492 .
+  ?game wdt:P585 ?date .
+  ?year xsd:gYear(?date) .
+  FILTER(?year IN(1982 , 2006 , 2011 , 2013))
+}",ComplexQA/Sportsreason_TANQ_complex/00041.json
+"How many baseball games involving the Boston Red Sox were played at Fenway Park across the 1975 American League Championship Series, the 2013 American League Championship Series, and the 2018 World Series",7,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(*) AS ?count) WHERE {
+  {
+    ?series wdt:P31 wd:Q131058 ; wdt:P585 ?date .
+    FILTER(YEAR(?date) = 1975)
+    ?game wdt:P1545 ?series ; wdt:P1366 wd:Q6297 ; wdt:P619 wd:Q1347351
+  } UNION {
+    ?series wdt:P31 wd:Q131058 ; wdt:P585 ?date .
+    FILTER(YEAR(?date) = 2013)
+    ?game wdt:P1545 ?series ; wdt:P1366 wd:Q6297 ; wdt:P619 wd:Q1347351
+  } UNION {
+    ?series wdt:P31 wd:Q1740123 ; wdt:P585 ?date .
+    FILTER(YEAR(?date) = 2018)
+    ?game wdt:P1545 ?series ; wdt:P1366 wd:Q6297 ; wdt:P619 wd:Q1347351
+  }
+}",ComplexQA/Sportsreason_TANQ_complex/00054.json
+How many of the teams with Victorian Football League or Australian Football League Grand Finalist history listed in the provided tables also participated in a Grand Final won by Fitzroy Football Club,1,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(DISTINCT ?runnerup) AS ?count) WHERE {
+  ?event wdt:P31 wd:Q2223175 ; wdt:P275 wd:Q105487 ; wdt:P1449 wd:Q453300 ; wdt:P116 ?runnerup .
+  FILTER(?runnerup != wd:Q453300)
+}",ComplexQA/Sportsreason_TANQ_complex/00062.json
+What was the highest attendance figure recorded for any game played between the Los Angeles Dodgers and the Philadelphia Phillies in the National League Championship Series from 1977 through 2009,64924,,"| maxAttendance |
+| ------------- |","SELECT(MAX(?attendance) AS ?maxAttendance) WHERE {
+  ?series wdt:P31 wd:Q1453300 .
+  ?series wdt:P527 ?game .
+  ?game wdt:P175 wd:Q2628 .
+  ?game wdt:P175 wd:Q10985 .
+  ?game wdt:P1442 ?attendance .
+  ?game wdt:P585 ?eventDate .
+  FILTER(YEAR(?eventDate) >= 1977 && YEAR(?eventDate) <= 2009)
+}",ComplexQA/Sportsreason_TANQ_complex/00068.json
+"How many games involving the Boston Red Sox took place at Fenway Park across the 2018 World Series, the 2013 American League Championship Series, and the 1975 American League Championship Series",7,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(*) AS ?count) WHERE {
+  VALUES ?series {
+    wd:Q45330062 wd:Q20334965 wd:Q22205788
+  }
+  ?game wdt:P1343 ?series ; wdt:P276 wd:Q47152 .
+}",ComplexQA/Sportsreason_TANQ_complex/00070.json
+"What was the highest attendance figure for any game won by the St. Louis Cardinals in the 2006 National League Championship Series, 2011 World Series, or 2013 National League Championship Series",56357,,"| max |
+| --- |","SELECT(MAX(?attendance) AS ?max) WHERE {
+  VALUES ?series {
+    wd:Q260596 wd:Q13466679 wd:Q26510564
+  }
+  ?game wdt:P2565 ?series ; wdt:P1340 wd:Q1291911 ; wdt:P3755 ?attendance .
+}",ComplexQA/Sportsreason_TANQ_complex/00071.json
+What is the highest number of Grand Final appearances in the Victorian Football League/Australian Football League achieved by either the Collingwood Football Club or the Fitzroy Football Club,27,,"| maxGrandFinals |
+| -------------- |","SELECT(MAX(?grandFinals) AS ?maxGrandFinals) WHERE {
+  VALUES ?club {
+    wd:Q165869 wd:Q453300
+  }
+  ?club wdt:P1332 ?grandFinals .
+}",ComplexQA/Sportsreason_TANQ_complex/00080.json
+"What was the shortest duration in minutes for a game played between the Los Angeles Dodgers and the Philadelphia Phillies in the 1977, 1978, 2008, or 2009 National League Championship Series",126,,"| shortest |
+| -------- |","SELECT(MIN(?duration) AS ?shortest) WHERE {
+  ?competition wdt:P31 wd:Q2852059 ; wdt:P154 wd:Q583215 ; wdt:P154 wd:Q174333 ; wdt:P585 ?date .
+  FILTER(STRSTARTS(STR(?date) , ""1977"") || STRSTARTS(STR(?date) , ""1978"") || STRSTARTS(STR(?date) , ""2008"") || STRSTARTS(STR(?date) , ""2009""))
+  ?competition wdt:P527 ?game .
+  ?game wdt:P1049 ?duration .
+}
+LIMIT 1",ComplexQA/Sportsreason_TANQ_complex/00082.json
+What is the highest number of Grand Final appearances made by either the Richmond Football Club or the Collingwood Football Club in the Victorian Football League/Australian Football League,27,,"| maxAppearances |
+| -------------- |","SELECT(MAX(?appearances) AS ?maxAppearances) WHERE {
+  VALUES ?club {
+    wd:Q31710 wd:Q174877
+  }
+  ?club wdt:P3624 ?appearances .
+}",ComplexQA/Sportsreason_TANQ_complex/00087.json
+"How many games played in the 1977, 1978, 2008, and 2009 National League Championship Series between the Los Angeles Dodgers and the Philadelphia Phillies had an attendance exceeding 50,000",13,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(DISTINCT ?game) AS ?count) WHERE {
+  ?series wdt:P31 wd:Q285108 ; wdt:P585 ?date ; wdt:P1262 wd:Q1347 ; wdt:P1262 wd:Q1340 .
+  BIND(YEAR(?date) AS ?year)
+  FILTER(?year IN(1977 , 1978 , 2008 , 2009))
+  .
+  ?series wdt:P527 ?game .
+  ?game wdt:P929 ?attendance .
+  FILTER(?attendance > 50000)
+  .
+}",ComplexQA/Sportsreason_TANQ_complex/00088.json
+"What was the total attendance for games played at Fenway Park during the 1975 American League Championship Series, the 2013 American League Championship Series, and the 2018 World Series",263316,0,"| total       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(?attendance) AS ?total) WHERE {
+  {
+    ?game wdt:P551 wd:Q51744098 ; wdt:P1064 wd:Q16644 ; wdt:P5484 ?attendance .
+  } UNION {
+    ?game wdt:P551 wd:Q24424109 ; wdt:P1064 wd:Q16644 ; wdt:P5484 ?attendance .
+  } UNION {
+    ?game wdt:P551 wd:Q12566951 ; wdt:P1064 wd:Q16644 ; wdt:P5484 ?attendance .
+  }
+}",ComplexQA/Sportsreason_TANQ_complex/00093.json
+"How many games were contested between the Los Angeles Dodgers and the Philadelphia Phillies in the National League Championship Series across the years 1977, 1978, 1983, 2008, and 2009",22,0,"| total       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(?games) AS ?total) WHERE {
+  ?series wdt:P31 wd:Q1226021 .
+  ?series rdfs:label ?label .
+  FILTER(LANG(?label) = ""en"" && regex(STR(?label) , ""National League Championship Series"" , ""i""))
+  ?series wdt:P725 wd:Q1487 .
+  ?series wdt:P725 wd:Q33414 .
+  ?series wdt:P585 ?time .
+  BIND(SUBSTR(STR(?time) , 1 , 4) AS ?yearStr)
+  FILTER(?yearStr IN(""1977"" , ""1978"" , ""1983"" , ""2008"" , ""2009""))
+  ?series wdt:P1225 ?games .
+}",ComplexQA/Sportsreason_TANQ_complex/00100.json
+What is the lowest number of Grand Final appearances for the senior team of either the Richmond or Collingwood football club in the Victorian Football League/Australian Football League,11,,"| lowest |
+| ------ |","SELECT(MIN(?appearances) AS ?lowest) WHERE {
+  VALUES ?club {
+    wd:Q524131 wd:Q619142
+  }
+  ?club wdt:P3270 ?appearances
+}",ComplexQA/Sportsreason_TANQ_complex/00101.json
+What is the total number of races across all the Formula One World Championship seasons where Lewis Hamilton was the Drivers' Champion and Mercedes was the Constructors' Champion,100,0,"| total       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(?numRaces) AS ?total) WHERE {
+  ?season wdt:P31 wd:Q1796632 ; wdt:P523 wd:Q431 ; wdt:P524 wd:Q704 ; wdt:P2168 ?numRaces .
+}",ComplexQA/Sportsreason_TANQ_complex/00115.json
+"How many games were played in the National League Championship Series between the Los Angeles Dodgers and the Philadelphia Phillies across the 1977, 1978, 2008, and 2009 seasons",18,0,"| totalGames  |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(?games) AS ?totalGames) WHERE {
+  ?series wdt:P31 wd:Q5605523 ; wdt:P585 ?date ; wdt:P1545 ?games .
+  ?series wdt:P1887 wd:Q18397 .
+  ?series wdt:P1887 wd:Q104153 .
+  BIND(SUBSTR(STR(?date) , 1 , 4) AS ?year)
+  VALUES ?year {
+    ""1977"" ""1978"" ""2008"" ""2009""
+  }
+}",ComplexQA/Sportsreason_TANQ_complex/00120.json
+"What is the total number of games played between the Los Angeles Dodgers and the Philadelphia Phillies across the 1977, 1978, 2008, and 2009 National League Championship Series",18,0,"| total       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(?games) AS ?total) WHERE {
+  VALUES ?year {
+    1977 1978 2008 2009
+  }
+  ?nlcs wdt:P31 wd:Q25484 ; wdt:P585 ?eventDate ; wdt:P795 ?games .
+  FILTER(year(?eventDate) IN(1977 , 1978 , 2008 , 2009))
+  ?nlcs p:P126 ?stmt1 .
+  ?stmt1 ps:P126 wd:Q26350 .
+  ?nlcs p:P126 ?stmt2 .
+  ?stmt2 ps:P126 wd:Q26535 .
+  FILTER(?stmt1 != ?stmt2)
+}",ComplexQA/Sportsreason_TANQ_complex/00121.json
+"What was the highest attendance for any game played during the 1975 American League Championship Series, the 2013 American League Championship Series, or the 2018 World Series",54400,,"| maxAttendance |
+| ------------- |","SELECT(MAX(?att) AS ?maxAttendance) WHERE {
+  {
+    ?series wdt:P31 wd:Q7460980 ; wdt:P585 ?date .
+    FILTER(YEAR(?date) = 1975)
+    ?game wdt:P1343 ?series .
+    ?game wdt:P1126 ?att .
+  } UNION {
+    ?series wdt:P31 wd:Q7460980 ; wdt:P585 ?date .
+    FILTER(YEAR(?date) = 2013)
+    ?game wdt:P1343 ?series .
+    ?game wdt:P1126 ?att .
+  } UNION {
+    ?series wdt:P31 wd:Q550219 ; wdt:P585 ?date .
+    FILTER(YEAR(?date) = 2018)
+    ?game wdt:P1343 ?series .
+    ?game wdt:P1126 ?att .
+  }
+}",ComplexQA/Sportsreason_TANQ_complex/00127.json
+"What is the total number of games played in the National League Championship Series between the Los Angeles Dodgers and the Philadelphia Phillies in 1977, 1978, 2008, and 2009",18,0,"| total_games |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(?games) AS ?total_games) WHERE {
+  VALUES ?year {
+    1977 1978 2008 2009
+  }
+  ?series wdt:P31 wd:Q2849142 ; wdt:P463 wd:Q12277 ; wdt:P463 wd:Q3776 ; wdt:P585 ?date ; wdt:P1546 ?games .
+  FILTER(year(?date) = ?year)
+}",ComplexQA/Sportsreason_TANQ_complex/00128.json
+What is the total number of games played in the National League Championship Series and World Series that the St. Louis Cardinals won for which game summaries are available,29,0,"| total       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(?games) AS ?total) WHERE {
+  VALUES ?eventType {
+    wd:Q246339 wd:Q1019872
+  }
+  ?series wdt:P31 ?eventType .
+  ?series wdt:P1542 wd:Q14683 .
+  ?series wdt:P3475 ?games .
+}",ComplexQA/Sportsreason_TANQ_complex/00134.json
+"How many games were played in the National League Championship Series between the Los Angeles Dodgers and the Philadelphia Phillies for the years 1977, 1978, 2008, and 2009",18,0,"| total       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(?games) AS ?total) WHERE {
+  VALUES ?year {
+    1977 1978 2008 2009
+  }
+  ?series wdt:P31 wd:Q897381 .
+  ?series wdt:P585 ?time .
+  ?time wikibase:timeYear ?year .
+  ?series wdt:P1150 ?games .
+  ?series wdt:P1058 wd:Q35107 .
+  ?series wdt:P1058 wd:Q24449 .
+}",ComplexQA/Sportsreason_TANQ_complex/00135.json
+"What was the highest attendance figure for any game played in the 2018 World Series, 2013 American League Championship Series, or 1975 American League Championship Series",54400,,"| maxAttendance |
+| ------------- |","SELECT(MAX(?attendance) AS ?maxAttendance) WHERE {
+  {
+    ?series rdfs:label ""2018 World Series"" @en ; wdt:P31 wd:Q468893 .
+    ?game wdt:P1545 ?series .
+    ?game wdt:P525 ?attendance .
+  } UNION {
+    ?series rdfs:label ""2013 American League Championship Series"" @en ; wdt:P31 wd:Q1909334 .
+    ?game wdt:P1545 ?series .
+    ?game wdt:P525 ?attendance .
+  } UNION {
+    ?series rdfs:label ""1975 American League Championship Series"" @en ; wdt:P31 wd:Q1909334 .
+    ?game wdt:P1545 ?series .
+    ?game wdt:P525 ?attendance .
+  }
+}",ComplexQA/Sportsreason_TANQ_complex/00139.json
+"How many games were played by the Boston Red Sox in the 1975 American League Championship Series, the 2013 American League Championship Series, and the 2018 World Series",14,9.0,"| total             |
+| ----------------- |
+| 9.0 (xsd:decimal) |","SELECT(SUM(?numGames) AS ?total) WHERE {
+  {
+    ?series rdfs:label ""1975 American League Championship Series"" @en ; wdt:P1350 ?numGames .
+  } UNION {
+    ?series rdfs:label ""2013 American League Championship Series"" @en ; wdt:P1350 ?numGames .
+  } UNION {
+    ?series rdfs:label ""2018 World Series"" @en ; wdt:P1350 ?numGames .
+  }
+}",ComplexQA/Sportsreason_TANQ_complex/00141.json
+What is the total number of times the Richmond and Collingwood senior football clubs were Grand Finalists in the Victorian Football League or Australian Football League,38,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(*) AS ?count) WHERE {
+  ?grand_final wdt:P31 wd:Q2203483 .
+  {
+    ?grand_final wdt:P58 ?team .
+    VALUES ?team {
+      wd:Q426350 wd:Q441720
+    }
+  } UNION {
+    ?grand_final wdt:P59 ?team .
+    VALUES ?team {
+      wd:Q426350 wd:Q441720
+    }
+  }
+}",ComplexQA/Sportsreason_TANQ_complex/00146.json
+"How many games did the Boston Red Sox play across the 1975 American League Championship Series, the 2013 American League Championship Series, and the 2018 World Series",14,0,"| total       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(?games) AS ?total) WHERE {
+  {
+    ?series wdt:P31 wd:Q5369482 ; wdt:P571 ?date ; wdt:P137 wd:Q155010 ; wdt:P1181 ?games .
+    FILTER(STRSTARTS(STR(?date) , ""1975""))
+  } UNION {
+    ?series wdt:P31 wd:Q5369482 ; wdt:P571 ?date ; wdt:P137 wd:Q155010 ; wdt:P1181 ?games .
+    FILTER(STRSTARTS(STR(?date) , ""2013""))
+  } UNION {
+    ?series wdt:P31 wd:Q352923 ; wdt:P571 ?date ; wdt:P137 wd:Q155010 ; wdt:P1181 ?games .
+    FILTER(STRSTARTS(STR(?date) , ""2018""))
+  }
+}",ComplexQA/Sportsreason_TANQ_complex/00147.json
+How many games between the Los Angeles Dodgers and the Philadelphia Phillies were played at Dodger Stadium in the National League Championship Series from 1977 to 2009,9,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(?game) AS ?count) WHERE {
+  ?game wdt:P31 wd:Q3398510 ; wdt:P191 wd:Q11237 ; wdt:P192 wd:Q108995 ; wdt:P187 wd:Q191262 ; wdt:P585 ?eventDate ;
+  FILTER(YEAR(?eventDate) >= 1977 && YEAR(?eventDate) <= 2009)
+}",ComplexQA/Sportsreason_TANQ_complex/00148.json
+"How many games were played at Fenway Park across the 2018 World Series, the 2013 American League Championship Series, and the 1975 American League Championship Series",7,0,"| total       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(*) AS ?total) WHERE {
+  VALUES ?series {
+    wd:Q3511178 wd:Q14870260 wd:Q56692089
+  }
+  ?game wdt:P1545 ?series .
+  ?game wdt:P286 wd:Q22019 .
+}",ComplexQA/Sportsreason_TANQ_complex/00150.json
+"How many games were played at Fenway Park across the 1975 American League Championship Series, the 2013 American League Championship Series, and the 2018 World Series",7,0,"| total_games |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(*) AS ?total_games) WHERE {
+  {
+    ?series wdt:P31 wd:Q303988 ; wdt:P580 ?year .
+    FILTER(YEAR(?year) = 1975)
+    ?game wdt:P1548 ?series ; wdt:P178 wd:Q152619 .
+  } UNION {
+    ?series wdt:P31 wd:Q303988 ; wdt:P580 ?year .
+    FILTER(YEAR(?year) = 2013)
+    ?game wdt:P1548 ?series ; wdt:P178 wd:Q152619 .
+  } UNION {
+    ?series wdt:P31 wd:Q7329 ; wdt:P580 ?year .
+    FILTER(YEAR(?year) = 2018)
+    ?game wdt:P1548 ?series ; wdt:P178 wd:Q152619 .
+  }
+}",ComplexQA/Sportsreason_TANQ_complex/00152.json
+How many total games were played across the National League Championship Series competitions that featured both the Los Angeles Dodgers and the Philadelphia Phillies,18,0,"| total       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(?games) AS ?total) WHERE {
+  ?event rdfs:label ?label .
+  FILTER(CONTAINS(LCASE(?label) , ""national league championship series""))
+  FILTER(LANGMATCHES(LANG(?label) , ""en""))
+  ?event wdt:P180 wd:Q243352 .
+  ?event wdt:P180 wd:Q166977 .
+  ?event wdt:P1182 ?games .
+}",ComplexQA/Sportsreason_TANQ_complex/00158.json
+"What is the combined number of games played in the 1975 American League Championship Series, the 2013 American League Championship Series, and the 2018 World Series",14,9.0,"| total             |
+| ----------------- |
+| 9.0 (xsd:decimal) |","SELECT(SUM(?games) AS ?total) {
+  {
+    ?event rdfs:label ""1975 American League Championship Series"" @en ; wdt:P1350 ?games .
+  } UNION {
+    ?event rdfs:label ""2013 American League Championship Series"" @en ; wdt:P1350 ?games .
+  } UNION {
+    ?event rdfs:label ""2018 World Series"" @en ; wdt:P1350 ?games .
+  }
+}",ComplexQA/Sportsreason_TANQ_complex/00159.json
+What is the combined number of games played in the 2008 and 2009 National League Championship Series between the Los Angeles Dodgers and the Philadelphia Phillies,10,0,"| total       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(?games) AS ?total) WHERE {
+  ?event wdt:P31 wd:Q3531707 ; wdt:P771 wd:Q513773 ; wdt:P771 wd:Q95198 ; wdt:P585 ?date ; wdt:P2262 ?games .
+  FILTER(year(?date) = 2008)
+}",ComplexQA/Sportsreason_TANQ_complex/00168.json
+What is the combined total number of times the Richmond Football Club and the Collingwood Football Club have finished as runners-up in the VFL or AFL Grand Final,38,0,"| total       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(*) AS ?total) WHERE {
+  VALUES ?club {
+    wd:Q2410232 wd:Q553228
+  }
+  ?event wdt:P31 wd:Q2959824 ; wdt:P100 ?club ; wdt:P122 ?winner .
+  FILTER(?club != ?winner)
+}",ComplexQA/Sportsreason_TANQ_complex/00171.json
+How many games were played in Philadelphia during the National League Championship Series matchups between the Los Angeles Dodgers and the Philadelphia Phillies,11,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(?game) AS ?count) WHERE {
+  ?series wdt:P31 wd:Q7655986 ; wdt:P354 wd:Q15125 ; wdt:P354 wd:Q48205 .
+  ?game wdt:P120 ?series .
+  ?game wdt:P150 ?venue .
+  ?venue wdt:P131 wd:Q23051 .
+}",ComplexQA/Sportsreason_TANQ_complex/00177.json
+How many senior premierships did Richmond win in the VFL/AFL competition in years later than Collingwood's first senior premiership year in the same competition,13,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(?richmond_year) AS ?count) WHERE {
+  {
+    SELECT(MIN(?collingwood_year) AS ?min_year) WHERE {
+      ?season wdt:P718 wd:Q33313 ; wdt:P31 wd:Q118458 ; wdt:P527 wd:Q551729 ; wdt:P585 ?collingwood_year .
+    }
+  }
+  ?season wdt:P718 wd:Q31392 ; wdt:P31 wd:Q118458 ; wdt:P527 wd:Q551729 ; wdt:P585 ?richmond_year .
+  FILTER(?richmond_year > ?min_year)
+}",ComplexQA/Sportsreason_TANQ_complex/00179.json
+How many unique drivers are listed across the main drivers table for the 2002 Formula One season and the practice drivers table for the 2003 Formula One season,29,0,"| uniqueCount |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(DISTINCT ?driver) AS ?uniqueCount) WHERE {
+  {
+    wd:Q1054748 wdt:P1654 ?driver
+  } UNION {
+    wd:Q2532496 wdt:P1655 ?driver
+  }
+}",ComplexQA/Sportsreason_TANQ_complex/00180.json
+"What is the fewest number of games played in a championship or World Series won by the Boston Red Sox among the 1975, 1986, 2004, 2007, 2013, and 2018 series",3,,"| min_games |
+| --------- |","SELECT(MIN(?games) AS ?min_games) WHERE {
+  ?series wdt:P31 wd:Q746534 .
+  ?series wdt:P154 wd:Q13328 .
+  ?series wdt:P585 ?event_date .
+  FILTER(STRSTARTS(STR(?event_date) , ""2004"") || STRSTARTS(STR(?event_date) , ""2007"") || STRSTARTS(STR(?event_date) , ""2013"") || STRSTARTS(STR(?event_date) , ""2018""))
+  ?series wdt:P1511 ?games .
+}",ComplexQA/Sportsreason_TANQ_complex/00186.json
+"How many unique teams participated in the competition during the years Fitzroy won a senior premiership, based on available information about specific clubs",6,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(DISTINCT ?team) AS ?count) WHERE {
+  ?season wdt:P2112 wd:Q515543 ; wdt:P155 wd:Q171725 ; wdt:P150 ?team .
+}",ComplexQA/Sportsreason_TANQ_complex/00190.json
+Add together the number of races in the earliest and latest championship seasons won by Michael Schumacher that are described in the available information.,33,0,"| totalRaces  |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(?races) AS ?totalRaces) WHERE {
+  wd:Q40127 wdt:P1050 ?championship .
+  ?championship wdt:P2353 ?season .
+  ?season wdt:P585 ?date .
+  ?season wdt:P1404 ?races .
+  BIND(SUBSTR(STR(?date) , 1 , 4) AS ?year)
+  {
+    SELECT(MIN(?year) AS ?minYear) {
+      wd:Q40127 wdt:P1050 ?championship .
+      ?championship wdt:P2353 ?season .
+      ?season wdt:P585 ?date .
+      BIND(SUBSTR(STR(?date) , 1 , 4) AS ?year)
+    }
+  }
+  {
+    SELECT(MAX(?year) AS ?maxYear) {
+      wd:Q40127 wdt:P1050 ?championship .
+      ?championship wdt:P2353 ?season .
+      ?season wdt:P585 ?date .
+      BIND(SUBSTR(STR(?date) , 1 , 4) AS ?year)
+    }
+  }
+  FILTER(?year = ?minYear || ?year = ?maxYear)
+}",ComplexQA/Sportsreason_TANQ_complex/00194.json
+How many years passed between the first and last National League Championship Series featuring both the Los Angeles Dodgers and the Philadelphia Phillies,32,,"| difference |
+| ---------- |","SELECT(MAX(?year) - MIN(?year) AS ?difference) WHERE {
+  ?nls wdt:P31 wd:Q508922 .
+  ?nls wdt:P1772 ?year .
+  ?nls wdt:P1334 wd:Q21852 .
+  ?nls wdt:P1334 wd:Q37134 .
+}",ComplexQA/Sportsreason_TANQ_complex/00198.json

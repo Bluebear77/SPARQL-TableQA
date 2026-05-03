@@ -7,9 +7,9 @@ Invalid cases: 141 (93.38%)
 
 ## Invalid case breakdown
 
-- null_output: 15 (9.93%)
+- null_output: 16 (10.60%)
 - no_sparql_generated: 0 (0.00%)
-- empty_sparql_result: 95 (62.91%)
+- empty_sparql_result: 96 (63.58%)
 - sparql_execution_failed (execution): 26 (17.22%)
 - sparql_execution_failed (preprocessing): 3 (1.99%)
-- invalid_json: 2 (1.32%)
+- invalid_json: 0 (0.00%)

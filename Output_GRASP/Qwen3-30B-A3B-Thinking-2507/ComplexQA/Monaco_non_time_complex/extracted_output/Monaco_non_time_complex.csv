@@ -248,7 +248,7 @@ Who are the warring sides in the second Libyan Civil War Who are their leaders,"
   ?symptom rdfs:label ?symptomLabel .
   FILTER(LANG(?symptomLabel) = 'en')
 }"
-,,,,
+Return the major ancestry groups of Asian Americans along with the languages and major religions practiced by each group.,"[['Chinese American', 'various varieties of Chinese', '52% Irreligion'], ['Filipino Americans', 'Filipino', 'Christianity'], ['Vietnamese Americans', 'English', 'Buddhism (43%)'], ['Indian Americans', 'Hindi', 'Hinduism'], ['Indian Americans', 'Hindi', 'Christianity'], ['Indian Americans', 'Hindi', 'Islam'], ['Indian Americans', 'Hindi', 'Sikhism'], ['Indian Americans', 'Hindi', 'Other religion'], ['Indian Americans', 'Hindi', 'No religion'], ['Korean Americans', 'English', '61% Protestantism'], ['Korean Americans', 'English', '23% Unaffiliated'], ['Korean Americans', 'English', '10% Roman Catholicism'], ['Korean Americans', 'English', '6% Buddhism'], ['Korean Americans', 'Korean', '61% Protestantism'], ['Korean Americans', 'Korean', '23% Unaffiliated'], ['Korean Americans', 'Korean', '10% Roman Catholicism'], ['Korean Americans', 'Korean', '6% Buddhism'], ['Japanese Americans', 'American English', 'Protestantism'], ['Japanese Americans', 'American English', 'Unaffiliated'], ['Japanese Americans', 'American English', 'Buddhism'], ['Japanese Americans', 'American English', 'Catholicism'], ['Japanese Americans', 'American English', 'Shinto'], ['Japanese Americans', 'Japanese', 'Protestantism'], ['Japanese Americans', 'Japanese', 'Unaffiliated'], ['Japanese Americans', 'Japanese', 'Buddhism'], ['Japanese Americans', 'Japanese', 'Catholicism'], ['Japanese Americans', 'Japanese', 'Shinto']]",,,
 What were the popular hairstyles for women in each decade from 1900s to the 90s,"[['1990s', 'ponytails'], ['1990s', 'big curly hair'], ['1990s', 'bangs'], ['1990s', 'pixie cut'], ['1990s', 'Rachel haircut'], ['1990s', 'mini hair-buns'], ['1990s', 'the Bob cut'], ['1990s', 'Farrah Fawcett hairstyle'], ['1990s', 'Felicity curls'], ['1990s', 'Fishtail Half-Up'], ['1990s', 'pigtails'], ['1900s', 'Gibson Girl hairstyle'], ['1900s', 'Masses of wavy hair swept up to the top of the head (if necessary, over horsehair pads called rats) and gathered into a knot'], ['1960s', 'beehive'], ['1960s', 'very short style'], ['1960s', 'very long straight style'], ['1960s', 'chin-length contour cut'], ['1960s', 'pageboy'], ['1960s', 'bouffant'], ['1960s', 'very big hair with hairspray style'], ['1960s', 'wigs'], ['1960s', 'androgynous style'], ['1960s', 'mod style cut short and close to their heads'], ['1960s', 'long, straight, natural hair kept in place by a bandana'], ['1970s', 'long and straight'], ['1970s', 'feathery cut like Farrah Fawcett'], ['1970s', 'Afro'], ['1970s', 'shaved head'], ['1970s', 'mohawk'], ['1980s', 'large hair-dos'], ['1980s', 'puffed-up style'], ['1980s', 'permanent waves'], ['1980s', 'softer cuts'], ['1980s', 'Big hair permed to achieve the desired volume'], ['1980s', 'high volume bouffant'], ['1950s', 'pickle cut'], ['1950s', 'pixie cut'], ['1950s', 'bouffant'], ['1950s', 'ponytail'], ['1920s', 'bob cut'], ['1940s', 'Victory rolls']]",,,"SELECT ?periodLabel(GROUP_CONCAT(?hairstyleLabel ; separator = ', ') AS ?hairstyles) WHERE {
   ?hairstyle wdt:P31 wd:Q254152 .
   ?hairstyle rdfs:label ?hairstyleLabel .
@@ -476,7 +476,19 @@ Which popular houseplants are native to South America,"['Anthurium spp.', 'Monst
   ?plant rdfs:label ?plantLabel .
   FILTER(LANG(?plantLabel) = 'en')
 }"
-,,,,
+What is the heaviest land mammal native to each continent and how much do they weigh,"[['Asia', 'Asian elephant', '4.0 t (4.4 short tons) (males)'], ['Asia', 'Asian elephant', '2.7 t (3.0 short tons) (females)'], ['Africa', 'African bush elephant', '6.0 t (6.6 short tons) (males)'], ['Africa', 'African bush elephant', '3.0 t (3.3 short tons) (females)'], ['North America', 'Wood bison (American bison)', '1,179 kg'], ['South America', 'South American tapir', '225 kg (496 lb)'], ['Antarctica', 'Southern elephant seal', '350 to 900 kg (770 to 1,980 lb) (females)'], ['Antarctica', 'Southern elephant seal', '1,500 to 3,700 kg (3,300 to 8,200 lb) (males)'], ['Europe', 'European bison', '615 to 920 kg (1,356 to 2,028 lb) males'], ['Europe', 'European bison', '424 to 633 kg (935 to 1,396 lb) females'], ['Australia', 'red kangaroo', '18 to 90 kg']]",,,"SELECT DISTINCT ?continent ?mammal ?weight WHERE {
+  VALUES ?continent {
+    wd:Q30 wd:Q47 wd:Q81 wd:Q14 wd:Q20 wd:Q111
+  }
+  ?mammal wdt:P31 wd:Q140221 ; wdt:P5050 ?country ; wdtn:P2048 ?weight .
+  ?country wdt:P30 ?continent .
+  FILTER NOT EXISTS {
+    ?mammal2 wdt:P31 wd:Q140221 ; wdt:P5050 ?country2 ; wdtn:P2048 ?weight2 .
+    ?country2 wdt:P30 ?continent .
+    FILTER(?weight < ?weight2)
+  }
+}
+ORDER BY ?continent"
 What are the main differences between the election system in Germany and the US,"['Plurality voting refers to electoral systems in which the candidate in an electoral district who poll more than any other (that is, receive a plurality) are elected. Under single-winner plurality voting, and in systems based on single-member districts, plurality voting is called single member  plurality (SMP), which is widely known as first-past-the-post. In SMP/FPTP the leading candidate, whether or not they have a majority of votes, is elected.', 'Party-list proportional representation (list-PR) is a subset of proportional representation electoral systems in which multiple candidates are elected (e.g., elections to parliament) through their position on an electoral list. They can also be used as part of mixed-member electoral systems.']",,,"SELECT ?germanySystem ?germanyLabel ?usSystem ?usLabel WHERE {
   wd:Q183 wdt:P1134 ?germanySystem .
   wd:Q30 wdt:P1134 ?usSystem .
@@ -623,7 +635,7 @@ List all major sneaker companies.,"['361 Degrees', 'Adidas', 'Allbirds', 'Anta',
   ?company rdfs:label ?companyLabel .
   FILTER(LANGMATCHES(LANG(?companyLabel) , ""en""))
 }"
-,,,,
+Which TV shows in the 2010s have had Bryan Cranston play a part other than the narrator,"['Family Guy', 'How I Met Your Mother', 'Breaking Bad', 'Glenn Martin, DDS', 'Saturday Night Live', 'The Handlers', 'Robot Chicken', 'Archer', '30 Rock', 'The Simpsons', 'The Cleveland Show', 'Sneaky Pete', 'SuperMansion', 'All the Way', ""Philip K. Dick's Electric Dreams"", 'Curb Your Enthusiasm', 'The Dangerous Book for Boys', 'Last Week Tonight with John Oliver', 'Better Call Saul', ""It's Always Sunny in Philadelphia"", 'One Life to Live', 'The Flash', 'The X-Files', 'American Dad!']",,,
 What was the median age of the MKs of each party in the 24th Knesset,"[['Likud', 61.0], ['Yesh Atid', 51.0], ['Shas', 46.0], ['Resilience', 58.5], ['Labor', 48.0], ['Degel HaTorah', 62.5], ['Agudat Yisrael', 68.0], ['Yisrael Beiteinu', 48.0], ['National Union', 49.5], ['Hadash', 59.0], [""Ta'al"", 63.0], ['Meretz', 57.5], ['New Hope', 57.0], ['New Right', 45.0], ['United Arab List', 57.0], ['National Unity', 43.0], ['Noam', 67.0], ['Atid Ehad', 48.0], ['Otzma Yehudit', 47.0], ['Balad', 48.0], ['Economic Freedom', 40.0], ['Derekh Eretz', 55.0]]",,,"SELECT ?party(AVG(?age) AS ?median_age) WHERE {
   ?term wdt:P31 wd:Q785 ; wdt:P1312 24 ; wdt:P185 ?mk .
   ?mk wdt:P102 ?party ; wdt:P569 ?birthDate .
@@ -847,7 +859,7 @@ How many monarchs did each of the royal houses of England have over the years,"[
 }
 GROUP BY ?houseLabel
 ORDER BY DESC(?count)"
-,,,,
+"What are the four grand slams, and where are they held","[['Australian Open', 'Melbourne Park in Melbourne, Victoria, Australia'], ['French Open', 'Stade Roland Garros in Paris, France'], ['Wimbledon', 'All England Lawn Tennis and Croquet Club in Wimbledon, London'], ['US Open', 'USTA Billie Jean King National Tennis Center in Flushing Meadows–Corona Park, Queens, New York City']]",,,
 I want a Pokemon game for Game Boy or Game Boy Color.,"['Pokémon Gold and Silver', 'Pokémon Crystal', 'Pokémon Trading Card Game', 'Pokémon Play It!', 'Pokémon Pinball', 'Pokémon Puzzle Challenge', 'Pokémon Card GB2: Here Comes Great Team Rocket!', 'Pocket Monsters Red and Green', 'Pokémon Yellow: Special Pikachu Edition', 'Pocket Monsters Blue', '(Pokémon Red and Blue)']",,,"SELECT DISTINCT ?game ?gameLabel WHERE {
   {
     ?game wdt:P31 wd:Q426350 ; wdt:P1476 wd:Q10493 ; wdt:P276 wd:Q938592 .
@@ -867,7 +879,6 @@ Which French New Wave filmmakers were not associated with the Cahiers du Cinema 
     FILTER(year(?date) >= 1960 && year(?date) < 1970)
   }
 }"
-Who has served in all of Angela Merkel's cabinets and what positions did they hold in each of them,"[['Ursula von der Leyen', 'Minister for Family Affairs, Senior Citizens, Women and Youth'], ['Ursula von der Leyen', 'Federal Minister of Labour and Social Affairs'], ['Ursula von der Leyen', 'Federal Minister of Defense'], ['Ursula von der Leyen', 'Federal Minister of Defence']]",,,
 What's the difference between the Roman Empire and the Holy Roman Empire,"[['The Roman Empire was the post-Republican period of ancient Rome.'], ['The Holy Roman Empire  was a political entity in Western, Central and Southern Europe that developed during the Early Middle Ages and continued until its dissolution in 1806 during the Napoleonic Wars.']]",,,"SELECT ?romStart ?romEnd ?hreStart ?hreEnd WHERE {
   wd:Q2026 wdt:P571 ?romStart ; wdt:P576 ?romEnd .
   wd:Q15655 wdt:P571 ?hreStart ; wdt:P576 ?hreEnd .

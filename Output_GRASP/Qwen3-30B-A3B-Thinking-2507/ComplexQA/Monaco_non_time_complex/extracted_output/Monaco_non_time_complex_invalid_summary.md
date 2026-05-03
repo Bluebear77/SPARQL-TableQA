@@ -1,15 +1,15 @@
 # Invalid case summary for Monaco_non_time_complex
 
-Total JSON files: 151
+Total JSON files: 150
 
-Valid cases: 9 (5.96%)
-Invalid cases: 142 (94.04%)
+Valid cases: 9 (6.00%)
+Invalid cases: 141 (94.00%)
 
 ## Invalid case breakdown
 
-- null_output: 16 (10.60%)
+- null_output: 18 (12.00%)
 - no_sparql_generated: 0 (0.00%)
-- empty_sparql_result: 115 (76.16%)
-- sparql_execution_failed (execution): 2 (1.32%)
-- sparql_execution_failed (preprocessing): 5 (3.31%)
-- invalid_json: 4 (2.65%)
+- empty_sparql_result: 116 (77.33%)
+- sparql_execution_failed (execution): 2 (1.33%)
+- sparql_execution_failed (preprocessing): 5 (3.33%)
+- invalid_json: 0 (0.00%)
