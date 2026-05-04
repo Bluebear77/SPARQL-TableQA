@@ -4,19 +4,19 @@
 
 | Metric | Count | Percentage |
 |---|---:|---:|
-| Valid | 533 | 18.52% |
-| Invalid | 2345 | 81.48% |
+| Valid | 554 | 19.25% |
+| Invalid | 2324 | 80.75% |
 
 ## Error distribution (Total)
 
 | Error type | Count | % of invalid |
 |---|---:|---:|
-| empty_sparql_result | 1070 | 45.63% |
+| empty_sparql_result | 1125 | 48.41% |
 | invalid_json | 0 | 0.00% |
-| no_sparql_generated | 34 | 1.45% |
-| null_output | 1006 | 42.90% |
-| sparql_execution_failed (execution) | 196 | 8.36% |
-| sparql_execution_failed (preprocessing) | 39 | 1.66% |
+| no_sparql_generated | 34 | 1.46% |
+| null_output | 930 | 40.02% |
+| sparql_execution_failed (execution) | 196 | 8.43% |
+| sparql_execution_failed (preprocessing) | 39 | 1.68% |
 
 ## Per-folder summary
 
@@ -29,6 +29,6 @@
 | Monaco_time_complex | 151 | 10 | 6.62% | 141 | 93.38% |
 | NQ_table_test_simple | 967 | 16 | 1.65% | 951 | 98.35% |
 | OTT_QA_dev_complex | 401 | 41 | 10.22% | 360 | 89.78% |
-| Qampari_wikitables_simple | 79 | 0 | 0.00% | 79 | 100.00% |
+| Qampari_wikitables_simple | 79 | 21 | 26.58% | 58 | 73.42% |
 | Sportsreason_TANQ_complex | 201 | 43 | 21.39% | 158 | 78.61% |
-| **Total** | 2878 | 533 | 18.52% | 2345 | 81.48% |
+| **Total** | 2878 | 554 | 19.25% | 2324 | 80.75% |
