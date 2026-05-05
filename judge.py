@@ -61,8 +61,7 @@ VALID_LABELS = [
 JUDGE_PROMPT_TEMPLATE = """
 You are an expert evaluator for answer comparison and inconsistency analysis.
 
-Your task is to compare a Gold answer and a KG answer for the same question and
-assign exactly one label from the inconsistency taxonomy.
+Your task is to compare a Gold answer and a KG answer for the same question and assign exactly one label from the inconsistency taxonomy.
 
 Judge semantic meaning, factual content, completeness, precision, and time sensitivity.
 Do not judge based on superficial formatting alone.
@@ -91,61 +90,57 @@ Important judging rules:
 - Treat different date formats as Same if they refer to the same date.
 - Also treat a bare year and a full timestamp ending in 01-01 as Same when they clearly represent the same year.
   Example: "1939" and "1939-01-01T00:00:00Z" should be treated as Same.
-- Ignore differences that are only due to formatting, punctuation, capitalization,
-  ordering, separators, or minor normalization.
-- If one answer is a strict subset of the other, determine whether the larger answer
-  is genuinely more complete or more precise.
+- Ignore differences that are only due to formatting, punctuation, capitalization, ordering, separators, or minor normalization.
+- If one answer is a strict subset of the other, determine whether the larger answer is genuinely more complete or more precise.
 - Use Different answer when the core values or facts conflict.
-- Use Temporal changes only when both answers could be correct at different times
-  and the disagreement is best explained by change over time.
+- Use Temporal changes only when both answers could be correct at different times and the disagreement is best explained by change over time.
 
 Taxonomy labels and definitions:
 
+Example format: [Question; Gold answer; KG answer]
+
 1. Same
 Definition:
-The answers are semantically equivalent. Any differences are limited to formatting,
-normalization, ordering, or equivalent date representation. Neither answer is more
-accurate or more complete than the other in a meaningful way.
+The answers are semantically equivalent. Any differences are limited to formatting, normalization, ordering, or equivalent date representation. Neither answer is meaningfully more accurate or more complete than the other.
 
 Examples:
-- [Which type of The Scarlet Letter genre?; Romantic, Historical; historical fiction romantic fiction]
+- [Which type of genre is The Scarlet Letter?; Romantic, Historical; historical fiction romantic fiction]
 - [What country does the soccer player Johan Cruyff represent?; Netherlands; Kingdom of the Netherlands]
 - [What is the current population of Bora Bora?; 10,605; 10605]
 
 2. Higher accuracy in Wikidata than in Table
 Definition:
-The KG answer fully covers the Gold answer and provides additional correct detail,
-higher precision, or greater completeness.
+The KG answer fully covers the Gold answer and provides additional correct detail, higher precision, or greater completeness. The Gold answer is a subset of the KG answer.
+Alternatively, the Gold answer refers to the same fact but with less precision.
 
 Examples:
 - [Who was the shirt sponsor for FC Cincinnati soccer club?; Mercy Health; Mercy Health, Toyota]
   Explanation: The KG answer includes the Gold answer and adds another sponsor.
 - [When was the Mission San Antonio de Valero built?; 1718; 1718-05-01T00:00:00Z]
-  Explanation: The KG answer is more precise because it gives a full date.
+  Explanation: The KG answer is more precise because it gives a full year-month-day date.
 - [What is the genre of the series The Sopranos?; crime serial; drama television series, crime television series]
-  Explanation: The KG answer includes a broader and more complete set of genres.
+  Explanation: The KG answer includes the Gold answer and extends it to a broader and more complete set of genres.
 
 3. Higher accuracy in Table than in Wikidata
 Definition:
-The Gold answer fully covers the KG answer and provides additional correct detail,
-higher precision, or greater completeness.
+The Gold answer fully covers the KG answer and provides additional correct detail, higher precision, or greater completeness. The KG answer is a subset of the Gold answer.
+Alternatively, the KG answer refers to the same fact but with less precision.
 
 Examples:
 - [Where did the Battle of Freeman's Farm take place?; Stillwater, Saratoga County, New York; Stillwater]
-  Explanation: The Gold answer is more specific and less ambiguous.
+  Explanation: The Gold answer covers the KG answer with higher precision and provides the county and state for Stillwater.
 - [Who starred in Pirates of the Caribbean?; Johnny Depp, Geoffrey Rush, Kevin McNally, Orlando Bloom, Keira Knightley, Jack Davenport, Jonathan Pryce; Johnny Depp]
-  Explanation: The Gold answer provides a more complete cast list.
+  Explanation: The Gold answer provides a more complete cast list. The KG answer is a subset of the Gold answer.
 - [In what movie did Ian Charleson play Eric Liddell, and what year did the movie come out?; Chariots of Fire, 30 Mar 1981, 31 Mar 1981, 15 May 1981, 26 Sep 1981, 9 Apr 1982, 7 May 1982; Ian Charleson played Eric Liddell in Chariots of Fire, in 1981]
   Explanation: The Gold answer gives more complete release-date information across regions.
 
 4. Different answer
 Definition:
-The answers contain conflicting core facts or values, and the disagreement is not best
-explained by different precision levels or by temporal change.
+The answers contain conflicting core facts or values, and the disagreement is not best explained by different precision levels or by temporal change.
 
 Examples:
 - [What was the date of the signing of the Declaration of Independence?; August 2, 1776; 1776-07-04T00:00:00Z]
-  Explanation: The answers conflict on the date.
+  Explanation: The answers conflict on the date; the month and day are contradictory.
 - [What is the elevation of Dakar?; 22 m; 10 m]
   Explanation: The elevation values are contradictory.
 - [What country did Raúl González represent in football?; Spain; Argentina]
@@ -153,8 +148,59 @@ Examples:
 
 5. Temporal changes
 Definition:
-The answers differ because the underlying fact changes over time, and both answers
-could plausibly be correct at different times.
+The answers differ because the underlying fact changes over time, and both answers could plausibly be correct at different times.
+
+Time-sensitive cue words or phrases in the question:
+- currently
+- current
+- now
+- as of now
+- at present
+- present-day
+- latest
+- newest
+- most recent
+- recently
+- today
+- this year
+- at the time
+- at that time
+- before
+- after
+- since
+- until
+- last
+- previous
+- former
+- updated
+- update
+
+Common time-sensitive fact types:
+- population
+- box office
+- revenue
+- net worth
+- ranking
+- standings
+- champion
+- CEO
+- president
+- prime minister
+- office holder
+- membership
+- roster
+- cast
+- season finale
+- release date
+- sponsor
+
+Judging guidance:
+- Prefer this label when the question asks about a fact that can change over time.
+- Prefer this label when both answers could be correct, but at different times.
+- Cue words such as "current" or "latest" strengthen the case for this label, but they are not required.
+- A question may still be time-sensitive even without explicit cue words if the fact type normally changes over time.
+- Do not use this label when one answer is simply incorrect and time does not explain the difference.
+- Do not use this label when the difference is only due to greater precision, formatting, or completeness rather than an actual change over time.
 
 Examples:
 - [What is the box office collection of the movie Oblivion?; $287.9 million; 286168572.0]
