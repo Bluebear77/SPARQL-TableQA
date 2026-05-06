@@ -5,8 +5,6 @@ Total JSON files: 200
 Valid cases: 25 (12.50%)
 Invalid cases: 175 (87.50%)
 
-!extracted_output/Sportsreason_TANQ_complex_valid_vs_invalid_pie.png
-
 ## Invalid case breakdown
 
 - null_output: 99 (49.50%)

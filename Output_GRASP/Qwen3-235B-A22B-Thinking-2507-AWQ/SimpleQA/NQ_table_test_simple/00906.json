@@ -1,0 +1,184 @@
+{
+  "type": "output",
+  "task": "sparql-qa",
+  "output": {
+    "sparql": "PREFIX wdt: <http://www.wikidata.org/prop/direct/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX wd: <http://www.wikidata.org/entity/>\nSELECT ?owner ?ownerLabel WHERE {\n  wd:Q2746220 wdt:P749 ?owner .\n  ?owner rdfs:label ?ownerLabel .\n  FILTER(LANG(?ownerLabel) = \"en\")\n}",
+    "kg": "wikidata",
+    "selections": "Using entities:\n- Crowne Plaza (wd:Q2746220):\n  - hotel chain\n  - is instance of hotel brand\n  - is instance of hotel chain\n\nUsing properties:\n- parent organization or unit (wd:P749 as wdt), also known as \"chapter of\", \"has organizational parent\", \"holding\", \"holding company\", \"owned by (company or organisation)\", etc.:\n  - parent organization or unit of an organization or unit, ... organization (Q43229) and organization unit (Q10387680)",
+    "result": "Got 1 row and 2 columns:\n| owner                              | ownerLabel                     |\n| ---------------------------------- | ------------------------------ |\n| IHG Hotels & Resorts (wd:Q1424962) | IHG Hotels & Resorts (lang:en) |",
+    "endpoint": "https://qlever.dev/api/wikidata",
+    "type": "answer",
+    "answer": "The owner of Crowne Plaza is IHG Hotels & Resorts.",
+    "formatted": "The owner of Crowne Plaza is IHG Hotels & Resorts.\n\nSPARQL query over wikidata:\n```sparql\nPREFIX wdt: <http://www.wikidata.org/prop/direct/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX wd: <http://www.wikidata.org/entity/>\nSELECT ?owner ?ownerLabel WHERE {\n  wd:Q2746220 wdt:P749 ?owner .\n  ?owner rdfs:label ?ownerLabel .\n  FILTER(LANG(?ownerLabel) = \"en\")\n}\n```\n\nUsing entities:\n- Crowne Plaza (wd:Q2746220):\n  - hotel chain\n  - is instance of hotel brand\n  - is instance of hotel chain\n\nUsing properties:\n- parent organization or unit (wd:P749 as wdt), also known as \"chapter of\", \"has organizational parent\", \"holding\", \"holding company\", \"owned by (company or organisation)\", etc.:\n  - parent organization or unit of an organization or unit, ... organization (Q43229) and organization unit (Q10387680)\n\nExecution result:\nGot 1 row and 2 columns:\n| owner                              | ownerLabel                     |\n| ---------------------------------- | ------------------------------ |\n| IHG Hotels & Resorts (wd:Q1424962) | IHG Hotels & Resorts (lang:en) |"
+  },
+  "elapsed": 49.344185,
+  "error": null,
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a question answering assistant. Your job is to generate a SPARQL query to answer a given user question.\n\nYou should follow a step-by-step approach to generate the SPARQL query:\n1. Determine possible entities and properties implied by the user question.\n2. Search for the entities and properties in the knowledge graphs. Where applicable, constrain the searches with already identified entities and properties.\n3. Gradually build up the SPARQL query using the identified entities and properties. Start with simple queries and add more complexity as needed. Execute intermediate queries to get feedback and to verify your assumptions. You may need to refine or rethink your current plan based on the query results and go back to step 2 if needed, possibly multiple times.\n4. Use the answer or cancel function to finalize your answer and stop the generation process.\n\nAvailable knowledge graphs:\n- \"wikidata\" at https://qlever.dev/api/wikidata\n  - \"entity\" index (type=\"fuzzy\"): Entities indexed by their labels and synonyms\n  - \"property\" index (type=\"embedding\", modalities=\"text\"): Properties indexed by their labels, synonyms, and identifiers\n\nIndex types used:\n- \"embedding\": Retrieves items by cosine similarity between their embeddings and the query embedding. The embedding model used depends on the index and may support text, images, or both.\n- \"fuzzy\": Retrieves items by overlap between their label words and the query keywords. The query keywords must not match label words exactly, but some fuzziness is allowed. The longer a query keyword is, the more it can deviate from a label word and still be considered a match, though it will also contribute less to the overall score. No special query operators like AND/OR are supported.\n\nSPARQL prefixes for use in function calls:\n- bd: http://www.bigdata.com/rdf#\n- cc: http://creativecommons.org/ns#\n- data: https://www.wikidata.org/wiki/Special:EntityData/\n- dc: http://purl.org/dc/elements/1.1/\n- dct: http://purl.org/dc/terms/\n- foaf: http://xmlns.com/foaf/0.1/\n- geo: http://www.opengis.net/ont/geosparql#\n- geof: http://www.opengis.net/def/function/geosparql/\n- gn: http://www.geonames.org/ontology#\n- hint: http://www.bigdata.com/queryHints#\n- imdb: https://www.imdb.com/\n- math: http://www.w3.org/2005/xpath-functions/math#\n- ontolex: http://www.w3.org/ns/lemon/ontolex#\n- owl: http://www.w3.org/2002/07/owl#\n- p: http://www.wikidata.org/prop/\n- pq: http://www.wikidata.org/prop/qualifier/\n- pqn: http://www.wikidata.org/prop/qualifier/value-normalized/\n- pqv: http://www.wikidata.org/prop/qualifier/value/\n- pr: http://www.wikidata.org/prop/reference/\n- prn: http://www.wikidata.org/prop/reference/value-normalized/\n- prov: http://www.w3.org/ns/prov#\n- prv: http://www.wikidata.org/prop/reference/value/\n- ps: http://www.wikidata.org/prop/statement/\n- psn: http://www.wikidata.org/prop/statement/value-normalized/\n- psv: http://www.wikidata.org/prop/statement/value/\n- qb: http://purl.org/linked-data/cube#\n- qfn: http://qlever.cs.uni-freiburg.de/function#\n- ql: http://qlever.cs.uni-freiburg.de/builtin-functions/\n- qlss: https://qlever.cs.uni-freiburg.de/spatialSearch/\n- rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#\n- rdfs: http://www.w3.org/2000/01/rdf-schema#\n- ref: http://www.wikidata.org/reference/\n- s: http://www.wikidata.org/entity/statement/\n- schema: http://schema.org/\n- skos: http://www.w3.org/2004/02/skos/core#\n- v: http://www.wikidata.org/value/\n- void: http://rdfs.org/ns/void#\n- wd: http://www.wikidata.org/entity/\n- wdno: http://www.wikidata.org/prop/novalue/\n- wdt: http://www.wikidata.org/prop/direct/\n- wdtn: http://www.wikidata.org/prop/direct-normalized/\n- wikibase: http://wikiba.se/ontology#\n- xsd: http://www.w3.org/2001/XMLSchema#\n\nAdditional rules to follow:\n- Explain your thought process before and after each step and function call.\n- Do not ask the user for clarification until you have made an initial attempt at completing the task. When the task input is incomplete or ambiguous, proceed based on reasonable assumptions.\n- Do not use \"SERVICE wikibase:label { bd:serviceParam wikibase:language ...\" in SPARQL queries. It is unsupported by the used QLever SPARQL endpoints. Use rdfs:label or similar properties to get labels instead.\n- Always execute your final SPARQL query before giving an answer to make sure it returns the expected results.\n- The SPARQL query should always return the actual identifiers / IRIs of the items in its result. It additionally may return labels or other human-readable information, but they are optional and should be put within optional clauses unless explicitly requested by the user.\n- Do not stop early if there are still obvious improvements to be made to the SPARQL query. For example, keep refining your SPARQL query if its result contains irrelevant items or is missing items you expected.\n- Do not perform additional computation (e.g. filtering, sorting, calculations) on the result of the SPARQL query to determine the answer. All computation should be done solely within SPARQL.\n- For questions with a \"True\" or \"False\" answer the SPARQL query should be an ASK query."
+    },
+    {
+      "role": "user",
+      "content": "who is the owner of the crowne plaza"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "c72a74bacb9947b1af99caf1bd817c48",
+        "message": null,
+        "reasoning": {
+          "id": "3b0216ef5d574c1bb93d5c3d787b4d39",
+          "content": "Okay, let's tackle the user's question: \"Who is the owner of the Crowne Plaza?\" \n\nFirst, I need to figure out what the user is asking. Crowne Plaza is a hotel brand, so they're probably asking about the company that owns the Crowne Plaza brand. I know that Crowne Plaza is part of a larger hotel group. Let me recall... I think it's owned by IHG, which stands for InterContinental Hotels Group. But I need to verify this using the knowledge graph.\n\nSince the knowledge graph here is Wikidata, I should check if Crowne Plaza has an entry there and see what properties are listed, particularly the owner or parent company. \n\nStarting with entities: The user mentioned \"Crowne Plaza,\" so I should search for the entity related to Crowne Plaza. Let's use the search_entity function for \"crowne plaza\" in the wikidata kg.\n\nWait, the available tools include search_entity, which uses the entity index. Let me call that first. If I get the correct entity, then I can look for properties like \"owned by\" or \"parent company.\"\n\nSo, step 1: Use search_entity(kg=\"wikidata\", query=\"crowne plaza\") to find the correct Wikidata item for Crowne Plaza.\n\nAssuming the search returns the right entity (which should be Q491720, but I need to confirm), next I need to check what properties are associated with it. Specifically, properties related to ownership. Common properties for ownership might be \"parent company\" (wdt:P749) or \"owner\" (wdt:P127). Let me check what properties are linked to the Crowne Plaza entity.\n\nBut first, I need the correct entity ID. Let me execute the search_entity function."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-914c34f91b8796ad",
+            "name": "search_entity",
+            "args": {
+              "kg": "wikidata",
+              "query": "crowne plaza"
+            },
+            "result": "Top 10 entity alternatives:\n1. Crowne Plaza (wd:Q2746220):\n  - hotel chain\n  - is instance of hotel brand\n  - is instance of hotel chain\n2. Crowne Plaza Helsinki (wd:Q26214596), also known as \"Hesperia\", \"Hotel Hesperia\":\n  - hotel in Helsinki, Finland\n  - is instance of hotel\n3. Crowne Plaza Belgrade (wd:Q3145464):\n  - building in New Belgrade, Serbia\n  - is instance of hotel\n4. Wyndham Grand İzmir Özdilek (wd:Q3359202, matched via \"Crowne Plaza İzmir\"), also known as \"Crowne Plaza İzmir\", \"Wyndham Grand Izmir Ozdilek\":\n  - high-rise building in İzmir, Turkey\n  - is instance of hotel\n  - is instance of hotel building\n  - is instance of tower block\n5. Crowne Plaza, Minsk (wd:Q3656367):\n  - building in Minsk, Belarus\n  - is instance of building\n6. Crowne Plaza Glasgow (wd:Q5189540):\n  - is instance of hotel building\n  - is instance of skyscraper\n  - skyscraper in Glasgow City, Scotland, UK\n7. Crowne Plaza, Christchurch (wd:Q21609085):\n  - hotel in Christchurch Central City\n  - is instance of hotel\n8. Crowne Plaza Christchurch (wd:Q21609088), also known as \"Forsyth Barr Building\":\n  - former office building in New Zealand, now hotel\n  - is instance of hotel\n  - is instance of managed isolation facility\n9. Heythrop House (wd:Q5749809, matched via \"Crowne Plaza Hotel\"), also known as \"Crowne Plaza Hotel\", \"Heythrop Park\", \"Heythrop Park Hotel, Golf & Country Club\":\n  - country house hotel in Heythrop, Oxfordshire, England, UK\n  - is instance of country house hotel\n  - is instance of English country house\n10. Hotel Crowne Plaza Managua (wd:Q5903350, matched via \"Crowne Plaza Managua\"), also known as \"Crowne Plaza Managua\":\n  - hotel in Managua, Nicaragua\n  - is instance of hotel"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 402,
+          "prompt_tokens": 3748,
+          "total_tokens": 4150
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "45c84914476d48f49e9ed8d64ab09b4d",
+        "message": null,
+        "reasoning": {
+          "id": "5c17a1aca8ff4262a8b09fd38aea184e",
+          "content": "Okay, let's tackle the user's question: \"Who is the owner of the Crowne Plaza?\" \n\nFirst, I used the search_entity function to find the main entity for Crowne Plaza. The top result was wd:Q2746220, which is the Crowne Plaza hotel chain. Now, I need to find out who owns this chain.\n\nI remember that Crowne Plaza is a well-known hotel brand. From general knowledge, I think it's part of a larger hospitality group. Maybe InterContinental Hotels Group (IHG)? Let me verify that.\n\nLooking at the entity wd:Q2746220, the properties should include information about the owner or parent company. In Wikidata, the property for \"parent company\" is often P749. Let me check if that's the case here.\n\nI should construct a SPARQL query to get the owner. The subject would be wd:Q2746220 (Crowne Plaza), and the predicate might be P749 (parent organization). \n\nWait, but Crowne Plaza is a brand, so the parent company would be the owner. Let me confirm the correct property. Another possible property is P127 (owned by), but for companies, P749 (parent company) is more common.\n\nLet me try querying for P749 first. If that doesn't return results, check P127.\n\nSo the SPARQL query would be:\n\nSELECT ?owner WHERE {\n  wd:Q2746220 wdt:P749 ?owner.\n}\n\nBut I need to check if this is correct. Alternatively, maybe the instance of (P31) is a hotel chain, and ownership is linked through another property.\n\nAlternatively, maybe using the \"brand\" property. Let me think. Another approach is to look up the Crowne Plaza entity on Wikidata directly, but since I can't do that here, I'll rely on the knowledge graph.\n\nWait, the user mentioned \"owner\", so the direct owner might be InterContinental Hotels Group. Let me see if the SPARQL query would return that.\n\nAlternatively, maybe the property is P127 (owned by), but for corporate entities, P749 is more standard.\n\nLet me execute the SPARQL query using the execute function to see what comes up.\n\nWait, before executing, maybe I should verify using the search_property_of_entity function to find properties related to ownership for Crowne Plaza.\n\nSo, call search_property_of_entity with entity wd:Q2746220 and query \"owner\" or \"parent\".\n\nLet me try that first to find the correct property."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-8afa060b06694f10",
+            "name": "search_property_of_entity",
+            "args": {
+              "kg": "wikidata",
+              "entity": "wd:Q2746220",
+              "query": "owner"
+            },
+            "result": "Top 10 property alternatives:\n1. parent organization or unit (wd:P749 as wdt/p, matched via \"parent unit\"), also known as \"chapter of\", \"has organizational parent\", \"holding\", \"holding company\", \"owned by (company or organisation)\", etc.:\n  - parent organization or unit of an organization or unit, ... organization (Q43229) and organization unit (Q10387680)\n2. official website (wd:P856 as wdt/p, matched via \"homepage\"), also known as \"home page\", \"homepage\", \"home page (official)\", \"homepage (official)\", \"official homepage\", etc.:\n  - URL of the official page of an item (current or former). ... see the \"Hijacked or dead websites\" section of the Talk page\n3. headquarters location (wd:P159 as wdt/p, matched via \"principal office\"), also known as \"admin HQ\", \"based in\", \"garrison\", \"head office location\", \"head quarters\", etc.:\n  - city or town where an organization's headquarters is or has been situated. Use P276 qualifier for specific building\n4. industry (wd:P452 as wdt/p), also known as \"branch\", \"economic branch\", \"field of action\", \"field of exercise\", \"sector\":\n  - specific industry of company or organization\n5. country (wd:P17 as wdt/p), also known as \"host country\", \"land\", \"sovereign state\", \"state\":\n  - sovereign state that this item is in (not to be used for human beings)\n6. inception (wd:P571 as wdt/p, matched via \"foundation\"), also known as \"built\", \"commenced on date\", \"commencement date\", \"completed\", \"composed\", etc.:\n  - time when an entity begins to exist; for date of official opening use P1619\n7. topic's main category (wd:P910 as wdt/p, matched via \"category\"), also known as \"article's main category\", \"category\", \"category for this topic\", \"catmain\", \"has category\", etc.:\n  - main Wikimedia category\n8. instance of (wd:P31 as wdt/p, matched via \"is a\"), also known as \"example of\", \"has type\", \"is a\", \"is an\", \"is of type\", etc.:\n  - type to which this subject corresponds/belongs. Different ... is an instance of mountain; volcano is a subclass of mountain\n9. X (Twitter) username (wd:P2002 as wdt/p, matched via \"x.com\"), also known as \"Twitter account\", \"twitter.com\", \"Twitter handle\", \"Twitter username\", \"Twitter (X) username\", etc.:\n  - username on X (formerly Twitter); do not include the '@' symbol\n10. social media followers (wd:P8687 as wdt/p, matched via \"followers\"), also known as \"follow count\", \"follower count\", \"follower number\", \"followers\", \"follow number\", etc.:\n  - number of subscribers on a particular social media website ... time\" and property for account. For Twitter, use numeric id."
+          }
+        ],
+        "usage": {
+          "completion_tokens": 606,
+          "prompt_tokens": 4320,
+          "total_tokens": 4926
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "6812717b9a0743c185aeae06a3d633bf",
+        "message": null,
+        "reasoning": {
+          "id": "341c967c16a1447783c9cec24b6e6b0d",
+          "content": "Okay, let's tackle this problem. The user is asking, \"who is the owner of the Crowne Plaza\". From the previous interactions, we identified that the main entity for Crowne Plaza as a brand is wd:Q2746220. Now, the next step is to find out who owns this hotel chain.\n\nIn the last step, I used the search_property_of_entity function on wd:Q2746220 with the query \"owner\". The top result was \"parent organization or unit\" (wdt:P749). This property is typically used to indicate the holding company or parent organization of an entity. So, the next logical step is to query this property to find the owner.\n\nLooking at the property list, P749 is the correct one to check. Now, I need to construct a SPARQL query that gets the parent organization of Crowne Plaza (wd:Q2746220) using the wdt:P749 property.\n\nWait, but first, I should verify if this property actually has a value for Crowne Plaza. In the previous search, the tool responded with property alternatives but didn't show the actual data. So, executing a query to check if there's a value for P749 on Q2746220 would be necessary.\n\nLet me draft the SPARQL query:\n\nSELECT ?owner WHERE {\n  wd:Q2746220 wdt:P749 ?owner .\n}\n\nThis should return the parent organization. But I need to make sure that P749 is the correct property here. Sometimes, ownership might be under a different property like \"owned by\" (P127) but since P749 is listed as \"parent organization or unit\", which is common for corporate ownership, that's probably the right one.\n\nWait, in Wikidata, P127 is \"owned by\", which might be more precise. Maybe I should check both? But the search_property_of_entity suggested P749 as the top match for \"owner\". Let me check what properties are actually used for Crowne Plaza.\n\nAlternatively, perhaps the function returned P749 as the relevant property, so it's safer to use that. Let's proceed with P749 first.\n\nRunning the query SELECT ?owner WHERE { wd:Q2746220 wdt:P749 ?owner . } in the wikidata kg.\n\nBut before executing, maybe I should check if there's data. Alternatively, maybe the parent organization is IHG (InterContinental Hotels Group). From general knowledge, Crowne Plaza is a brand under IHG. So, if the query returns IHG's Wikidata item, that would be correct.\n\nIHG's Wikidata ID is wd:Q1622697. Let's see if the query returns that.\n\nAssuming that the SPARQL query returns wd:Q1622697 as the owner, the answer would be InterContinental Hotels Group.\n\nNow, I need to structure the final answer. The SPARQL query should select the owner's IRI and maybe the label. But following the rules, the query should return the identifier, and optionally the label.\n\nSo the SPARQL would be:\n\nSELECT ?owner ?ownerLabel WHERE {\n  wd:Q2746220 wdt:P749 ?owner .\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"en\" }\n}\n\nWait, but the instructions say not to use SERVICE wikibase:label because it's unsupported. Instead, use rdfs:label. Hmm, how to handle labels then.\n\nAlternatively, the correct way in QLever might be to use OPTIONAL with rdfs:label. But since the user might just need the identifier, but the answer should be human-readable.\n\nWait, the problem states: \"The SPARQL query should always return the actual identifiers / IRIs of the items in its result. It additionally may return labels or other human-readable information, but they are optional and should be put within optional clauses unless explicitly requested by the user.\"\n\nSo the main result should be the IRI, and labels can be optional. For the answer, we need to provide the name, so the query should include the label.\n\nBut without SERVICE, how? Maybe:\n\nSELECT ?owner ?ownerLabel WHERE {\n  wd:Q2746220 wdt:P749 ?owner .\n  OPTIONAL { ?owner rdfs:label ?ownerLabel FILTER (lang(?ownerLabel) = \"en\") }\n}\n\nBut in Wikidata, labels are stored as such. However, in QLever, which uses Blazegraph, the syntax might differ. Wait, the instruction says not to use SERVICE, so perhaps the correct approach is to use rdfs:label directly.\n\nSo:\n\nSELECT ?owner ?label WHERE {\n  wd:Q2746220 wdt:P749 ?owner .\n  ?owner rdfs:label ?label .\n  FILTER (lang(?label) = \"en\")\n}\n\nBut this might not work if the label is not connected via rdfs:label. Alternatively, in Wikidata, the labels are stored as schema:name or other properties, but typically, they use skos:prefLabel or rdfs:label.\n\nWait, according to Wikidata's documentation, lexical values like labels are stored using schema:description, schema:name, but in practice, they might use rdfs:label.\n\nAlternatively, perhaps in QLever's setup, the labels are accessible via rdfs:label.\n\nAssuming that, the query would be as above.\n\nBut to confirm, maybe first run a simple query to check if wd:Q1622697 (IHG) has an rdfs:label.\n\nBut since I can't execute it right now, I'll proceed as per best practices.\n\nSo the final query would select the owner's IRI and label. The answer would then be the label of the owner, which should be \"InterContinental Hotels Group\".\n\nTherefore, the SPARQL query to execute is:\n\nSELECT ?owner ?ownerLabel WHERE {\n  wd:Q2746220 wdt:P749 ?owner .\n  ?owner rdfs:label ?ownerLabel .\n  FILTER (LANG(?ownerLabel) = \"en\")\n}\n\nBut to be safe, maybe use OPTIONAL so that even if the label isn't there, the IRI is still returned.\n\nBut the user needs the name, so the label is necessary for the answer.\n\nAlternatively, perhaps the owner's entity can be directly retrieved and then the answer is formed.\n\nGiven that the previous steps suggest that P749 is the correct property, and assuming that the result is IHG, the answer should be InterContinental Hotels Group.\n\nSo, the next step is to execute the SPARQL query to confirm."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-be0b1cb6f8e4252d",
+            "name": "execute",
+            "args": {
+              "kg": "wikidata",
+              "sparql": "SELECT ?owner ?ownerLabel WHERE { wd:Q2746220 wdt:P749 ?owner . ?owner rdfs:label ?ownerLabel . FILTER (LANG(?ownerLabel) = \"en\") }"
+            },
+            "result": "Got 1 row and 2 columns:\n| owner                              | ownerLabel                     |\n| ---------------------------------- | ------------------------------ |\n| IHG Hotels & Resorts (wd:Q1424962) | IHG Hotels & Resorts (lang:en) |"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 1518,
+          "prompt_tokens": 5066,
+          "total_tokens": 6584
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "41a3179c490541e190f641091e9f5de7",
+        "message": null,
+        "reasoning": {
+          "id": "e9247082650c4b3e8ae9b3241f867e10",
+          "content": "Okay, let's see. The user asked, \"Who is the owner of the Crowne Plaza?\" \n\nFirst, I used the search_entity function to find the correct entity for Crowne Plaza. The top result was wd:Q2746220, which is the Crowne Plaza hotel chain. That makes sense because Crowne Plaza is a well-known hotel brand.\n\nNext, I needed to find the owner. The user probably means the parent company. To find that, I looked for properties related to ownership. I used search_property_of_entity on wd:Q2746220 with the query \"owner\". The top property that came up was wd:P749, which stands for \"parent organization or unit\". That seems right because the parent company would own the brand.\n\nThen I executed a SPARQL query selecting the owner using wd:P749. The result was IHG Hotels & Resorts (wd:Q1424962). IHG is a major hotel company, and I recall that they own several brands, including Crowne Plaza. The answer matches what I know, so it's likely correct.\n\nI should check if there are any other possible properties or if the answer needs more context. But since the user just wants the owner's name, IHG Hotels & Resorts is the answer. The SPARQL query worked, and the result is straightforward. No need for additional steps here."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-9481bf349a6cef25",
+            "name": "answer",
+            "args": {
+              "kg": "wikidata",
+              "sparql": "SELECT ?owner ?ownerLabel WHERE { wd:Q2746220 wdt:P749 ?owner . ?owner rdfs:label ?ownerLabel . FILTER (LANG(?ownerLabel) = \"en\") }",
+              "answer": "The owner of Crowne Plaza is IHG Hotels & Resorts."
+            },
+            "result": "Stopping"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 392,
+          "prompt_tokens": 5207,
+          "total_tokens": 5599
+        }
+      }
+    }
+  ],
+  "known": [
+    "http://www.wikidata.org/entity/P910",
+    "http://www.wikidata.org/prop/direct/P2002",
+    "http://www.wikidata.org/entity/P856",
+    "http://www.wikidata.org/entity/P159",
+    "http://www.wikidata.org/prop/direct/P31",
+    "http://www.wikidata.org/prop/P452",
+    "http://www.wikidata.org/prop/P159",
+    "http://www.wikidata.org/entity/P8687",
+    "http://www.wikidata.org/entity/Q26214596",
+    "http://www.wikidata.org/entity/P452",
+    "http://www.wikidata.org/prop/P910",
+    "http://www.wikidata.org/prop/direct/P8687",
+    "http://www.wikidata.org/entity/P749",
+    "http://www.wikidata.org/entity/P571",
+    "http://www.wikidata.org/prop/direct/P910",
+    "http://www.wikidata.org/entity/Q21609085",
+    "http://www.wikidata.org/entity/P31",
+    "http://www.wikidata.org/entity/Q5189540",
+    "http://www.wikidata.org/prop/P571",
+    "http://www.wikidata.org/prop/direct/P749",
+    "http://www.wikidata.org/entity/Q3145464",
+    "http://www.wikidata.org/entity/P2002",
+    "http://www.wikidata.org/entity/Q3656367",
+    "http://www.wikidata.org/prop/P8687",
+    "http://www.wikidata.org/entity/Q3359202",
+    "http://www.wikidata.org/entity/Q5749809",
+    "http://www.wikidata.org/prop/direct/P159",
+    "http://www.wikidata.org/prop/P17",
+    "http://www.wikidata.org/entity/Q21609088",
+    "http://www.wikidata.org/entity/Q2746220",
+    "http://www.wikidata.org/prop/P31",
+    "http://www.wikidata.org/prop/direct/P17",
+    "http://www.wikidata.org/prop/P856",
+    "http://www.wikidata.org/prop/direct/P856",
+    "http://www.wikidata.org/entity/Q5903350",
+    "http://www.wikidata.org/prop/direct/P452",
+    "http://www.wikidata.org/prop/P2002",
+    "http://www.wikidata.org/prop/P749",
+    "http://www.wikidata.org/prop/direct/P571",
+    "http://www.wikidata.org/entity/Q1424962",
+    "http://www.wikidata.org/entity/P17"
+  ],
+  "id": "unknown",
+  "source_csv": "data/SimpleQA/NQ_table_test_simple.csv",
+  "row_index": 906,
+  "question": "who is the owner of the crowne plaza",
+  "reference_answer": "InterContinental Hotels Group"
+}

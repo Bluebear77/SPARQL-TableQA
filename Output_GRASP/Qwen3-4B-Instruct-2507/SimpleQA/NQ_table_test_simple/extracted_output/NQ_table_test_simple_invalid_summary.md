@@ -5,8 +5,6 @@ Total JSON files: 966
 Valid cases: 437 (45.24%)
 Invalid cases: 529 (54.76%)
 
-!extracted_output/NQ_table_test_simple_valid_vs_invalid_pie.png
-
 ## Invalid case breakdown
 
 - null_output: 59 (6.11%)

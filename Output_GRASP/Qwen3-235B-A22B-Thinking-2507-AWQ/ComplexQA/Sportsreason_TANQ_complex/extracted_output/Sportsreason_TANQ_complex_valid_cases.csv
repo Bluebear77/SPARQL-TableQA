@@ -1,0 +1,932 @@
+question,gold_answer,result_cleaned,result,sparql,file_path
+"How many games involving the St. Louis Cardinals are summarized across the game results for the 1982 National League Championship Series, 2006 National League Championship Series, 2011 World Series, 2013 National League Championship Series, and 2011 National League Championship Series",29,0,"| totalGames  |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(?numGames) AS ?totalGames) WHERE {
+  VALUES ?seriesLabel {
+    ""1982 National League Championship Series"" @en ""2006 National League Championship Series"" @en ""2011 World Series"" @en ""2013 National League Championship Series"" @en ""2011 National League Championship Series"" @en
+  }
+  ?series rdfs:label ?seriesLabel .
+  ?series wdt:P710 wd:Q166474 .
+  ?series wdt:P2633 ?numGames .
+}",ComplexQA/Sportsreason_TANQ_complex/00004.json
+"Sort the players who participated in the 2002 Masters snooker competition by their year of birth from oldest to youngest, and then alphabetically by last name for those with the same year of birth. What is the year of birth of the sixth player in this sorted list",1974,Alan McManus|1971|McManus,"| player                    | birthYear      | familyName            |
+| ------------------------- | -------------- | --------------------- |
+| Alan McManus (wd:Q543675) | 1971 (xsd:int) | McManus (wd:Q1904337) |","SELECT ?player ?birthYear ?familyName WHERE {
+  ?player wdt:P1344 wd:Q2070302 ; wdt:P31 wd:Q5 ; wdt:P569 ?birthDate ; wdt:P734 ?familyName .
+  BIND(YEAR(?birthDate) AS ?birthYear)
+}
+ORDER BY ASC(?birthYear) ASC(?familyName)
+OFFSET 5
+LIMIT 1",ComplexQA/Sportsreason_TANQ_complex/00008.json
+"Considering the 2000 Louis Vuitton Cup, 2000 America's Cup, 2011 Extreme Sailing Series, 2021 Prada Cup, and 2021 America's Cup, what is the difference between the number of events won by Luna Rossa and the number of events won by Team New Zealand",1,"Luna Rossa Challenge|1
+Team New Zealand|1","| team                               | count       |
+| ---------------------------------- | ----------- |
+| Luna Rossa Challenge (wd:Q1513127) | 1 (xsd:int) |
+| Team New Zealand (wd:Q586949)      | 1 (xsd:int) |","SELECT ?team(COUNT(*) AS ?count) WHERE {
+  VALUES ?event {
+    wd:Q1646964 wd:Q636022 wd:Q18076452 wd:Q106684402 wd:Q33112992
+  }
+  VALUES ?team {
+    wd:Q1513127 wd:Q586949
+  }
+  ?event wdt:P1346 ?team
+}
+GROUP BY ?team",ComplexQA/Sportsreason_TANQ_complex/00014.json
+Sort the National League Championship Series contested by the Los Angeles Dodgers and the Philadelphia Phillies by their total attendance from highest to lowest. What was the total attendance for the series that ranks second in this sorted list,260092,wd:Q138927846|7000.0,"| series        | attendance           |
+| ------------- | -------------------- |
+| wd:Q138927846 | 7000.0 (xsd:decimal) |","SELECT ?series ?attendance WHERE {
+  ?series wdt:P1923 wd:Q334634 ; wdt:P1923 wd:Q650840 ; wdt:P1110 ?attendance .
+}
+ORDER BY DESC(xsd:integer(REPLACE(?attendance , "","" , """")))
+LIMIT 1
+OFFSET 1",ComplexQA/Sportsreason_TANQ_complex/00018.json
+"What was the highest attendance recorded for any single game played by the Boston Red Sox during their winning 2018 World Series, 2013 American League Championship Series, or 1975 American League Championship Series appearances",54400,,"| maxAttendance |
+| ------------- |","SELECT(MAX(?attendance) AS ?maxAttendance) WHERE {
+  VALUES ?championship {
+    wd:Q56692089 wd:Q14870260 wd:Q3511178
+  }
+  ?game wdt:P361 ?championship ; wdt:P1535 wd:Q213959 ; wdt:P1083 ?attendance .
+  FILTER(xsd:integer(?attendance) > 0)
+}
+LIMIT 10",ComplexQA/Sportsreason_TANQ_complex/00024.json
+"What was the greatest margin of victory or defeat in any single game played by the Boston Red Sox during their 1975 American League Championship Series, 2013 American League Championship Series, or 2018 World Series appearances",6,,"| maxMargin |
+| --------- |","SELECT(MAX(?margin) AS ?maxMargin) WHERE {
+  VALUES ?series {
+    wd:Q3511178 wd:Q14870260 wd:Q56692089
+  }
+  ?game wdt:P361 ?series .
+  ?game p:P710 ?ps1 .
+  ?ps1 ps:P710 wd:Q213959 ; pq:P1351 ?redsoxScore .
+  ?game p:P710 ?ps2 .
+  ?ps2 ps:P710 ?opponent ; pq:P1351 ?opponentScore .
+  FILTER(?opponent != wd:Q213959)
+  BIND(ABS(?redsoxScore - ?opponentScore) AS ?margin)
+}",ComplexQA/Sportsreason_TANQ_complex/00025.json
+What was the difference in the number of races between the Formula One season with the most Grands Prix and the season with the fewest Grands Prix during the years Lewis Hamilton and Mercedes won the championship together,2,,"| difference |
+| ---------- |","SELECT((MAX(?races) - MIN(?races)) AS ?difference) WHERE {
+  ?season wdt:P3450 wd:Q1084 .
+  ?season wdt:P1346 wd:Q9673 .
+  ?season wdt:P1346 wd:Q172721 .
+  ?season wdt:P729 ?races .
+}",ComplexQA/Sportsreason_TANQ_complex/00031.json
+What is the difference between the number of games the St. Louis Cardinals won at Busch Stadium in the 2011 World Series and the number of games they won at Busch Stadium in the 2011 National League Championship Series,1,0,"| difference  |
+| ----------- |
+| 0 (xsd:int) |","SELECT((?wsWins - ?nlcsWins) AS ?difference) WHERE {
+  {
+    SELECT(COUNT(?wsGame) AS ?wsWins) WHERE {
+      ?wsGame wdt:P361 wd:Q193344 ; wdt:P276 wd:Q6046445 ; wdt:P1346 wd:Q492 .
+    }
+  }
+  {
+    SELECT(COUNT(?nlcsGame) AS ?nlcsWins) WHERE {
+      ?nlcsGame wdt:P361 wd:Q1721059 ; wdt:P276 wd:Q6046445 ; wdt:P1346 wd:Q492 .
+    }
+  }
+}",ComplexQA/Sportsreason_TANQ_complex/00034.json
+"What is the total number of games played by the St. Louis Cardinals across the 1982, 2006, 2011, and 2013 National League Championship Series, and the 2011 World Series, based on the game-by-game summaries available",29,0,"| total       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(xsd:integer(?games)) AS ?total) WHERE {
+  {
+    ?series wdt:P31 wd:Q7255725 ; wdt:P710 wd:Q504309 ; wdt:P585 ?date ; wdt:P5088 ?games .
+    FILTER((YEAR(?date) = 1982) ||(YEAR(?date) = 2006) ||(YEAR(?date) = 2011) ||(YEAR(?date) = 2013))
+  } UNION {
+    ?series wdt:P31 wd:Q208606 ; wdt:P710 wd:Q504309 ; wdt:P585 ?date ; wdt:P5088 ?games .
+    FILTER(YEAR(?date) = 2011)
+  }
+}",ComplexQA/Sportsreason_TANQ_complex/00036.json
+"Among the Collingwood, Richmond, and Sydney Swans VFL/AFL teams, sort them by their total number of Grand Final appearances from highest to lowest. What is the number of appearances for the team that ranks second",13,"Collingwood Football Club|Collingwood Football Club (lang:en)|20
+Richmond Football Club|Richmond Football Club (lang:en)|18
+Sydney Swans|Sydney Swans (lang:en)|8","| team                                   | teamLabel                           | appearances  |
+| -------------------------------------- | ----------------------------------- | ------------ |
+| Collingwood Football Club (wd:Q249679) | Collingwood Football Club (lang:en) | 20 (xsd:int) |
+| Richmond Football Club (wd:Q2521385)   | Richmond Football Club (lang:en)    | 18 (xsd:int) |
+| Sydney Swans (wd:Q2272176)             | Sydney Swans (lang:en)              | 8 (xsd:int)  |","SELECT ?team ?teamLabel(COUNT(?final) AS ?appearances) WHERE {
+  VALUES ?team {
+    wd:Q249679 wd:Q2521385 wd:Q2272176
+  }
+  {
+    ?final wdt:P2715 ?team
+  } UNION {
+    ?final wdt:P1346 ?team
+  }
+  ?team rdfs:label ?teamLabel .
+  FILTER(LANG(?teamLabel) = ""en"")
+}
+GROUP BY ?team ?teamLabel
+ORDER BY DESC(?appearances)",ComplexQA/Sportsreason_TANQ_complex/00042.json
+"Sort the Boston Red Sox championship series wins by the total attendance of all games played in the series, from highest to lowest. What was the total attendance for the series ranked second in this sorted list",238979,1915 Major League Baseball season (lang:en)|3575289,"| seriesLabel                                 | totalAttendance   |
+| ------------------------------------------- | ----------------- |
+| 1915 Major League Baseball season (lang:en) | 3575289 (xsd:int) |","SELECT ?seriesLabel(SUM(xsd:integer(?num)) AS ?totalAttendance) WHERE {
+  ?series wdt:P1346 wd:Q213959 .
+  ?game wdt:P361 ?series .
+  ?game p:P1110 / psv:P1110 ?attValue .
+  ?attValue wikibase:quantityAmount ?num .
+  ?series rdfs:label ?seriesLabel .
+  FILTER(LANG(?seriesLabel) = 'en')
+}
+GROUP BY ?seriesLabel
+ORDER BY DESC(?totalAttendance)
+LIMIT 1
+OFFSET 1",ComplexQA/Sportsreason_TANQ_complex/00045.json
+"How many baseball games involving the Boston Red Sox were played at Fenway Park across the 1975 American League Championship Series, the 2013 American League Championship Series, and the 2018 World Series",7,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(DISTINCT ?game) AS ?count) WHERE {
+  {
+    ?game wdt:P361 wd:Q3511178 .
+    ?game wdt:P276 wd:Q49136 .
+    ?game wdt:P710 wd:Q213959 .
+  } UNION {
+    ?game wdt:P361 wd:Q14870260 .
+    ?game wdt:P276 wd:Q49136 .
+    ?game wdt:P710 wd:Q213959 .
+  } UNION {
+    ?game wdt:P361 wd:Q56692089 .
+    ?game wdt:P276 wd:Q49136 .
+    ?game wdt:P710 wd:Q213959 .
+  }
+}",ComplexQA/Sportsreason_TANQ_complex/00054.json
+"What was the greatest game duration in minutes for a Boston Red Sox game played during the 2018 World Series, the 2013 American League Championship Series, or the 1975 American League Championship Series",440,,"| maxDuration |
+| ----------- |","SELECT(MAX(?duration) AS ?maxDuration) WHERE {
+  VALUES ?series {
+    wd:Q56692089 wd:Q14870260 wd:Q3511178
+  }
+  ?game wdt:P361 ?series .
+  ?game wdt:P58 wd:Q213959 .
+  ?game wdt:P2078 ?duration .
+  FILTER(?duration > 0)
+}
+ORDER BY DESC(?duration)
+LIMIT 1",ComplexQA/Sportsreason_TANQ_complex/00056.json
+"What was the highest attendance for a single game in the National League Championship Series between the Los Angeles Dodgers and the Philadelphia Phillies across the 1977, 1978, 2008, and 2009 seasons",64924,,"| maxAttendance |
+| ------------- |","SELECT(MAX(?attendance) AS ?maxAttendance) WHERE {
+  VALUES ?year {
+    1977 1978 2008 2009
+  }
+  ?series wdt:P31 wd:Q191196 ; wdt:P710 wd:Q334634 ; wdt:P710 wd:Q650840 ; wdt:P585 ?date .
+  FILTER(YEAR(?date) = ?year)
+  ?series wdt:P527 ?game .
+  ?game wdt:P1110 ?attendance .
+}",ComplexQA/Sportsreason_TANQ_complex/00061.json
+How many of the teams with Victorian Football League or Australian Football League Grand Finalist history listed in the provided tables also participated in a Grand Final won by Fitzroy Football Club,1,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(DISTINCT ?runnerup) AS ?count) WHERE {
+  ?event wdt:P31 wd:Q19842146 ; wdt:P1346 wd:Q3044572 ; wdt:P1201 ?runnerup .
+  FILTER(?runnerup != wd:Q3044572)
+}",ComplexQA/Sportsreason_TANQ_complex/00062.json
+How many more games were played in the 2006 National League Championship Series won by the St. Louis Cardinals compared to the 2013 National League Championship Series won by the St. Louis Cardinals,1,1.0,"| difference        |
+| ----------------- |
+| 1.0 (xsd:decimal) |","SELECT(?series2006_games - ?series2013_games AS ?difference) WHERE {
+  wd:Q3511260 wdt:P1350 ?series2006_games .
+  wd:Q14870261 wdt:P1350 ?series2013_games .
+}",ComplexQA/Sportsreason_TANQ_complex/00063.json
+What is the difference in the number of senior premierships won by the Collingwood Football Club compared to the Richmond Football Club in the Australian Football League or Victorian Football League,3,0,"| difference  |
+| ----------- |
+| 0 (xsd:int) |","SELECT((?collCount - ?richCount) AS ?difference) WHERE {
+  {
+    SELECT(COUNT(*) AS ?collCount) WHERE {
+      VALUES ?league {
+        wd:Q41521 wd:Q595803
+      }
+      ?season wdt:P118 ?league ; wdt:P1346 wd:Q249679 .
+    }
+  }
+  {
+    SELECT(COUNT(*) AS ?richCount) WHERE {
+      VALUES ?league {
+        wd:Q41521 wd:Q595803
+      }
+      ?season wdt:P118 ?league ; wdt:P1346 wd:Q2521385 .
+    }
+  }
+}",ComplexQA/Sportsreason_TANQ_complex/00065.json
+"How many games involving the Boston Red Sox took place at Fenway Park across the 2018 World Series, the 2013 American League Championship Series, and the 1975 American League Championship Series",7,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(DISTINCT ?game) AS ?count) WHERE {
+  VALUES ?series {
+    wd:Q56692089 wd:Q14870260 wd:Q3511178
+  }
+  ?game wdt:P361 ?series ; wdt:P276 wd:Q49136 ; wdt:P1923 wd:Q213959 .
+}",ComplexQA/Sportsreason_TANQ_complex/00070.json
+"What was the highest attendance figure for any game won by the St. Louis Cardinals in the 2006 National League Championship Series, 2011 World Series, or 2013 National League Championship Series",56357,,"| maxAttendance |
+| ------------- |","SELECT(MAX(?audience) AS ?maxAttendance) WHERE {
+  VALUES ?series {
+    wd:Q3511260 wd:Q1188429 wd:Q14870261
+  }
+  ?game wdt:P361 ?series .
+  ?game wdt:P1346 wd:Q504309 .
+  ?game wdt:P1108 ?audience .
+  FILTER isNumeric(?audience)
+}
+ORDER BY DESC(?audience)
+LIMIT 1",ComplexQA/Sportsreason_TANQ_complex/00071.json
+Sort the Formula One seasons where Michael Schumacher was the Drivers' Champion by the number of races from lowest to highest. What is the number of races in the last season in this sorted list,18,"1994 Formula One World Championship|16.0
+2003 Formula One World Championship|16.0
+1995 Formula One World Championship|17.0
+2000 Formula One World Championship|17.0
+2001 Formula One World Championship|17.0
+2002 Formula One World Championship|17.0
+2004 Formula One World Championship|18.0","| season                                          | races              |
+| ----------------------------------------------- | ------------------ |
+| 1994 Formula One World Championship (wd:Q69713) | 16.0 (xsd:decimal) |
+| 2003 Formula One World Championship (wd:Q69859) | 16.0 (xsd:decimal) |
+| 1995 Formula One World Championship (wd:Q69722) | 17.0 (xsd:decimal) |
+| 2000 Formula One World Championship (wd:Q69805) | 17.0 (xsd:decimal) |
+| 2001 Formula One World Championship (wd:Q69835) | 17.0 (xsd:decimal) |
+| 2002 Formula One World Championship (wd:Q69844) | 17.0 (xsd:decimal) |
+| 2004 Formula One World Championship (wd:Q69869) | 18.0 (xsd:decimal) |","SELECT ?season ?races WHERE {
+  ?season wdt:P1346 wd:Q9671 .
+  ?season wdt:P1350 ?races .
+}
+ORDER BY ASC(?races)",ComplexQA/Sportsreason_TANQ_complex/00073.json
+"What was the highest attendance recorded for a game involving the Boston Red Sox in the 2018 World Series, 2013 American League Championship Series, or 1975 American League Championship Series",54400,,"| maxAttendance |
+| ------------- |","SELECT(MAX(?attendance) AS ?maxAttendance) WHERE {
+  VALUES ?series {
+    wd:Q56692089 wd:Q14870260 wd:Q3511178
+  }
+  ?game wdt:P361 ?series .
+  {
+    ?game wdt:P729 wd:Q213959
+  } UNION {
+    ?game wdt:P730 wd:Q213959
+  }
+  .
+  ?game wdt:P6410 ?attendance .
+}",ComplexQA/Sportsreason_TANQ_complex/00074.json
+"What was the highest attendance for any single game played by the Boston Red Sox in the 1975 American League Championship Series, 2013 American League Championship Series, or 2018 World Series",54400,,"| maxAttendance |
+| ------------- |","SELECT(MAX(?attendance) AS ?maxAttendance) WHERE {
+  VALUES ?series {
+    wd:Q3511178 wd:Q14870260 wd:Q56692089
+  }
+  ?game wdt:P361 ?series .
+  ?game wdt:P1923 wd:Q213959 .
+  ?game wdt:P1110 ?attendance .
+}
+LIMIT 1",ComplexQA/Sportsreason_TANQ_complex/00077.json
+"How many games played by the Boston Red Sox in the 2018 World Series, the 2013 American League Championship Series, and the 1975 American League Championship Series took place at Fenway Park",7,0,"| total       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(?game) AS ?total) WHERE {
+  VALUES ?series {
+    wd:Q56692089 wd:Q14870260 wd:Q3511178
+  }
+  ?game wdt:P361 ?series .
+  ?game wdt:P276 wd:Q49136 .
+}",ComplexQA/Sportsreason_TANQ_complex/00081.json
+"What was the shortest duration in minutes for a game played between the Los Angeles Dodgers and the Philadelphia Phillies in the 1977, 1978, 2008, or 2009 National League Championship Series",126,,"| min_duration |
+| ------------ |","SELECT(MIN(?duration) AS ?min_duration) WHERE {
+  VALUES ?series {
+    wd:Q1004352 wd:Q1004228 wd:Q3511262 wd:Q3511261
+  }
+  ?series wdt:P361 ?game .
+  ?game wdt:P710 wd:Q334634 ; wdt:P710 wd:Q650840 ; wdt:P2047 ?duration .
+  FILTER(DATATYPE(?duration) = xsd:integer || DATATYPE(?duration) = xsd:decimal)
+}",ComplexQA/Sportsreason_TANQ_complex/00082.json
+Sort Lewis Hamilton's Formula One championship seasons from 2015 onwards by the number of races from highest to lowest. What is the number of races in the second season in this sorted list,21,"2018 Formula One World Championship|21.0|2018
+2019 Formula One World Championship|21.0|2019
+2017 Formula One World Championship|20.0|2017
+2015 Formula One World Championship|19.0|2015","| season                                             | races              | year           |
+| -------------------------------------------------- | ------------------ | -------------- |
+| 2018 Formula One World Championship (wd:Q23051084) | 21.0 (xsd:decimal) | 2018 (xsd:int) |
+| 2019 Formula One World Championship (wd:Q41173535) | 21.0 (xsd:decimal) | 2019 (xsd:int) |
+| 2017 Formula One World Championship (wd:Q20755615) | 20.0 (xsd:decimal) | 2017 (xsd:int) |
+| 2015 Formula One World Championship (wd:Q14293115) | 19.0 (xsd:decimal) | 2015 (xsd:int) |","SELECT ?season ?races ?year WHERE {
+  wd:Q9673 wdt:P2522 ?season .
+  ?season wdt:P1350 ?races .
+  ?season rdfs:label ?label .
+  FILTER(lang(?label) = 'en')
+  FILTER(REGEX(?label , '^[0-9]{4} Formula One' , 'i'))
+  BIND(xsd:integer(SUBSTR(STR(?label) , 1 , 4)) AS ?year)
+  FILTER(?year >= 2015)
+}
+ORDER BY DESC(?races)
+LIMIT 10",ComplexQA/Sportsreason_TANQ_complex/00086.json
+What is the highest number of Grand Final appearances made by either the Richmond Football Club or the Collingwood Football Club in the Victorian Football League/Australian Football League,27,0,"| maxAppearances |
+| -------------- |
+| 0 (xsd:int)    |","SELECT(MAX(?count) AS ?maxAppearances) WHERE {
+  {
+    SELECT(COUNT(?gf) AS ?count) WHERE {
+      ?gf wdt:P3842 wd:Q2521385 .
+      ?gf wdt:P118 wd:Q193317 .
+    }
+  } UNION {
+    SELECT(COUNT(?gf) AS ?count) WHERE {
+      ?gf wdt:P3842 wd:Q249679 .
+      ?gf wdt:P118 wd:Q193317 .
+    }
+  }
+}",ComplexQA/Sportsreason_TANQ_complex/00087.json
+"How many games played in the 1977, 1978, 2008, and 2009 National League Championship Series between the Los Angeles Dodgers and the Philadelphia Phillies had an attendance exceeding 50,000",13,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(?game) AS ?count) WHERE {
+  VALUES ?year {
+    1977 1978 2008 2009
+  }
+  wd:Q334634 wdt:P1344 ?series .
+  wd:Q650840 wdt:P1344 ?series .
+  ?series wdt:P585 ?date .
+  BIND(YEAR(?date) AS ?yearFiltered)
+  FILTER(?yearFiltered = ?year)
+  ?game wdt:P361 ?series .
+  ?game wdt:P1110 ?attendance .
+  FILTER(STRDT(STRBEFORE(?attendance , '.') , xsd:integer) > 50000)
+}",ComplexQA/Sportsreason_TANQ_complex/00088.json
+"What is the total number of games played by the Boston Red Sox across the 2018 World Series, the 2013 American League Championship Series, and the 1975 American League Championship Series",14,0,"| total       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(xsd:integer(?wins) + xsd:integer(?losses)) AS ?total) WHERE {
+  VALUES ?series {
+    wd:Q19544131 wd:Q15342336 wd:Q15339195
+  }
+  ?series p:P710 ?stmt .
+  ?stmt ps:P710 wd:Q862320 ; pq:P2109 ?wins ; pq:P2110 ?losses .
+}",ComplexQA/Sportsreason_TANQ_complex/00092.json
+"What was the total attendance for games played at Fenway Park during the 1975 American League Championship Series, the 2013 American League Championship Series, and the 2018 World Series",263316,0,"| total       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(?attendance) AS ?total) WHERE {
+  VALUES ?series {
+    wd:Q3511178 wd:Q14870260 wd:Q56692089
+  }
+  ?game wdt:P361 ?series .
+  ?game wdt:P276 wd:Q49136 .
+  ?game wdt:P1538 ?attendance .
+}",ComplexQA/Sportsreason_TANQ_complex/00093.json
+How many games were played in the National League Championship Series between the Los Angeles Dodgers and the Philadelphia Phillies across the years for which game details are provided,18,0,"| totalGames  |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(?games) AS ?totalGames) WHERE {
+  ?edition wdt:P31 wd:Q1363275 .
+  ?edition wdt:P710 wd:Q334634 .
+  ?edition wdt:P710 wd:Q650840 .
+  ?edition wdt:P1350 ?games .
+}",ComplexQA/Sportsreason_TANQ_complex/00099.json
+"How many games were contested between the Los Angeles Dodgers and the Philadelphia Phillies in the National League Championship Series across the years 1977, 1978, 1983, 2008, and 2009",22,0,"| totalGames  |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(?games) AS ?totalGames) WHERE {
+  VALUES ?year {
+    1977 1978 1983 2008 2009
+  }
+  ?season wdt:P31 wd:Q1987735 ; wdt:P179 wd:Q702315 ; wdt:P7232 wd:Q334634 ; wdt:P7232 wd:Q650840 ; wdt:P585 ?dateTime ; wdt:P8409 ?games .
+  FILTER(YEAR(?dateTime) = ?year)
+}",ComplexQA/Sportsreason_TANQ_complex/00100.json
+What is the lowest number of Grand Final appearances for the senior team of either the Richmond or Collingwood football club in the Victorian Football League/Australian Football League,11,24,"| lowest       |
+| ------------ |
+| 24 (xsd:int) |","SELECT(MIN(?count) AS ?lowest) WHERE {
+  {
+    SELECT(COUNT(?event) AS ?count) WHERE {
+      wd:Q2521385 wdt:P1344 ?event .
+      ?event rdfs:label ?label .
+      FILTER(LANG(?label) = ""en"")
+      FILTER(CONTAINS(LCASE(?label) , ""grand final""))
+    }
+  } UNION {
+    SELECT(COUNT(?event) AS ?count) WHERE {
+      wd:Q249679 wdt:P1344 ?event .
+      ?event rdfs:label ?label .
+      FILTER(LANG(?label) = ""en"")
+      FILTER(CONTAINS(LCASE(?label) , ""grand final""))
+    }
+  }
+}",ComplexQA/Sportsreason_TANQ_complex/00101.json
+Sort the Lewis Hamilton Formula One championship seasons after 2015 by the number of races from lowest to highest. What is the number of races in the second season in this sorted list,21,20.0,"| numRaces           |
+| ------------------ |
+| 20.0 (xsd:decimal) |","SELECT ?numRaces WHERE {
+  ?season wdt:P1346 wd:Q9673 .
+  ?season wdt:P580 ?startTime .
+  ?season wdt:P1350 ?numRaces .
+  BIND(YEAR(?startTime) AS ?year)
+  FILTER(?year > 2015)
+}
+ORDER BY ASC(?numRaces)
+OFFSET 1
+LIMIT 1",ComplexQA/Sportsreason_TANQ_complex/00103.json
+"What is the total number of games played in the National League Championship Series featuring both the Los Angeles Dodgers and the Philadelphia Phillies in 1977, 1978, 2008, and 2009",18,0,"| totalNumberOfGames |
+| ------------------ |
+| 0 (xsd:int)        |","SELECT(SUM(?games) AS ?totalNumberOfGames) WHERE {
+  VALUES ?year {
+    1977 1978 2008 2009
+  }
+  ?series wdt:P361 wd:Q1967906 ; wdt:P3450 ?year ; wdt:P710 wd:Q334634 ; wdt:P710 wd:Q650840 ; wdt:P1350 ?games .
+}
+GROUP BY ?totalNumberOfGames",ComplexQA/Sportsreason_TANQ_complex/00105.json
+"When sorting the Formula One seasons where Michael Schumacher was the Drivers' Champion by the number of races from lowest to highest, what is the number of races in the third season",17,17,"| raceCount    |
+| ------------ |
+| 17 (xsd:int) |","SELECT(xsd:integer(?races) AS ?raceCount) WHERE {
+  ?season wdt:P1346 wd:Q9671 .
+  ?season wdt:P1350 ?races .
+}
+ORDER BY ASC(?raceCount)
+OFFSET 2
+LIMIT 1",ComplexQA/Sportsreason_TANQ_complex/00106.json
+Sort the years Michael Schumacher won the Drivers' Championship by the number of races from lowest to highest. What is the number of races in the third season in this sorted list,17,"1994|16
+2003|16
+1995|17","| year           | racesNum     |
+| -------------- | ------------ |
+| 1994 (xsd:int) | 16 (xsd:int) |
+| 2003 (xsd:int) | 16 (xsd:int) |
+| 1995 (xsd:int) | 17 (xsd:int) |","SELECT ?year(xsd:integer(?races) AS ?racesNum) WHERE {
+  ?season wdt:P1346 wd:Q9671 .
+  ?season wdt:P580 ?startTime .
+  ?season wdt:P1350 ?races .
+  BIND(YEAR(?startTime) AS ?year)
+}
+ORDER BY ASC(?racesNum)
+LIMIT 3",ComplexQA/Sportsreason_TANQ_complex/00113.json
+"Sort the number of VFL/AFL Grand Final appearances for Fitzroy, Carlton, Melbourne, Essendon, and Collingwood from lowest to highest. What is the third number in this sorted list",10,"Fitzroy Football Club|Fitzroy Football Club (lang:en)|8
+Melbourne Football Club|Melbourne Football Club (lang:en)|14
+Essendon Football Club|Essendon Football Club (lang:en)|17
+Carlton Football Club|Carlton Football Club (lang:en)|18
+Collingwood Football Club|Collingwood Football Club (lang:en)|20","| club                                   | clubLabel                           | count        |
+| -------------------------------------- | ----------------------------------- | ------------ |
+| Fitzroy Football Club (wd:Q3044572)    | Fitzroy Football Club (lang:en)     | 8 (xsd:int)  |
+| Melbourne Football Club (wd:Q911681)   | Melbourne Football Club (lang:en)   | 14 (xsd:int) |
+| Essendon Football Club (wd:Q251090)    | Essendon Football Club (lang:en)    | 17 (xsd:int) |
+| Carlton Football Club (wd:Q858633)     | Carlton Football Club (lang:en)     | 18 (xsd:int) |
+| Collingwood Football Club (wd:Q249679) | Collingwood Football Club (lang:en) | 20 (xsd:int) |","SELECT ?club ?clubLabel(COUNT(DISTINCT ?final) AS ?count) WHERE {
+  VALUES ?club {
+    wd:Q3044572 wd:Q858633 wd:Q911681 wd:Q251090 wd:Q249679
+  }
+  {
+    ?final wdt:P1346 ?club
+  } UNION {
+    ?final wdt:P1454 ?club
+  }
+  OPTIONAL {
+    ?club rdfs:label ?clubLabel
+    FILTER(LANG(?clubLabel) = ""en"")
+  }
+}
+GROUP BY ?club ?clubLabel
+ORDER BY ASC(?count)",ComplexQA/Sportsreason_TANQ_complex/00114.json
+What is the total number of races across all the Formula One World Championship seasons where Lewis Hamilton was the Drivers' Champion and Mercedes was the Constructors' Champion,100,0,"| totalRaces  |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(?raceCount) AS ?totalRaces) WHERE {
+  ?season wdt:P31 wd:Q9036 ; wdt:P1346 wd:Q9673 ; wdt:P8327 wd:Q172721 ; wdt:P3372 ?raceCount .
+}",ComplexQA/Sportsreason_TANQ_complex/00115.json
+"How many games were played in the National League Championship Series between the Los Angeles Dodgers and the Philadelphia Phillies across the 1977, 1978, 2008, and 2009 seasons",18,0,"| total       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(?numGames) AS ?total) WHERE {
+  VALUES ?year {
+    1977 1978 2008 2009
+  }
+  ?series wdt:P361 wd:Q190280 .
+  ?series wdt:P585 ?date .
+  ?series wdt:P710 wd:Q334634 .
+  ?series wdt:P710 wd:Q650840 .
+  ?series wdt:P4231 ?numGames .
+  FILTER(YEAR(?date) = ?year)
+}",ComplexQA/Sportsreason_TANQ_complex/00120.json
+"What is the total number of games played between the Los Angeles Dodgers and the Philadelphia Phillies across the 1977, 1978, 2008, and 2009 National League Championship Series",18,0,"| total_games |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(?games) AS ?total_games) WHERE {
+  VALUES ?year {
+    1977 1978 2008 2009
+  }
+  ?series wdt:P31 wd:Q1363275 .
+  ?series wdt:P710 wd:Q334634 .
+  ?series wdt:P710 wd:Q650840 .
+  ?series wdt:P580 ?start .
+  ?series wdt:P2077 ?games .
+  FILTER(YEAR(?start) = ?year)
+}",ComplexQA/Sportsreason_TANQ_complex/00121.json
+Sort the Formula One seasons where Lewis Hamilton was the Drivers' Champion by the number of races from highest to lowest. What is the third number of races in this sorted list,20,"21.0
+21.0
+20.0
+19.0
+19.0
+18.0","| races              |
+| ------------------ |
+| 21.0 (xsd:decimal) |
+| 21.0 (xsd:decimal) |
+| 20.0 (xsd:decimal) |
+| 19.0 (xsd:decimal) |
+| 19.0 (xsd:decimal) |
+| 18.0 (xsd:decimal) |","SELECT ?races WHERE {
+  wd:Q9673 wdt:P2522 ?season .
+  ?season wdt:P1350 ?races .
+}
+ORDER BY DESC(?races)",ComplexQA/Sportsreason_TANQ_complex/00122.json
+"What was the total number of games played in the National League Championship Series between the Los Angeles Dodgers and the Philadelphia Phillies in 1977, 1978, 2008, and 2009",18,18.0,"| total              |
+| ------------------ |
+| 18.0 (xsd:decimal) |","SELECT(SUM(?games) AS ?total) WHERE {
+  VALUES ?event {
+    wd:Q1004352 wd:Q1004228 wd:Q3511262 wd:Q3511261
+  }
+  ?event wdt:P1350 ?games .
+}",ComplexQA/Sportsreason_TANQ_complex/00125.json
+"What was the highest attendance for any game played during the 1975 American League Championship Series, the 2013 American League Championship Series, or the 2018 World Series",54400,,"| maxAttendance |
+| ------------- |","SELECT(MAX(xsd:integer(REPLACE(STR(?attendance) , "","" , """"))) AS ?maxAttendance) WHERE {
+  VALUES ?series {
+    wd:Q3511178 wd:Q14870260 wd:Q56692089
+  }
+  ?series wdt:P527 ?game .
+  ?game wdt:P1080 ?attendance .
+}
+LIMIT 100",ComplexQA/Sportsreason_TANQ_complex/00127.json
+"What is the total number of games played in the National League Championship Series between the Los Angeles Dodgers and the Philadelphia Phillies in 1977, 1978, 2008, and 2009",18,0,"| total_games |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(?games) AS ?total_games) WHERE {
+  VALUES ?year {
+    1977 1978 2008 2009
+  }
+  ?series wdt:P710 wd:Q334634 ; wdt:P710 wd:Q650840 ; wdt:P585 ?dateTime ; wdt:P433 ?games .
+  FILTER(YEAR(?dateTime) = ?year)
+}",ComplexQA/Sportsreason_TANQ_complex/00128.json
+"How many games were played in the National League Championship Series between the Los Angeles Dodgers and the Philadelphia Phillies for the years 1977, 1978, 2008, and 2009",18,0,"| totalGames  |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(?games) AS ?totalGames) WHERE {
+  VALUES ?year {
+    1977 1978 2008 2009
+  }
+  ?season wdt:P3450 wd:Q182085 ; wdt:P580 ?startTime ; wdt:P710 wd:Q334634 ; wdt:P710 wd:Q650840 ; wdt:P1350 ?games .
+  FILTER(YEAR(?startTime) = ?year)
+}",ComplexQA/Sportsreason_TANQ_complex/00135.json
+Sort the Lewis Hamilton championship seasons after 2015 by the number of races from lowest to highest. What is the number of races in the second season in this sorted list,21,"2020 Formula One World Championship (lang:en)|2020|17.0
+2017 Formula One World Championship (lang:en)|2017|20.0
+2019 Formula One World Championship (lang:en)|2019|21.0","| seasonLabel                                   | year           | raceCount          |
+| --------------------------------------------- | -------------- | ------------------ |
+| 2020 Formula One World Championship (lang:en) | 2020 (xsd:int) | 17.0 (xsd:decimal) |
+| 2017 Formula One World Championship (lang:en) | 2017 (xsd:int) | 20.0 (xsd:decimal) |
+| 2019 Formula One World Championship (lang:en) | 2019 (xsd:int) | 21.0 (xsd:decimal) |","SELECT ?seasonLabel ?year ?raceCount WHERE {
+  ?season wdt:P1346 wd:Q9673 .
+  ?season wdt:P580 ?start .
+  ?season wdt:P1350 ?raceCount .
+  BIND(YEAR(?start) AS ?year)
+  FILTER(?year > 2015)
+  OPTIONAL {
+    ?season rdfs:label ?seasonLabel
+    FILTER(LANG(?seasonLabel) = ""en"")
+  }
+}
+ORDER BY ASC(?raceCount)
+LIMIT 3",ComplexQA/Sportsreason_TANQ_complex/00137.json
+What is the difference between the number of main drivers listed for the 2002 Formula One season and the number of practice drivers listed for the 2003 Formula One season,16,0,"| mainCount   |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(DISTINCT ?driver) AS ?mainCount) WHERE {
+  wd:Q69844 wdt:P710 ?driver .
+}",ComplexQA/Sportsreason_TANQ_complex/00138.json
+What is the difference in the number of years between the first and last VFL/AFL senior premiership won by Collingwood and the span for Richmond's AFL senior premierships,21,21,"| difference   |
+| ------------ |
+| 21 (xsd:int) |","SELECT(ABS((?maxColl - ?minColl) -(?maxRich - ?minRich)) AS ?difference) WHERE {
+  {
+    SELECT(MIN(YEAR(?dateColl)) AS ?minColl)(MAX(YEAR(?dateColl)) AS ?maxColl) WHERE {
+      ?seasonColl wdt:P1346 wd:Q249679 .
+      ?seasonColl wdt:P585 ?dateColl .
+    }
+  }
+  {
+    SELECT(MIN(YEAR(?dateRich)) AS ?minRich)(MAX(YEAR(?dateRich)) AS ?maxRich) WHERE {
+      ?seasonRich wdt:P1346 wd:Q2521385 .
+      ?seasonRich wdt:P585 ?dateRich .
+    }
+  }
+}",ComplexQA/Sportsreason_TANQ_complex/00140.json
+"How many games were played by the Boston Red Sox in the 1975 American League Championship Series, the 2013 American League Championship Series, and the 2018 World Series",14,0,"| totalGames  |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(?games) AS ?totalGames) WHERE {
+  VALUES ?series {
+    wd:Q3511178 wd:Q14870260 wd:Q56692089
+  }
+  ?series wdt:P1500 ?games .
+}",ComplexQA/Sportsreason_TANQ_complex/00141.json
+What was the longest game duration in minutes for any game played by the Boston Red Sox in the 1975 or 2013 American League Championship Series or the 2018 World Series,440,,"| longest_duration |
+| ---------------- |","SELECT(MAX(?duration) AS ?longest_duration) WHERE {
+  VALUES ?series {
+    wd:Q3511178 wd:Q14870260 wd:Q56692089
+  }
+  ?series wdt:P527 ?game .
+  ?game wdt:P156 wd:Q213959 ; wdt:P2361 ?duration .
+}",ComplexQA/Sportsreason_TANQ_complex/00143.json
+How many more games were played in the 2013 American League Championship Series won by the Boston Red Sox compared to their 1975 American League Championship Series win,3,3.0,"| difference        |
+| ----------------- |
+| 3.0 (xsd:decimal) |","SELECT(?games2013 - ?games1975 AS ?difference) WHERE {
+  wd:Q3511178 wdt:P1350 ?games1975 .
+  wd:Q14870260 wdt:P1350 ?games2013 .
+}",ComplexQA/Sportsreason_TANQ_complex/00144.json
+How many games played between the Los Angeles Dodgers and the Philadelphia Phillies in the National League Championship Series had a combined score of more than 10 runs,9,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(?game) AS ?count) WHERE {
+  ?series wdt:P31 wd:Q1363275 .
+  ?game wdt:P361 ?series ; wdt:P710 wd:Q334634 ; wdt:P710 wd:Q650840 ; wdt:P2003 ?homeScore ; wdt:P2004 ?awayScore .
+  FILTER(xsd:integer(?homeScore) + xsd:integer(?awayScore) > 10)
+}",ComplexQA/Sportsreason_TANQ_complex/00145.json
+What is the total number of times the Richmond and Collingwood senior football clubs were Grand Finalists in the Victorian Football League or Australian Football League,38,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(*) AS ?count) WHERE {
+  VALUES ?team {
+    wd:Q2521385 wd:Q249679
+  }
+  VALUES ?league {
+    wd:Q2352741 wd:Q50783
+  }
+  ?season wdt:P118 ?league .
+  {
+    ?season wdt:P1346 ?team .
+  } UNION {
+    ?season wdt:P2858 ?team .
+  }
+}",ComplexQA/Sportsreason_TANQ_complex/00146.json
+"How many games did the Boston Red Sox play across the 1975 American League Championship Series, the 2013 American League Championship Series, and the 2018 World Series",14,0,"| totalGames  |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(xsd:integer(?wins) + xsd:integer(?losses)) AS ?totalGames) WHERE {
+  VALUES ?series {
+    wd:Q253000 wd:Q278844 wd:Q5145502
+  }
+  ?series p:P1532 ?participantStatement .
+  ?participantStatement ps:P1532 wd:Q166634 .
+  ?participantStatement pq:P5049 ?wins .
+  ?participantStatement pq:P5050 ?losses .
+}",ComplexQA/Sportsreason_TANQ_complex/00147.json
+"How many games were played at Fenway Park across the 2018 World Series, the 2013 American League Championship Series, and the 1975 American League Championship Series",7,0,"| total       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(?game) AS ?total) WHERE {
+  VALUES ?series {
+    wd:Q56692089 wd:Q14870260 wd:Q3511178
+  }
+  ?series wdt:P580 ?seriesStart ; wdt:P582 ?seriesEnd .
+  ?game wdt:P31 wd:Q200199 ; wdt:P276 wd:Q49136 ; wdt:P585 ?gameTime .
+  FILTER(?gameTime >= ?seriesStart && ?gameTime <= ?seriesEnd)
+}",ComplexQA/Sportsreason_TANQ_complex/00150.json
+"How many games were played at Fenway Park across the 1975 American League Championship Series, the 2013 American League Championship Series, and the 2018 World Series",7,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(DISTINCT ?game) AS ?count) WHERE {
+  VALUES ?series {
+    wd:Q3511178 wd:Q14870260 wd:Q56692089
+  }
+  ?game wdt:P361 ?series .
+  ?game wdt:P276 wd:Q49136 .
+}",ComplexQA/Sportsreason_TANQ_complex/00152.json
+What was the highest attendance number recorded for any game in the National League Championship Series between the Los Angeles Dodgers and the Philadelphia Phillies,64924,,"| maxAttendance |
+| ------------- |","SELECT(MAX(?attendance) AS ?maxAttendance) WHERE {
+  ?game wdt:P361 wd:Q122932436 ; wdt:P1586 ?attendance .
+}",ComplexQA/Sportsreason_TANQ_complex/00154.json
+What was the greatest attendance at any single game during a National League Championship Series featuring both the Los Angeles Dodgers and the Philadelphia Phillies,64924,,"| maxAttendance |
+| ------------- |","SELECT(MAX(?attendance) AS ?maxAttendance) WHERE {
+  ?series wdt:P31 wd:Q1363275 .
+  ?series wdt:P1923 wd:Q334634 .
+  ?series wdt:P1923 wd:Q650840 .
+  ?game wdt:P361 ?series .
+  ?game wdt:P1110 ?attendance .
+  FILTER(DATATYPE(?attendance) = xsd:integer)
+  .
+}",ComplexQA/Sportsreason_TANQ_complex/00155.json
+Sort the Formula One seasons won by Lewis Hamilton by the number of races from lowest to highest. What is the number of races in the third season in this sorted list,20,19.0,"| raceCount          |
+| ------------------ |
+| 19.0 (xsd:decimal) |","SELECT ?raceCount WHERE {
+  ?season wdt:P1346 wd:Q9673 .
+  ?season wdt:P1350 ?raceCount .
+}
+ORDER BY ?raceCount
+LIMIT 1
+OFFSET 2",ComplexQA/Sportsreason_TANQ_complex/00156.json
+How many total games were played across the National League Championship Series competitions that featured both the Los Angeles Dodgers and the Philadelphia Phillies,18,0,"| totalGames  |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(xsd:integer(?gamesAmount)) AS ?totalGames) WHERE {
+  ?edition wdt:P179 wd:Q1363275 .
+  {
+    ?edition wdt:P1345 wd:Q650840 ; wdt:P1346 wd:Q334634 ; p:P482 / psv:P482 ?gamesNode .
+  } UNION {
+    ?edition wdt:P1345 wd:Q334634 ; wdt:P1346 wd:Q650840 ; p:P482 / psv:P482 ?gamesNode .
+  }
+  ?gamesNode wikibase:quantityAmount ?gamesAmount .
+}",ComplexQA/Sportsreason_TANQ_complex/00158.json
+"What is the combined number of games played in the 1975 American League Championship Series, the 2013 American League Championship Series, and the 2018 World Series",14,0,"| total       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(?games) AS ?total) WHERE {
+  {
+    ?series wdt:P361 wd:Q186453 .
+    ?series wdt:P580 ?start .
+    FILTER(YEAR(?start) = 1975)
+    ?series wdt:P2041 ?games .
+  } UNION {
+    ?series wdt:P361 wd:Q186453 .
+    ?series wdt:P580 ?start .
+    FILTER(YEAR(?start) = 2013)
+    ?series wdt:P2041 ?games .
+  } UNION {
+    ?series wdt:P361 wd:Q728810 .
+    ?series wdt:P580 ?start .
+    FILTER(YEAR(?start) = 2018)
+    ?series wdt:P2041 ?games .
+  }
+}",ComplexQA/Sportsreason_TANQ_complex/00159.json
+What is the greatest number of races held in a Formula One season where Lewis Hamilton won the Drivers' Championship and Mercedes won the Constructors' Championship,21,,"| maxRaces |
+| -------- |","SELECT(MAX(?races) AS ?maxRaces) WHERE {
+  ?season wdt:P31 wd:Q27532865 .
+  ?season wdt:P3450 wd:Q9673 .
+  ?season wdt:P2414 wd:Q172721 .
+  ?season wdt:P1798 ?races .
+}",ComplexQA/Sportsreason_TANQ_complex/00161.json
+"What is the difference between the total number of premierships won by St Kilda, Essendon, and Richmond combined, and the number of premierships won by Collingwood",11,0,"| difference  |
+| ----------- |
+| 0 (xsd:int) |","SELECT((COALESCE(?stKildaCount , 0) + COALESCE(?essendonCount , 0) + COALESCE(?richmondCount , 0)) - COALESCE(?collingwoodCount , 0) AS ?difference) WHERE {
+  {
+    SELECT(COUNT(*) AS ?stKildaCount) WHERE {
+      ?season wdt:P1346 wd:Q1084121 .
+      ?season wdt:P31 / wdt:P279 * wd:Q19840852 .
+    }
+  }
+  {
+    SELECT(COUNT(*) AS ?essendonCount) WHERE {
+      ?season wdt:P1346 wd:Q251090 .
+      ?season wdt:P31 / wdt:P279 * wd:Q19840852 .
+    }
+  }
+  {
+    SELECT(COUNT(*) AS ?richmondCount) WHERE {
+      ?season wdt:P1346 wd:Q2521385 .
+      ?season wdt:P31 / wdt:P279 * wd:Q19840852 .
+    }
+  }
+  {
+    SELECT(COUNT(*) AS ?collingwoodCount) WHERE {
+      ?season wdt:P1346 wd:Q249679 .
+      ?season wdt:P31 / wdt:P279 * wd:Q19840852 .
+    }
+  }
+}",ComplexQA/Sportsreason_TANQ_complex/00163.json
+What is the difference between the greatest and least number of races in a Formula One World Championship season won by both Lewis Hamilton and Mercedes after 2015,2,,"| difference |
+| ---------- |","SELECT((MAX(?count) - MIN(?count)) AS ?difference) WHERE {
+  {
+    SELECT ?year(COUNT(*) AS ?count) WHERE {
+      ?race wdt:P31 wd:Q129237 .
+      ?race p:P1346 ?statement .
+      ?statement ps:P1346 wd:Q9673 .
+      ?statement pq:P54 wd:Q25761776 .
+      ?race wdt:P585 ?date .
+      BIND(xsd:integer(SUBSTR(STR(?date) , 1 , 4)) AS ?year)
+      FILTER(?year > 2015)
+    }
+    GROUP BY ?year
+  }
+}",ComplexQA/Sportsreason_TANQ_complex/00164.json
+"How many games did the Los Angeles Dodgers win when playing against the Philadelphia Phillies in the 1977, 1978, 2008, and 2009 National League Championship Series",8,0,"| totalWins   |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(?dodgersWins) AS ?totalWins) WHERE {
+  VALUES ?series {
+    wd:Q1004352 wd:Q1004228 wd:Q3511262 wd:Q3511261
+  }
+  ?series wdt:P1346 ?winner ; wdt:P5504 ?games .
+  BIND(IF(?series IN(wd:Q1004352 , wd:Q1004228) , 3 , 4) AS ?requiredWins)
+  BIND(IF(?winner = wd:Q334634 , ?requiredWins , ?games - ?requiredWins) AS ?dodgersWins)
+}",ComplexQA/Sportsreason_TANQ_complex/00165.json
+What is the combined number of games played in the 2008 and 2009 National League Championship Series between the Los Angeles Dodgers and the Philadelphia Phillies,10,10.0,"| total_games        |
+| ------------------ |
+| 10.0 (xsd:decimal) |","SELECT(SUM(?games) AS ?total_games) WHERE {
+  VALUES ?series {
+    wd:Q3511262 wd:Q3511261
+  }
+  ?series wdt:P1350 ?games .
+}",ComplexQA/Sportsreason_TANQ_complex/00168.json
+What is the combined total number of times the Richmond Football Club and the Collingwood Football Club have finished as runners-up in the VFL or AFL Grand Final,38,0,"| totalRunnersUp |
+| -------------- |
+| 0 (xsd:int)    |","SELECT(SUM(?count) AS ?totalRunnersUp) WHERE {
+  {
+    SELECT ?club(COUNT(?event) AS ?count) WHERE {
+      VALUES ?club {
+        wd:Q2521385 wd:Q249679
+      }
+      ?event wdt:P31 wd:Q3006481 ; wdt:P710 ?club ; wdt:P1346 ?winner .
+      FILTER(?club != ?winner)
+    }
+    GROUP BY ?club
+  }
+}",ComplexQA/Sportsreason_TANQ_complex/00171.json
+What was the difference in the total number of games played between the 2013 American League Championship Series and the 1975 American League Championship Series,3,3.0,"| difference        |
+| ----------------- |
+| 3.0 (xsd:decimal) |","SELECT((?games2013 - ?games1975) AS ?difference) WHERE {
+  wd:Q14870260 wdt:P1350 ?games2013 .
+  wd:Q3511178 wdt:P1350 ?games1975 .
+}",ComplexQA/Sportsreason_TANQ_complex/00172.json
+What was the highest attendance figure for a game played in a National League Championship Series featuring the Los Angeles Dodgers and the Philadelphia Phillies,64924,,"| maxAttendance |
+| ------------- |","SELECT(MAX(?attendance) AS ?maxAttendance) WHERE {
+  ?series wdt:P31 wd:Q1363275 .
+  ?series wdt:P1923 wd:Q334634 .
+  ?series wdt:P1923 wd:Q650840 .
+  ?game wdt:P361 ?series .
+  ?game wdt:P1110 ?attendance .
+  FILTER(isNumeric(?attendance))
+}",ComplexQA/Sportsreason_TANQ_complex/00173.json
+Sort the total number of senior VFL/AFL Grand Final appearances for Collingwood and Richmond from highest to lowest. What is the second number in the sorted list,11,"Collingwood Football Club (lang:en)|42
+Richmond Football Club (lang:en)|24","| clubLabel                           | count        |
+| ----------------------------------- | ------------ |
+| Collingwood Football Club (lang:en) | 42 (xsd:int) |
+| Richmond Football Club (lang:en)    | 24 (xsd:int) |","SELECT ?clubLabel(COUNT(?event) AS ?count) WHERE {
+  VALUES ?club {
+    wd:Q249679 wd:Q2521385
+  }
+  ?club rdfs:label ?clubLabel .
+  FILTER(LANG(?clubLabel) = ""en"")
+  .
+  ?club wdt:P1344 ?event .
+  ?event rdfs:label ?eventLabel .
+  FILTER(LANG(?eventLabel) = ""en"")
+  .
+  FILTER(CONTAINS(LCASE(?eventLabel) , ""grand final""))
+  .
+}
+GROUP BY ?clubLabel
+ORDER BY DESC(?count)",ComplexQA/Sportsreason_TANQ_complex/00175.json
+"How many games were played in the National League Championship Series or World Series won by the St. Louis Cardinals that concluded on or after October 16, 1985",46,0,"| totalGames  |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(?games) AS ?totalGames) WHERE {
+  VALUES ?seriesType {
+    wd:Q300972 wd:Q20206337
+  }
+  ?edition wdt:P31 ?seriesType ; wdt:P1346 ?winnerSeason ; wdt:P582 ?endDate ; wdt:P1350 ?games .
+  ?winnerSeason wdt:P54 wd:Q504309 .
+  FILTER(xsd:date(?endDate) >= ""1985-10-16"" ^^ xsd:date)
+}",ComplexQA/Sportsreason_TANQ_complex/00178.json
+How many senior premierships did Richmond win in the VFL/AFL competition in years later than Collingwood's first senior premiership year in the same competition,13,,"| firstCollYear |
+| ------------- |","SELECT(MIN(YEAR(?collDate)) AS ?firstCollYear) WHERE {
+  VALUES ?collLeague {
+    wd:Q2352741 wd:Q50783
+  }
+  ?collSeason wdt:P118 ?collLeague ; wdt:P1346 wd:Q249679 ; wdt:P585 ?collDate .
+}",ComplexQA/Sportsreason_TANQ_complex/00179.json
+How many unique drivers are listed across the main drivers table for the 2002 Formula One season and the practice drivers table for the 2003 Formula One season,29,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(DISTINCT ?driver) AS ?count) WHERE {
+  {
+    ?team2002 wdt:P1344 wd:Q69844 .
+    ?team2002 wdt:P57 ?driver .
+  } UNION {
+    ?team2003 wdt:P1344 wd:Q69859 .
+    ?team2003 p:P57 ?stmt .
+    ?stmt ps:P57 ?driver .
+    ?stmt pq:P3831 wd:Q104121 .
+  }
+}",ComplexQA/Sportsreason_TANQ_complex/00180.json
+"How many games were played at Fenway Park during the 1975 American League Championship Series, 2013 American League Championship Series, and 2018 World Series",7,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(?game) AS ?count) WHERE {
+  VALUES ?series {
+    wd:Q3511178 wd:Q14870260 wd:Q56692089
+  }
+  ?game wdt:P361 ?series .
+  ?game wdt:P276 wd:Q49136 .
+}",ComplexQA/Sportsreason_TANQ_complex/00182.json
+"What is the fewest number of games played in a championship or World Series won by the Boston Red Sox among the 1975, 1986, 2004, 2007, 2013, and 2018 series",3,,"| minGames |
+| -------- |","SELECT(MIN(?games) AS ?minGames) WHERE {
+  VALUES ?year_str {
+    ""1975"" ""1986"" ""2004"" ""2007"" ""2013"" ""2018""
+  }
+  ?series wdt:P31 wd:Q1529013 ; wdt:P1346 wd:Q213959 ; wdt:P585 ?date ; wdt:P1350 ?games .
+  FILTER(SUBSTR(STR(?date) , 1 , 4) = ?year_str)
+}",ComplexQA/Sportsreason_TANQ_complex/00186.json
+What was the difference in the number of games played between the 2008 National League Championship Series and the 1977 National League Championship Series,1,1.0,"| difference        |
+| ----------------- |
+| 1.0 (xsd:decimal) |","SELECT ?difference WHERE {
+  VALUES ?series_2008 {
+    wd:Q3511262
+  }
+  VALUES ?series_1977 {
+    wd:Q1004352
+  }
+  ?series_2008 wdt:P1350 ?games_2008 .
+  ?series_1977 wdt:P1350 ?games_1977 .
+  BIND(?games_2008 - ?games_1977 AS ?difference)
+}",ComplexQA/Sportsreason_TANQ_complex/00193.json
+Add together the number of races in the earliest and latest championship seasons won by Michael Schumacher that are described in the available information.,33,0,"| total       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(?numRaces) AS ?total) WHERE {
+  {
+    SELECT ?season WHERE {
+      ?season wdt:P31 wd:Q171879 ; wdt:P1346 wd:Q9671 ; wdt:P585 ?time .
+    }
+    ORDER BY ASC(?time)
+    LIMIT 1
+  } UNION {
+    SELECT ?season WHERE {
+      ?season wdt:P31 wd:Q171879 ; wdt:P1346 wd:Q9671 ; wdt:P585 ?time .
+    }
+    ORDER BY DESC(?time)
+    LIMIT 1
+  }
+  ?season wdt:P1113 ?numRaces .
+}",ComplexQA/Sportsreason_TANQ_complex/00194.json
+How many games were played between the Los Angeles Dodgers and the Philadelphia Phillies in the National League Championship Series from 1978 through 2009,14,0,"| total_games |
+| ----------- |
+| 0 (xsd:int) |","SELECT(SUM(xsd:integer(?wins)) AS ?total_games) WHERE {
+  ?series wdt:P31 wd:Q1363275 ; wdt:P1923 wd:Q334634 ; wdt:P1923 wd:Q650840 ; wdt:P585 ?date .
+  {
+    ?series p:P1366 / ps:P1366 ?team ; p:P1366 / pq:P1267 ?wins .
+  } UNION {
+    ?series p:P1367 / ps:P1367 ?team ; p:P1367 / pq:P1267 ?wins .
+  }
+  VALUES ?team {
+    wd:Q334634 wd:Q650840
+  }
+  BIND(xsd:integer(SUBSTR(STR(?date) , 1 , 4)) AS ?year)
+  FILTER(?year >= 1978 && ?year <= 2009)
+}",ComplexQA/Sportsreason_TANQ_complex/00195.json
+How many years passed between the first and last National League Championship Series featuring both the Los Angeles Dodgers and the Philadelphia Phillies,32,,"| difference |
+| ---------- |","SELECT((MAX(YEAR(?date)) - MIN(YEAR(?date))) AS ?difference) WHERE {
+  {
+    ?edition wdt:P1346 wd:Q334634 ; wdt:P1344 wd:Q650840 ; wdt:P585 ?date
+  } UNION {
+    ?edition wdt:P1346 wd:Q650840 ; wdt:P1344 wd:Q334634 ; wdt:P585 ?date
+  }
+}",ComplexQA/Sportsreason_TANQ_complex/00198.json
+"How many times did Lewis Hamilton achieve pole position at the Canadian Grand Prix in the years 2016 or later, based on the available qualifying results",1,2,"| count       |
+| ----------- |
+| 2 (xsd:int) |","SELECT(COUNT(?race) AS ?count) WHERE {
+  ?race wdt:P31 wd:Q7965 ; wdt:P585 ?date ; wdt:P3764 wd:Q9673 .
+  FILTER(YEAR(?date) >= 2016)
+}",ComplexQA/Sportsreason_TANQ_complex/00199.json

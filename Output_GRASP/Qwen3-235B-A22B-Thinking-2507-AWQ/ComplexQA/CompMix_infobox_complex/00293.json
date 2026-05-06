@@ -1,0 +1,283 @@
+{
+  "type": "output",
+  "task": "sparql-qa",
+  "output": {
+    "sparql": "PREFIX wd: <http://www.wikidata.org/entity/>\nPREFIX wdt: <http://www.wikidata.org/prop/direct/>\nSELECT ?dop WHERE {\n  wd:Q207536 wdt:P344 ?dop\n}",
+    "kg": "wikidata",
+    "selections": "Using entities:\n- The Matrix Revolutions (wd:Q207536), also known as \"Matrix III\", \"Matrix Revolutions\", \"The Matrix 3\", \"The Matrix III\":\n  - 2003 film by The Wachowskis\n  - is instance of film\n\nUsing properties:\n- director of photography (wd:P344 as wdt), also known as \"cinematographer\", \"DOP\":\n  - person responsible for the framing, lighting, and filtration of the subject work",
+    "result": "Got 1 row and 1 column:\n| dop                    |\n| ---------------------- |\n| Bill Pope (wd:Q795025) |",
+    "endpoint": "https://qlever.dev/api/wikidata",
+    "type": "answer",
+    "answer": "Bill Pope",
+    "formatted": "Bill Pope\n\nSPARQL query over wikidata:\n```sparql\nPREFIX wd: <http://www.wikidata.org/entity/>\nPREFIX wdt: <http://www.wikidata.org/prop/direct/>\nSELECT ?dop WHERE {\n  wd:Q207536 wdt:P344 ?dop\n}\n```\n\nUsing entities:\n- The Matrix Revolutions (wd:Q207536), also known as \"Matrix III\", \"Matrix Revolutions\", \"The Matrix 3\", \"The Matrix III\":\n  - 2003 film by The Wachowskis\n  - is instance of film\n\nUsing properties:\n- director of photography (wd:P344 as wdt), also known as \"cinematographer\", \"DOP\":\n  - person responsible for the framing, lighting, and filtration of the subject work\n\nExecution result:\nGot 1 row and 1 column:\n| dop                    |\n| ---------------------- |\n| Bill Pope (wd:Q795025) |"
+  },
+  "elapsed": 49.701585,
+  "error": null,
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a question answering assistant. Your job is to generate a SPARQL query to answer a given user question.\n\nYou should follow a step-by-step approach to generate the SPARQL query:\n1. Determine possible entities and properties implied by the user question.\n2. Search for the entities and properties in the knowledge graphs. Where applicable, constrain the searches with already identified entities and properties.\n3. Gradually build up the SPARQL query using the identified entities and properties. Start with simple queries and add more complexity as needed. Execute intermediate queries to get feedback and to verify your assumptions. You may need to refine or rethink your current plan based on the query results and go back to step 2 if needed, possibly multiple times.\n4. Use the answer or cancel function to finalize your answer and stop the generation process.\n\nAvailable knowledge graphs:\n- \"wikidata\" at https://qlever.dev/api/wikidata\n  - \"entity\" index (type=\"fuzzy\"): Entities indexed by their labels and synonyms\n  - \"property\" index (type=\"embedding\", modalities=\"text\"): Properties indexed by their labels, synonyms, and identifiers\n\nIndex types used:\n- \"embedding\": Retrieves items by cosine similarity between their embeddings and the query embedding. The embedding model used depends on the index and may support text, images, or both.\n- \"fuzzy\": Retrieves items by overlap between their label words and the query keywords. The query keywords must not match label words exactly, but some fuzziness is allowed. The longer a query keyword is, the more it can deviate from a label word and still be considered a match, though it will also contribute less to the overall score. No special query operators like AND/OR are supported.\n\nSPARQL prefixes for use in function calls:\n- bd: http://www.bigdata.com/rdf#\n- cc: http://creativecommons.org/ns#\n- data: https://www.wikidata.org/wiki/Special:EntityData/\n- dc: http://purl.org/dc/elements/1.1/\n- dct: http://purl.org/dc/terms/\n- foaf: http://xmlns.com/foaf/0.1/\n- geo: http://www.opengis.net/ont/geosparql#\n- geof: http://www.opengis.net/def/function/geosparql/\n- gn: http://www.geonames.org/ontology#\n- hint: http://www.bigdata.com/queryHints#\n- imdb: https://www.imdb.com/\n- math: http://www.w3.org/2005/xpath-functions/math#\n- ontolex: http://www.w3.org/ns/lemon/ontolex#\n- owl: http://www.w3.org/2002/07/owl#\n- p: http://www.wikidata.org/prop/\n- pq: http://www.wikidata.org/prop/qualifier/\n- pqn: http://www.wikidata.org/prop/qualifier/value-normalized/\n- pqv: http://www.wikidata.org/prop/qualifier/value/\n- pr: http://www.wikidata.org/prop/reference/\n- prn: http://www.wikidata.org/prop/reference/value-normalized/\n- prov: http://www.w3.org/ns/prov#\n- prv: http://www.wikidata.org/prop/reference/value/\n- ps: http://www.wikidata.org/prop/statement/\n- psn: http://www.wikidata.org/prop/statement/value-normalized/\n- psv: http://www.wikidata.org/prop/statement/value/\n- qb: http://purl.org/linked-data/cube#\n- qfn: http://qlever.cs.uni-freiburg.de/function#\n- ql: http://qlever.cs.uni-freiburg.de/builtin-functions/\n- qlss: https://qlever.cs.uni-freiburg.de/spatialSearch/\n- rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#\n- rdfs: http://www.w3.org/2000/01/rdf-schema#\n- ref: http://www.wikidata.org/reference/\n- s: http://www.wikidata.org/entity/statement/\n- schema: http://schema.org/\n- skos: http://www.w3.org/2004/02/skos/core#\n- v: http://www.wikidata.org/value/\n- void: http://rdfs.org/ns/void#\n- wd: http://www.wikidata.org/entity/\n- wdno: http://www.wikidata.org/prop/novalue/\n- wdt: http://www.wikidata.org/prop/direct/\n- wdtn: http://www.wikidata.org/prop/direct-normalized/\n- wikibase: http://wikiba.se/ontology#\n- xsd: http://www.w3.org/2001/XMLSchema#\n\nAdditional rules to follow:\n- Explain your thought process before and after each step and function call.\n- Do not ask the user for clarification until you have made an initial attempt at completing the task. When the task input is incomplete or ambiguous, proceed based on reasonable assumptions.\n- Do not use \"SERVICE wikibase:label { bd:serviceParam wikibase:language ...\" in SPARQL queries. It is unsupported by the used QLever SPARQL endpoints. Use rdfs:label or similar properties to get labels instead.\n- Always execute your final SPARQL query before giving an answer to make sure it returns the expected results.\n- The SPARQL query should always return the actual identifiers / IRIs of the items in its result. It additionally may return labels or other human-readable information, but they are optional and should be put within optional clauses unless explicitly requested by the user.\n- Do not stop early if there are still obvious improvements to be made to the SPARQL query. For example, keep refining your SPARQL query if its result contains irrelevant items or is missing items you expected.\n- Do not perform additional computation (e.g. filtering, sorting, calculations) on the result of the SPARQL query to determine the answer. All computation should be done solely within SPARQL.\n- For questions with a \"True\" or \"False\" answer the SPARQL query should be an ASK query."
+    },
+    {
+      "role": "user",
+      "content": "Who is the director of photography of the movie The Matrix Revolutions"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "8ad08feba19744eca1f3cf56dd169313",
+        "message": null,
+        "reasoning": {
+          "id": "df484081196745e2ba4214d170e8307d",
+          "content": "Okay, let's tackle this question: \"Who is the director of photography of the movie The Matrix Revolutions?\"\n\nFirst, I need to figure out the correct entities and properties. The main entity here is \"The Matrix Revolutions\" movie. I should find its Wikidata ID. Then, the property for director of photography is probably something like \"cinematographer\" or \"director of photography\" in Wikidata.\n\nStarting with the movie title. Let's use the search_entity function to find \"The Matrix Revolutions\" in Wikidata. The query would be \"The Matrix Revolutions\". Let me call that.\n\nWait, the user mentioned \"director of photography\", which in film terms is the cinematographer. In Wikidata, the property for cinematographer is often P161 (cast member) but maybe there's a specific property for director of photography. Wait, no, P161 is for cast members. Let me check. Alternatively, the property might be P3215: \"cinematographer\". Let me verify.\n\nBut first, I need to get the correct movie. The Matrix Revolutions is part 3 of the trilogy. Let me search for the movie.\n\nCall search_entity(kg=\"wikidata\", query=\"The Matrix Revolutions\").\n\nAssuming that returns the correct QID, maybe Q113764 for The Matrix Revolutions. Wait, let me check. Maybe Q113764 is The Matrix Revolutions. Let me check with the function.\n\nOnce I have the movie's QID, I need to find the property for director of photography. Let's search for properties related to cinematography. Use search_property(kg=\"wikidata\", query=\"director of photography\") or \"cinematographer\".\n\nAlternatively, search_property_of_entity with the movie's entity and query \"photography\".\n\nWait, after getting the movie's entity, maybe list the properties of that entity to see what's available. For example, list(kg=\"wikidata\", subject=\"wd:Q...\", property=null, object=null) to see all properties.\n\nBut maybe better to search for the property first. Let's call search_property(kg=\"wikidata\", query=\"cinematographer\").\n\nIf that returns the property P3215, which is \"cinematographer\", then use that.\n\nOnce we have the property, construct the SPARQL query: SELECT ?photographer WHERE { wd:Q... wdt:P3215 ?photographer }\n\nBut first, confirm the movie's QID. Let's do step by step.\n\nFirst step: search_entity for \"The Matrix Revolutions\".\n\nAssuming the result is wd:Q113764 (I think that's correct), then look up its properties.\n\nCheck if it has the cinematographer property. Let's say P3215 is the correct property. Then the SPARQL would be:\n\nSELECT ?dop WHERE {\n  wd:Q113764 wdt:P3215 ?dop\n}\n\nBut need to make sure the property is correct.\n\nAlternatively, maybe the property is different. Let's validate.\n\nFirst, let's call search_entity for the movie."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-ad9ca31b425d9a11",
+            "name": "search_entity",
+            "args": {
+              "kg": "wikidata",
+              "query": "The Matrix Revolutions"
+            },
+            "result": "Top 10 entity alternatives:\n1. The Matrix Revolutions (wd:Q207536), also known as \"Matrix III\", \"Matrix Revolutions\", \"The Matrix 3\", \"The Matrix III\":\n  - 2003 film by The Wachowskis\n  - is instance of film\n2. The matrix revolutions (wd:Q30449100):\n  - is instance of scholarly article\n  - scientific article\n3. The Extracellular Matrix: Reloaded Revolutions (wd:Q92542514):\n  - is instance of editorial\n  - is instance of scholarly article\n  - scientific article published on 05 June 2019\n4. The Evolution of Extracellular Matrix (wd:Q33772478):\n  - is instance of scholarly article\n  - scientific article published on December 1, 2010\n5. The evolution of metazoan extracellular matrix (wd:Q37995158):\n  - is instance of scholarly article\n  - scientific article published on March 19, 2012\n6. The Resolution Revolution (wd:Q47588619):\n  - is instance of scholarly article\n  - scientific article published in November 2015\n7. The Resolution Revolution (wd:Q57806883):\n  - is instance of scholarly article\n  - scientific article\n8. Marx and the French revolution (wd:Q58362594):\n  - article\n  - is instance of scholarly article\n9. The resolution revolution (wd:Q59090115):\n  - is instance of scholarly article\n  - scientific article published in Nature\n10. The evolution revolution (wd:Q73892091):\n  - is instance of scholarly article\n  - scientific article published on 01 April 2001"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 689,
+          "prompt_tokens": 3752,
+          "total_tokens": 4441
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "38ce495e18ba45139a467b7d6e23bdfa",
+        "message": null,
+        "reasoning": {
+          "id": "bb724e0e2578470bab2961922d961670",
+          "content": "Okay, so the user is asking for the director of photography for \"The Matrix Revolutions.\" Let me break this down.\n\nFirst, I need to confirm which entity we're dealing with. From the search_entity results, the top hit is \"The Matrix Revolutions (wd:Q207536)\" which is a 2003 film by The Wachowskis. That's definitely the movie they're referring to. The other results are scholarly articles, which aren't relevant here.\n\nNext step: find the director of photography. In Wikidata, the property for director of photography is likely \"cinematographer\" or something similar. Let me check the properties related to films.\n\nI should search for properties associated with the movie. The entity ID is wd:Q207536. Maybe using the search_property_of_entity function would help here. Let me try querying for properties related to cinematography or director of photography.\n\nWait, the user specifically said \"director of photography,\" which is a specific role. In film terms, that's the cinematographer. So the property in Wikidata might be \"P374\" or something else. Wait, I need to find the correct property.\n\nAlternatively, I can use search_property to look for properties related to \"director of photography\" or \"cinematographer.\"\n\nLet me call search_property with the query \"director of photography\" to find the right property.\n\nWait, but maybe first check what properties are associated with the movie entity. Using search_property_of_entity(kg=\"wikidata\", entity=\"wd:Q231322\", query=\"director\")? Wait, the entity ID is wd:Q207536. Let me use that.\n\nSo, search_property_of_entity for entity wd:Q207536 with query \"director\" or \"cinematographer.\"\n\nAlternatively, maybe the standard property is P374, which is \"director of photography\" according to some knowledge. Wait, I should verify.\n\nWait, in Wikidata, the property for director of photography is P374. Let me check if that's correct by searching the property index.\n\nLet me call search_property(kg=\"wikidata\", query=\"director of photography\") to get the correct property ID.\n\nOnce I have the property, I can then construct a SPARQL query to get the value for the movie.\n\nSo first, confirm the entity is correct: wd:Q207536 is the film.\n\nThen, find the property for director of photography.\n\nThen, query the movie's property to get the person.\n\nLet me execute these steps."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-b1a2b0b701b69c9a",
+            "name": "search_property",
+            "args": {
+              "kg": "wikidata",
+              "query": "director of photography"
+            },
+            "result": "Top 10 property alternatives:\n1. director of photography (wd:P344 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv), also known as \"cinematographer\", \"DOP\":\n  - person responsible for the framing, lighting, and filtration of the subject work\n2. choreographer (wd:P1809 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"dance director\"), also known as \"choreographed by\", \"dance director\":\n  - person(s) who did the choreography\n3. director / manager (wd:P1037 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv), also known as \"boss\", \"chief\", \"director\", \"director general\", \"general manager\", etc.:\n  - person who manages any kind of group or organisation\n4. art director (wd:P3174 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv), also known as \"artistic director\":\n  - person credited as the art director/artistic director of this ... lighting designers; See also P8938 for organizations\n5. director (wd:P57 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv), also known as \"directed by\", \"film director\", \"game director\", \"movie director\":\n  - director(s) of film, TV-series, stageplay, video game or similar\n6. position held by head of the organization (wd:P2388 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"director\"), also known as \"chairperson's postion\", \"chief's position\", \"directed by\", \"directed by / from\", \"director\", etc.:\n  - position of the head of this item\n7. producer (wd:P162 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"film producer\"), also known as \"creative producer\", \"film producer\", \"musical producer\", \"music producer\", \"produced by\", etc.:\n  - person(s) who produced the film, musical work, theatrical ... [for production company, use P272, video games - use P178]\n8. film editor (wd:P1040 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv), also known as \"edited by\", \"editing by\", \"editor\":\n  - person who works with the raw footage, selecting shots and combining them into sequences to create a finished motion picture\n9. editor (wd:P98 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"publication director\"), also known as \"associate editor\", \"compiled by\", \"ed.\", \"edited by\", \"editorial director\", etc.:\n  - person who checks and corrects a work (such as a book, ... the text of an ancient written work or manuscript.\n10. director of archaeological fieldwork (wd:P4345 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"dig director\"), also known as \"dig director\", \"director of excavations\", \"excavation director\":\n  - person leading the archaeological or anthropological investigation at a given site"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 575,
+          "prompt_tokens": 4223,
+          "total_tokens": 4798
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "804e7b5c91f146f684014790f1b56838",
+        "message": null,
+        "reasoning": {
+          "id": "64b240d529b44429876c49023e888f4a",
+          "content": "Okay, let's tackle this problem. The user is asking for the director of photography of the movie \"The Matrix Revolutions.\" \n\nFirst, I need to confirm the correct entity for the movie. Earlier, when I searched for \"The Matrix Revolutions,\" the top result was Q207536, which is the 2003 film by The Wachowskis. The other results were scholarly articles, so I can safely assume Q207536 is the correct entity.\n\nNext, I need to find the property for \"director of photography.\" The search_property function gave me a list, and the first entry is P344, labeled as \"director of photography.\" So the property to use is wdt:P344.\n\nNow, I need to construct a SPARQL query that retrieves the director of photography for The Matrix Revolutions. The subject will be wd:Q207536, the property wdt:P344, and the object will be the value we want.\n\nSo the basic query should be:\nSELECT ?dop WHERE {\n  wd:Q207536 wdt:P344 ?dop.\n}\n\nBut wait, sometimes in Wikidata, properties can have multiple values or qualifiers. However, director of photography is a direct property (wdt:P344), so it should be straightforward. Let me verify by checking if there are any qualifiers needed, but usually, for this property, it's a direct statement.\n\nI should execute the query to make sure. Let me use the execute function with the SPARQL as above.\n\nBut before finalizing, maybe I should also retrieve the label of the director of photography to present a human-readable answer. So adding an optional clause for the label:\n\nSELECT ?dop ?dopLabel WHERE {\n  wd:Q207536 wdt:P344 ?dop.\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"en\". }\n}\n\nWait, the instructions say not to use SERVICE wikibase:label because it's unsupported. So instead, use rdfs:label. Let me adjust:\n\nSELECT ?dofp ?dofpLabel\nWHERE {\n  wd:Q207536 wdt:P344 ?dofp.\n  OPTIONAL { ?dofp rdfs:label ?dofpLabel FILTER(LANG(?dofpLabel) = \"en\") }\n}\n\nBut the user might just want the identifier, but the answer should have the human-readable name. However, the problem says that labels are optional but preferred. So the query should return the IRI and maybe the label.\n\nWait, the user is asking \"Who is the director of photography...\", so they need the name. So the final answer should include the label.\n\nSo the correct approach is to get the entity (Q-ID) and its English label.\n\nLet me structure the query properly. First, ensure we have the right property. Then join with labels.\n\nSo the SPARQL would be:\n\nSELECT ?dop ?dopLabel WHERE {\n  wd:Q207536 wdt:P344 ?dop.\n  ?dop rdfs:label ?dopLabel.\n  FILTER (LANG(?dopLabel) = \"en\")\n}\n\nBut in practice, the labels might not be in English, but the user likely wants English. Also, there might be multiple labels, so using a FILTER for English.\n\nAlternatively, use the hint: using a service for labels but since that's not allowed, the above method works.\n\nWait, but how does the label retrieval work without the SERVICE? Because rdfs:label is a property that the entity has. So each entity (like the director's QID) has a label in various languages. So the query:\n\n?dop rdfs:label ?dopLabel FILTER (LANG(?dopLabel) = \"en\")\n\nshould work.\n\nLet me check if there are any potential issues. For example, if the entity doesn't have an English label, but in this case, The Matrix Revolutions is a major film, so the director of photography is likely a notable person with an English label.\n\nSo the SPARQL query should retrieve the correct person. Let's execute it.\n\nWait, before executing, I should make sure that P344 is indeed the correct property. From the search_property result, P344 is \"director of photography\" with the correct description. So yes.\n\nAnother check: in Wikidata, for The Matrix (Q764), the director of photography is Robert Richardson (Q505597), so P344 should link to that.\n\nAssuming The Matrix Revolutions uses the same or a different person.\n\nSo the next step is to execute the query with the determined entity and property."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-91a4553ab328524a",
+            "name": "execute",
+            "args": {
+              "kg": "wikidata",
+              "sparql": "SELECT ?dop ?dopLabel WHERE { wd:Q207536 wdt:P344 ?dop. ?dop rdfs:label ?dopLabel. FILTER(LANG(?dopLabel) = \"en\") }"
+            },
+            "result": "Got 1 row and 2 columns:\n| dop                    | dopLabel            |\n| ---------------------- | ------------------- |\n| Bill Pope (wd:Q795025) | Bill Pope (lang:en) |"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 1091,
+          "prompt_tokens": 5075,
+          "total_tokens": 6166
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "3c23b6369a0f44e088c0e857a2d293aa",
+        "message": null,
+        "reasoning": {
+          "id": "de7c3346426f4761b3d7abd8ae07e584",
+          "content": "Okay, let's see. The user asked for the director of photography for The Matrix Revolutions.\n\nFirst, I needed to find the correct entity for the movie. I used search_entity with \"The Matrix Revolutions\" and got a list. The top result was wd:Q207536, which is the 2003 film by the Wachowskis. That makes sense because The Matrix Revolutions is the third movie in the series.\n\nNext, I looked for the property related to director of photography. Using search_property with \"director of photography\", the first result was wdt:P344, which is the right property. The description says it's the person responsible for framing, lighting, etc., so that's correct.\n\nThen I constructed a SPARQL query. I used wd:Q207536 (the movie) and the property wdt:P344 to find the director of photography. I also requested the label in English to make sure the answer is human-readable. \n\nThe execute function ran the query and returned Bill Pope. Checking Wikidata, Bill Pope is indeed the cinematographer for The Matrix Revolutions. So the answer should be Bill Pope.\n\nI need to confirm there's only one result, which there was. So the final answer is Bill Pope."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-b68081c179861e6c",
+            "name": "answer",
+            "args": {
+              "kg": "wikidata",
+              "sparql": "SELECT ?dop WHERE { wd:Q207536 wdt:P344 ?dop }",
+              "answer": "Bill Pope"
+            },
+            "result": "Stopping"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 332,
+          "prompt_tokens": 5214,
+          "total_tokens": 5546
+        }
+      }
+    }
+  ],
+  "known": [
+    "http://www.wikidata.org/prop/direct/P3174",
+    "http://www.wikidata.org/entity/Q33772478",
+    "http://www.wikidata.org/entity/Q795025",
+    "http://www.wikidata.org/prop/reference/P57",
+    "http://www.wikidata.org/prop/statement/value-normalized/P57",
+    "http://www.wikidata.org/entity/Q37995158",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P98",
+    "http://www.wikidata.org/prop/qualifier/value/P3174",
+    "http://www.wikidata.org/prop/reference/value/P344",
+    "http://www.wikidata.org/entity/P1040",
+    "http://www.wikidata.org/prop/reference/P2388",
+    "http://www.wikidata.org/prop/direct/P1040",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P2388",
+    "http://www.wikidata.org/prop/direct/P1809",
+    "http://www.wikidata.org/entity/Q59090115",
+    "http://www.wikidata.org/prop/qualifier/P3174",
+    "http://www.wikidata.org/entity/Q207536",
+    "http://www.wikidata.org/prop/qualifier/P4345",
+    "http://www.wikidata.org/prop/statement/value/P1809",
+    "http://www.wikidata.org/prop/qualifier/value/P1809",
+    "http://www.wikidata.org/prop/reference/value-normalized/P2388",
+    "http://www.wikidata.org/prop/statement/value/P2388",
+    "http://www.wikidata.org/prop/qualifier/P57",
+    "http://www.wikidata.org/prop/reference/value/P1040",
+    "http://www.wikidata.org/prop/statement/value-normalized/P344",
+    "http://www.wikidata.org/prop/statement/value/P344",
+    "http://www.wikidata.org/prop/qualifier/value/P162",
+    "http://www.wikidata.org/prop/qualifier/P1037",
+    "http://www.wikidata.org/prop/statement/value-normalized/P1037",
+    "http://www.wikidata.org/prop/qualifier/value/P2388",
+    "http://www.wikidata.org/prop/qualifier/P1040",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P344",
+    "http://www.wikidata.org/prop/direct/P2388",
+    "http://www.wikidata.org/prop/direct-normalized/P1809",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P57",
+    "http://www.wikidata.org/prop/reference/value/P162",
+    "http://www.wikidata.org/prop/statement/value-normalized/P3174",
+    "http://www.wikidata.org/prop/reference/value-normalized/P3174",
+    "http://www.wikidata.org/prop/qualifier/P344",
+    "http://www.wikidata.org/prop/P1037",
+    "http://www.wikidata.org/prop/direct/P1037",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P1040",
+    "http://www.wikidata.org/prop/reference/value-normalized/P1040",
+    "http://www.wikidata.org/prop/reference/value-normalized/P98",
+    "http://www.wikidata.org/prop/reference/P3174",
+    "http://www.wikidata.org/entity/Q47588619",
+    "http://www.wikidata.org/entity/P2388",
+    "http://www.wikidata.org/prop/P344",
+    "http://www.wikidata.org/prop/statement/value-normalized/P2388",
+    "http://www.wikidata.org/prop/reference/P344",
+    "http://www.wikidata.org/prop/qualifier/P162",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P1037",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P3174",
+    "http://www.wikidata.org/prop/statement/value/P1037",
+    "http://www.wikidata.org/prop/P4345",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P4345",
+    "http://www.wikidata.org/prop/reference/P162",
+    "http://www.wikidata.org/entity/P1809",
+    "http://www.wikidata.org/prop/statement/value-normalized/P98",
+    "http://www.wikidata.org/prop/direct-normalized/P4345",
+    "http://www.wikidata.org/entity/P3174",
+    "http://www.wikidata.org/prop/direct/P344",
+    "http://www.wikidata.org/prop/reference/value/P3174",
+    "http://www.wikidata.org/prop/P162",
+    "http://www.wikidata.org/prop/reference/value/P4345",
+    "http://www.wikidata.org/prop/statement/P344",
+    "http://www.wikidata.org/prop/reference/value/P2388",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P162",
+    "http://www.wikidata.org/prop/reference/P1809",
+    "http://www.wikidata.org/prop/direct-normalized/P162",
+    "http://www.wikidata.org/prop/qualifier/value/P344",
+    "http://www.wikidata.org/prop/statement/P57",
+    "http://www.wikidata.org/prop/statement/value/P98",
+    "http://www.wikidata.org/prop/direct/P98",
+    "http://www.wikidata.org/prop/reference/value-normalized/P57",
+    "http://www.wikidata.org/prop/direct/P57",
+    "http://www.wikidata.org/prop/direct-normalized/P1040",
+    "http://www.wikidata.org/entity/P98",
+    "http://www.wikidata.org/prop/qualifier/value/P1037",
+    "http://www.wikidata.org/prop/statement/value-normalized/P4345",
+    "http://www.wikidata.org/entity/Q73892091",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P1809",
+    "http://www.wikidata.org/prop/reference/value-normalized/P162",
+    "http://www.wikidata.org/prop/direct-normalized/P344",
+    "http://www.wikidata.org/prop/P1809",
+    "http://www.wikidata.org/prop/P2388",
+    "http://www.wikidata.org/prop/statement/value-normalized/P1809",
+    "http://www.wikidata.org/prop/P3174",
+    "http://www.wikidata.org/entity/P162",
+    "http://www.wikidata.org/entity/Q30449100",
+    "http://www.wikidata.org/prop/reference/value-normalized/P4345",
+    "http://www.wikidata.org/prop/statement/P4345",
+    "http://www.wikidata.org/prop/qualifier/value/P57",
+    "http://www.wikidata.org/prop/statement/value/P4345",
+    "http://www.wikidata.org/prop/statement/P98",
+    "http://www.wikidata.org/prop/statement/value/P1040",
+    "http://www.wikidata.org/prop/statement/P1037",
+    "http://www.wikidata.org/prop/reference/value/P57",
+    "http://www.wikidata.org/prop/reference/value-normalized/P1037",
+    "http://www.wikidata.org/prop/P1040",
+    "http://www.wikidata.org/prop/reference/value-normalized/P344",
+    "http://www.wikidata.org/prop/qualifier/P1809",
+    "http://www.wikidata.org/entity/Q57806883",
+    "http://www.wikidata.org/prop/statement/P1040",
+    "http://www.wikidata.org/prop/direct-normalized/P2388",
+    "http://www.wikidata.org/prop/reference/value-normalized/P1809",
+    "http://www.wikidata.org/prop/P98",
+    "http://www.wikidata.org/prop/direct-normalized/P98",
+    "http://www.wikidata.org/prop/statement/value/P3174",
+    "http://www.wikidata.org/prop/statement/P1809",
+    "http://www.wikidata.org/entity/Q58362594",
+    "http://www.wikidata.org/prop/statement/value-normalized/P1040",
+    "http://www.wikidata.org/prop/reference/P1037",
+    "http://www.wikidata.org/entity/P1037",
+    "http://www.wikidata.org/prop/direct-normalized/P57",
+    "http://www.wikidata.org/prop/reference/value/P98",
+    "http://www.wikidata.org/prop/reference/P98",
+    "http://www.wikidata.org/prop/P57",
+    "http://www.wikidata.org/prop/statement/value-normalized/P162",
+    "http://www.wikidata.org/prop/direct-normalized/P3174",
+    "http://www.wikidata.org/prop/direct/P162",
+    "http://www.wikidata.org/prop/qualifier/value/P98",
+    "http://www.wikidata.org/prop/qualifier/P2388",
+    "http://www.wikidata.org/prop/qualifier/value/P1040",
+    "http://www.wikidata.org/entity/P344",
+    "http://www.wikidata.org/prop/statement/value/P162",
+    "http://www.wikidata.org/prop/statement/value/P57",
+    "http://www.wikidata.org/entity/Q92542514",
+    "http://www.wikidata.org/prop/direct-normalized/P1037",
+    "http://www.wikidata.org/prop/statement/P162",
+    "http://www.wikidata.org/prop/qualifier/value/P4345",
+    "http://www.wikidata.org/entity/P57",
+    "http://www.wikidata.org/prop/statement/P2388",
+    "http://www.wikidata.org/prop/statement/P3174",
+    "http://www.wikidata.org/prop/qualifier/P98",
+    "http://www.wikidata.org/entity/P4345",
+    "http://www.wikidata.org/prop/reference/P4345",
+    "http://www.wikidata.org/prop/reference/P1040",
+    "http://www.wikidata.org/prop/reference/value/P1037",
+    "http://www.wikidata.org/prop/direct/P4345",
+    "http://www.wikidata.org/prop/reference/value/P1809"
+  ],
+  "id": "unknown",
+  "source_csv": "data/ComplexQA/CompMix_infobox_complex.csv",
+  "row_index": 293,
+  "question": "Who is the director of photography of the movie The Matrix Revolutions",
+  "reference_answer": "Bill Pope"
+}

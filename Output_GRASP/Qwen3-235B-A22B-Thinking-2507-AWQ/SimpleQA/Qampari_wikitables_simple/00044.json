@@ -1,0 +1,292 @@
+{
+  "type": "output",
+  "task": "sparql-qa",
+  "output": {
+    "sparql": "PREFIX wdt: <http://www.wikidata.org/prop/direct/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX wd: <http://www.wikidata.org/entity/>\nSELECT ?exoplanet ?label WHERE {\n  ?exoplanet wdt:P31 wd:Q44559 ; wdt:P575 ?discoveryTime .\n  OPTIONAL {\n    ?exoplanet rdfs:label ?label\n    FILTER(LANG(?label) = \"en\")\n  }\n  FILTER(YEAR(?discoveryTime) = 2021)\n}",
+    "kg": "wikidata",
+    "selections": "Using entities:\n- exoplanet (wd:Q44559), also known as \"exosolar planet\", \"extrasolar planet\":\n  - any planet beyond the Solar System\n  - is instance of astronomical object type\n  - is subclass of extrasolar object\n  - is subclass of planet\n\nUsing properties:\n- instance of (wd:P31 as wdt), also known as \"example of\", \"has type\", \"is a\", \"is an\", \"is of type\", etc.:\n  - type to which this subject corresponds/belongs. Different ... is an instance of mountain; volcano is a subclass of mountain\n- time of discovery or invention (wd:P575 as wdt), also known as \"date discovered\", \"date of discovery\", \"date of invention\", \"discovered\", \"discovered on\", etc.:\n  - date or point in time when the item was discovered or invented",
+    "result": "Got 352 rows and 2 columns, showing the first 5 and last 5 rows below:\n| exoplanet                            | label                          |\n| ------------------------------------ | ------------------------------ |\n| TOI-540 b (wd:Q100231046)            | TOI-540 b (lang:en)            |\n| HD 110082 b (wd:Q105753132)          | HD 110082 b (lang:en)          |\n| Su (wd:Q105771316)                   | Su (lang:en)                   |\n| TOI-1601 b (wd:Q106348295)           | TOI-1601 b (lang:en)           |\n| OGLE-2019-BLG-0960Lb (wd:Q106390308) | OGLE-2019-BLG-0960Lb (lang:en) |\n| ...                                  | ...                            |\n| K2-138 g (wd:Q94498667)              | K2-138 g (lang:en)             |\n| wd:Q95944758                         |                                |\n| wd:Q97030402                         |                                |\n| wd:Q97051903                         |                                |\n| HD 1916bk (wd:Q97097778)             | HD 1916bk (lang:en)            |",
+    "endpoint": "https://qlever.dev/api/wikidata",
+    "type": "answer",
+    "answer": "There are 352 exoplanets discovered in 2021. Examples include TOI-540 b, HD 110082 b, Su, TOI-1601 b, and OGLE-2019-BLG-0960Lb. Full list contains designations like K2-138 g and HD 1916bk.",
+    "formatted": "There are 352 exoplanets discovered in 2021. Examples include TOI-540 b, HD 110082 b, Su, TOI-1601 b, and OGLE-2019-BLG-0960Lb. Full list contains designations like K2-138 g and HD 1916bk.\n\nSPARQL query over wikidata:\n```sparql\nPREFIX wdt: <http://www.wikidata.org/prop/direct/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX wd: <http://www.wikidata.org/entity/>\nSELECT ?exoplanet ?label WHERE {\n  ?exoplanet wdt:P31 wd:Q44559 ; wdt:P575 ?discoveryTime .\n  OPTIONAL {\n    ?exoplanet rdfs:label ?label\n    FILTER(LANG(?label) = \"en\")\n  }\n  FILTER(YEAR(?discoveryTime) = 2021)\n}\n```\n\nUsing entities:\n- exoplanet (wd:Q44559), also known as \"exosolar planet\", \"extrasolar planet\":\n  - any planet beyond the Solar System\n  - is instance of astronomical object type\n  - is subclass of extrasolar object\n  - is subclass of planet\n\nUsing properties:\n- instance of (wd:P31 as wdt), also known as \"example of\", \"has type\", \"is a\", \"is an\", \"is of type\", etc.:\n  - type to which this subject corresponds/belongs. Different ... is an instance of mountain; volcano is a subclass of mountain\n- time of discovery or invention (wd:P575 as wdt), also known as \"date discovered\", \"date of discovery\", \"date of invention\", \"discovered\", \"discovered on\", etc.:\n  - date or point in time when the item was discovered or invented\n\nExecution result:\nGot 352 rows and 2 columns, showing the first 5 and last 5 rows below:\n| exoplanet                            | label                          |\n| ------------------------------------ | ------------------------------ |\n| TOI-540 b (wd:Q100231046)            | TOI-540 b (lang:en)            |\n| HD 110082 b (wd:Q105753132)          | HD 110082 b (lang:en)          |\n| Su (wd:Q105771316)                   | Su (lang:en)                   |\n| TOI-1601 b (wd:Q106348295)           | TOI-1601 b (lang:en)           |\n| OGLE-2019-BLG-0960Lb (wd:Q106390308) | OGLE-2019-BLG-0960Lb (lang:en) |\n| ...                                  | ...                            |\n| K2-138 g (wd:Q94498667)              | K2-138 g (lang:en)             |\n| wd:Q95944758                         |                                |\n| wd:Q97030402                         |                                |\n| wd:Q97051903                         |                                |\n| HD 1916bk (wd:Q97097778)             | HD 1916bk (lang:en)            |"
+  },
+  "elapsed": 89.742863,
+  "error": null,
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a question answering assistant. Your job is to generate a SPARQL query to answer a given user question.\n\nYou should follow a step-by-step approach to generate the SPARQL query:\n1. Determine possible entities and properties implied by the user question.\n2. Search for the entities and properties in the knowledge graphs. Where applicable, constrain the searches with already identified entities and properties.\n3. Gradually build up the SPARQL query using the identified entities and properties. Start with simple queries and add more complexity as needed. Execute intermediate queries to get feedback and to verify your assumptions. You may need to refine or rethink your current plan based on the query results and go back to step 2 if needed, possibly multiple times.\n4. Use the answer or cancel function to finalize your answer and stop the generation process.\n\nAvailable knowledge graphs:\n- \"wikidata\" at https://qlever.dev/api/wikidata\n  - \"entity\" index (type=\"fuzzy\"): Entities indexed by their labels and synonyms\n  - \"property\" index (type=\"embedding\", modalities=\"text\"): Properties indexed by their labels, synonyms, and identifiers\n\nIndex types used:\n- \"embedding\": Retrieves items by cosine similarity between their embeddings and the query embedding. The embedding model used depends on the index and may support text, images, or both.\n- \"fuzzy\": Retrieves items by overlap between their label words and the query keywords. The query keywords must not match label words exactly, but some fuzziness is allowed. The longer a query keyword is, the more it can deviate from a label word and still be considered a match, though it will also contribute less to the overall score. No special query operators like AND/OR are supported.\n\nSPARQL prefixes for use in function calls:\n- bd: http://www.bigdata.com/rdf#\n- cc: http://creativecommons.org/ns#\n- data: https://www.wikidata.org/wiki/Special:EntityData/\n- dc: http://purl.org/dc/elements/1.1/\n- dct: http://purl.org/dc/terms/\n- foaf: http://xmlns.com/foaf/0.1/\n- geo: http://www.opengis.net/ont/geosparql#\n- geof: http://www.opengis.net/def/function/geosparql/\n- gn: http://www.geonames.org/ontology#\n- hint: http://www.bigdata.com/queryHints#\n- imdb: https://www.imdb.com/\n- math: http://www.w3.org/2005/xpath-functions/math#\n- ontolex: http://www.w3.org/ns/lemon/ontolex#\n- owl: http://www.w3.org/2002/07/owl#\n- p: http://www.wikidata.org/prop/\n- pq: http://www.wikidata.org/prop/qualifier/\n- pqn: http://www.wikidata.org/prop/qualifier/value-normalized/\n- pqv: http://www.wikidata.org/prop/qualifier/value/\n- pr: http://www.wikidata.org/prop/reference/\n- prn: http://www.wikidata.org/prop/reference/value-normalized/\n- prov: http://www.w3.org/ns/prov#\n- prv: http://www.wikidata.org/prop/reference/value/\n- ps: http://www.wikidata.org/prop/statement/\n- psn: http://www.wikidata.org/prop/statement/value-normalized/\n- psv: http://www.wikidata.org/prop/statement/value/\n- qb: http://purl.org/linked-data/cube#\n- qfn: http://qlever.cs.uni-freiburg.de/function#\n- ql: http://qlever.cs.uni-freiburg.de/builtin-functions/\n- qlss: https://qlever.cs.uni-freiburg.de/spatialSearch/\n- rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#\n- rdfs: http://www.w3.org/2000/01/rdf-schema#\n- ref: http://www.wikidata.org/reference/\n- s: http://www.wikidata.org/entity/statement/\n- schema: http://schema.org/\n- skos: http://www.w3.org/2004/02/skos/core#\n- v: http://www.wikidata.org/value/\n- void: http://rdfs.org/ns/void#\n- wd: http://www.wikidata.org/entity/\n- wdno: http://www.wikidata.org/prop/novalue/\n- wdt: http://www.wikidata.org/prop/direct/\n- wdtn: http://www.wikidata.org/prop/direct-normalized/\n- wikibase: http://wikiba.se/ontology#\n- xsd: http://www.w3.org/2001/XMLSchema#\n\nAdditional rules to follow:\n- Explain your thought process before and after each step and function call.\n- Do not ask the user for clarification until you have made an initial attempt at completing the task. When the task input is incomplete or ambiguous, proceed based on reasonable assumptions.\n- Do not use \"SERVICE wikibase:label { bd:serviceParam wikibase:language ...\" in SPARQL queries. It is unsupported by the used QLever SPARQL endpoints. Use rdfs:label or similar properties to get labels instead.\n- Always execute your final SPARQL query before giving an answer to make sure it returns the expected results.\n- The SPARQL query should always return the actual identifiers / IRIs of the items in its result. It additionally may return labels or other human-readable information, but they are optional and should be put within optional clauses unless explicitly requested by the user.\n- Do not stop early if there are still obvious improvements to be made to the SPARQL query. For example, keep refining your SPARQL query if its result contains irrelevant items or is missing items you expected.\n- Do not perform additional computation (e.g. filtering, sorting, calculations) on the result of the SPARQL query to determine the answer. All computation should be done solely within SPARQL.\n- For questions with a \"True\" or \"False\" answer the SPARQL query should be an ASK query."
+    },
+    {
+      "role": "user",
+      "content": "What are the exoplanets discovered in 2021 ?"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "643398f45afd4d85881466e3234d207d",
+        "message": null,
+        "reasoning": {
+          "id": "310c1e4d317b4d319f2cffe1ff2555d9",
+          "content": "Okay, let's tackle this question: \"What are the exoplanets discovered in 2021?\"\n\nFirst, I need to figure out how to translate this into a SPARQL query for Wikidata. The user is asking about exoplanets discovered in a specific year, so I need to find entities (exoplanets) with a discovery year of 2021.\n\nStep 1: Identify the relevant entities and properties.\n- The main entity here is an exoplanet. In Wikidata, exoplanets are likely instances of the class 'exoplanet' (Q443766).\n- The property for the discovery year might be 'point in time' (P585) with a qualifier. Wait, no. Wait, for discovery, the property might be different. Let me think. The property for discovery date is probably 'discovery date' or similar. Let me check.\n\nBut since I can't directly check, I need to recall or use the search functions. The user has given me access to search functions. So maybe I should first search for the property related to discovery year.\n\nAlternatively, the property for 'point in time' (P585) is often used for time-related qualifiers, but maybe the direct property is 'discoverer' or 'discovery method'... Wait, no. The actual discovery date would be another property. Maybe 'time of discovery' or 'discovery year'.\n\nWait, in Wikidata, the property for discovery year might be 'publication date' (but not exactly). Alternatively, check if there's a 'discovery date' property.\n\nSince I need to search for the property, let's use the search_property function. Let me search for properties related to 'discovery year'.\n\nBut first, confirm the entity for exoplanets. Let's search for the entity \"exoplanet\" using search_entity.\n\nWait, the question is about exoplanets discovered in 2021. So first, I need the class of exoplanets. The Wikidata item for exoplanet is Q443766.\n\nBut to find all instances of exoplanets, we can use the property 'instance of' (P31) linked to Q443766.\n\nSo the basic structure would be:\n\nSELECT ?exoplanet WHERE {\n  ?exoplanet wdt:P31 wd:Q443766 .\n  ?exoplanet wdt:<discovery year property> \"2021\" .\n}\n\nBut I need to find the correct property for discovery year.\n\nLet me search for properties related to discovery year.\n\nUsing search_property(kg=\"wikidata\", query=\"discovery year\") might help.\n\nAlternatively, maybe the property is 'discovery date' (P575), but checking that. Wait, P575 is 'publication date', but maybe for exoplanets, they use a different property.\n\nWait, let's try to find the correct property.\n\nCalling search_property with query \"discovery year\":\n\nsearch_property(kg=\"wikidata\", query=\"discovery year\")\n\nBut let's see possible results. The property might be called \"discovery year\" or \"year of discovery\".\n\nAssuming that the property exists, like P2912 (point of time) but maybe not. Wait, P585 is point in time, which is used for dates.\n\nWait, for example, the discovery date might be stored as a time value using P585, but with a qualifier. Wait no, P585 is the property itself.\n\nWait, for example, the discovery date of an exoplanet might be stored with P575 (publication date), but that's for works. Maybe for exoplanets, they use a different property.\n\nAlternatively, check for the property \"discovery year\" in Wikidata.\n\nLet me try to search for the property. So I'll call search_property(kg=\"wikidata\", query=\"discovery year\").\n\nAssuming that the correct property is P3119 (year of discovery), for example. Wait, but I need to check.\n\nAlternatively, perhaps the property is P575 (publication date) but that's unlikely. Let's check.\n\nWait, let's make a tool call to search_property for \"discovery year\".\n\nWait, according to my knowledge, the property for discovery year in exoplanets might be P3119. Let me confirm. If not, then another property.\n\nBut since I can't remember exactly, better to use the search function.\n\nSo first, let's call search_property(kg=\"wikidata\", query=\"discovery year\").\n\nAfter getting the property, we can use it to filter.\n\nAlso, the year 2021 is a time, so the value should be a time in the format \"2021-01-01T00:00:00Z/9\" where /9 is the precision for year. But in SPARQL, we can compare the year part.\n\nIn Wikidata, time values use the \"xsd:dateTime\" format. To get the year 2021, the query would need to check for the year component.\n\nAlternatively, since 2021 is a year, perhaps the value is stored as a time with year 2021. So in SPARQL, we can use YEAR(?date) = 2021.\n\nBut how to structure that.\n\nFirst, find the correct property.\n\nStep by step:\n\n1. Find the main entity: exoplanet (Q443766)\n2. Find all instances of exoplanet.\n3. Find the property that stores the discovery year.\n4. Filter for those with year 2021.\n\nLet me start by confirming the exoplanet class.\n\nSearch for entity \"exoplanet\" using search_entity.\n\nsearch_entity(kg=\"wikidata\", query=\"exoplanet\")\n\nThe expected item is Q443766.\n\nThen, instances of exoplanet would be items with wdt:P31 wd:Q443766.\n\nNext, find the property for discovery year.\n\nUsing search_property(\"discovery year\").\n\nAlternatively, maybe \"time discovered\" or similar.\n\nLet's call search_property with \"discovery year\".\n\nAssuming the result gives a property like Q3119 or similar.\n\nWait, in reality, the property for discovery year in exoplanets is P3119. Let's verify via search.\n\nBut let's simulate the tool call.\n\nsearch_property(kg=\"wikidata\", query=\"discovery year\")\n\nPossible result: Q3119 - \"year of discovery\" (P3119).\n\nIf that's the case, then the property is P3119.\n\nSo the SPARQL query would be:\n\nSELECT ?exoplanet WHERE {\n  ?exoplanet wdt:P31 wd:Q443766 .\n  ?exoplanet wdt:P3119 \"2021\" .\n}\n\nBut wait, P3119 might expect a numeric value, so 2021 as a number, not a time.\n\nWait, checking the data type for property P3119. If it's a year, it's probably a normal numeric value, not a time.\n\nAlternatively, it might be a time value where the year is 2021.\n\nNeed to check.\n\nAlternatively, if the property is time-based, like P585, but that's more general.\n\nWait, maybe the correct property is P575 (publication date), but that's for works. For exoplanets, it's more likely P3119.\n\nAssuming P3119 is the correct property.\n\nBut to confirm, let's think about possible properties.\n\nAnother approach: use the list function to see properties of a known exoplanet.\n\nFor example, take Proxima Centauri b, which was discovered in 2016.\n\nBut I need to find its Wikidata ID first.\n\nAlternatively, search for an exoplanet discovered in 2021.\n\nBut perhaps it's better to first get the property.\n\nAssuming the property is P3119.\n\nLet me construct the query.\n\nBut another possibility: the discovery date is stored as a time in the \"point in time\" (P585) property, but I don't think so. P585 is used for events, but for exoplanets, maybe a specific property.\n\nAlternatively, the property P575 (publication date) might be used, but that's for when the discovery was published, which might be the same year.\n\nBut to avoid guesswork, the proper approach is to search for the property.\n\nLet me proceed with the tool calls.\n\nFirst, search for the exoplanet entity to confirm the class.\n\nCall search_entity(kg=\"wikidata\", query=\"exoplanet\")\n\nAssuming it returns Q443766.\n\nThen, search for the property related to discovery year.\n\nsearch_property(kg=\"wikidata\", query=\"discovery year\")\n\nSuppose this returns P3119: \"year of discovery\".\n\nThen, check if the object of P3119 is a numeric year.\n\nIf so, we can use the property directly.\n\nAnother check: For a specific exoplanet discovered in 2021, what property is used.\n\nBut without knowing specific examples, it's tricky.\n\nAssuming P3119 is correct.\n\nSo the SPARQL would be:\n\nSELECT ?exoplanet ?exoplanetLabel WHERE {\n  ?exoplanet wdt:P31 wd:Q443766 .\n  ?exoplanet wdt:P3119 2021 .\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"en\" }\n}\n\nWait, but the user said not to use SERVICE wikibase:label. Instead, use optional labels.\n\nBut the user may want the labels, but the instruction says that labels are optional unless requested. Since the user asks for the names of exoplanets, it's better to include labels.\n\nBut according to the rules, the query should return identifiers, and optionally labels. So we need to add a ?exoplanetLabel using rdfs:label.\n\nSo:\n\nSELECT ?exoplanet ?exoplanetLabel WHERE {\n  ?exoplanet wdt:P31 wd:Q443766 .\n  ?exoplanet wdt:P3119 2021 .\n  OPTIONAL { ?exoplanet rdfs:label ?exoplanetLabel FILTER(LANG(?exoplanetLabel) = \"en\") }\n}\n\nWait, but wdt:P3119 is expecting a numeric value. So 2021 as an integer.\n\nBut if the property is expecting a time value, then we need to handle it differently.\n\nWait, let me check if P3119 is defined as a quantity or time.\n\nIn reality, P3119 is \"year of discovery\" and has range \"point in time\" (but no, probably). Wait, checking the actual Wikidata property.\n\nBut since I don't have access, I'll assume based on common knowledge.\n\nExoplanet discovery years are often stored as regular numbers, so 2021 as an integer.\n\nBut if it's stored as a time value (like P585), then we need to use a time comparison.\n\nLet me consider both possibilities.\n\nCase 1: Property P3119 is a numeric value.\n\nQuery: wdt:P3119 2021\n\nCase 2: Property is a time (e.g., P575), then:\n\n?exoplanet wdt:P575 ?date .\nFILTER(YEAR(?date) = 2021)\n\nBut without knowing the exact property, it's hard.\n\nPerhaps better to test with a sample.\n\nLet's try to find an example.\n\nTake the exoplanet \"Kepler-1649c\", which was discovered in 2020.\n\nBut checking its Wikidata item.\n\nAssume its ID is Q64542325.\n\nIf I could list its properties:\n\nlist(kg=\"wikidata\", subject=\"wd:Q64542325\")\n\nHypothetically, it might have P31 (instance of) Q443766 (exoplanet), and perhaps P3119 2020.\n\nBut since I can't actually do that now, proceed with assumptions.\n\nAssuming property P3119 is correct.\n\nNow, check if the query returns results.\n\nBut to be safe, maybe the property is P575 (publication date), but for exoplanets, the discovery year property is likely P3119.\n\nAlternatively, another property: P2299 \"date of discovery\".\n\nWait, P2299 is \"time of discovery\", which is a time data type.\n\nIn that case, the value would be a specific date, like \"2021-01-01T00:00:00Z\", and we need to check the year.\n\nBut the user said discovered in 2021, so any time in 2021.\n\nSo the query would need to have:\n\n?exoplanet wdt:P2299 ?date .\nFILTER(YEAR(?date) = 2021)\n\nBut how to know the correct property.\n\nThis is the crux: finding the correct property.\n\nGiven the possible confusion between different properties, the right approach is to use the search functions.\n\nSo first, let's call search_property(kg=\"wikidata\", query=\"discovery year\").\n\nSuppose the result gives P3119 as \"year of discovery\".\n\nAlternatively, if the search returns P2299 as \"time of discovery\", then need to handle dates.\n\nLet's simulate the tool call.\n\nAssuming search_property with \"discovery year\" returns P3119.\n\nSo property P3119 is \"year of discovery\", with type year.\n\nTherefore, the value is a numeric year.\n\nThus, the filter is simply wdt:P3119 2021.\n\nNow, the complete query would be:\n\nSELECT ?exoplanet ?exoplanetLabel WHERE {\n  ?exoplanet wdt:P31 wd:Q443766 .\n  ?exoplanet wdt:P3119 2021 .\n  OPTIONAL { ?exoplanet rdfs:label ?exoplanetLabel FILTER(LANG(?exoplanetLabel) = \"en\") }\n}\n\nBut need to confirm:\n\n- P3119 is the right property.\n- The value is stored as integer 2021.\n\nIf that's the case, the query should work.\n\nTo verify, perhaps run a test query.\n\nBut since I can't execute yet (as per the process, I need to build up step by step), but according to the instructions, I should execute intermediate queries.\n\nWait, but the user is to generate the SPARQL query step by step, using the function calls.\n\nSo step 1: Check the entity for exoplanet.\n\nCall search_entity(kg=\"wikidata\", query=\"exoplanet\").\n\nAssuming it returns Q443766.\n\nStep 2: Search for discovery year property.\n\nCall search_property(kg=\"wikidata\", query=\"discovery year\").\n\nAssume it returns P3119.\n\nStep 3: Check if P3119 is used as expected.\n\nPerhaps list some exoplanets and see their properties.\n\nBut since we can't directly interact, proceed.\n\nAnother check: for a known exoplanet discovered in 2021, does it have P3119 2021?\n\nAlternatively, check if the property P3119 exists.\n\nAssuming yes.\n\nSo the SPARQL query is as above.\n\nBut need to make sure that the year is numeric.\n\nAlso, ensure that the exoplanets are instances of Q443766.\n\nWait, but all exoplanets are instances of exoplanet (Q443766), so that's correct.\n\nNow, check if there could be multiple ways exoplanets are represented.\n\nSometimes, exoplanets might have 'subclass of' instead of 'instance of', but probably not.\n\nAssuming 'instance of' is correct.\n\nNow, the next step is to construct the query.\n\nBut the user might have exoplanets with different properties, but assuming the mainstream data uses P3119.\n\nAlternatively, to make the query more robust, use multiple properties.\n\nBut the question specifies \"discovered in 2021\", so likely one property.\n\nGiven all that, the proposed query is:\n\nSELECT ?exoplanet ?exoplanetLabel\nWHERE {\n  ?exoplanet wdt:P31 wd:Q443766 .\n  ?exoplanet wdt:P3119 2021 .\n  OPTIONAL { ?exoplanet rdfs:label ?exoplanetLabel FILTER(LANG(?exoplanetLabel) = \"en\") }\n}\n\nBut wait, the problem is ensuring that 2021 is the correct value. For example, if the property expects a time value, then using 2021 as a number won't work.\n\nAlternative approach: search for the property related to discovery date and see its type.\n\nIf we can't know, perhaps we should search for properties related to 'discovery date' and see.\n\nCall search_property(kg=\"wikidata\", query=\"discovery date\").\n\nSuppose it returns P2299 (\"time of discovery\"), which is a time property.\n\nThen, the query would be:\n\nSELECT ?exoplanet ?exoplanetLabel\nWHERE {\n  ?exoplanet wdt:P31 wd:Q443766 .\n  ?exoplanet wdt:P2299 ?discoveryDate .\n  FILTER(YEAR(?discoveryDate) = 2021)\n  OPTIONAL { ?exoplanet rdfs:label ?exoplanetLabel FILTER(LANG(?exoplanetLabel) = \"en\") }\n}\n\nBut how to decide between P3119 and P2299?\n\nThis is a critical point.\n\nLet's simulate the search_property result.\n\nIf searching for \"discovery year\" returns P3119, then use that. If \"discovery date\" returns P2299.\n\nThe user's question is about the year 2021, so the property could be either a year number or a date.\n\nThe most reliable approach is to find which properties are commonly used for exoplanet discoveries.\n\nIn Wikidata, exoplanets often have the property P3119 (\"year of discovery\") as a numeric value. For example, see the page for exoplanet TRAPPIST-1d (Q24553372) which lists \"year of discovery\" as 2017.\n\nThus, it's likely P3119 is the correct property.\n\nTherefore, the query should use P3119 with value 2021.\n\nNow, another check: is the property P3119 numeric?\n\nYes, the description says it's a year, so it's a numeric value.\n\nThus, comparing as xsd:integer.\n\nBut in SPARQL, numbers are comparable directly.\n\nSo the filter is wdt:P3119 2021.\n\nNow, time to execute the query.\n\nBut according to the process, we need to build up the query and verify with intermediate steps.\n\nFirst, check that exoplanets have the property P3119.\n\nLet's call execute(kg=\"wikidata\", sparql=\"SELECT ?exoplanet WHERE { ?exoplanet wdt:P31 wd:Q443766 . ?exoplanet wdt:P3119 ?year } LIMIT 1\") to see if any results return.\n\nBut since I'm simulating, assume that it does return some year values.\n\nAssuming it works, then next step.\n\nAnother possible problem: the property used might have different qualifiers or be stored as a string.\n\nBut unlikely for years.\n\nAlternatively, check the value type.\n\nIf it's a number, then 2021 should match.\n\nNow, final query:\n\nSELECT ?exoplanet ?exoplanetLabel\nWHERE {\n  ?exoplanet wdt:P31 wd:Q443766 .\n  ?exoplanet wdt:P3119 2021 .\n  OPTIONAL { ?exoplanet rdfs:label ?exoplanetLabel FILTER(LANG(?exoplanetLabel) = \"en\") }\n}\nLIMIT 10\n\nBut the user didn't specify limiting to 10, but typically you might limit to avoid too many results.\n\nHowever, the question asks for \"the exoplanets\", so all results.\n\nBut maybe in practice, Wikidata might not have all, but the query should fetch all.\n\nNow, need to ensure that the query works.\n\nPossible mistake: incorrect entity for exoplanet.\n\nLet's confirm the entity for exoplanet.\n\nCalling search_entity(kg=\"wikidata\", query=\"exoplanet\") should return Q443766.\n\nYes, Q443766 is the item for exoplanet.\n\nSo the entity wd:Q443766 is correct.\n\nNow, another potential issue: some exoplanets might be represented under different classes, but unlikely.\n\nAll exoplanets should be instances of Q443766.\n\nThus, the query should be correct.\n\nNow, the final step is to execute this SPARQL and check.\n\nBut according to the instructions, the assistant should explain the thought process, then call the necessary tool functions step by step.\n\nSo, first, I need to search for the entity \"exoplanet\" to confirm the correct Wikidata ID.\n\nThen search for the property related to discovery year.\n\nThen build the query.\n\nLet's start with tool calls."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-b032453c327d6ba0",
+            "name": "search_entity",
+            "args": {
+              "kg": "wikidata",
+              "query": "exoplanet"
+            },
+            "result": "Top 10 entity alternatives:\n1. exoplanet (wd:Q44559), also known as \"exosolar planet\", \"extrasolar planet\":\n  - any planet beyond the Solar System\n  - is instance of astronomical object type\n  - is subclass of extrasolar object\n  - is subclass of planet\n2. Discoveries of extrasolar planets (wd:Q5281832, matched via \"exoplanet\"), also known as \"detection of exoplanets\", \"exoplanet\", \"extrasolar planet\":\n  - detecting planets located outside the Solar System\n3. Exoplanet (wd:Q5420638):\n  - album by The Contortionist\n  - is instance of album\n4. Exoplanet (wd:Q122376481):\n  - 2018 video game\n  - is instance of video game\n5. exoplanet (wd:L32989-F1)\n6. exoplanet (wd:L37620-S1)\n7. extragalactic planet (wd:Q2578855, matched via \"extragalactic exoplanet\"), also known as \"extragalactic exoplanet\":\n  - is subclass of exoplanet\n  - is subclass of extragalactic astronomy\n  - planet that is outside the Milky Way Galaxy\n8. Template:Exoplanet (wd:Q13219190):\n  - is instance of Wikimedia navigational template\n  - Wikimedia template\n9. Exoplanet Archive (wd:Q5420639), also known as \"NASA Exoplanet Archive\":\n  - exoplanet and star catalogue funded by NASA\n  - is instance of astronomical catalogue\n  - is instance of catalogue\n  - is instance of online database\n  - is instance of website\n10. habitable exoplanet (wd:Q96380207), also known as \"life on exoplanets\":\n  - is subclass of exoplanet\n  - planet that potentially supports life"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 4697,
+          "prompt_tokens": 3753,
+          "total_tokens": 8450
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "bb6c8e5ec69746f79ce0db7063c0f67f",
+        "message": null,
+        "reasoning": {
+          "id": "8686f75e5b754ceaac5704f9c2772319",
+          "content": "Okay, let's tackle the user's question: \"What are the exoplanets discovered in 2021?\" \n\nFirst, I need to figure out the correct entity for exoplanets. The user is asking about exoplanets discovered in a specific year, so the main entity here is \"exoplanet\". From the search_entity results, the top hit is wd:Q44559, which is the correct entity for exoplanets. The other entries like the album or video game can be ignored since they're not relevant here.\n\nNext, I need to find the property that indicates the discovery year. The user wants exoplanets discovered in 2021, so the key is to link each exoplanet to its discovery year. I should search for properties related to \"discovery year\" or similar. Let's use search_property to look for such a property.\n\nI'll call search_property with \"year discovered\" or \"discovery year\" as the query. Let's try \"discovery year\" first."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-ba322bf51af1101e",
+            "name": "search_property",
+            "args": {
+              "kg": "wikidata",
+              "query": "discovery year"
+            },
+            "result": "Top 10 property alternatives:\n1. time of discovery or invention (wd:P575 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"discovery date\"), also known as \"date discovered\", \"date of discovery\", \"date of invention\", \"discovered\", \"discovered on\", etc.:\n  - date or point in time when the item was discovered or invented\n2. location of discovery (wd:P189 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv), also known as \"discovered at:\", \"discovery place\", \"find location\", \"find spot\", \"findspot\", etc.:\n  - where the item was located when discovered\n3. inception (wd:P571 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"year created\"), also known as \"built\", \"commenced on date\", \"commencement date\", \"completed\", \"composed\", etc.:\n  - time when an entity begins to exist; for date of official opening use P1619\n4. discovery method (wd:P1046 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv), also known as \"detection method\":\n  - way an exoplanet was discovered\n5. publication date (wd:P577 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"year of publication\"), also known as \"air date\", \"airdate\", \"be published during\", \"be published in\", \"broadcast date\", etc.:\n  - date or point in time when a work or product was first published or released\n6. point in time (wd:P585 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"year\"), also known as \"as of\", \"at time\", \"by date\", \"date\", \"during\", etc.:\n  - date something took place, existed or a statement was true; for providing time use the \"refine date\" property (P4241)\n7. date of incorporation (wd:P10786 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"year incorporated\"), also known as \"date incorporated\", \"incorporated\", \"incorporated on date\", \"incorporation date\", \"year incorporated\":\n  - date when company, organization or city was incorporated\n8. production date (wd:P2754 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"year of production\"), also known as \"date of production\", \"filming date\", \"filming time\", \"year of production\":\n  - period of active production of (creative) work; the only date ... date (P577); in general cases, use inception (P571)\n9. site of astronomical discovery (wd:P65 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"observatory of discovery\"), also known as \"astronomical discovery site\", \"discovered at observatory\", \"observatory of discovery\", \"observatory site of discovery\":\n  - the place where an astronomical object was discovered (observatory, satellite)\n10. year of publication of scientific name for taxon (wd:P574 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"year of scientific description\"), also known as \"date of scientific description\", \"date of taxon description publication\", \"described in\", \"taxon date\", \"taxon year\", etc.:\n  - year when this taxon was formally described (for animals); year when this taxon name was formally established (for plants)"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 247,
+          "prompt_tokens": 4246,
+          "total_tokens": 4493
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "633de64a8e034630a45f7dececa88f20",
+        "message": null,
+        "reasoning": {
+          "id": "09f64d988a744cd79d86e8f910fc181a",
+          "content": "Okay, let's tackle the user's question: \"What are the exoplanets discovered in 2021?\"\n\nFirst, I need to figure out the right way to query Wikidata for exoplanets discovered in 2021. From the previous steps, the user searched for the entity \"exoplanet\" and got Q44559 as the main entity. Then they looked for the property related to discovery year and found that \"time of discovery or invention\" (P575) is the relevant property.\n\nNow, the plan is to construct a SPARQL query that finds all instances of exoplanets (which should be instances of Q44559 or subclasses) where the discovery time (P575) is in 2021. \n\nWait, but exoplanets are instances of the class \"exoplanet\" (Q44559). So we need to find all items where their instance of (P31) is Q44559. Then, check their discovery time (P575) equals 2021.\n\nBut time of discovery is a point in time, so it's a date. We need to extract the year from P575. In SPARQL, we can use YEAR() function on the date. So the query should filter where YEAR(?discoveryTime) = 2021.\n\nLet me structure the query:\n\nSELECT ?exoplanet WHERE {\n  ?exoplanet wdt:P31 wd:Q44559 .  # Instance of exoplanet\n  ?exoplanet wdt:P575 ?discoveryTime .\n  FILTER(YEAR(?discoveryTime) = 2021)\n}\n\nBut need to make sure that P575 is the correct property. Earlier search showed that P575 is \"time of discovery or invention\". So that's correct.\n\nWait, but sometimes in Wikidata, the properties might have different representations. Let me check if exoplanets actually use P575 for discovery time.\n\nAlternatively, maybe \"discovery method\" (P1046) is used, but no, the user found P575 as the correct property for discovery year.\n\nAnother thing: The time might be a specific date (like 2021-05-12), so extracting the year should work.\n\nAlso, need to check if the exoplanet class is correctly Q44559. The first search_entity result was exoplanet Q44559.\n\nWait, the user's first search for \"exoplanet\" returned Q44559 as the main entity. So using wd:Q44559 as the class.\n\nSo the SPARQL would be:\n\nSELECT ?exoplanet WHERE {\n  ?exoplanet wdt:P31 wd:Q44559;\n              wdt:P575 ?discoveryTime.\n  FILTER(YEAR(?discoveryTime) = 2021)\n}\n\nBut maybe some exoplanets are instances of subclasses of exoplanet, so using a more inclusive approach might be better, like using wdt:P279* (subclass) but perhaps just using Q44559 is sufficient.\n\nWait, in Wikidata, to get all instances of a class including subclasses, you can use:\n\n?exoplanet wdt:P31/wdt:P279* wd:Q44559.\n\nBut maybe it's safer to stick with direct instance for now, but if results are low, maybe expand. However, the user might expect all exoplanets discovered in 2021, regardless of subclass.\n\nAlternatively, using:\n\n?exoplanet wdt:P31/wdt:P279* wd:Q44559.\n\nBut perhaps the standard way is to use the class directly.\n\nAlso, need to check if there are exoplanets that might have different properties. Let me think.\n\nAnother thing: The year 2021 could be represented as 2021-01-01T00:00:00Z or similar, so the YEAR function should extract 2021.\n\nLet me consider executing a test query.\n\nWait, the user hasn't executed any query yet, but based on previous function calls, the assistant should now construct the SPARQL.\n\nBut before finalizing, maybe check if there are exoplanets with P575 in 2021.\n\nAlternatively, perhaps some exoplanets use the \"point in time\" (P585) property instead, but the user's search for discovery year points to P575.\n\nWait, in the property search, the first result was P575 for \"time of discovery or invention\".\n\nSo the correct property is P575.\n\nNow, structure the query.\n\nSELECT ?exoplanet ?exoplanetLabel WHERE {\n  ?exoplanet wdt:P31 wd:Q44559;\n             wdt:P575 ?discoveryTime.\n  FILTER(YEAR(?discoveryTime) = 2021)\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"en\" }\n}\n\nWait, but the note says not to use SERVICE wikibase:label because it's unsupported. Instead, use rdfs:label.\n\nBut the user's requirement says that labels are optional, but the query should return actual identifiers. So maybe include an optional label clause.\n\nSo:\n\nSELECT ?exoplanet ?label WHERE {\n  ?exoplanet wdt:P31 wd:Q44559;\n             wdt:P575 ?discoveryTime.\n  OPTIONAL { ?exoplanet rdfs:label ?label FILTER(LANG(?label) = \"en\") }\n  FILTER(YEAR(?discoveryTime) = 2021)\n}\n\nBut the user might want the actual list of exoplanet names, so including labels would be helpful.\n\nHowever, the problem is that the exact syntax might require a prefix. In Wikidata, the rdfs:label is available.\n\nLet me check the standard prefixes. The prefixes provided include rdfs: http://www.w3.org/2000/01/rdf-schema#\n\nSo the query would use rdfs:label.\n\nAlso, the filter for language to get English labels.\n\nNow, testing if the YEAR function is available. QLever supports some SPARQL functions, but not sure if YEAR() is supported.\n\nWait, the user mentioned QLever as the endpoint. From QLever documentation, they support some functions like YEAR(). Let's assume it does.\n\nAlternatively, the date might be a string like \"2021-01-01\", so extracting the year substring.\n\nBut the correct way is to use the date functions.\n\nAssuming QLever supports YEAR(), the filter is okay.\n\nAnother point: The P575 value might be a time with precision. In Wikidata, time values have precision (e.g., year-level precision would have 9). But if the precision is year, then the month and day are 00. However, when querying, the YEAR function should still get 2021.\n\nSo, constructing the SPARQL query.\n\nNow, let's put it all together."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-a67f7ed7c3dbe3e8",
+            "name": "execute",
+            "args": {
+              "kg": "wikidata",
+              "sparql": "SELECT ?exoplanet ?label WHERE { ?exoplanet wdt:P31 wd:Q44559; wdt:P575 ?discoveryTime. OPTIONAL { ?exoplanet rdfs:label ?label FILTER(LANG(?label) = \"en\") } FILTER(YEAR(?discoveryTime) = 2021) }"
+            },
+            "result": "Got 352 rows and 2 columns, showing the first 5 and last 5 rows below:\n| exoplanet                            | label                          |\n| ------------------------------------ | ------------------------------ |\n| TOI-540 b (wd:Q100231046)            | TOI-540 b (lang:en)            |\n| HD 110082 b (wd:Q105753132)          | HD 110082 b (lang:en)          |\n| Su (wd:Q105771316)                   | Su (lang:en)                   |\n| TOI-1601 b (wd:Q106348295)           | TOI-1601 b (lang:en)           |\n| OGLE-2019-BLG-0960Lb (wd:Q106390308) | OGLE-2019-BLG-0960Lb (lang:en) |\n| ...                                  | ...                            |\n| K2-138 g (wd:Q94498667)              | K2-138 g (lang:en)             |\n| wd:Q95944758                         |                                |\n| wd:Q97030402                         |                                |\n| wd:Q97051903                         |                                |\n| HD 1916bk (wd:Q97097778)             | HD 1916bk (lang:en)            |"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 1651,
+          "prompt_tokens": 5194,
+          "total_tokens": 6845
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "f6fa29b0bc4444a7996fd2e0f85053f8",
+        "message": null,
+        "reasoning": {
+          "id": "be568634749a45f7818af4e4e267c33c",
+          "content": "Okay, let's see. The user asked for exoplanets discovered in 2021. I started by searching for the entity \"exoplanet\" and found that the correct Wikidata item is Q44559. Then, I looked for a property related to discovery year and found that \"time of discovery or invention\" (P575) is the right one.\n\nI constructed a SPARQL query that selects exoplanets (instances of Q44559) with their discovery time (P575) set to 2021. The query uses YEAR() to filter the date. The execute function returned 352 results, which seems plausible since exoplanet discoveries can be numerous. The labels are mostly names like TOI-540 b, HD 110082 b, etc., which matches typical exoplanet naming conventions.\n\nWait, but some results have empty labels. However, the user just wants the list of exoplanets, so the identifiers (IRIs) are sufficient. The answer should list these, but since the user probably expects names, the optional label clause makes sense. The query correctly uses wdt:P31 for \"instance of\" and filters by the year. The results seem correct as per the executed query. I should confirm that the YEAR function works as intended in SPARQL. Wikidata's SPARQL supports YEAR(?date), so it's okay.\n\nNo obvious issues. The answer should present the exoplanet names from the query results. Since there are 352, the user might not need all, but the question is just asking what they are, so listing them as found is correct. The final answer can mention the count and examples."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-bbe7ed3e9c164061",
+            "name": "answer",
+            "args": {
+              "kg": "wikidata",
+              "sparql": "SELECT ?exoplanet ?label WHERE { ?exoplanet wdt:P31 wd:Q44559; wdt:P575 ?discoveryTime. OPTIONAL { ?exoplanet rdfs:label ?label FILTER(LANG(?label) = \"en\") } FILTER(YEAR(?discoveryTime) = 2021) }",
+              "answer": "There are 352 exoplanets discovered in 2021. Examples include TOI-540 b, HD 110082 b, Su, TOI-1601 b, and OGLE-2019-BLG-0960Lb. Full list contains designations like K2-138 g and HD 1916bk."
+            },
+            "result": "Stopping"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 563,
+          "prompt_tokens": 5677,
+          "total_tokens": 6240
+        }
+      }
+    }
+  ],
+  "known": [
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P577",
+    "http://www.wikidata.org/prop/direct/P189",
+    "http://www.wikidata.org/prop/direct/P2754",
+    "http://www.wikidata.org/prop/qualifier/value/P575",
+    "http://www.wikidata.org/prop/direct-normalized/P575",
+    "http://www.wikidata.org/prop/reference/value-normalized/P189",
+    "http://www.wikidata.org/prop/qualifier/value/P189",
+    "http://www.wikidata.org/entity/Q105771316",
+    "http://www.wikidata.org/entity/P189",
+    "http://www.wikidata.org/entity/Q106390308",
+    "http://www.wikidata.org/entity/Q105753132",
+    "http://www.wikidata.org/prop/reference/value-normalized/P585",
+    "http://www.wikidata.org/prop/P10786",
+    "http://www.wikidata.org/prop/qualifier/P577",
+    "http://www.wikidata.org/prop/direct/P10786",
+    "http://www.wikidata.org/prop/P189",
+    "http://www.wikidata.org/prop/reference/value/P2754",
+    "http://www.wikidata.org/entity/Q96380207",
+    "http://www.wikidata.org/prop/reference/value-normalized/P10786",
+    "http://www.wikidata.org/prop/reference/value/P1046",
+    "http://www.wikidata.org/entity/Q97051903",
+    "http://www.wikidata.org/entity/L37620-S1",
+    "http://www.wikidata.org/prop/P65",
+    "http://www.wikidata.org/prop/qualifier/P571",
+    "http://www.wikidata.org/prop/qualifier/value/P65",
+    "http://www.wikidata.org/prop/qualifier/value/P2754",
+    "http://www.wikidata.org/entity/P575",
+    "http://www.wikidata.org/prop/statement/value/P189",
+    "http://www.wikidata.org/prop/direct-normalized/P1046",
+    "http://www.wikidata.org/prop/reference/value/P577",
+    "http://www.wikidata.org/prop/reference/value-normalized/P575",
+    "http://www.wikidata.org/entity/P1046",
+    "http://www.wikidata.org/prop/reference/value/P574",
+    "http://www.wikidata.org/prop/direct-normalized/P2754",
+    "http://www.wikidata.org/prop/statement/value/P571",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P2754",
+    "http://www.wikidata.org/entity/Q5420638",
+    "http://www.wikidata.org/prop/statement/P571",
+    "http://www.wikidata.org/prop/statement/value/P2754",
+    "http://www.wikidata.org/entity/Q122376481",
+    "http://www.wikidata.org/entity/Q5281832",
+    "http://www.wikidata.org/entity/P585",
+    "http://www.wikidata.org/prop/reference/P65",
+    "http://www.wikidata.org/entity/P10786",
+    "http://www.wikidata.org/entity/Q94498667",
+    "http://www.wikidata.org/prop/statement/P575",
+    "http://www.wikidata.org/prop/qualifier/P10786",
+    "http://www.wikidata.org/prop/direct/P1046",
+    "http://www.wikidata.org/prop/P1046",
+    "http://www.wikidata.org/prop/direct/P585",
+    "http://www.wikidata.org/prop/P571",
+    "http://www.wikidata.org/prop/statement/P10786",
+    "http://www.wikidata.org/prop/statement/value/P585",
+    "http://www.wikidata.org/prop/statement/value-normalized/P2754",
+    "http://www.wikidata.org/prop/direct/P575",
+    "http://www.wikidata.org/prop/qualifier/P585",
+    "http://www.wikidata.org/prop/reference/P574",
+    "http://www.wikidata.org/prop/qualifier/value/P571",
+    "http://www.wikidata.org/prop/statement/value-normalized/P10786",
+    "http://www.wikidata.org/prop/P575",
+    "http://www.wikidata.org/prop/reference/P585",
+    "http://www.wikidata.org/prop/direct-normalized/P574",
+    "http://www.wikidata.org/prop/statement/value/P574",
+    "http://www.wikidata.org/prop/direct/P571",
+    "http://www.wikidata.org/prop/reference/value-normalized/P65",
+    "http://www.wikidata.org/prop/statement/P189",
+    "http://www.wikidata.org/prop/direct-normalized/P10786",
+    "http://www.wikidata.org/prop/reference/value/P575",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P574",
+    "http://www.wikidata.org/prop/reference/value-normalized/P574",
+    "http://www.wikidata.org/prop/statement/value/P10786",
+    "http://www.wikidata.org/prop/direct-normalized/P189",
+    "http://www.wikidata.org/prop/reference/value/P571",
+    "http://www.wikidata.org/entity/L32989-F1",
+    "http://www.wikidata.org/entity/Q2578855",
+    "http://www.wikidata.org/prop/reference/value/P65",
+    "http://www.wikidata.org/prop/statement/value-normalized/P574",
+    "http://www.wikidata.org/prop/reference/P189",
+    "http://www.wikidata.org/entity/Q44559",
+    "http://www.wikidata.org/prop/statement/value-normalized/P1046",
+    "http://www.wikidata.org/prop/statement/value/P65",
+    "http://www.wikidata.org/prop/qualifier/P2754",
+    "http://www.wikidata.org/entity/Q13219190",
+    "http://www.wikidata.org/entity/Q5420639",
+    "http://www.wikidata.org/entity/Q106348295",
+    "http://www.wikidata.org/prop/qualifier/P65",
+    "http://www.wikidata.org/entity/P577",
+    "http://www.wikidata.org/entity/P2754",
+    "http://www.wikidata.org/prop/statement/value-normalized/P571",
+    "http://www.wikidata.org/prop/reference/value/P585",
+    "http://www.wikidata.org/entity/Q97097778",
+    "http://www.wikidata.org/entity/Q100231046",
+    "http://www.wikidata.org/prop/reference/P577",
+    "http://www.wikidata.org/prop/statement/value-normalized/P65",
+    "http://www.wikidata.org/prop/reference/P571",
+    "http://www.wikidata.org/prop/reference/P575",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P65",
+    "http://www.wikidata.org/prop/direct/P574",
+    "http://www.wikidata.org/prop/reference/P2754",
+    "http://www.wikidata.org/prop/reference/value-normalized/P1046",
+    "http://www.wikidata.org/prop/P577",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P189",
+    "http://www.wikidata.org/prop/P574",
+    "http://www.wikidata.org/prop/qualifier/P574",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P585",
+    "http://www.wikidata.org/prop/qualifier/P575",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P571",
+    "http://www.wikidata.org/prop/qualifier/value/P574",
+    "http://www.wikidata.org/prop/statement/value/P1046",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P1046",
+    "http://www.wikidata.org/prop/reference/value-normalized/P571",
+    "http://www.wikidata.org/entity/Q95944758",
+    "http://www.wikidata.org/entity/Q97030402",
+    "http://www.wikidata.org/prop/P2754",
+    "http://www.wikidata.org/prop/direct-normalized/P585",
+    "http://www.wikidata.org/prop/direct-normalized/P65",
+    "http://www.wikidata.org/prop/statement/value/P577",
+    "http://www.wikidata.org/prop/P585",
+    "http://www.wikidata.org/entity/P65",
+    "http://www.wikidata.org/prop/qualifier/value/P577",
+    "http://www.wikidata.org/prop/direct/P577",
+    "http://www.wikidata.org/prop/qualifier/value/P10786",
+    "http://www.wikidata.org/prop/reference/value-normalized/P2754",
+    "http://www.wikidata.org/prop/statement/value-normalized/P577",
+    "http://www.wikidata.org/prop/reference/value/P10786",
+    "http://www.wikidata.org/prop/statement/P2754",
+    "http://www.wikidata.org/prop/reference/value/P189",
+    "http://www.wikidata.org/prop/direct-normalized/P571",
+    "http://www.wikidata.org/prop/qualifier/P1046",
+    "http://www.wikidata.org/prop/statement/P574",
+    "http://www.wikidata.org/prop/statement/value-normalized/P575",
+    "http://www.wikidata.org/prop/statement/P577",
+    "http://www.wikidata.org/prop/direct-normalized/P577",
+    "http://www.wikidata.org/prop/statement/value-normalized/P585",
+    "http://www.wikidata.org/entity/P574",
+    "http://www.wikidata.org/prop/statement/P65",
+    "http://www.wikidata.org/prop/direct/P65",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P10786",
+    "http://www.wikidata.org/prop/reference/value-normalized/P577",
+    "http://www.wikidata.org/entity/P571",
+    "http://www.wikidata.org/prop/statement/P585",
+    "http://www.wikidata.org/prop/statement/value/P575",
+    "http://www.wikidata.org/prop/statement/P1046",
+    "http://www.wikidata.org/prop/qualifier/P189",
+    "http://www.wikidata.org/prop/statement/value-normalized/P189",
+    "http://www.wikidata.org/prop/qualifier/value/P585",
+    "http://www.wikidata.org/prop/reference/P1046",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P575",
+    "http://www.wikidata.org/prop/reference/P10786",
+    "http://www.wikidata.org/prop/qualifier/value/P1046"
+  ],
+  "id": "unknown",
+  "source_csv": "data/SimpleQA/Qampari_wikitables_simple.csv",
+  "row_index": 44,
+  "question": "What are the exoplanets discovered in 2021 ?",
+  "reference_answer": "NGTS-14Ab | NGTS-13b | TOI-628 b | TOI-640 b | TOI-1333 A b | TOI-1478 b | TOI-1601 b | OGLE-2019-BLG-0960Lb | HD 110082 b"
+}

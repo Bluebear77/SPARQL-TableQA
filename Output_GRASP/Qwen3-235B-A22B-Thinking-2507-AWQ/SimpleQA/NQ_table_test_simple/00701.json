@@ -1,0 +1,180 @@
+{
+  "type": "output",
+  "task": "sparql-qa",
+  "output": {
+    "sparql": "PREFIX wd: <http://www.wikidata.org/entity/>\nPREFIX wdt: <http://www.wikidata.org/prop/direct/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?owner ?ownerLabel WHERE {\n  wd:Q2297323 wdt:P127 ?owner .\n  ?owner rdfs:label ?ownerLabel .\n  FILTER(LANG(?ownerLabel) = \"en\")\n}",
+    "kg": "wikidata",
+    "selections": "Using entities:\n- Delano Las Vegas (wd:Q2297323), also known as \"Delano Las Vegas at Mandalay Bay\", \"THEhotel at Mandalay Bay\":\n  - hotel in Las Vegas, Nevada\n  - is instance of hotel\n  - is instance of skyscraper\n\nUsing properties:\n- owned by (wd:P127 as wdt), also known as \"belonged to\", \"belongs to\", \"is owned by\", \"owner\", \"owners\", etc.:\n  - owner of the subject",
+    "result": "Got 1 row and 2 columns:\n| owner                                  | ownerLabel                          |\n| -------------------------------------- | ----------------------------------- |\n| MGM Resorts International (wd:Q568532) | MGM Resorts International (lang:en) |",
+    "endpoint": "https://qlever.dev/api/wikidata",
+    "type": "answer",
+    "answer": "The Delano Hotel in Las Vegas is owned by MGM Resorts International.",
+    "formatted": "The Delano Hotel in Las Vegas is owned by MGM Resorts International.\n\nSPARQL query over wikidata:\n```sparql\nPREFIX wd: <http://www.wikidata.org/entity/>\nPREFIX wdt: <http://www.wikidata.org/prop/direct/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?owner ?ownerLabel WHERE {\n  wd:Q2297323 wdt:P127 ?owner .\n  ?owner rdfs:label ?ownerLabel .\n  FILTER(LANG(?ownerLabel) = \"en\")\n}\n```\n\nUsing entities:\n- Delano Las Vegas (wd:Q2297323), also known as \"Delano Las Vegas at Mandalay Bay\", \"THEhotel at Mandalay Bay\":\n  - hotel in Las Vegas, Nevada\n  - is instance of hotel\n  - is instance of skyscraper\n\nUsing properties:\n- owned by (wd:P127 as wdt), also known as \"belonged to\", \"belongs to\", \"is owned by\", \"owner\", \"owners\", etc.:\n  - owner of the subject\n\nExecution result:\nGot 1 row and 2 columns:\n| owner                                  | ownerLabel                          |\n| -------------------------------------- | ----------------------------------- |\n| MGM Resorts International (wd:Q568532) | MGM Resorts International (lang:en) |"
+  },
+  "elapsed": 48.758643,
+  "error": null,
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a question answering assistant. Your job is to generate a SPARQL query to answer a given user question.\n\nYou should follow a step-by-step approach to generate the SPARQL query:\n1. Determine possible entities and properties implied by the user question.\n2. Search for the entities and properties in the knowledge graphs. Where applicable, constrain the searches with already identified entities and properties.\n3. Gradually build up the SPARQL query using the identified entities and properties. Start with simple queries and add more complexity as needed. Execute intermediate queries to get feedback and to verify your assumptions. You may need to refine or rethink your current plan based on the query results and go back to step 2 if needed, possibly multiple times.\n4. Use the answer or cancel function to finalize your answer and stop the generation process.\n\nAvailable knowledge graphs:\n- \"wikidata\" at https://qlever.dev/api/wikidata\n  - \"entity\" index (type=\"fuzzy\"): Entities indexed by their labels and synonyms\n  - \"property\" index (type=\"embedding\", modalities=\"text\"): Properties indexed by their labels, synonyms, and identifiers\n\nIndex types used:\n- \"embedding\": Retrieves items by cosine similarity between their embeddings and the query embedding. The embedding model used depends on the index and may support text, images, or both.\n- \"fuzzy\": Retrieves items by overlap between their label words and the query keywords. The query keywords must not match label words exactly, but some fuzziness is allowed. The longer a query keyword is, the more it can deviate from a label word and still be considered a match, though it will also contribute less to the overall score. No special query operators like AND/OR are supported.\n\nSPARQL prefixes for use in function calls:\n- bd: http://www.bigdata.com/rdf#\n- cc: http://creativecommons.org/ns#\n- data: https://www.wikidata.org/wiki/Special:EntityData/\n- dc: http://purl.org/dc/elements/1.1/\n- dct: http://purl.org/dc/terms/\n- foaf: http://xmlns.com/foaf/0.1/\n- geo: http://www.opengis.net/ont/geosparql#\n- geof: http://www.opengis.net/def/function/geosparql/\n- gn: http://www.geonames.org/ontology#\n- hint: http://www.bigdata.com/queryHints#\n- imdb: https://www.imdb.com/\n- math: http://www.w3.org/2005/xpath-functions/math#\n- ontolex: http://www.w3.org/ns/lemon/ontolex#\n- owl: http://www.w3.org/2002/07/owl#\n- p: http://www.wikidata.org/prop/\n- pq: http://www.wikidata.org/prop/qualifier/\n- pqn: http://www.wikidata.org/prop/qualifier/value-normalized/\n- pqv: http://www.wikidata.org/prop/qualifier/value/\n- pr: http://www.wikidata.org/prop/reference/\n- prn: http://www.wikidata.org/prop/reference/value-normalized/\n- prov: http://www.w3.org/ns/prov#\n- prv: http://www.wikidata.org/prop/reference/value/\n- ps: http://www.wikidata.org/prop/statement/\n- psn: http://www.wikidata.org/prop/statement/value-normalized/\n- psv: http://www.wikidata.org/prop/statement/value/\n- qb: http://purl.org/linked-data/cube#\n- qfn: http://qlever.cs.uni-freiburg.de/function#\n- ql: http://qlever.cs.uni-freiburg.de/builtin-functions/\n- qlss: https://qlever.cs.uni-freiburg.de/spatialSearch/\n- rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#\n- rdfs: http://www.w3.org/2000/01/rdf-schema#\n- ref: http://www.wikidata.org/reference/\n- s: http://www.wikidata.org/entity/statement/\n- schema: http://schema.org/\n- skos: http://www.w3.org/2004/02/skos/core#\n- v: http://www.wikidata.org/value/\n- void: http://rdfs.org/ns/void#\n- wd: http://www.wikidata.org/entity/\n- wdno: http://www.wikidata.org/prop/novalue/\n- wdt: http://www.wikidata.org/prop/direct/\n- wdtn: http://www.wikidata.org/prop/direct-normalized/\n- wikibase: http://wikiba.se/ontology#\n- xsd: http://www.w3.org/2001/XMLSchema#\n\nAdditional rules to follow:\n- Explain your thought process before and after each step and function call.\n- Do not ask the user for clarification until you have made an initial attempt at completing the task. When the task input is incomplete or ambiguous, proceed based on reasonable assumptions.\n- Do not use \"SERVICE wikibase:label { bd:serviceParam wikibase:language ...\" in SPARQL queries. It is unsupported by the used QLever SPARQL endpoints. Use rdfs:label or similar properties to get labels instead.\n- Always execute your final SPARQL query before giving an answer to make sure it returns the expected results.\n- The SPARQL query should always return the actual identifiers / IRIs of the items in its result. It additionally may return labels or other human-readable information, but they are optional and should be put within optional clauses unless explicitly requested by the user.\n- Do not stop early if there are still obvious improvements to be made to the SPARQL query. For example, keep refining your SPARQL query if its result contains irrelevant items or is missing items you expected.\n- Do not perform additional computation (e.g. filtering, sorting, calculations) on the result of the SPARQL query to determine the answer. All computation should be done solely within SPARQL.\n- For questions with a \"True\" or \"False\" answer the SPARQL query should be an ASK query."
+    },
+    {
+      "role": "user",
+      "content": "who owns the delano hotel in las vegas"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "e912f9c2f1a04df09197377feefa4aaf",
+        "message": null,
+        "reasoning": {
+          "id": "6e30dba496d04bdfae49763117c709ee",
+          "content": "Okay, let's tackle the user's question: \"Who owns the delano hotel in las vegas?\" \n\nFirst, I need to figure out what entities and properties are involved. The main entity here is the Delano Hotel in Las Vegas. I need to find out who owns it. So, the subject is the Delano Hotel, the property might be something like \"owner\" or \"parent company,\" and the object would be the owner's name or entity.\n\nStarting with the entity search. I should check if there's a specific entry for the Delano Hotel in Las Vegas on Wikidata. Using the search_entity function with the query \"Delano Hotel Las Vegas\" might give me the correct entity. Let me call that.\n\nWait, maybe I should specify the location. Since it's in Las Vegas, adding \"Las Vegas\" to the search might help. Let me try searching for \"Delano Hotel Las Vegas\" in the wikidata knowledge graph.\n\nOnce I get the correct entity (probably an item like Qxxxx), I need to find the property that indicates ownership. Common properties in Wikidata for ownership might be \"owned by\" (P127), \"parent company\" (P749), or maybe \"operator\" (P137). But ownership could be direct or through a company.\n\nSo after finding the Delano Hotel's entity, I can look for properties like P127 (owned by) or check if there's a specific property related to hotels. Maybe the hotel is part of a larger chain. For example, Delano is a brand under MGM Resorts. Wait, I think the Delano Las Vegas is part of MGM Resorts International. But I need to verify this through Wikidata.\n\nFirst step: Search for the entity of Delano Hotel in Las Vegas.\n\nUsing search_entity(kg=\"wikidata\", query=\"Delano Hotel Las Vegas\").\n\nAssuming that returns the correct QID, say Q12345 (hypothetical), then I need to check its properties. Let's say it's Q193663 for the Delano Las Vegas (I might need to check actual data).\n\nWait, in reality, the Delano Las Vegas is located at The Mirage, and it's part of MGM Resorts. But let's not assume; better to query.\n\nOnce the entity is found, use list(kg=\"wikidata\", subject=\"wd:Q...\", property=null, object=null) to see all properties. But since I can't do that directly here, maybe use search_property_of_entity to find relevant properties.\n\nAlternatively, search for properties related to ownership for that entity. Like search_property_of_entity(kg=\"wikidata\", entity=\"wd:Q...\", query=\"owner\").\n\nLet me outline the steps:\n\n1. Find the correct entity for Delano Hotel in Las Vegas.\n2. Check its properties to find ownership.\n3. Retrieve the value of that property.\n\nFirst, search_entity for \"Delano Hotel Las Vegas\".\n\nAssuming the result is Q193663 (I recall that's the QID for Delano Las Vegas), let's proceed.\n\nThen, check properties related to ownership. Possible properties: P127 (owned by), P749 (parent organization), P137 (operator), P355 (shares).\n\nLet me check P127 first. If the owner is a company, like MGM Resorts.\n\nSo the SPARQL query would be something like:\n\nSELECT ?owner WHERE {\n  wd:Q193663 wdt:P127 ?owner.\n}\n\nBut need to get the correct QID for the hotel.\n\nWait, but first confirm the correct QID. Let's use search_entity to find it.\n\nLet me call search_entity with \"Delano Hotel Las Vegas\"."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-9346ea84788f3c88",
+            "name": "search_entity",
+            "args": {
+              "kg": "wikidata",
+              "query": "Delano Hotel Las Vegas"
+            },
+            "result": "Top 10 entity alternatives:\n1. Paris Las Vegas (wd:Q691491, matched via \"Paris Las Vegas Hotel\"), also known as \"Paris Las Vegas Casino\", \"Paris Las Vegas Hotel\", \"Paris Las Vegas Hotel and Casino\", \"Paris Las Vegas Hotel & Casino\", \"Paris LV\", etc.:\n  - hotel and casino located on the Las Vegas Strip\n  - is instance of casino\n  - is instance of hotel\n2. Trump Hotel Las Vegas (wd:Q1281171), also known as \"Trump International Hotel Las Vegas\", \"Trump Tower Las Vegas\":\n  - hotel in Las Vegas, Nevada\n  - is instance of hotel\n3. Delano Las Vegas (wd:Q2297323), also known as \"Delano Las Vegas at Mandalay Bay\", \"THEhotel at Mandalay Bay\":\n  - hotel in Las Vegas, Nevada\n  - is instance of hotel\n  - is instance of skyscraper\n4. Renaissance Las Vegas Hotel (wd:Q111395338):\n  - hotel in Las Vegas, United States\n  - is instance of hotel\n5. Hotel Mogul: Las Vegas (wd:Q120971287):\n  - 2011 video game\n  - is instance of video game\n6. Westgate (wd:Q5962453, matched via \"Las Vegas Hotel & Casino\"), also known as \"Las Vegas Hotel & Casino\", \"Las Vegas Hotel & Casino Station\", \"Westgate station\":\n  - is instance of monorail station\n  - monorail station in Las Vegas\n7. Virgin Hotels Las Vegas (wd:Q96414036):\n  - hotel and casino in Las Vegas\n  - is instance of casino\n  - is instance of hotel\n8. Four Seasons Hotel Las Vegas (wd:Q111393318):\n  - hotel in Las Vegas, United States\n  - is instance of hotel\n9. Las Vegas Hotels (wd:Q114543980):\n  - episode of Modern Marvels (S6 E2)\n  - is instance of television series episode\n10. Bridger Inn Hotel Las Vegas (wd:Q74996243):\n  - hotel in Las Vegas, Nevada\n  - is instance of hotel"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 815,
+          "prompt_tokens": 3748,
+          "total_tokens": 4563
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "22ab22bfdb8a4f1183e6054c6fd6503d",
+        "message": null,
+        "reasoning": {
+          "id": "411d70d1ce5648efac93890cafa808af",
+          "content": "Okay, let's tackle the user's question: \"Who owns the Delano Hotel in Las Vegas?\" \n\nFirst, I used the search_entity function with \"Delano Hotel Las Vegas\" as the query. The results show that the correct entity is likely wd:Q2297323, which is Delano Las Vegas, also known as THEhotel at Mandalay Bay. Now, I need to find out who owns this hotel.\n\nNext step is to figure out the property that indicates ownership. In Wikidata, common properties for ownership might be \"ownership\" (wdt:P127), \"owned by\" (wdt:P127), or \"operator\" (wdt:P137). Let me check what properties are associated with this entity.\n\nI should use the list function to see the properties of Delano Las Vegas (wd:Q2297323). Specifically, I'll look for properties related to ownership or operator. Let me call list(kg=\"wikidata\", subject=\"wd:Q23297323\" — wait, no, the correct ID from the search is wd:Q2297323. Let me confirm the ID again: the third entry in the search results was Delano Las Vegas (wd:Q2297323). So subject should be \"wd:Q2297323\".\n\nWait, in the search results, it's listed as \"Delano Las Vegas (wd:Q2297323)\". So the correct IRI is wd:Q2297323. So I'll use that as the subject in the list function to retrieve its properties.\n\nNow, I need to execute a list function with subject \"wd:Q2297323\" to see all its properties. The key is to find which property links to the owner. Common properties might include:\n\n- wdt:P127: owned by\n- wdt:P137: operator\n- wdt:P176: manufacturer (unlikely for a hotel)\n- wdt:P740: location (but that's about place, not owner)\n\nLet me check the list of properties for this hotel.\n\nAssuming the owner is a company, like MGM Resorts International, which owns Mandalay Bay, since Delano is part of Mandalay Bay. But I need to verify through Wikidata.\n\nSo, I will call list(kg=\"wikidata\", subject=\"wd:Q2297323\") to get all triples where Delano Las Vegas is the subject. Then look for properties related to ownership or operator.\n\nWait, the user mentioned \"Delano Hotel\", but in the search results, it's called Delano Las Vegas, also known as THEhotel at Mandalay Bay. So ownership might be tied to Mandalay Bay Resort, which is owned by MGM.\n\nIn the list results, if there's a property like wdt:P127 (owned by) pointing to a company like MGM Resorts International (wd:Q528652), that would be the answer.\n\nAlternatively, maybe there's a \"operator\" property (wdt:P137) since sometimes hotels are operated by one company even if owned by another.\n\nLet me proceed to call the list function with the correct subject."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-a486c3396c9e1dff",
+            "name": "list",
+            "args": {
+              "kg": "wikidata",
+              "subject": "wd:Q2297323",
+              "property": null,
+              "object": null
+            },
+            "result": "Got 75 rows and 3 columns, showing the first 10 rows below:\n| subject                        | property                                                    | object                                                                                   |\n| ------------------------------ | ----------------------------------------------------------- | ---------------------------------------------------------------------------------------- |\n| Delano Las Vegas (wd:Q2297323) | instance of (wdt:P31)                                       | hotel (wd:Q27686)                                                                        |\n| Delano Las Vegas (wd:Q2297323) | country (wdt:P17)                                           | United States (wd:Q30)                                                                   |\n| Delano Las Vegas (wd:Q2297323) | located in the administrative territorial entity (wdt:P131) | Nevada (wd:Q1227)                                                                        |\n| Delano Las Vegas (wd:Q2297323) | coordinate location (wdt:P625)                              | POINT(-115.175000 36.091900) (geo:wktLiteral)                                            |\n| Delano Las Vegas (wd:Q2297323) | Commons category (wdt:P373)                                 | Delano Las Vegas                                                                         |\n| Delano Las Vegas (wd:Q2297323) | image (wdt:P18)                                             | http://commons.wikimedia.org/wiki/Special:FilePath/The%20Hotel%20at%20Mandalay%20Bay.JPG |\n| Delano Las Vegas (wd:Q2297323) | Freebase ID (wdt:P646)                                      | /m/09wfym                                                                                |\n| Delano Las Vegas (wd:Q2297323) | official website (wdt:P856)                                 | https://www.delanolasvegas.com/en.html                                                   |\n| Delano Las Vegas (wd:Q2297323) | owned by (wdt:P127)                                         | MGM Resorts International (wd:Q568532)                                                   |\n| Delano Las Vegas (wd:Q2297323) | operator (wdt:P137)                                         | MGM Resorts International (wd:Q568532)                                                   |\n| ...                            | ...                                                         | ...                                                                                      |"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 744,
+          "prompt_tokens": 4303,
+          "total_tokens": 5047
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "288a40dd32284873865257b495de42fc",
+        "message": null,
+        "reasoning": {
+          "id": "526d063a03a645e4859a66a05d5ebcd8",
+          "content": "Okay, let's see. The user is asking who owns the Delano Hotel in Las Vegas. From the previous steps, I searched for the entity and found that Delano Las Vegas is wd:Q2297323. Then, when I listed the properties of this entity, I noticed that there's a \"owned by\" (wdt:P127) property pointing to MGM Resorts International (wd:Q568532). Also, the \"operator\" (wdt:P137) is the same company.\n\nSo, the answer should be MGM Resorts International. Let me check if there are any other possible owners or if there's a more specific entity. The list shows only MGM Resorts as the owner. The operator is the same, which makes sense because sometimes the owner and operator are the same, especially in large hotel chains.\n\nWait, the user asked specifically for ownership. The \"owned by\" property directly answers that. So the SPARQL query should retrieve the object of the wdt:P127 property for wd:Q2297323. Let me confirm once more. The list shows:\n\nDelano Las Vegas (wd:Q2297323) | owned by (wdt:P127) | MGM Resorts International (wd:Q568532)\n\nYes, that's correct. So the SPARQL query would be straightforward. Select the ?owner where the subject is wd:Q2297323 and the property is wdt:P127. But maybe I should use a more standard approach, like using the entity's label. However, since we already know the correct entity, specifying it directly is better.\n\nAlso, the user might want the name of the company, not just the IRI. So including the label in the query would be good. But the instructions say that labels are optional and should be in optional clauses unless requested. The user is asking for the owner's name, so we should include the label.\n\nWait, the answer function requires the SPARQL query to return the actual identifiers/IRIs, but optionally labels. Since the user wants the name, we need to get the label. The correct way is to have the query select the owner and its label.\n\nSo the SPARQL query would be:\n\nSELECT ?owner ?ownerLabel\nWHERE {\n  wd:Q2297323 wdt:P127 ?owner .\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"en\" }\n}\n\nBut wait, the note says not to use SERVICE wikibase:label because it's unsupported. Instead, use rdfs:label. Hmm. How to get the label then?\n\nMaybe:\n\nSELECT ?owner ?label\nWHERE {\n  wd:Q2297323 wdt:P127 ?owner .\n  ?owner rdfs:label ?label .\n  FILTER(LANG(?label) = \"en\")\n}\n\nBut sometimes labels might not be present, but in this case, since we know the owner is MGM Resorts International, which likely has an English label.\n\nAlternatively, using VALUES or just selecting the label with a condition.\n\nWait, the standard way in SPARQL for Wikidata is to use the label service, but since it's unsupported here, we need to retrieve the label via rdfs:label.\n\nSo the correct query would be:\n\nSELECT ?owner ?label\nWHERE {\n  wd:Q2297323 wdt:P127 ?owner .\n  ?owner rdfs:label ?label .\n  FILTER(LANG(?label) = \"en\")\n}\n\nThis should give the owner's IRI and their English label.\n\nAlternatively, maybe there's a more direct way, but given the constraints, this should work.\n\nTesting the query: When executed, it should return MGM Resorts International as the owner with the label.\n\nYes, this seems correct. So the final answer is MGM Resorts International."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-86ebb88eff435ed9",
+            "name": "execute",
+            "args": {
+              "kg": "wikidata",
+              "sparql": "SELECT ?owner ?ownerLabel WHERE { wd:Q2297323 wdt:P127 ?owner . ?owner rdfs:label ?ownerLabel . FILTER(LANG(?ownerLabel) = \"en\") }"
+            },
+            "result": "Got 1 row and 2 columns:\n| owner                                  | ownerLabel                          |\n| -------------------------------------- | ----------------------------------- |\n| MGM Resorts International (wd:Q568532) | MGM Resorts International (lang:en) |"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 904,
+          "prompt_tokens": 4868,
+          "total_tokens": 5772
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "9f6b85c7442845538d26e63f97cb12be",
+        "message": null,
+        "reasoning": {
+          "id": "da4a649f6d7141bda88a4c328faa709b",
+          "content": "Okay, let's see. The user asked who owns the Delano Hotel in Las Vegas. I first used the search_entity function to find the correct entity. The search showed that Delano Las Vegas is wd:Q2297323. Then I listed the properties of that entity using the list function and found that it has \"owned by\" (wdt:P127) as MGM Resorts International.\n\nI then ran a SPARQL query to get the owner's label in English. The result confirmed that MGM Resorts International is the owner. Now, I need to check if there's any other possible owner or if the data is accurate. But the list command already showed that the owned by property points to MGM Resorts. Since the user wants the owner, the answer is straightforward. The SPARQL query worked, so the final answer should be MGM Resorts International."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-ac5f654997ea7374",
+            "name": "answer",
+            "args": {
+              "kg": "wikidata",
+              "sparql": "SELECT ?owner ?ownerLabel WHERE { wd:Q2297323 wdt:P127 ?owner . ?owner rdfs:label ?ownerLabel . FILTER(LANG(?ownerLabel) = \"en\") }",
+              "answer": "The Delano Hotel in Las Vegas is owned by MGM Resorts International."
+            },
+            "result": "Stopping"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 277,
+          "prompt_tokens": 5004,
+          "total_tokens": 5281
+        }
+      }
+    }
+  ],
+  "known": [
+    "http://www.wikidata.org/entity/Q74996243",
+    "http://www.wikidata.org/entity/P127",
+    "https://www.delanolasvegas.com/en.html",
+    "http://www.wikidata.org/entity/Q1227",
+    "http://www.wikidata.org/prop/direct/P137",
+    "http://www.wikidata.org/entity/P856",
+    "http://www.wikidata.org/entity/Q114543980",
+    "http://www.wikidata.org/entity/Q568532",
+    "http://www.wikidata.org/entity/Q111395338",
+    "http://www.wikidata.org/prop/direct/P127",
+    "http://www.wikidata.org/entity/Q691491",
+    "http://www.wikidata.org/entity/P646",
+    "http://www.wikidata.org/prop/direct/P856",
+    "http://www.wikidata.org/entity/P18",
+    "http://www.wikidata.org/entity/Q27686",
+    "http://www.wikidata.org/prop/direct/P18",
+    "http://www.wikidata.org/entity/P31",
+    "http://www.wikidata.org/entity/Q30",
+    "http://www.wikidata.org/prop/direct/P373",
+    "http://www.wikidata.org/entity/P137",
+    "http://www.wikidata.org/entity/P17",
+    "http://www.wikidata.org/prop/direct/P646",
+    "http://www.wikidata.org/entity/Q120971287",
+    "http://commons.wikimedia.org/wiki/Special:FilePath/The%20Hotel%20at%20Mandalay%20Bay.JPG",
+    "http://www.wikidata.org/prop/direct/P31",
+    "http://www.wikidata.org/entity/P131",
+    "http://www.wikidata.org/prop/direct/P625",
+    "http://www.wikidata.org/entity/Q96414036",
+    "http://www.wikidata.org/entity/Q1281171",
+    "http://www.wikidata.org/entity/Q5962453",
+    "http://www.wikidata.org/entity/Q2297323",
+    "http://www.wikidata.org/entity/P625",
+    "http://www.wikidata.org/entity/Q111393318",
+    "http://www.wikidata.org/prop/direct/P131",
+    "http://www.wikidata.org/prop/direct/P17",
+    "http://www.wikidata.org/entity/P373"
+  ],
+  "id": "unknown",
+  "source_csv": "data/SimpleQA/NQ_table_test_simple.csv",
+  "row_index": 701,
+  "question": "who owns the delano hotel in las vegas",
+  "reference_answer": "MGM Resorts International"
+}

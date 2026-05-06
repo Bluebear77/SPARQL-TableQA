@@ -1,0 +1,292 @@
+{
+  "type": "output",
+  "task": "sparql-qa",
+  "output": {
+    "sparql": "PREFIX wdt: <http://www.wikidata.org/prop/direct/>\nPREFIX wd: <http://www.wikidata.org/entity/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?location ?locationLabel WHERE {\n  wd:Q23572 wdt:P915 ?location .\n  OPTIONAL {\n    ?location rdfs:label ?locationLabel\n    FILTER(LANG(?locationLabel) = 'en')\n  }\n}",
+    "kg": "wikidata",
+    "selections": "Using entities:\n- Game of Thrones (wd:Q23572), also known as \"GoT\", \"GOT\":\n  - American fantasy drama television series (2011–2019)\n  - is instance of television series\n\nUsing properties:\n- filming location (wd:P915 as wdt), also known as \"filmed at\", \"filmed in\", \"filmed on location in\", \"filming place\", \"film location\", etc.:\n  - actual place where this scene/film was shot. For the setting, use \"narrative location\" (P840)",
+    "result": "Got 10 rows and 2 columns:\n| location                  | locationLabel              |\n| ------------------------- | -------------------------- |\n| Morocco (wd:Q1028)        | Morocco (lang:en)          |\n| United Kingdom (wd:Q145)  | United Kingdom (lang:en)   |\n| Canada (wd:Q16)           | Canada (lang:en)           |\n| Iceland (wd:Q189)         | Iceland (lang:en)          |\n| Scotland (wd:Q22)         | Scotland (lang:en)         |\n| Croatia (wd:Q224)         | Croatia (lang:en)          |\n| Malta (wd:Q233)           | Malta (lang:en)            |\n| Northern Ireland (wd:Q26) | Northern Ireland (lang:en) |\n| Spain (wd:Q29)            | Spain (lang:en)            |\n| United States (wd:Q30)    | United States (lang:en)    |",
+    "endpoint": "https://qlever.dev/api/wikidata",
+    "type": "answer",
+    "answer": "The filming locations for Game of Thrones (TV series) include: Morocco, United Kingdom, Canada, Iceland, Scotland, Croatia, Malta, Northern Ireland, Spain, and the United States.",
+    "formatted": "The filming locations for Game of Thrones (TV series) include: Morocco, United Kingdom, Canada, Iceland, Scotland, Croatia, Malta, Northern Ireland, Spain, and the United States.\n\nSPARQL query over wikidata:\n```sparql\nPREFIX wdt: <http://www.wikidata.org/prop/direct/>\nPREFIX wd: <http://www.wikidata.org/entity/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?location ?locationLabel WHERE {\n  wd:Q23572 wdt:P915 ?location .\n  OPTIONAL {\n    ?location rdfs:label ?locationLabel\n    FILTER(LANG(?locationLabel) = 'en')\n  }\n}\n```\n\nUsing entities:\n- Game of Thrones (wd:Q23572), also known as \"GoT\", \"GOT\":\n  - American fantasy drama television series (2011–2019)\n  - is instance of television series\n\nUsing properties:\n- filming location (wd:P915 as wdt), also known as \"filmed at\", \"filmed in\", \"filmed on location in\", \"filming place\", \"film location\", etc.:\n  - actual place where this scene/film was shot. For the setting, use \"narrative location\" (P840)\n\nExecution result:\nGot 10 rows and 2 columns:\n| location                  | locationLabel              |\n| ------------------------- | -------------------------- |\n| Morocco (wd:Q1028)        | Morocco (lang:en)          |\n| United Kingdom (wd:Q145)  | United Kingdom (lang:en)   |\n| Canada (wd:Q16)           | Canada (lang:en)           |\n| Iceland (wd:Q189)         | Iceland (lang:en)          |\n| Scotland (wd:Q22)         | Scotland (lang:en)         |\n| Croatia (wd:Q224)         | Croatia (lang:en)          |\n| Malta (wd:Q233)           | Malta (lang:en)            |\n| Northern Ireland (wd:Q26) | Northern Ireland (lang:en) |\n| Spain (wd:Q29)            | Spain (lang:en)            |\n| United States (wd:Q30)    | United States (lang:en)    |"
+  },
+  "elapsed": 46.67548,
+  "error": null,
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a question answering assistant. Your job is to generate a SPARQL query to answer a given user question.\n\nYou should follow a step-by-step approach to generate the SPARQL query:\n1. Determine possible entities and properties implied by the user question.\n2. Search for the entities and properties in the knowledge graphs. Where applicable, constrain the searches with already identified entities and properties.\n3. Gradually build up the SPARQL query using the identified entities and properties. Start with simple queries and add more complexity as needed. Execute intermediate queries to get feedback and to verify your assumptions. You may need to refine or rethink your current plan based on the query results and go back to step 2 if needed, possibly multiple times.\n4. Use the answer or cancel function to finalize your answer and stop the generation process.\n\nAvailable knowledge graphs:\n- \"wikidata\" at https://qlever.dev/api/wikidata\n  - \"entity\" index (type=\"fuzzy\"): Entities indexed by their labels and synonyms\n  - \"property\" index (type=\"embedding\", modalities=\"text\"): Properties indexed by their labels, synonyms, and identifiers\n\nIndex types used:\n- \"embedding\": Retrieves items by cosine similarity between their embeddings and the query embedding. The embedding model used depends on the index and may support text, images, or both.\n- \"fuzzy\": Retrieves items by overlap between their label words and the query keywords. The query keywords must not match label words exactly, but some fuzziness is allowed. The longer a query keyword is, the more it can deviate from a label word and still be considered a match, though it will also contribute less to the overall score. No special query operators like AND/OR are supported.\n\nSPARQL prefixes for use in function calls:\n- bd: http://www.bigdata.com/rdf#\n- cc: http://creativecommons.org/ns#\n- data: https://www.wikidata.org/wiki/Special:EntityData/\n- dc: http://purl.org/dc/elements/1.1/\n- dct: http://purl.org/dc/terms/\n- foaf: http://xmlns.com/foaf/0.1/\n- geo: http://www.opengis.net/ont/geosparql#\n- geof: http://www.opengis.net/def/function/geosparql/\n- gn: http://www.geonames.org/ontology#\n- hint: http://www.bigdata.com/queryHints#\n- imdb: https://www.imdb.com/\n- math: http://www.w3.org/2005/xpath-functions/math#\n- ontolex: http://www.w3.org/ns/lemon/ontolex#\n- owl: http://www.w3.org/2002/07/owl#\n- p: http://www.wikidata.org/prop/\n- pq: http://www.wikidata.org/prop/qualifier/\n- pqn: http://www.wikidata.org/prop/qualifier/value-normalized/\n- pqv: http://www.wikidata.org/prop/qualifier/value/\n- pr: http://www.wikidata.org/prop/reference/\n- prn: http://www.wikidata.org/prop/reference/value-normalized/\n- prov: http://www.w3.org/ns/prov#\n- prv: http://www.wikidata.org/prop/reference/value/\n- ps: http://www.wikidata.org/prop/statement/\n- psn: http://www.wikidata.org/prop/statement/value-normalized/\n- psv: http://www.wikidata.org/prop/statement/value/\n- qb: http://purl.org/linked-data/cube#\n- qfn: http://qlever.cs.uni-freiburg.de/function#\n- ql: http://qlever.cs.uni-freiburg.de/builtin-functions/\n- qlss: https://qlever.cs.uni-freiburg.de/spatialSearch/\n- rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#\n- rdfs: http://www.w3.org/2000/01/rdf-schema#\n- ref: http://www.wikidata.org/reference/\n- s: http://www.wikidata.org/entity/statement/\n- schema: http://schema.org/\n- skos: http://www.w3.org/2004/02/skos/core#\n- v: http://www.wikidata.org/value/\n- void: http://rdfs.org/ns/void#\n- wd: http://www.wikidata.org/entity/\n- wdno: http://www.wikidata.org/prop/novalue/\n- wdt: http://www.wikidata.org/prop/direct/\n- wdtn: http://www.wikidata.org/prop/direct-normalized/\n- wikibase: http://wikiba.se/ontology#\n- xsd: http://www.w3.org/2001/XMLSchema#\n\nAdditional rules to follow:\n- Explain your thought process before and after each step and function call.\n- Do not ask the user for clarification until you have made an initial attempt at completing the task. When the task input is incomplete or ambiguous, proceed based on reasonable assumptions.\n- Do not use \"SERVICE wikibase:label { bd:serviceParam wikibase:language ...\" in SPARQL queries. It is unsupported by the used QLever SPARQL endpoints. Use rdfs:label or similar properties to get labels instead.\n- Always execute your final SPARQL query before giving an answer to make sure it returns the expected results.\n- The SPARQL query should always return the actual identifiers / IRIs of the items in its result. It additionally may return labels or other human-readable information, but they are optional and should be put within optional clauses unless explicitly requested by the user.\n- Do not stop early if there are still obvious improvements to be made to the SPARQL query. For example, keep refining your SPARQL query if its result contains irrelevant items or is missing items you expected.\n- Do not perform additional computation (e.g. filtering, sorting, calculations) on the result of the SPARQL query to determine the answer. All computation should be done solely within SPARQL.\n- For questions with a \"True\" or \"False\" answer the SPARQL query should be an ASK query."
+    },
+    {
+      "role": "user",
+      "content": "where did they film the game of thrones"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "77866777a71447beac42184602e95748",
+        "message": null,
+        "reasoning": {
+          "id": "5506ced55b3e428db65c7fa7c10c1fb9",
+          "content": "Okay, let's tackle the user's question: \"where did they film the game of thrones\". First, I need to figure out how to translate this into a SPARQL query. The user is asking about filming locations for the TV show Game of Thrones.\n\nStep 1: Determine possible entities and properties. The main entity here is \"Game of Thrones\", which is a TV series. In Wikidata, the entity for Game of Thrones is likely Q1520. I should verify that. The property related to filming location might be \"filming location\" which is probably P915, but I need to check.\n\nFirst, I should search for the entity corresponding to Game of Thrones. Using the search_entity function with \"game of thrones\" query. Let me call that.\n\nWait, the user mentioned \"the game of thrones\", which is the TV series. Let me search for it. The correct title is \"Game of Thrones\" without \"the\", but sometimes people say \"the Game of Thrones\". I'll try the search_entity function with \"game of thrones\".\n\nAssuming the search returns the correct entity, like Q1520 (which I recall is the Wikidata ID for Game of Thrones). Then, I need to find the property for filming location. In Wikidata, properties often have labels like \"filming location\". Using search_property with \"filming location\" might get P915.\n\nOnce I have the entity and property, I can construct a query like SELECT ?location WHERE { wd:Q1520 wdt:P915 ?location. }\n\nBut I need to confirm the correct property. Let me check with search_property for \"filming location\". Also, maybe using search_property_of_entity to find properties related to Game of Thrones about location.\n\nLet me start with searching the entity first.\n\nCall search_entity on wikidata with query \"game of thrones\"."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-84b25698516c4b3a",
+            "name": "search_entity",
+            "args": {
+              "kg": "wikidata",
+              "query": "game of thrones"
+            },
+            "result": "Top 10 entity alternatives:\n1. Game of Thrones (wd:Q23572), also known as \"GoT\", \"GOT\":\n  - American fantasy drama television series (2011–2019)\n  - is instance of television series\n2. A Song of Ice and Fire (wd:Q45875, matched via \"Game of Thrones\"), also known as \"ASOIAF\", \"A Song of Ice and Fire Series\", \"Game of Thrones\", \"Song of Ice and Fire\":\n  - is instance of novel series\n  - series of epic fantasy novels by George R. R. Martin\n3. A Game of Thrones (wd:Q300415, matched via \"Game of Thrones\"), also known as \"Game of Thrones\", \"Game Of Thrones\":\n  - is instance of Wikimedia disambiguation page\n  - Wikimedia disambiguation page\n4. Game of Thrones (wd:Q18150581), also known as \"Game of Thrones: A Telltale Games Series\", \"Game of Thrones: Iron from Ice\":\n  - 2014 video game\n  - is instance of video game\n5. Game of Thrones (wd:Q400488):\n  - 2012 action role-playing video game\n  - is instance of video game\n6. Game of Thrones (wd:Q108370933):\n  - is instance of video game series\n  - video game series\n7. Game of Thrones (wd:Q134510909):\n  - is instance of painting\n  - painting by Natisa Jones\n8. A Game of Thrones (wd:Q1751870), also known as \"A Game of Thrones (A Song of Ice and Fire, Book 1)\":\n  - 1996 novel by George R. R. Martin\n  - is instance of literary work\n9. Category:Game of Thrones (wd:Q7732813):\n  - is instance of Wikimedia category\n  - Wikimedia category\n10. A Game of Thrones (wd:Q1755280):\n  - board game\n  - is instance of board game"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 428,
+          "prompt_tokens": 3748,
+          "total_tokens": 4176
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "2ed9700e522944a7abbc834805eb56c0",
+        "message": null,
+        "reasoning": {
+          "id": "5ea634679747445ba9fdd64062f6ac87",
+          "content": "Okay, so the user is asking where they filmed Game of Thrones. From the search_entity results, the main entity for the TV series is Game of Thrones (wd:Q23572). The other entries are for the book series, video games, etc., so I need to focus on wd:Q23572.\n\nNext, I need to find the filming locations. In Wikidata, the property for filming location is usually P915 (filming location). Let me check if that's the correct property.\n\nTo confirm, I can use the list function to see what properties are related to the Game of Thrones entity. Let's call list with subject wd:Q23572. But since I can't do that directly here, maybe use search_property_of_entity. Wait, the function is called search_property_of_entity. Let me try that.\n\nWait, the function search_property_of_entity takes an entity and a query. So if I do search_property_of_entity(kg=\"wikidata\", entity=\"wd:Q23572\", query=\"filming location\"), it should find the relevant properties.\n\nAlternatively, maybe the property P915 is the right one. Let me recall: in Wikidata, P915 is \"filming location\". Let me check if that's correct. Yes, for example, for movies or TV shows, P915 is used.\n\nAssuming P915 is correct, the next step is to get the objects of that property for the entity wd:Q23572.\n\nSo the SPARQL query would be something like:\n\nSELECT ?location WHERE {\n  wd:Q23572 wdt:P915 ?location.\n}\n\nBut I need to verify if P915 is indeed the correct property. Maybe using the search_property function. Let me call search_property(kg=\"wikidata\", query=\"filming location\") to get the correct property.\n\nWait, but in the tools given, the user can call functions. So first, I should check what property is used for filming locations.\n\nSo step-by-step:\n\n1. Identify the correct entity: Game of Thrones TV series (wd:Q23572)\n2. Find the property for filming location. Let's search for \"filming location\" in properties.\n3. Use that property to query the locations for wd:Q23572.\n\nLet me call search_property(kg=\"wikidata\", query=\"filming location\") to find the right property."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-8c3b94389ff348ce",
+            "name": "search_property",
+            "args": {
+              "kg": "wikidata",
+              "query": "filming location"
+            },
+            "result": "Top 10 property alternatives:\n1. filming location (wd:P915 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv), also known as \"filmed at\", \"filmed in\", \"filmed on location in\", \"filming place\", \"film location\", etc.:\n  - actual place where this scene/film was shot. For the setting, use \"narrative location\" (P840)\n2. location of first performance (wd:P4647 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"premiere location\"), also known as \"first broadcasted at\", \"first performance location\", \"first performance place\", \"first performed at\", \"place of first performance\", etc.:\n  - location where a work was first debuted, performed or broadcasted\n3. category for films shot at this location (wd:P1740 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"films shot at this location\"), also known as \"category of films shot at this location\", \"cat films shot\", \"cff\", \"cfsi\", \"films shot at this location\":\n  - the object is a category for films shot at or in the subject\n4. production date (wd:P2754 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"filming date\"), also known as \"date of production\", \"filming date\", \"filming time\", \"year of production\":\n  - period of active production of (creative) work; the only date ... date (P577); in general cases, use inception (P571)\n5. production company (wd:P272 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"film studio\"), also known as \"ballet company\", \"broadcasting company\", \"film studio\", \"motion picture studio\", \"movie studio\", etc.:\n  - company that produced this film, audio or performing arts work\n6. narrative location (wd:P840 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"place of setting\"), also known as \"location of narrative\", \"narrative set in\", \"place of setting\", \"place set in\", \"playing in\", etc.:\n  - the narrative of the work is set in this location\n7. created during (wd:P10408 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"filmed at\"), also known as \"captured at\", \"captured during\", \"created at\", \"event of media file\", \"filmed at\", etc.:\n  - specific event or occurrence a work was created during\n8. valid in place (wd:P3005 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"in location\"), also known as \"applies to country\", \"applies to location\", \"applies to nonjurisdictional location\", \"applies to nonjurisdictional place\", \"applies to place\", etc.:\n  - place where a statement is valid\n9. occupant (wd:P466 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"location of\"), also known as \"home team\", \"houses\", \"inhabitant\", \"lessee\", \"location of\", etc.:\n  - person or organization occupying property\n10. recording location (wd:P8546 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv), also known as \"recorded at\":\n  - location where a media item (sound, video, etc.) was recorded"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 555,
+          "prompt_tokens": 4278,
+          "total_tokens": 4833
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "efe408bb01f3425d8e970ed5b1b278bf",
+        "message": null,
+        "reasoning": {
+          "id": "68b342afbb624fbb8e3fd1404b052841",
+          "content": "Okay, let's tackle the user's question: \"where did they film the game of thrones\". \n\nFirst, I need to figure out which entity \"Game of Thrones\" refers to. From the previous search_entity result, the top match is Game of Thrones (wd:Q23572), which is the TV series. The user is asking about filming locations, so this is the correct entity.\n\nNext, I need to find the property that corresponds to filming locations. The search_property for \"filming location\" gave a list where the first option is \"filming location\" (wd:P915). This property is described as the actual place where the scene/film was shot, which is exactly what the user is asking for. The other properties like \"narrative location\" refer to the story's setting, which isn't the same as real filming locations. So, P915 is the right property.\n\nNow, the plan is to write a SPARQL query that retrieves the filming locations for Game of Thrones (wd:Q23572) using the property wdt:P915. The basic structure would be:\n\nSELECT ?location WHERE {\n  wd:Q23572 wdt:P915 ?location.\n}\n\nBut maybe the user wants the labels of the locations, not just the IDs. So adding an optional clause to get the labels in English:\n\nSELECT ?location ?locationLabel WHERE {\n  wd:Q23572 wdt:P915 ?location.\n  OPTIONAL { ?location rdfs:label ?locationLabel FILTER(LANG(?locationLabel) = \"en\") }\n}\n\nWait, but the user's question is straightforward: they want the places where it was filmed. The answer should list those locations with their names. Let me check if the property P915 is correctly used here. From the property description, it's \"actual place where this scene/film was shot\", so yes.\n\nI should execute this query to see what results come back. Let me use the execute function with the SPARQL query.\n\nAnother thing to consider: sometimes properties might have multiple values or qualifiers, but for this case, it's probably a direct statement. Let me verify by running the query."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-89b168c768be084f",
+            "name": "execute",
+            "args": {
+              "kg": "wikidata",
+              "sparql": "SELECT ?location ?locationLabel WHERE { wd:Q23572 wdt:P915 ?location. OPTIONAL { ?location rdfs:label ?locationLabel FILTER(LANG(?locationLabel) = 'en') } }"
+            },
+            "result": "Got 10 rows and 2 columns:\n| location                  | locationLabel              |\n| ------------------------- | -------------------------- |\n| Morocco (wd:Q1028)        | Morocco (lang:en)          |\n| United Kingdom (wd:Q145)  | United Kingdom (lang:en)   |\n| Canada (wd:Q16)           | Canada (lang:en)           |\n| Iceland (wd:Q189)         | Iceland (lang:en)          |\n| Scotland (wd:Q22)         | Scotland (lang:en)         |\n| Croatia (wd:Q224)         | Croatia (lang:en)          |\n| Malta (wd:Q233)           | Malta (lang:en)            |\n| Northern Ireland (wd:Q26) | Northern Ireland (lang:en) |\n| Spain (wd:Q29)            | Spain (lang:en)            |\n| United States (wd:Q30)    | United States (lang:en)    |"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 544,
+          "prompt_tokens": 5226,
+          "total_tokens": 5770
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "9132d3e1c3ee4ea9bd1851756cd839c2",
+        "message": null,
+        "reasoning": {
+          "id": "00eedb0dfc724c7ca076026e03817a94",
+          "content": "Okay, let's see. The user asked where they filmed Game of Thrones. So first, I need to confirm which entity \"Game of Thrones\" refers to. From the search_entity results, the top hit is Q23572, which is the TV series. The other entries are the book series, video games, etc. So I should use the TV series entity.\n\nNext, they mentioned \"filming location\". The search_property function gave me P915 as the correct property for filming location. The other properties like narrative location or production company aren't relevant here.\n\nThen I ran a SPARQL query using wd:Q23572 (the TV series) with wdt:P915 to get the locations. The results include Morocco, UK, Canada, etc. All these places are known filming locations for Game of Thrones. For example, Morocco was used for parts of Meereen, Croatia for King's Landing, Iceland for the Wall, etc.\n\nI need to check if the query is correct. The query selects ?location and its label where wd:Q23572 has the filming location property. The results match known info, so it's correct. The user probably wants a list of these locations. Since the SPARQL returns them, the answer should list these places. The answer should mention the main countries and maybe specific spots like Dubrovnik in Croatia or Belfast in Northern Ireland as notable examples, but since the query returns countries, it's okay to list them as countries. Wait, the results have countries like Morocco, UK, Canada. But Scotland is part of the UK, so maybe the UK entry includes places in Scotland and Northern Ireland. However, Wikidata lists them separately. The answer should present all the countries mentioned in the results. The user might want specific cities, but the data here is at the country level. Maybe some locations are cities, but the labels here are countries. The answer can list the countries and mention that specific cities within them were used, but since the data is country-level, stick to the results."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-bf580150c7bf6f74",
+            "name": "answer",
+            "args": {
+              "kg": "wikidata",
+              "sparql": "SELECT ?location ?locationLabel WHERE { wd:Q23572 wdt:P915 ?location. OPTIONAL { ?location rdfs:label ?locationLabel FILTER(LANG(?locationLabel) = 'en') } }",
+              "answer": "The filming locations for Game of Thrones (TV series) include: Morocco, United Kingdom, Canada, Iceland, Scotland, Croatia, Malta, Northern Ireland, Spain, and the United States."
+            },
+            "result": "Stopping"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 548,
+          "prompt_tokens": 5538,
+          "total_tokens": 6086
+        }
+      }
+    }
+  ],
+  "known": [
+    "http://www.wikidata.org/prop/qualifier/value/P10408",
+    "http://www.wikidata.org/entity/Q7732813",
+    "http://www.wikidata.org/prop/qualifier/value/P272",
+    "http://www.wikidata.org/prop/direct-normalized/P2754",
+    "http://www.wikidata.org/prop/direct/P466",
+    "http://www.wikidata.org/prop/reference/value/P915",
+    "http://www.wikidata.org/prop/statement/value/P8546",
+    "http://www.wikidata.org/prop/reference/P466",
+    "http://www.wikidata.org/entity/P840",
+    "http://www.wikidata.org/prop/reference/value/P10408",
+    "http://www.wikidata.org/prop/reference/P3005",
+    "http://www.wikidata.org/prop/statement/value-normalized/P2754",
+    "http://www.wikidata.org/prop/qualifier/P915",
+    "http://www.wikidata.org/prop/qualifier/P466",
+    "http://www.wikidata.org/prop/reference/P1740",
+    "http://www.wikidata.org/prop/reference/value-normalized/P8546",
+    "http://www.wikidata.org/prop/statement/value/P840",
+    "http://www.wikidata.org/prop/statement/value-normalized/P8546",
+    "http://www.wikidata.org/entity/P8546",
+    "http://www.wikidata.org/prop/qualifier/P272",
+    "http://www.wikidata.org/prop/direct/P10408",
+    "http://www.wikidata.org/prop/statement/value/P272",
+    "http://www.wikidata.org/prop/direct-normalized/P466",
+    "http://www.wikidata.org/prop/statement/P915",
+    "http://www.wikidata.org/entity/P915",
+    "http://www.wikidata.org/prop/reference/value/P3005",
+    "http://www.wikidata.org/prop/direct-normalized/P272",
+    "http://www.wikidata.org/entity/P10408",
+    "http://www.wikidata.org/prop/reference/value/P2754",
+    "http://www.wikidata.org/prop/P2754",
+    "http://www.wikidata.org/prop/reference/value/P466",
+    "http://www.wikidata.org/entity/P272",
+    "http://www.wikidata.org/prop/statement/P2754",
+    "http://www.wikidata.org/prop/P10408",
+    "http://www.wikidata.org/prop/direct-normalized/P4647",
+    "http://www.wikidata.org/entity/Q45875",
+    "http://www.wikidata.org/prop/qualifier/value/P1740",
+    "http://www.wikidata.org/prop/statement/value/P3005",
+    "http://www.wikidata.org/entity/Q400488",
+    "http://www.wikidata.org/prop/reference/value/P8546",
+    "http://www.wikidata.org/prop/direct/P3005",
+    "http://www.wikidata.org/prop/qualifier/value/P3005",
+    "http://www.wikidata.org/prop/qualifier/value/P466",
+    "http://www.wikidata.org/prop/reference/P2754",
+    "http://www.wikidata.org/prop/statement/P4647",
+    "http://www.wikidata.org/entity/Q26",
+    "http://www.wikidata.org/prop/reference/value/P272",
+    "http://www.wikidata.org/prop/reference/value-normalized/P2754",
+    "http://www.wikidata.org/prop/statement/value-normalized/P915",
+    "http://www.wikidata.org/prop/reference/P4647",
+    "http://www.wikidata.org/prop/reference/value-normalized/P272",
+    "http://www.wikidata.org/entity/P2754",
+    "http://www.wikidata.org/prop/statement/value/P10408",
+    "http://www.wikidata.org/prop/direct-normalized/P8546",
+    "http://www.wikidata.org/prop/statement/P3005",
+    "http://www.wikidata.org/prop/qualifier/P2754",
+    "http://www.wikidata.org/prop/direct/P2754",
+    "http://www.wikidata.org/prop/direct/P4647",
+    "http://www.wikidata.org/prop/statement/value-normalized/P3005",
+    "http://www.wikidata.org/prop/statement/value/P4647",
+    "http://www.wikidata.org/entity/Q22",
+    "http://www.wikidata.org/prop/P1740",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P3005",
+    "http://www.wikidata.org/entity/P466",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P8546",
+    "http://www.wikidata.org/prop/statement/value-normalized/P840",
+    "http://www.wikidata.org/entity/Q18150581",
+    "http://www.wikidata.org/prop/statement/P10408",
+    "http://www.wikidata.org/prop/reference/P272",
+    "http://www.wikidata.org/prop/statement/P466",
+    "http://www.wikidata.org/entity/Q300415",
+    "http://www.wikidata.org/prop/qualifier/value/P840",
+    "http://www.wikidata.org/prop/statement/value-normalized/P10408",
+    "http://www.wikidata.org/prop/statement/value-normalized/P1740",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P272",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P466",
+    "http://www.wikidata.org/prop/P4647",
+    "http://www.wikidata.org/prop/P8546",
+    "http://www.wikidata.org/entity/Q1751870",
+    "http://www.wikidata.org/prop/reference/value-normalized/P840",
+    "http://www.wikidata.org/prop/reference/P840",
+    "http://www.wikidata.org/prop/qualifier/P3005",
+    "http://www.wikidata.org/prop/reference/value-normalized/P1740",
+    "http://www.wikidata.org/prop/reference/value/P840",
+    "http://www.wikidata.org/prop/reference/value-normalized/P4647",
+    "http://www.wikidata.org/entity/Q233",
+    "http://www.wikidata.org/entity/P1740",
+    "http://www.wikidata.org/entity/Q30",
+    "http://www.wikidata.org/prop/direct/P915",
+    "http://www.wikidata.org/prop/statement/P1740",
+    "http://www.wikidata.org/entity/Q189",
+    "http://www.wikidata.org/prop/P840",
+    "http://www.wikidata.org/prop/reference/value-normalized/P915",
+    "http://www.wikidata.org/entity/P3005",
+    "http://www.wikidata.org/entity/Q29",
+    "http://www.wikidata.org/prop/reference/value-normalized/P3005",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P1740",
+    "http://www.wikidata.org/prop/P915",
+    "http://www.wikidata.org/entity/Q108370933",
+    "http://www.wikidata.org/prop/reference/value/P4647",
+    "http://www.wikidata.org/prop/direct-normalized/P3005",
+    "http://www.wikidata.org/prop/qualifier/P8546",
+    "http://www.wikidata.org/prop/qualifier/value/P4647",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P915",
+    "http://www.wikidata.org/prop/direct-normalized/P10408",
+    "http://www.wikidata.org/prop/qualifier/value/P915",
+    "http://www.wikidata.org/prop/qualifier/value/P2754",
+    "http://www.wikidata.org/prop/direct-normalized/P915",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P10408",
+    "http://www.wikidata.org/prop/reference/P8546",
+    "http://www.wikidata.org/prop/reference/value-normalized/P10408",
+    "http://www.wikidata.org/prop/statement/value/P466",
+    "http://www.wikidata.org/entity/Q145",
+    "http://www.wikidata.org/prop/statement/value-normalized/P466",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P4647",
+    "http://www.wikidata.org/prop/direct/P8546",
+    "http://www.wikidata.org/prop/statement/P272",
+    "http://www.wikidata.org/entity/Q1755280",
+    "http://www.wikidata.org/prop/direct-normalized/P840",
+    "http://www.wikidata.org/prop/direct-normalized/P1740",
+    "http://www.wikidata.org/entity/Q224",
+    "http://www.wikidata.org/prop/direct/P840",
+    "http://www.wikidata.org/prop/qualifier/value/P8546",
+    "http://www.wikidata.org/prop/reference/P10408",
+    "http://www.wikidata.org/entity/Q134510909",
+    "http://www.wikidata.org/prop/qualifier/P840",
+    "http://www.wikidata.org/prop/statement/value/P915",
+    "http://www.wikidata.org/prop/reference/P915",
+    "http://www.wikidata.org/prop/statement/value-normalized/P4647",
+    "http://www.wikidata.org/prop/P272",
+    "http://www.wikidata.org/entity/Q16",
+    "http://www.wikidata.org/prop/statement/value/P2754",
+    "http://www.wikidata.org/prop/direct/P1740",
+    "http://www.wikidata.org/prop/statement/value-normalized/P272",
+    "http://www.wikidata.org/prop/statement/value/P1740",
+    "http://www.wikidata.org/prop/qualifier/P1740",
+    "http://www.wikidata.org/prop/reference/value-normalized/P466",
+    "http://www.wikidata.org/prop/P3005",
+    "http://www.wikidata.org/entity/Q23572",
+    "http://www.wikidata.org/prop/qualifier/P10408",
+    "http://www.wikidata.org/prop/qualifier/P4647",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P2754",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P840",
+    "http://www.wikidata.org/entity/Q1028",
+    "http://www.wikidata.org/prop/statement/P8546",
+    "http://www.wikidata.org/prop/P466",
+    "http://www.wikidata.org/entity/P4647",
+    "http://www.wikidata.org/prop/reference/value/P1740",
+    "http://www.wikidata.org/prop/statement/P840",
+    "http://www.wikidata.org/prop/direct/P272"
+  ],
+  "id": "unknown",
+  "source_csv": "data/SimpleQA/NQ_table_test_simple.csv",
+  "row_index": 711,
+  "question": "where did they film the game of thrones",
+  "reference_answer": "Canada | Croatia | Iceland | Malta | Morocco | Spain | Northern Ireland | Scotland | United States"
+}

@@ -1,0 +1,179 @@
+{
+  "type": "output",
+  "task": "sparql-qa",
+  "output": {
+    "sparql": "PREFIX wd: <http://www.wikidata.org/entity/>\nPREFIX wdt: <http://www.wikidata.org/prop/direct/>\nSELECT ?country WHERE {\n  wd:Q14944179 wdt:P495 ?country .\n}",
+    "kg": "wikidata",
+    "selections": "Using entities:\n- Peaky Blinders (wd:Q14944179):\n  - British period drama television series (2013–2022)\n  - is instance of television series\n\nUsing properties:\n- country of origin (wd:P495 as wdt), also known as \"comes from\", \"CoO\", \"country\", \"homeland\", \"originates from\", etc.:\n  - country of origin of this item (creative work, food, phrase, product, etc.)",
+    "result": "Got 1 row and 1 column:\n| country                  |\n| ------------------------ |\n| United Kingdom (wd:Q145) |",
+    "endpoint": "https://qlever.dev/api/wikidata",
+    "type": "answer",
+    "answer": "United Kingdom",
+    "formatted": "United Kingdom\n\nSPARQL query over wikidata:\n```sparql\nPREFIX wd: <http://www.wikidata.org/entity/>\nPREFIX wdt: <http://www.wikidata.org/prop/direct/>\nSELECT ?country WHERE {\n  wd:Q14944179 wdt:P495 ?country .\n}\n```\n\nUsing entities:\n- Peaky Blinders (wd:Q14944179):\n  - British period drama television series (2013–2022)\n  - is instance of television series\n\nUsing properties:\n- country of origin (wd:P495 as wdt), also known as \"comes from\", \"CoO\", \"country\", \"homeland\", \"originates from\", etc.:\n  - country of origin of this item (creative work, food, phrase, product, etc.)\n\nExecution result:\nGot 1 row and 1 column:\n| country                  |\n| ------------------------ |\n| United Kingdom (wd:Q145) |"
+  },
+  "elapsed": 52.436312,
+  "error": null,
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a question answering assistant. Your job is to generate a SPARQL query to answer a given user question.\n\nYou should follow a step-by-step approach to generate the SPARQL query:\n1. Determine possible entities and properties implied by the user question.\n2. Search for the entities and properties in the knowledge graphs. Where applicable, constrain the searches with already identified entities and properties.\n3. Gradually build up the SPARQL query using the identified entities and properties. Start with simple queries and add more complexity as needed. Execute intermediate queries to get feedback and to verify your assumptions. You may need to refine or rethink your current plan based on the query results and go back to step 2 if needed, possibly multiple times.\n4. Use the answer or cancel function to finalize your answer and stop the generation process.\n\nAvailable knowledge graphs:\n- \"wikidata\" at https://qlever.dev/api/wikidata\n  - \"entity\" index (type=\"fuzzy\"): Entities indexed by their labels and synonyms\n  - \"property\" index (type=\"embedding\", modalities=\"text\"): Properties indexed by their labels, synonyms, and identifiers\n\nIndex types used:\n- \"embedding\": Retrieves items by cosine similarity between their embeddings and the query embedding. The embedding model used depends on the index and may support text, images, or both.\n- \"fuzzy\": Retrieves items by overlap between their label words and the query keywords. The query keywords must not match label words exactly, but some fuzziness is allowed. The longer a query keyword is, the more it can deviate from a label word and still be considered a match, though it will also contribute less to the overall score. No special query operators like AND/OR are supported.\n\nSPARQL prefixes for use in function calls:\n- bd: http://www.bigdata.com/rdf#\n- cc: http://creativecommons.org/ns#\n- data: https://www.wikidata.org/wiki/Special:EntityData/\n- dc: http://purl.org/dc/elements/1.1/\n- dct: http://purl.org/dc/terms/\n- foaf: http://xmlns.com/foaf/0.1/\n- geo: http://www.opengis.net/ont/geosparql#\n- geof: http://www.opengis.net/def/function/geosparql/\n- gn: http://www.geonames.org/ontology#\n- hint: http://www.bigdata.com/queryHints#\n- imdb: https://www.imdb.com/\n- math: http://www.w3.org/2005/xpath-functions/math#\n- ontolex: http://www.w3.org/ns/lemon/ontolex#\n- owl: http://www.w3.org/2002/07/owl#\n- p: http://www.wikidata.org/prop/\n- pq: http://www.wikidata.org/prop/qualifier/\n- pqn: http://www.wikidata.org/prop/qualifier/value-normalized/\n- pqv: http://www.wikidata.org/prop/qualifier/value/\n- pr: http://www.wikidata.org/prop/reference/\n- prn: http://www.wikidata.org/prop/reference/value-normalized/\n- prov: http://www.w3.org/ns/prov#\n- prv: http://www.wikidata.org/prop/reference/value/\n- ps: http://www.wikidata.org/prop/statement/\n- psn: http://www.wikidata.org/prop/statement/value-normalized/\n- psv: http://www.wikidata.org/prop/statement/value/\n- qb: http://purl.org/linked-data/cube#\n- qfn: http://qlever.cs.uni-freiburg.de/function#\n- ql: http://qlever.cs.uni-freiburg.de/builtin-functions/\n- qlss: https://qlever.cs.uni-freiburg.de/spatialSearch/\n- rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#\n- rdfs: http://www.w3.org/2000/01/rdf-schema#\n- ref: http://www.wikidata.org/reference/\n- s: http://www.wikidata.org/entity/statement/\n- schema: http://schema.org/\n- skos: http://www.w3.org/2004/02/skos/core#\n- v: http://www.wikidata.org/value/\n- void: http://rdfs.org/ns/void#\n- wd: http://www.wikidata.org/entity/\n- wdno: http://www.wikidata.org/prop/novalue/\n- wdt: http://www.wikidata.org/prop/direct/\n- wdtn: http://www.wikidata.org/prop/direct-normalized/\n- wikibase: http://wikiba.se/ontology#\n- xsd: http://www.w3.org/2001/XMLSchema#\n\nAdditional rules to follow:\n- Explain your thought process before and after each step and function call.\n- Do not ask the user for clarification until you have made an initial attempt at completing the task. When the task input is incomplete or ambiguous, proceed based on reasonable assumptions.\n- Do not use \"SERVICE wikibase:label { bd:serviceParam wikibase:language ...\" in SPARQL queries. It is unsupported by the used QLever SPARQL endpoints. Use rdfs:label or similar properties to get labels instead.\n- Always execute your final SPARQL query before giving an answer to make sure it returns the expected results.\n- The SPARQL query should always return the actual identifiers / IRIs of the items in its result. It additionally may return labels or other human-readable information, but they are optional and should be put within optional clauses unless explicitly requested by the user.\n- Do not stop early if there are still obvious improvements to be made to the SPARQL query. For example, keep refining your SPARQL query if its result contains irrelevant items or is missing items you expected.\n- Do not perform additional computation (e.g. filtering, sorting, calculations) on the result of the SPARQL query to determine the answer. All computation should be done solely within SPARQL.\n- For questions with a \"True\" or \"False\" answer the SPARQL query should be an ASK query."
+    },
+    {
+      "role": "user",
+      "content": "Peaky Blinders web series is from?"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "b14b0895aa3f44eda86cda61368baf31",
+        "message": null,
+        "reasoning": {
+          "id": "5a45ab5a49024e59a7bfc2724029c846",
+          "content": "Okay, let's tackle the user's question: \"Peaky Blinders web series is from?\" \n\nFirst, I need to figure out what they're asking. The Peaky Blinders is a TV series, so maybe they want to know the country of origin or the production company. But the user mentioned \"web series,\" which is a bit confusing because Peaky Blinders is a TV show, not necessarily a web series. But I'll go with the assumption that they meant the TV series.\n\nThe main goal is to find where Peaky Blinders is from, likely the country of origin. In Wikidata, the property for country of origin is often \"country of origin\" (P495). So, I need to find the entity for Peaky Blinders and check its country of origin.\n\nStep 1: Identify the entity for Peaky Blinders. Let's use the search_entity function to find relevant entities.\n\nI'll call search_entity(kg=\"wikidata\", query=\"Peaky Blinders\"). The top result should be the TV series. Let's see what we get. The entity ID is likely Q20852951.\n\nStep 2: Once we have the entity, check its properties. Specifically, look for the country of origin. The relevant property is P495. So the SPARQL query would be SELECT ?country WHERE { wd:Q20852951 wdt:P495 ?country. }\n\nBut first, confirm that Q20852951 is indeed Peaky Blinders. Let's check the label. Then, check if it has the country property.\n\nWait, maybe there are multiple entries. Let me make sure. Peaky Blinders (TV series) should have \"television series\" in its description.\n\nAlternatively, using the search_entity function will give the entity. Once we have the entity's QID, we can query its country.\n\nSo, first action: search for \"Peaky Blinders\" in entities.\n\nAfter finding the correct QID, write a SPARQL to get the country of origin.\n\nPossible pitfalls: There might be multiple Peaky Blinders entries (like the original gang, the show, etc.), so need to ensure we're getting the TV series.\n\nLet me check the search_entity results. The first hit for \"Peaky Blinders\" in Wikidata should be the TV series. Let's see. In reality, Peaky Blinders (TV series) is Q20852951. Checking its data: instance of (P31) should be television series (Q5398426).\n\nBut to be thorough, after getting the entity, check its properties.\n\nAssuming the correct QID, the SPARQL would use wdt:P495.\n\nAnother possibility: sometimes country of origin is listed under \"country\" (P17) for works. Wait, no—P495 is specifically for country of origin for creative works. Let me confirm. Yes, P495 is \"country of origin\". So the correct property.\n\nSo the steps are:\n\n1. Search for entity \"Peaky Blinders\" to get the QID.\n2. Query that QID's wdt:P495 to get the country.\n\nNow, let's simulate the process.\n\nFirst, use search_entity(kg=\"wikidata\", query=\"Peaky Blinders\").\n\nThe result should give the entity. Let's say the top result is Q20852951, which is the TV series.\n\nThen, construct the SPARQL:\n\nSELECT ?country WHERE {\n  wd:Q20852951 wdt:P495 ?country.\n}\n\nBut the user wants the country name as the answer, so we might need to get the label of the country. However, the problem states that the query should return the actual identifiers (IRIs) and optionally labels. Since the user probably wants the country name (e.g., United Kingdom), we might need to get the label.\n\nSo the query would be:\n\nSELECT ?country ?countryLabel\nWHERE {\n  wd:Q20852951 wdt:P495 ?country.\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"en\". }\n}\n\nWait, but the instructions say not to use SERVICE wikibase:label as it's unsupported. Instead, use rdfs:label.\n\nSo alternative:\n\nSELECT ?country ?countryLabel\nWHERE {\n  wd:Q20852951 wdt:P495 ?country.\n  ?country rdfs:label ?countryLabel.\n  FILTER(lang(?countryLabel) = \"en\")\n}\n\nBut sometimes, the label might not be present, but usually for countries, it should. However, the strict requirement is that the query must return the IRI, and labels are optional. But since the user needs a human-readable answer (Country name), we need to include the label.\n\nWait, the user's question is \"Peaky Blinders web series is from?\" so the answer should be a country name like \"United Kingdom\".\n\nSo the correct approach is to get the country's IRI and its label.\n\nBut the SPARQL should first confirm the country via P495, then get its label.\n\nBut let's check if Peaky Blinders (Q20852951) has P495.\n\nIn reality, checking Wikidata: Q20852951 has P495: United Kingdom (Q145).\n\nSo the answer would be United Kingdom.\n\nNow, let's structure the SPARQL.\n\nFirst, we need to find the correct entity for Peaky Blinders (TV series), then get its country of origin.\n\nBut since we might need to disambiguate between possible entities, but given it's the only TV series, the search_entity should get it.\n\nSo the steps:\n\n1. Use search_entity to get QID for Peaky Blinders.\n2. Write SPARQL to get country via P495.\n\nBut since the user is asking directly, maybe the function calls will lead us to the query.\n\nNow, possible issues: if the property is different, but P495 is correct.\n\nAnother possible property is \"country\" (P17), but for works, P495 is the right one.\n\nLet me confirm with existing data.\n\nLooking up Q20852951 in Wikidata: yes, under \"country of origin\", it's United Kingdom (Q145).\n\nSo the correct property is P495.\n\nThus, the final SPARQL would target that.\n\nBut to make sure, perhaps after getting the entity, check its properties.\n\nSo first, call search_entity for \"Peaky Blinders\".\n\nAssuming that gives Q20852951.\n\nThen, check if that entity has a country of origin.\n\nSo, the SPARQL would be straightforward.\n\nBut to ensure correctness, perhaps use the function execute with the query.\n\nBut according to the instructions, we need to build the query step by step, and execute intermediate steps if needed.\n\nIn this case, since the steps are clear, perhaps proceed directly to the final query.\n\nBut as per the task, the assistant should explain each step.\n\nBut since I'm the assistant, I need to model the process.\n\nSo, first, search for the entity:\n\ncall search_entity(kg=\"wikidata\", query=\"Peaky Blinders\")\n\nAssuming it returns Q20852951.\n\nThen, need to get the country.\n\nSo next step: check properties of this entity related to country.\n\nAlternatively, search_property_of_entity for \"country\" to find the right property.\n\nBut since we know the likely property (P495), but maybe to confirm.\n\nAlternatively, use search_property(kg=\"wikidata\", query=\"country of origin\") which should return P495.\n\nBut let's follow the steps given in the instructions.\n\n1. Determine possible entities and properties.\n\nEntity: Peaky Blinders (TV series), Property: country of origin.\n\n2. Search for entities and properties.\n\nFirst, search for entity \"Peaky Blinders\".\n\nCall search_entity(kg=\"wikidata\", query=\"Peaky Blinders\").\n\nAssuming it returns Q20852951.\n\nThen, check the properties of this entity related to country.\n\nUse search_property_of_entity(kg=\"wikidata\", entity=\"wd:Q20852951\", query=\"country\")\n\nThis should return properties like P495.\n\nAlternatively, search_property(kg=\"wikidata\", query=\"country of origin\") to get P495.\n\nEither way, identify P495.\n\n3. Build the SPARQL query.\n\nConstruct:\n\nSELECT ?country WHERE {\n  wd:Q20852951 wdt:P494 ?country. \n}\n\nWait, no: P495 is country of origin.\n\nWait, P495 is \"country of origin\", correct.\n\nSo the query:\n\nSELECT ?country ?countryLabel\nWHERE {\n  wd:Q20852951 wdt:P495 ?country.\n  ?country rdfs:label ?countryLabel.\n  FILTER(lang(?countryLabel) = \"en\")\n}\n\nThis should return United Kingdom.\n\nBut the user's answer should be \"United Kingdom\".\n\nNow, check if the entity is correct.\n\nWait, to ensure that Q20852951 is Peaky Blinders TV series, perhaps check its instance of.\n\nSo, maybe:\n\nSELECT ?instance WHERE {\n  wd:Q20852951 wdt:P31 ?instance.\n}\n\nBut perhaps unnecessary if the entity search is accurate.\n\nGiven the process, the steps should be:\n\n- Use search_entity to find Peaky Blinders.\n- Then use search_property_of_entity for \"country\" to confirm the property.\n- Then compose the query.\n\nAssuming all steps confirm P495.\n\nThus, the SPARQL query would be as above.\n\nNow, to validate, execute the query.\n\nAssuming execution gives Q145 (United Kingdom) with label \"United Kingdom\".\n\nTherefore, the answer is United Kingdom.\n\nBut the user says \"web series\", but Peaky Blinders is a TV series, but perhaps in some regions it's distributed via web. However, the country of origin is still UK.\n\nHence, the answer is United Kingdom."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-ad66858ae4ec0004",
+            "name": "search_entity",
+            "args": {
+              "kg": "wikidata",
+              "query": "Peaky Blinders"
+            },
+            "result": "Top 10 entity alternatives:\n1. Peaky Blinders (wd:Q14944179):\n  - British period drama television series (2013–2022)\n  - is instance of television series\n2. Peaky Blinders (wd:Q16061616):\n  - is instance of Wikimedia disambiguation page\n  - Wikimedia disambiguation page\n3. Peaky Blinder (wd:Q15091547):\n  - criminal gang in Birmingham, England\n  - is instance of gang\n4. Peaky Blinders: Mastermind (wd:Q113949966):\n  - 2020 video game\n  - is instance of video game\n5. Flinders Peak (wd:Q5459416):\n  - Antarctic peak\n  - is instance of mountain\n6. Peaky Blinders, season 1 (wd:Q21185920):\n  - is instance of television series season\n  - season of television series\n7. Peaky Blinders, season 6 (wd:Q115668250):\n  - is instance of television series season\n  - season of television series\n8. Peaky Blinders, season 2 (wd:Q21185966):\n  - is instance of television series season\n  - season of television series\n9. Flinders Peak (wd:Q21911180):\n  - is instance of mountain\n  - mountain in Australia\n10. Flinders Peak (wd:Q21911181):\n  - is instance of mountain\n  - mountain in Queensland, Australia"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 2220,
+          "prompt_tokens": 3748,
+          "total_tokens": 5968
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "2c76cda6082246e2ba456cfe5cfd72e0",
+        "message": null,
+        "reasoning": {
+          "id": "4d7404dcdb464b608ec3329540b6ffab",
+          "content": "Okay, let's tackle the user's question: \"Peaky Blinders web series is from?\" \n\nFirst, I need to figure out what they're asking. The term \"web series\" might be a bit misleading here because Peaky Blinders is actually a TV series, not a web series. But maybe the user is just referring to it as a series available online. The main point is they want to know where it's from, which likely means the country of origin.\n\nFrom the tool response, the top entity is Peaky Blinders (wd:Q14944179), described as a British period drama television series from 2013–2022. So it's a British series. The user is asking \"from?\" which probably refers to the country. \n\nNext step: confirm the country. In Wikidata, the property for country of origin for a TV series is usually \"country of origin\" (P495). But I need to make sure. Let me check what properties are associated with Q14944179.\n\nI should use the list function to see the properties of the entity. Let's do that. The entity is wd:Q14944179, so list(kg=\"wikidata\", subject=\"wd:Q14944179\"). \n\nAlternatively, maybe search_property_of_entity for \"country\" on this entity. But first, let's get all properties to see what's there.\n\nWait, the user wants the answer, so I need to construct a SPARQL query that retrieves the country for Peaky Blinders.\n\nPossible approach:\n\nSELECT ?country WHERE {\n  wd:Q14944179 wdt:P495 ?country.\n}\n\nBut maybe the property is different. Let me verify by looking up the properties of Q14944179.\n\nFirst, let's use the list function to see the triples where subject is Q14944179.\n\nCall list(kg=\"wikidata\", subject=\"wd:Q14944179\", property=null, object=null)"
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-a61a6a8aa1335e45",
+            "name": "list",
+            "args": {
+              "kg": "wikidata",
+              "subject": "wd:Q14944179",
+              "property": null,
+              "object": null
+            },
+            "result": "Got 517 rows and 3 columns, showing the first 10 rows below:\n| subject                       | property                     | object                                        |\n| ----------------------------- | ---------------------------- | --------------------------------------------- |\n| Peaky Blinders (wd:Q14944179) | instance of (wdt:P31)        | television series (wd:Q5398426)               |\n| Peaky Blinders (wd:Q14944179) | title (wdt:P1476)            | Peaky Blinders (lang:en)                      |\n| Peaky Blinders (wd:Q14944179) | main subject (wdt:P921)      | Peaky Blinder (wd:Q15091547)                  |\n| Peaky Blinders (wd:Q14944179) | Commons category (wdt:P373)  | Peaky Blinders (TV series)                    |\n| Peaky Blinders (wd:Q14944179) | Freebase ID (wdt:P646)       | /m/0ql2gt3                                    |\n| Peaky Blinders (wd:Q14944179) | country of origin (wdt:P495) | United Kingdom (wd:Q145)                      |\n| Peaky Blinders (wd:Q14944179) | has part(s) (wdt:P527)       | Peaky Blinders, season 6 (wd:Q115668250)      |\n| Peaky Blinders (wd:Q14944179) | genre (wdt:P136)             | drama television series (wd:Q1366112)         |\n| Peaky Blinders (wd:Q14944179) | official website (wdt:P856)  | http://www.bbc.co.uk/programmes/b045fz8r      |\n| Peaky Blinders (wd:Q14944179) | award received (wdt:P166)    | Royal Television Society Awards (wd:Q2310720) |\n| ...                           | ...                          | ...                                           |"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 497,
+          "prompt_tokens": 4170,
+          "total_tokens": 4667
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "b21bda54c48f4bdf8a7da8ddf43cc5c6",
+        "message": null,
+        "reasoning": {
+          "id": "60f131b5acb247f18680cd7dc715a96f",
+          "content": "Okay, let's see. The user is asking about where the \"Peaky Blinders\" web series is from. From the initial search, we found that the correct entity is wd:Q14944179, which is the TV series. Now, looking at the list of triples for this entity, there's a property called \"country of origin\" (wdt:P495) which links to United Kingdom (wd:Q145). That seems to answer the question. The user probably wants to know the country where the series was produced, which is the UK. I need to confirm if \"country of origin\" is the right property here. Since the answer is straightforward from the data, the SPARQL query should select the object of wdt:P495 for wd:Q14944179. Let me check if there are any other possible properties, but I think country of origin is correct. So the query would be:\n\nSELECT ?country WHERE {\n  wd:Q14944179 wdt:P495 ?country.\n}\n\nThen, the answer would be the United Kingdom. Let me execute this query to verify."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-b562d1ca5bb231a9",
+            "name": "execute",
+            "args": {
+              "kg": "wikidata",
+              "sparql": "SELECT ?country WHERE { wd:Q14944179 wdt:P495 ?country. }"
+            },
+            "result": "Got 1 row and 1 column:\n| country                  |\n| ------------------------ |\n| United Kingdom (wd:Q145) |"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 304,
+          "prompt_tokens": 4745,
+          "total_tokens": 5049
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "31e6e6acb3894daa9d301d85c8640f99",
+        "message": null,
+        "reasoning": {
+          "id": "a9e29132465f4ea9b7f31943d45d6198",
+          "content": "Okay, let's see. The user asked where the Peaky Blinders web series is from. From the previous steps, I searched for the entity \"Peaky Blinders\" and found that the main entry is wd:Q14944179, which is the TV series. Then, using the list function, I saw that the country of origin is listed as United Kingdom (wd:Q145). \n\nNext, I ran a SPARQL query to get the country directly. The query was SELECT ?country WHERE { wd:Q14944179 wdt:P495 ?country. }, which returned the United Kingdom. So the answer should be that Peaky Blinders is from the United Kingdom.\n\nI need to make sure there's no other possible country mentioned. Looking back at the list results, the country of origin property (wdt:P495) points to United Kingdom. Also, the official website is bbc.co.uk, which is a UK-based broadcaster. So it's clear the series is from the UK. The SPARQL query is correct, and the answer is straightforward."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-93979598758c3b08",
+            "name": "answer",
+            "args": {
+              "kg": "wikidata",
+              "sparql": "SELECT ?country WHERE { wd:Q14944179 wdt:P495 ?country. }",
+              "answer": "United Kingdom"
+            },
+            "result": "Stopping"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 298,
+          "prompt_tokens": 4838,
+          "total_tokens": 5136
+        }
+      }
+    }
+  ],
+  "known": [
+    "http://www.wikidata.org/entity/Q5459416",
+    "http://www.wikidata.org/prop/direct/P921",
+    "http://www.wikidata.org/prop/direct/P495",
+    "http://www.bbc.co.uk/programmes/b045fz8r",
+    "http://www.wikidata.org/entity/P373",
+    "http://www.wikidata.org/entity/Q21185920",
+    "http://www.wikidata.org/entity/Q15091547",
+    "http://www.wikidata.org/entity/P136",
+    "http://www.wikidata.org/prop/direct/P1476",
+    "http://www.wikidata.org/entity/Q2310720",
+    "http://www.wikidata.org/entity/Q5398426",
+    "http://www.wikidata.org/entity/Q14944179",
+    "http://www.wikidata.org/entity/Q1366112",
+    "http://www.wikidata.org/prop/direct/P856",
+    "http://www.wikidata.org/entity/P646",
+    "http://www.wikidata.org/entity/P921",
+    "http://www.wikidata.org/entity/P31",
+    "http://www.wikidata.org/prop/direct/P136",
+    "http://www.wikidata.org/entity/P495",
+    "http://www.wikidata.org/prop/direct/P31",
+    "http://www.wikidata.org/entity/Q16061616",
+    "http://www.wikidata.org/entity/P856",
+    "http://www.wikidata.org/entity/Q115668250",
+    "http://www.wikidata.org/prop/direct/P527",
+    "http://www.wikidata.org/entity/Q21185966",
+    "http://www.wikidata.org/entity/P166",
+    "http://www.wikidata.org/prop/direct/P166",
+    "http://www.wikidata.org/entity/P1476",
+    "http://www.wikidata.org/prop/direct/P646",
+    "http://www.wikidata.org/entity/Q21911180",
+    "http://www.wikidata.org/entity/Q21911181",
+    "http://www.wikidata.org/prop/direct/P373",
+    "http://www.wikidata.org/entity/Q145",
+    "http://www.wikidata.org/entity/P527",
+    "http://www.wikidata.org/entity/Q113949966"
+  ],
+  "id": "unknown",
+  "source_csv": "data/SimpleQA/CompMix_table_simple_qa.csv",
+  "row_index": 44,
+  "question": "Peaky Blinders web series is from?",
+  "reference_answer": "United Kingdom"
+}

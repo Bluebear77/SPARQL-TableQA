@@ -1,0 +1,183 @@
+{
+  "type": "output",
+  "task": "sparql-qa",
+  "output": {
+    "sparql": "PREFIX wd: <http://www.wikidata.org/entity/>\nPREFIX wdt: <http://www.wikidata.org/prop/direct/>\nSELECT ?seasons WHERE {\n  wd:Q216991 wdt:P2437 ?seasons .\n}",
+    "kg": "wikidata",
+    "selections": "Using entities:\n- Johnny Bravo (wd:Q216991):\n  - American animated television series\n  - is instance of animated television series\n\nUsing properties:\n- number of seasons (wd:P2437 as wdt), also known as \"no. of seasons\", \"no. of series\", \"number of series\", \"seasons\":\n  - number of seasons a television or radio series has had",
+    "result": "Got 1 row and 1 column:\n| seasons           |\n| ----------------- |\n| 4.0 (xsd:decimal) |",
+    "endpoint": "https://qlever.dev/api/wikidata",
+    "type": "answer",
+    "answer": "There are 4 seasons of Johnny Bravo.",
+    "formatted": "There are 4 seasons of Johnny Bravo.\n\nSPARQL query over wikidata:\n```sparql\nPREFIX wd: <http://www.wikidata.org/entity/>\nPREFIX wdt: <http://www.wikidata.org/prop/direct/>\nSELECT ?seasons WHERE {\n  wd:Q216991 wdt:P2437 ?seasons .\n}\n```\n\nUsing entities:\n- Johnny Bravo (wd:Q216991):\n  - American animated television series\n  - is instance of animated television series\n\nUsing properties:\n- number of seasons (wd:P2437 as wdt), also known as \"no. of seasons\", \"no. of series\", \"number of series\", \"seasons\":\n  - number of seasons a television or radio series has had\n\nExecution result:\nGot 1 row and 1 column:\n| seasons           |\n| ----------------- |\n| 4.0 (xsd:decimal) |"
+  },
+  "elapsed": 47.99067,
+  "error": null,
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a question answering assistant. Your job is to generate a SPARQL query to answer a given user question.\n\nYou should follow a step-by-step approach to generate the SPARQL query:\n1. Determine possible entities and properties implied by the user question.\n2. Search for the entities and properties in the knowledge graphs. Where applicable, constrain the searches with already identified entities and properties.\n3. Gradually build up the SPARQL query using the identified entities and properties. Start with simple queries and add more complexity as needed. Execute intermediate queries to get feedback and to verify your assumptions. You may need to refine or rethink your current plan based on the query results and go back to step 2 if needed, possibly multiple times.\n4. Use the answer or cancel function to finalize your answer and stop the generation process.\n\nAvailable knowledge graphs:\n- \"wikidata\" at https://qlever.dev/api/wikidata\n  - \"entity\" index (type=\"fuzzy\"): Entities indexed by their labels and synonyms\n  - \"property\" index (type=\"embedding\", modalities=\"text\"): Properties indexed by their labels, synonyms, and identifiers\n\nIndex types used:\n- \"embedding\": Retrieves items by cosine similarity between their embeddings and the query embedding. The embedding model used depends on the index and may support text, images, or both.\n- \"fuzzy\": Retrieves items by overlap between their label words and the query keywords. The query keywords must not match label words exactly, but some fuzziness is allowed. The longer a query keyword is, the more it can deviate from a label word and still be considered a match, though it will also contribute less to the overall score. No special query operators like AND/OR are supported.\n\nSPARQL prefixes for use in function calls:\n- bd: http://www.bigdata.com/rdf#\n- cc: http://creativecommons.org/ns#\n- data: https://www.wikidata.org/wiki/Special:EntityData/\n- dc: http://purl.org/dc/elements/1.1/\n- dct: http://purl.org/dc/terms/\n- foaf: http://xmlns.com/foaf/0.1/\n- geo: http://www.opengis.net/ont/geosparql#\n- geof: http://www.opengis.net/def/function/geosparql/\n- gn: http://www.geonames.org/ontology#\n- hint: http://www.bigdata.com/queryHints#\n- imdb: https://www.imdb.com/\n- math: http://www.w3.org/2005/xpath-functions/math#\n- ontolex: http://www.w3.org/ns/lemon/ontolex#\n- owl: http://www.w3.org/2002/07/owl#\n- p: http://www.wikidata.org/prop/\n- pq: http://www.wikidata.org/prop/qualifier/\n- pqn: http://www.wikidata.org/prop/qualifier/value-normalized/\n- pqv: http://www.wikidata.org/prop/qualifier/value/\n- pr: http://www.wikidata.org/prop/reference/\n- prn: http://www.wikidata.org/prop/reference/value-normalized/\n- prov: http://www.w3.org/ns/prov#\n- prv: http://www.wikidata.org/prop/reference/value/\n- ps: http://www.wikidata.org/prop/statement/\n- psn: http://www.wikidata.org/prop/statement/value-normalized/\n- psv: http://www.wikidata.org/prop/statement/value/\n- qb: http://purl.org/linked-data/cube#\n- qfn: http://qlever.cs.uni-freiburg.de/function#\n- ql: http://qlever.cs.uni-freiburg.de/builtin-functions/\n- qlss: https://qlever.cs.uni-freiburg.de/spatialSearch/\n- rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#\n- rdfs: http://www.w3.org/2000/01/rdf-schema#\n- ref: http://www.wikidata.org/reference/\n- s: http://www.wikidata.org/entity/statement/\n- schema: http://schema.org/\n- skos: http://www.w3.org/2004/02/skos/core#\n- v: http://www.wikidata.org/value/\n- void: http://rdfs.org/ns/void#\n- wd: http://www.wikidata.org/entity/\n- wdno: http://www.wikidata.org/prop/novalue/\n- wdt: http://www.wikidata.org/prop/direct/\n- wdtn: http://www.wikidata.org/prop/direct-normalized/\n- wikibase: http://wikiba.se/ontology#\n- xsd: http://www.w3.org/2001/XMLSchema#\n\nAdditional rules to follow:\n- Explain your thought process before and after each step and function call.\n- Do not ask the user for clarification until you have made an initial attempt at completing the task. When the task input is incomplete or ambiguous, proceed based on reasonable assumptions.\n- Do not use \"SERVICE wikibase:label { bd:serviceParam wikibase:language ...\" in SPARQL queries. It is unsupported by the used QLever SPARQL endpoints. Use rdfs:label or similar properties to get labels instead.\n- Always execute your final SPARQL query before giving an answer to make sure it returns the expected results.\n- The SPARQL query should always return the actual identifiers / IRIs of the items in its result. It additionally may return labels or other human-readable information, but they are optional and should be put within optional clauses unless explicitly requested by the user.\n- Do not stop early if there are still obvious improvements to be made to the SPARQL query. For example, keep refining your SPARQL query if its result contains irrelevant items or is missing items you expected.\n- Do not perform additional computation (e.g. filtering, sorting, calculations) on the result of the SPARQL query to determine the answer. All computation should be done solely within SPARQL.\n- For questions with a \"True\" or \"False\" answer the SPARQL query should be an ASK query."
+    },
+    {
+      "role": "user",
+      "content": "how many seasons of johnny bravo are there"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "af4b2594d52d43c8a6016b7621a4a7cc",
+        "message": null,
+        "reasoning": {
+          "id": "c8f9861ba9614641bcf367f31efecfc0",
+          "content": "Okay, let's tackle the user's question: \"How many seasons of Johnny Bravo are there?\"\n\nFirst, I need to understand what the user is asking. They want to know the number of seasons for the TV show Johnny Bravo. So, I need to find the count of seasons associated with the Johnny Bravo series in a knowledge graph, which in this case is Wikidata.\n\nStep 1: Determine possible entities and properties.\n\nThe main entity here is \"Johnny Bravo\" as a TV show. I should check if there's a Wikidata entry for Johnny Bravo. The likely property related to seasons for a TV series is \"number of seasons\", which in Wikidata is probably property P2113 (since I remember that's the one for seasons). But I should verify that.\n\nStep 2: Search for the entity \"Johnny Bravo\" in Wikidata.\n\nUse the search_entity function with kg=\"wikidata\" and query=\"Johnny Bravo\". Let's see what comes up. Maybe the show's entry is Q1008073 (I'm not sure, but an example). Let's execute that search.\n\nWait, since I can't actually run the function here, I'll have to simulate. Typically, Johnny Bravo's Wikidata item is Q1008073. Let me confirm. Yes, in real life, the Johnny Bravo TV series is Q1008073 on Wikidata.\n\nStep 3: Once the entity is found, check what properties are associated with it, particularly the number of seasons.\n\nOnce we have the entity Q1008073, we need to find the property that indicates the number of seasons. In Wikidata, the property \"number of seasons\" is P2113. Let me check if that's correct. Yes, P2113 is \"number of seasons\".\n\nSo, the SPARQL query would be to select the value of P2113 for Q1008073.\n\nBut wait, the user is asking for the count, so maybe it's a numeric value. Let me structure the SPARQL query.\n\nThe basic query would be:\n\nSELECT ?seasons WHERE {\n  wd:Q1008073 wdt:P2113 ?seasons.\n}\n\nBut need to check if that's the correct property and entity.\n\nAlternatively, sometimes the number of seasons is stored as a literal with P2113.\n\nWait, perhaps I should check if there's an entity for Johnny Bravo seasons. But no, the number of seasons is a numeric property, so it's a literal value.\n\nSo steps:\n\n1. Find the Wikidata entity for Johnny Bravo TV series. It's Q1008073.\n\n2. Check the property P2113 (number of seasons) for that entity.\n\nSo the SPARQL query would be:\n\nSELECT ?seasons WHERE {\n  wd:Q1008073 wdt:P2113 ?seasons.\n}\n\nExpected result is 4 seasons (since Johnny Bravo ran for 4 seasons from 1997-2004).\n\nBut need to execute this query via the execute function to confirm.\n\nWait, the user is asking for how many seasons, so the answer should be a number, like 4.\n\nBut let's verify through the functions.\n\nFirst, let's search for the entity Johnny Bravo to confirm its QID.\n\nCall search_entity(kg=\"wikidata\", query=\"Johnny Bravo\").\n\nAssuming the result is Q1008073.\n\nNext, check the properties of Q1008073.\n\nUse list(kg=\"wikidata\", subject=\"wd:Q1008073\") to see all triples, but perhaps better to search_property_of_entity.\n\nsearch_property_of_entity(kg=\"wikidata\", entity=\"wd:Q1008073\", query=\"seasons\") to find the relevant property.\n\nAlternatively, search_property(kg=\"wikidata\", query=\"number of seasons\") to get P2113.\n\nYes, P2113 is the standard property for number of seasons.\n\nSo constructing the query:\n\nSELECT ?seasons WHERE {\n  wd:Q1008073 wdt:P2113 ?seasons.\n}\n\nExecuting this should return 4.\n\nBut need to confirm via tool execution.\n\nWait, in the tools, we can use execute(kg=\"wikidata\", sparql=\"...\").\n\nSo the plan is:\n\n1. Confirm Johnny Bravo's correct QID using search_entity.\n\n2. Confirm the property P2113 is used for that QID.\n\n3. Run the SPARQL query to get the value.\n\nLet's simulate the steps.\n\nFirst, search_entity for \"Johnny Bravo\".\n\nAssume it returns Q1008073.\n\nThen check if Q1008073 has P2113.\n\nIf yes, then the query returns 4.\n\nThus, the answer is 4 seasons.\n\nTherefore, the SPARQL query is correct.\n\nNeed to make sure the query is correctly formed.\n\nNote: The user is asking for the count, so no need for additional processing; the property should directly give the number.\n\nNow, check if there are any possible errors. For example, maybe the property is stored differently, but given prior knowledge, P2113 is correct.\n\nAnother check: maybe the show has a different entry, but Johnny Bravo (TV series) is definitely a common entry.\n\nSo the final answer should be 4, from the SPARQL query selecting P2113 of Q1008073."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-8c166866e468061b",
+            "name": "search_entity",
+            "args": {
+              "kg": "wikidata",
+              "query": "johnny bravo tv series"
+            },
+            "result": "Top 10 entity alternatives:\n1. Bajo el mismo techo (TV serie) (wd:Q5716879):\n  - is instance of television program\n  - Mexican television series\n2. Johnny Bravo: Johnny Bee Good (wd:Q98591786):\n  - 2012 video game\n  - is instance of video game\n3. Category:Television series (wd:Q7217118, matched via \"Category:TV series\"), also known as \"Category:TV series\":\n  - is instance of Wikimedia category\n  - Wikimedia category\n4. television series (wd:Q5398426, matched via \"TV series\"), also known as \"television show\", \"TV series\", \"TV-series\", \"TV show\":\n  - connected set of television program episodes under the same title\n  - is instance of type of television program\n  - is subclass of series of creative works\n  - is subclass of television program\n5. Johnny Bravo (wd:Q216991):\n  - American animated television series\n  - is instance of animated television series\n6. Category:Lost (TV series) (wd:Q7165054):\n  - is instance of Wikimedia category\n  - Wikimedia category\n7. miniseries (wd:Q1259759, matched via \"TV mini series\"), also known as \"event series\", \"limited serial\", \"limited series\", \"mini-series\", \"television mini-series\", etc.:\n  - is instance of type of television program\n  - is subclass of serial drama\n  - TV shows or series that have a predetermined number of episodes\n8. Angel (wd:Q217855, matched via \"Angel (TV series)\"), also known as \"Angel (TV series)\":\n  - is instance of Wikimedia disambiguation page\n  - Wikimedia disambiguation page\n9. Category:House (TV series) (wd:Q6371282):\n  - is instance of Wikimedia category\n  - Wikimedia category\n10. Normal People (wd:Q81672757, matched via \"Normal People (TV Series)\"), also known as \"Normal People (TV Series)\":\n  - Hulu and BBC Three television series\n  - is instance of television series"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 1217,
+          "prompt_tokens": 3749,
+          "total_tokens": 4966
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "0731628a42fd4f90b2918c9b137b0a3b",
+        "message": null,
+        "reasoning": {
+          "id": "f2fd878bfb8c4292a1d229cb9658ff3e",
+          "content": "Okay, let's tackle the user's question: \"How many seasons of Johnny Bravo are there?\"\n\nFirst, I need to find the correct entity for Johnny Bravo in Wikidata. From the initial search_entity call, the top result that matches is \"Johnny Bravo (wd:Q216991)\" which is listed as an American animated television series. That's definitely the right one.\n\nNext, I need to figure out how to get the number of seasons. In Wikidata, television series often have properties like \"number of seasons\" (wdt:P2366). Let me confirm that.\n\nSince I have the entity Q216991 for Johnny Bravo, I should check what properties it has. Maybe I can use the list function to see its properties. Let me call list(kg=\"wikidata\", subject=\"wd:Q216991\") to see all its triples.\n\nWait, but the user wants the number of seasons, so I should specifically look for the property that indicates number of seasons. In Wikidata, common properties for TV series include \"number of seasons\" (P2366), \"number of episodes\" (P2145), etc.\n\nAlternatively, I can check what properties are present for Johnny Bravo. Let's use search_property_of_entity(kg=\"wikidata\", entity=\"wd:Q216991\", query=\"seasons\") to find the relevant property.\n\nWait, the tools available include search_property_of_entity. So, using that with query \"seasons\" might help identify the correct property. Let's try that next."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-bd2082b00cee08ad",
+            "name": "search_property_of_entity",
+            "args": {
+              "kg": "wikidata",
+              "entity": "wd:Q216991",
+              "query": "seasons"
+            },
+            "result": "Top 10 property alternatives:\n1. number of seasons (wd:P2437 as wdt/p, matched via \"seasons\"), also known as \"no. of seasons\", \"no. of series\", \"number of series\", \"seasons\":\n  - number of seasons a television or radio series has had\n2. duration (wd:P2047 as wdt/p, matched via \"period\"), also known as \"cooking time\", \"cook time\", \"era\", \"interval\", \"length\", etc.:\n  - length of time of an event or process\n3. country of origin (wd:P495 as wdt/p, matched via \"country\"), also known as \"comes from\", \"CoO\", \"country\", \"homeland\", \"originates from\", etc.:\n  - country of origin of this item (creative work, food, phrase, product, etc.)\n4. start time (wd:P580 as wdt/p, matched via \"from\"), also known as \"air date\", \"began\", \"began airing\", \"began broadcasting\", \"began streaming\", etc.:\n  - time an entity begins to exist or a statement starts being valid\n5. topic's main category (wd:P910 as wdt/p, matched via \"category\"), also known as \"article's main category\", \"category\", \"category for this topic\", \"catmain\", \"has category\", etc.:\n  - main Wikimedia category\n6. end time (wd:P582 as wdt/p, matched via \"ends\"), also known as \"abolished\", \"cease date\", \"cease operation\", \"cease time\", \"closed\", etc.:\n  - moment when an entity ceases to exist and a statement stops being entirely valid or no longer be true\n7. Commons category (wd:P373 as wdt/p, matched via \"category Commons\"), also known as \"category Commons\", \"category on Commons\", \"category on Wikimedia Commons\", \"category Wikipedia Commons\", \"commonscat\", etc.:\n  - name of the Wikimedia Commons category containing files related to this item (without the prefix \"Category:\")\n8. original broadcaster (wd:P449 as wdt/p, matched via \"airs on\"), also known as \"aired on\", \"airs on\", \"broadcast on\", \"channel\", \"first air channel\", etc.:\n  - network(s) or service(s) that originally broadcast a radio or television program\n9. instance of (wd:P31 as wdt/p, matched via \"type\"), also known as \"example of\", \"has type\", \"is a\", \"is an\", \"is of type\", etc.:\n  - type to which this subject corresponds/belongs. Different ... is an instance of mountain; volcano is a subclass of mountain\n10. creator (wd:P170 as wdt/p, matched via \"by\"), also known as \"art by\", \"artist (non-musical)\", \"art work by\", \"artwork by\", \"by\", etc.:\n  - maker of this creative work or other object (where no more specific property exists)"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 380,
+          "prompt_tokens": 4302,
+          "total_tokens": 4682
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "902556245579416b8a86f744783f5abc",
+        "message": null,
+        "reasoning": {
+          "id": "309388901f2c42d483473d7e4557c127",
+          "content": "Okay, let's tackle the user's question: \"How many seasons of Johnny Bravo are there?\"\n\nFirst, I need to find the correct entity for Johnny Bravo. The user is asking about the TV series, so I should confirm which one it is. From the previous search, the entity wd:Q216991 is listed as \"Johnny Bravo (American animated television series)\" which seems correct.\n\nNext, I need to find the property that indicates the number of seasons. The user previously searched for properties of Johnny Bravo related to \"seasons\" and got the result \"number of seasons\" with property P2437. That's the right property. So, the property to check is wdt:P2437.\n\nNow, I should construct a SPARQL query to get the number of seasons for Johnny Bravo. The entity for Johnny Bravo is wd:Q216991. The query would select the value of wdt:P2437 for that entity.\n\nWait, let me verify. In Wikidata, the property 'number of seasons' (P2437) is a direct property (wdt:). So the triple would be wd:Q216991 wdt:P2437 ?seasons.\n\nSo the SPARQL query should be:\n\nSELECT ?seasons WHERE {\n  wd:Q216991 wdt:P2437 ?seasons.\n}\n\nBut the user wants the answer in a format that can be executed. Let me check if this entity actually has that property. From the previous search_property_of_entity call, it seems that the property exists. But to be sure, maybe execute a test query.\n\nWait, but according to the previous tool response, the top property alternative was number of seasons (wdt:P2437). So it's likely that Johnny Bravo's entry in Wikidata has this property.\n\nAlternatively, maybe there's a chance that the information is stored in another way, like episodes or series, but the user specifically asked for seasons, so P2437 is the correct property.\n\nSo the final SPARQL query should select the value of wdt:P2437 for wd:Q216991. Then, the answer will be the number returned.\n\nLet me check if there's any possible mistake here. For example, maybe Johnny Bravo has a different number of seasons in different regions, but Wikidata usually lists the main count. Since the user didn't specify, we go with the main data.\n\nAlso, make sure that the answer is the actual number, not a label or anything else. Since the property is a quantity, the result should be a number.\n\nTherefore, the correct SPARQL query is as I outlined. Now, I need to execute this to get the answer. But since in the problem setup, I have to provide the answer after generating the query, I'll state that the query will return the number, which is known to be 4 seasons for Johnny Bravo. Wait, but I should verify via the query.\n\nWait, in reality, Johnny Bravo has 4 seasons. But I need to confirm through the SPARQL query. However, since I can't actually execute it here, but based on the knowledge that the user is expecting the answer, and the previous steps indicated that the property exists, the answer should be 4.\n\nBut the instructions say to execute the final query before answering. However, since this is a simulation, I have to assume that executing the query would return 4.\n\nSo the answer is 4 seasons."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-85086d49aa175b46",
+            "name": "execute",
+            "args": {
+              "kg": "wikidata",
+              "sparql": "SELECT ?seasons WHERE { wd:Q216991 wdt:P2437 ?seasons . }"
+            },
+            "result": "Got 1 row and 1 column:\n| seasons           |\n| ----------------- |\n| 4.0 (xsd:decimal) |"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 797,
+          "prompt_tokens": 5019,
+          "total_tokens": 5816
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "4388e75f92df49ba814abbd087089180",
+        "message": null,
+        "reasoning": {
+          "id": "a28db76960ac43eab5ceec7fb79ba2e7",
+          "content": "Okay, let's see. The user asked how many seasons of Johnny Bravo there are.\n\nFirst, I used search_entity to find the correct entity for Johnny Bravo. The top result was wd:Q216991, which is the American animated television series. That makes sense.\n\nNext, I needed to find the property that indicates the number of seasons. So I called search_property_of_entity with the entity Q216991 and query \"seasons\". The first result was number of seasons (wdt:P2937). Wait, no, looking back, it's wdt:P2437. Yeah, in the response it's listed as wdt:P2437. So I used that property in the SPARQL query.\n\nThen I executed the query: SELECT ?seasons WHERE { wd:Q216991 wdt:P2437 ?seasons . } and got 4.0 as the result. Since the answer is a decimal but the user probably expects a whole number, it's just 4 seasons.\n\nI should check if there's any chance of error. Maybe the property is correct? The property label says \"number of seasons\", so that's the right one. The result is 4.0, which translates to 4 seasons. Seems straightforward. No need for additional filters or checks here. So the answer is 4 seasons."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-98e472a8da8c8096",
+            "name": "answer",
+            "args": {
+              "kg": "wikidata",
+              "sparql": "SELECT ?seasons WHERE { wd:Q216991 wdt:P2437 ?seasons . }",
+              "answer": "There are 4 seasons of Johnny Bravo."
+            },
+            "result": "Stopping"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 363,
+          "prompt_tokens": 5112,
+          "total_tokens": 5475
+        }
+      }
+    }
+  ],
+  "known": [
+    "http://www.wikidata.org/prop/P582",
+    "http://www.wikidata.org/entity/P582",
+    "http://www.wikidata.org/entity/Q7217118",
+    "http://www.wikidata.org/entity/Q5716879",
+    "http://www.wikidata.org/entity/Q217855",
+    "http://www.wikidata.org/entity/Q5398426",
+    "http://www.wikidata.org/prop/direct/P2047",
+    "http://www.wikidata.org/entity/Q216991",
+    "http://www.wikidata.org/prop/P170",
+    "http://www.wikidata.org/entity/P495",
+    "http://www.wikidata.org/prop/direct/P910",
+    "http://www.wikidata.org/prop/direct/P449",
+    "http://www.wikidata.org/prop/P31",
+    "http://www.wikidata.org/entity/P2047",
+    "http://www.wikidata.org/prop/P580",
+    "http://www.wikidata.org/entity/P449",
+    "http://www.wikidata.org/entity/Q6371282",
+    "http://www.wikidata.org/prop/P910",
+    "http://www.wikidata.org/entity/P2437",
+    "http://www.wikidata.org/entity/P31",
+    "http://www.wikidata.org/entity/Q98591786",
+    "http://www.wikidata.org/prop/P449",
+    "http://www.wikidata.org/entity/P170",
+    "http://www.wikidata.org/entity/Q7165054",
+    "http://www.wikidata.org/prop/P2437",
+    "http://www.wikidata.org/entity/P373",
+    "http://www.wikidata.org/prop/direct/P31",
+    "http://www.wikidata.org/entity/P580",
+    "http://www.wikidata.org/entity/P910",
+    "http://www.wikidata.org/prop/direct/P2437",
+    "http://www.wikidata.org/prop/direct/P580",
+    "http://www.wikidata.org/entity/Q1259759",
+    "http://www.wikidata.org/prop/direct/P373",
+    "http://www.wikidata.org/prop/P2047",
+    "http://www.wikidata.org/prop/P495",
+    "http://www.wikidata.org/prop/direct/P495",
+    "http://www.wikidata.org/prop/direct/P582",
+    "http://www.wikidata.org/prop/direct/P170",
+    "http://www.wikidata.org/prop/P373",
+    "http://www.wikidata.org/entity/Q81672757"
+  ],
+  "id": "unknown",
+  "source_csv": "data/SimpleQA/NQ_table_test_simple.csv",
+  "row_index": 550,
+  "question": "how many seasons of johnny bravo are there",
+  "reference_answer": "4"
+}

@@ -4,31 +4,31 @@
 
 | Metric | Count | Percentage |
 |---|---:|---:|
-| Valid | 554 | 19.25% |
-| Invalid | 2324 | 80.75% |
+| Valid | 554 | 19.31% |
+| Invalid | 2315 | 80.69% |
 
 ## Error distribution (Total)
 
 | Error type | Count | % of invalid |
 |---|---:|---:|
-| empty_sparql_result | 1125 | 48.41% |
+| empty_sparql_result | 1125 | 48.60% |
 | invalid_json | 0 | 0.00% |
-| no_sparql_generated | 34 | 1.46% |
-| null_output | 930 | 40.02% |
-| sparql_execution_failed (execution) | 196 | 8.43% |
+| no_sparql_generated | 34 | 1.47% |
+| null_output | 921 | 39.78% |
+| sparql_execution_failed (execution) | 196 | 8.47% |
 | sparql_execution_failed (preprocessing) | 39 | 1.68% |
 
 ## Per-folder summary
 
 | Folder | Total | Valid | Valid % | Invalid | Invalid % |
 |---|---:|---:|---:|---:|---:|
-| CompMix_infobox_complex | 301 | 224 | 74.42% | 77 | 25.58% |
-| CompMix_table_complex | 301 | 121 | 40.20% | 180 | 59.80% |
-| CompMix_table_simple_qa | 327 | 69 | 21.10% | 258 | 78.90% |
-| Monaco_non_time_complex | 150 | 9 | 6.00% | 141 | 94.00% |
-| Monaco_time_complex | 151 | 10 | 6.62% | 141 | 93.38% |
-| NQ_table_test_simple | 967 | 16 | 1.65% | 951 | 98.35% |
-| OTT_QA_dev_complex | 401 | 41 | 10.22% | 360 | 89.78% |
-| Qampari_wikitables_simple | 79 | 21 | 26.58% | 58 | 73.42% |
-| Sportsreason_TANQ_complex | 201 | 43 | 21.39% | 158 | 78.61% |
-| **Total** | 2878 | 554 | 19.25% | 2324 | 80.75% |
+| CompMix_infobox_complex | 300 | 224 | 74.67% | 76 | 25.33% |
+| CompMix_table_complex | 300 | 121 | 40.33% | 179 | 59.67% |
+| CompMix_table_simple_qa | 326 | 69 | 21.17% | 257 | 78.83% |
+| Monaco_non_time_complex | 149 | 9 | 6.04% | 140 | 93.96% |
+| Monaco_time_complex | 150 | 10 | 6.67% | 140 | 93.33% |
+| NQ_table_test_simple | 966 | 16 | 1.66% | 950 | 98.34% |
+| OTT_QA_dev_complex | 400 | 41 | 10.25% | 359 | 89.75% |
+| Qampari_wikitables_simple | 78 | 21 | 26.92% | 57 | 73.08% |
+| Sportsreason_TANQ_complex | 200 | 43 | 21.50% | 157 | 78.50% |
+| **Total** | 2869 | 554 | 19.31% | 2315 | 80.69% |

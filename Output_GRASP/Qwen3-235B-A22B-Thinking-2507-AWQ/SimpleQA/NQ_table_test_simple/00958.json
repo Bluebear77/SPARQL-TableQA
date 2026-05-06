@@ -1,0 +1,270 @@
+{
+  "type": "output",
+  "task": "sparql-qa",
+  "output": {
+    "sparql": "PREFIX wd: <http://www.wikidata.org/entity/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX ps: <http://www.wikidata.org/prop/statement/>\nPREFIX p: <http://www.wikidata.org/prop/>\nPREFIX pq: <http://www.wikidata.org/prop/qualifier/>\nSELECT ?actor ?actorLabel WHERE {\n  wd:Q735926 p:P161 ?castStatement .\n  ?castStatement ps:P161 ?actor .\n  ?castStatement pq:P453 wd:Q4727253 .\n  OPTIONAL {\n    ?actor rdfs:label ?actorLabel\n    FILTER(lang(?actorLabel) = \"en\")\n    .\n  }\n}",
+    "kg": "wikidata",
+    "selections": "Using entities:\n- Alistair (wd:Q4727253):\n  - fictional character from the Dragon Age franchise\n  - has occupation warrior\n  - is instance of fictional human\n  - is instance of video game character\n- Dragon Age: Origins (wd:Q735926):\n  - 2009 video game\n  - is instance of video game\n\nUsing properties:\n- cast member (wd:P161 as p/ps), also known as \"actor\", \"actress\", \"contestant of a play\", \"feat.\", \"film starring\", etc.:\n  - actor in the subject production [use \"character role\" (P453) ... \"recorded participant\" (P11108) for non-fiction productions]\n- character role (wd:P453 as pq), also known as \"acting role\", \"as\", \"performer of\", \"plays\", \"role\":\n  - specific role played or filled by subject -- use only as qualifier of \"cast member\" (P161), \"voice actor\" (P725)",
+    "result": "Got 1 row and 2 columns:\n| actor                        | actorLabel                |\n| ---------------------------- | ------------------------- |\n| Steve Valentine (wd:Q129160) | Steve Valentine (lang:en) |",
+    "endpoint": "https://qlever.dev/api/wikidata",
+    "type": "answer",
+    "answer": "Steve Valentine",
+    "formatted": "Steve Valentine\n\nSPARQL query over wikidata:\n```sparql\nPREFIX wd: <http://www.wikidata.org/entity/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX ps: <http://www.wikidata.org/prop/statement/>\nPREFIX p: <http://www.wikidata.org/prop/>\nPREFIX pq: <http://www.wikidata.org/prop/qualifier/>\nSELECT ?actor ?actorLabel WHERE {\n  wd:Q735926 p:P161 ?castStatement .\n  ?castStatement ps:P161 ?actor .\n  ?castStatement pq:P453 wd:Q4727253 .\n  OPTIONAL {\n    ?actor rdfs:label ?actorLabel\n    FILTER(lang(?actorLabel) = \"en\")\n    .\n  }\n}\n```\n\nUsing entities:\n- Alistair (wd:Q4727253):\n  - fictional character from the Dragon Age franchise\n  - has occupation warrior\n  - is instance of fictional human\n  - is instance of video game character\n- Dragon Age: Origins (wd:Q735926):\n  - 2009 video game\n  - is instance of video game\n\nUsing properties:\n- cast member (wd:P161 as p/ps), also known as \"actor\", \"actress\", \"contestant of a play\", \"feat.\", \"film starring\", etc.:\n  - actor in the subject production [use \"character role\" (P453) ... \"recorded participant\" (P11108) for non-fiction productions]\n- character role (wd:P453 as pq), also known as \"acting role\", \"as\", \"performer of\", \"plays\", \"role\":\n  - specific role played or filled by subject -- use only as qualifier of \"cast member\" (P161), \"voice actor\" (P725)\n\nExecution result:\nGot 1 row and 2 columns:\n| actor                        | actorLabel                |\n| ---------------------------- | ------------------------- |\n| Steve Valentine (wd:Q129160) | Steve Valentine (lang:en) |"
+  },
+  "elapsed": 93.784941,
+  "error": null,
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a question answering assistant. Your job is to generate a SPARQL query to answer a given user question.\n\nYou should follow a step-by-step approach to generate the SPARQL query:\n1. Determine possible entities and properties implied by the user question.\n2. Search for the entities and properties in the knowledge graphs. Where applicable, constrain the searches with already identified entities and properties.\n3. Gradually build up the SPARQL query using the identified entities and properties. Start with simple queries and add more complexity as needed. Execute intermediate queries to get feedback and to verify your assumptions. You may need to refine or rethink your current plan based on the query results and go back to step 2 if needed, possibly multiple times.\n4. Use the answer or cancel function to finalize your answer and stop the generation process.\n\nAvailable knowledge graphs:\n- \"wikidata\" at https://qlever.dev/api/wikidata\n  - \"entity\" index (type=\"fuzzy\"): Entities indexed by their labels and synonyms\n  - \"property\" index (type=\"embedding\", modalities=\"text\"): Properties indexed by their labels, synonyms, and identifiers\n\nIndex types used:\n- \"embedding\": Retrieves items by cosine similarity between their embeddings and the query embedding. The embedding model used depends on the index and may support text, images, or both.\n- \"fuzzy\": Retrieves items by overlap between their label words and the query keywords. The query keywords must not match label words exactly, but some fuzziness is allowed. The longer a query keyword is, the more it can deviate from a label word and still be considered a match, though it will also contribute less to the overall score. No special query operators like AND/OR are supported.\n\nSPARQL prefixes for use in function calls:\n- bd: http://www.bigdata.com/rdf#\n- cc: http://creativecommons.org/ns#\n- data: https://www.wikidata.org/wiki/Special:EntityData/\n- dc: http://purl.org/dc/elements/1.1/\n- dct: http://purl.org/dc/terms/\n- foaf: http://xmlns.com/foaf/0.1/\n- geo: http://www.opengis.net/ont/geosparql#\n- geof: http://www.opengis.net/def/function/geosparql/\n- gn: http://www.geonames.org/ontology#\n- hint: http://www.bigdata.com/queryHints#\n- imdb: https://www.imdb.com/\n- math: http://www.w3.org/2005/xpath-functions/math#\n- ontolex: http://www.w3.org/ns/lemon/ontolex#\n- owl: http://www.w3.org/2002/07/owl#\n- p: http://www.wikidata.org/prop/\n- pq: http://www.wikidata.org/prop/qualifier/\n- pqn: http://www.wikidata.org/prop/qualifier/value-normalized/\n- pqv: http://www.wikidata.org/prop/qualifier/value/\n- pr: http://www.wikidata.org/prop/reference/\n- prn: http://www.wikidata.org/prop/reference/value-normalized/\n- prov: http://www.w3.org/ns/prov#\n- prv: http://www.wikidata.org/prop/reference/value/\n- ps: http://www.wikidata.org/prop/statement/\n- psn: http://www.wikidata.org/prop/statement/value-normalized/\n- psv: http://www.wikidata.org/prop/statement/value/\n- qb: http://purl.org/linked-data/cube#\n- qfn: http://qlever.cs.uni-freiburg.de/function#\n- ql: http://qlever.cs.uni-freiburg.de/builtin-functions/\n- qlss: https://qlever.cs.uni-freiburg.de/spatialSearch/\n- rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#\n- rdfs: http://www.w3.org/2000/01/rdf-schema#\n- ref: http://www.wikidata.org/reference/\n- s: http://www.wikidata.org/entity/statement/\n- schema: http://schema.org/\n- skos: http://www.w3.org/2004/02/skos/core#\n- v: http://www.wikidata.org/value/\n- void: http://rdfs.org/ns/void#\n- wd: http://www.wikidata.org/entity/\n- wdno: http://www.wikidata.org/prop/novalue/\n- wdt: http://www.wikidata.org/prop/direct/\n- wdtn: http://www.wikidata.org/prop/direct-normalized/\n- wikibase: http://wikiba.se/ontology#\n- xsd: http://www.w3.org/2001/XMLSchema#\n\nAdditional rules to follow:\n- Explain your thought process before and after each step and function call.\n- Do not ask the user for clarification until you have made an initial attempt at completing the task. When the task input is incomplete or ambiguous, proceed based on reasonable assumptions.\n- Do not use \"SERVICE wikibase:label { bd:serviceParam wikibase:language ...\" in SPARQL queries. It is unsupported by the used QLever SPARQL endpoints. Use rdfs:label or similar properties to get labels instead.\n- Always execute your final SPARQL query before giving an answer to make sure it returns the expected results.\n- The SPARQL query should always return the actual identifiers / IRIs of the items in its result. It additionally may return labels or other human-readable information, but they are optional and should be put within optional clauses unless explicitly requested by the user.\n- Do not stop early if there are still obvious improvements to be made to the SPARQL query. For example, keep refining your SPARQL query if its result contains irrelevant items or is missing items you expected.\n- Do not perform additional computation (e.g. filtering, sorting, calculations) on the result of the SPARQL query to determine the answer. All computation should be done solely within SPARQL.\n- For questions with a \"True\" or \"False\" answer the SPARQL query should be an ASK query."
+    },
+    {
+      "role": "user",
+      "content": "who does the voice of alistair in dragon age"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "830908a61d714470ba682d0d95a40680",
+        "message": null,
+        "reasoning": {
+          "id": "98c14f26072c473bb2b07db0428cc708",
+          "content": "Okay, let's tackle this question: \"who does the voice of Alistair in Dragon Age\". \n\nFirst, I need to figure out what the user is asking. They want to know the voice actor for the character Alistair from the Dragon Age video game series.\n\nStep 1: Determine possible entities and properties.\n- The main entity here is Alistair, a character from Dragon Age.\n- The property we need is related to voice acting, so likely \"voice actor\" or similar.\n\nIn Wikidata, characters from video games are often entities. Let's check if Alistair from Dragon Age is a Wikidata entry. Dragon Age is a known series, so Alistair might be listed there.\n\nFirst, I should search for the entity \"Alistair\" in Wikidata related to Dragon Age. Maybe using the search_entity function.\n\nWait, there might be multiple characters named Alistair, so we need to specify it's the one from Dragon Age: Origins or another game in the series. The main game is Dragon Age: Origins.\n\nSo next step: search_property to find the right property for voice actor. Possible property names could be \"voice actor\", \"voice\", \"voice role\", etc.\n\nLet me recall some common Wikidata properties. For voice acting, the property might be P725 (voice actor) or similar. Let me check.\n\nAlternatively, using search_property with query \"voice actor\" might help.\n\nLet me start by searching for the character Alistair in Wikidata.\n\nUse search_entity(kg=\"wikidata\", query=\"Alistair Dragon Age\").\n\nSuppose that returns some Q-codes. Let's assume it gives Q538459 (Alistair, Dragon Age), but I need to verify.\n\nOnce the character entity is found, check its properties. The relevant property might be \"voice actor\" (P725). Then, the object would be the actor's name.\n\nBut wait, in Wikidata, sometimes the property for voice role is P376 (voice actor) or maybe another one. Need to check.\n\nAlternatively, the property could be P374 (voice actor) but numbers might differ. Better to use search_property.\n\nSo steps:\n\n1. Find the correct entity for Alistair (Dragon Age character).\n2. Find the property related to voice actor.\n3. Query that property for the entity to get the actor's name.\n\nLet's start with step 1.\n\nCall search_entity(kg=\"wikidata\", query=\"Alistair Dragon Age\").\n\nAssuming that returns the correct QID, say Q538459.\n\nThen, check the properties of that entity. Maybe using list(kg=\"wikidata\", subject=\"wd:Q538459\") to see available properties, but that's a lot. Alternatively, search_property_of_entity with query \"voice actor\".\n\nSo, after getting the entity QID, call search_property_of_entity(kg=\"wikidata\", entity=\"wd:Q538459\", query=\"voice actor\") to find the right property.\n\nSuppose that points to property P725.\n\nThen, the SPARQL query would be SELECT ?actor WHERE { wd:Q538459 wdt:P725 ?actor }.\n\nBut need to confirm.\n\nAlternatively, if the property is P376, then it would be wdt:P376.\n\nWait, checking Wikidata for Dragon Age characters. Let's think of a known example. For instance, the voice actor for Morrigan is Claudia Black. Let's see how that's structured.\n\nBut maybe Alistair's voice actor is prominent. I recall it's Steve Valentine. Let's verify.\n\nBut the task is to construct the SPARQL query, not know the answer.\n\nSo, first, find Alistair's entity.\n\nIn Wikidata, a search for \"Alistair\" in Dragon Age might yield Q538459 (Alistair (Dragon Age)).\n\nThen, check what properties it has related to voice.\n\nIn Wikidata, the property for \"voice actor\" is P725. Let me confirm that. Yes, P725 is \"voice actor\".\n\nSo, the SPARQL would be:\n\nSELECT ?actor WHERE {\n  wd:Q538459 wdt:P725 ?actor.\n}\n\nBut need to make sure that Q538459 is correct.\n\nAlternatively, maybe the entity is linked through the video game. For example, Dragon Age: Origins is Q270846.\n\nBut the character is Alistair, so the entity for the character should be directly about him.\n\nLet's proceed step by step.\n\nFirst, search for the entity.\n\nUse search_entity with \"Alistair Dragon Age\".\n\nAssuming the function returns Q538459.\n\nThen, check if this entity has a voice actor property.\n\nUse list(kg=\"wikidata\", subject=\"wd:Q538459\") to see properties, but since we can't know exact results, use search_property_of_entity.\n\nCall search_property_of_entity(kg=\"wikidata\", entity=\"wd:Q538459\", query=\"voice actor\").\n\nSuppose it returns P725.\n\nThen, construct the query.\n\nBut the user might have a different voice actor property, so need to confirm.\n\nAlternatively, maybe the property is P376 (voice actor). Wait, checking Wikidata:\n\nFor example, looking up a character like Geralt of Rivia (Q256010), his voice actors are listed under P725. For Dragon Age characters, same.\n\nLooking at Dragon Age: Origins (Q270846), the cast members might be listed there, but the character should have its own voice actor.\n\nSo, assuming Alistair's entity is Q538459, and property P725.\n\nThus, the SPARQL query would be:\n\nSELECT ?actorLabel\nWHERE {\n  wd:Q538459 wdt:P725 ?actor.\n  ?actor rdfs:label ?actorLabel.\n  FILTER (LANG(?actorLabel) = \"en\")\n}\n\nBut user might just want the identifier, but the answer should be the name.\n\nBut the instruction says: the SPARQL query should return the actual identifiers/IRIs, optionally labels in optional clauses.\n\nWait, the rules say: \"The SPARQL query should always return the actual identifiers / IRIs of the items in its result. It additionally may return labels or other human-readable information, but they are optional and should be put within optional clauses unless explicitly requested by the user.\"\n\nSo, structure the query to get the IRI of the actor, and optionally the label.\n\nBut the user wants the name (label) of the voice actor.\n\nSo, the query should select the label, but as per rules, the IRI is mandatory. So:\n\nSELECT ?actor ?label\nWHERE {\n  wd:Q538459 wdt:P725 ?actor.\n  ?actor rdfs:label ?label.\n  FILTER(LANG(?label) = \"en\")\n}\n\nBut need to confirm that P725 is the correct property.\n\nWait, but let's check: in Wikidata, for the character Alistair from Dragon Age, what's the correct property.\n\nLooking up Q538459 (Alistair (Dragon Age)) on Wikidata.\n\nUpon checking (hypothetically), it has:\n\nvoice actor: Steve Valentine (Q255237)\n\nSo, the property is P725.\n\nThus, the query is correct.\n\nBut first, we need to verify that Q538459 is the correct entity.\n\nHow to confirm? Use list(kg=\"wikidata\", subject=\"wd:Q538459\") to see if it's linked to Dragon Age.\n\nAlternatively, search_entity might have already confirmed it.\n\nSo, the plan:\n\n1. Search for Alistair in Dragon Age to get Q538459.\n\n2. Check if that entity has P725 property.\n\nThus, the SPARQL query is:\n\nSELECT ?actor ?actorLabel WHERE {\n  wd:Q538459 wdt:P725 ?actor.\n  ?actor rdfs:label ?actorLabel.\n  FILTER(LANG(?actorLabel) = \"en\")\n}\n\nNow, need to make sure that the SPARQL is correctly formatted with prefixes.\n\nUsing wd: for entities, wdt: for properties.\n\nNow, let's verify if the QID for Alistair is correct.\n\nAlternative approach: maybe the character is listed under Dragon Age: Origins.\n\nBut the specific character page in Wikidata is likely Q538459.\n\nTo confirm, we can use search_entity function.\n\nLet's simulate calling search_entity(kg=\"wikidata\", query=\"Alistair Dragon Age\").\n\nThe result would be the correct QID.\n\nAssuming it returns Q538459.\n\nThen, construct the query.\n\nBut we need to execute the query to ensure it works.\n\nWait, but since I can't actually run the function here, but according to the problem statement, I need to do step-by-step, simulating the function calls.\n\nSo first, call search_entity to find the correct entity.\n\nThen, use that entity to find the voice actor.\n\nSo in the tool calls:\n\nFirst, search_entity for \"Alistair Dragon Age\".\n\nThen, search_property_of_entity for \"voice actor\" to confirm the property.\n\nAssuming those return Q538459 and P725.\n\nThen, execute the SPARQL.\n\nBut given the constraints, let's proceed step by step.\n\nFirst function call: search_entity(kg=\"wikidata\", query=\"Alistair Dragon Age\").\n\nAssuming it returns Q538459.\n\nNext, to confirm, call search_property_of_entity(kg=\"wikidata\", entity=\"wd:Q538459\", query=\"voice actor\").\n\nThis should return property P725.\n\nThen, execute SPARQL to get the actor.\n\nThus, the final SPARQL query would be as above."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-a8b16474678a526c",
+            "name": "search_entity",
+            "args": {
+              "kg": "wikidata",
+              "query": "Alistair Dragon Age"
+            },
+            "result": "Top 10 entity alternatives:\n1. Dragon Age: Inquisition (wd:Q4037583), also known as \"DAI\":\n  - 2014 video game\n  - is instance of video game\n2. Dragon Age: Origins (wd:Q735926):\n  - 2009 video game\n  - is instance of video game\n3. Dragon Age II (wd:Q1064927), also known as \"Dragon Age 2\":\n  - 2011 video game\n  - is instance of video game\n4. Dragon Age (wd:Q1766436):\n  - is instance of video game series\n  - video game series\n5. Category:Dragon Age (wd:Q7582244):\n  - is instance of Wikimedia category\n  - Wikimedia category\n6. Dragon Age: The Veilguard (wd:Q104651901, matched via \"Dragon Age: Dreadwolf\"), also known as \"DA: TV\", \"DA:TV\", \"DATV\", \"DA:V\", \"Dragon Age 4\", etc.:\n  - 2024 video game developed by BioWare\n  - is instance of video game"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 2171,
+          "prompt_tokens": 3749,
+          "total_tokens": 5920
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "e1ce8d6f5a3d4e58a2d1942a845f03c7",
+        "message": null,
+        "reasoning": {
+          "id": "01203553a9f94b52b4202171beb8cd01",
+          "content": "Okay, let's tackle this question: \"who does the voice of Alistair in Dragon Age\". \n\nFirst, I need to figure out which Dragon Age game Alistair is from. From the search results, there are several Dragon Age games. Alistair is a character from Dragon Age: Origins, right? The user is asking about Alistair, so I should confirm that.\n\nThe top entities from the search include Dragon Age: Origins (wd:Q735926). So I should check if there's a character named Alistair in that game. Let me search for Alistair within Dragon Age: Origins.\n\nWait, maybe I should first search for the character Alistair. The initial search was for \"Alistair Dragon Age\", but the results were about the games. So maybe I need to look for the character specifically.\n\nLet me use the search_entity function again, but with \"Alistair Dragon Age character\" or something similar. Alternatively, maybe search for Alistair in the context of Dragon Age.\n\nAlternatively, check if \"Alistair\" as a character exists in Wikidata. Let me try searching for \"Alistair\" as an entity.\n\nWait, the previous search returned game titles, but not the character. Maybe the character has a different name or is listed under a different label. Alistair is a main character in Dragon Age: Origins, so perhaps his full title is something like \"Alistair (Dragon Age)\".\n\nLet me try searching for \"Alistair Dragon Age character\" using search_entity.\n\nAlternatively, maybe look up the game Dragon Age: Origins and then find the characters associated with it.\n\nSo first, let's get the Wikidata ID for Dragon Age: Origins, which is wd:Q735926. Then, check what characters are in that game.\n\nHow to find characters in a video game on Wikidata? The property for characters might be \"characters\" (wdt:P674) or similar.\n\nSo, query the game's characters. Let me use the list function to find properties related to characters for wd:Q735926.\n\nWait, using the list function: list(kg=\"wikidata\", subject=\"wd:Q735926\", property=null, object=null). But maybe better to search for properties that connect the game to characters.\n\nAlternatively, use the search_property_of_entity function. For the entity wd:Q735926 (Dragon Age: Origins), search for properties related to \"character\".\n\nSo, call search_property_of_entity(kg=\"wikidata\", entity=\"wd:Q735926\", query=\"character\").\n\nThat might give properties like 'characters' (wdt:P674), which is commonly used for characters in works.\n\nOnce I have the property, I can then get the characters.\n\nAssuming that the property is wdt:P674, then the character Alistair would be linked. Let me check.\n\nBut first, let's get the property. Let's make the function call."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-8782851c869398c2",
+            "name": "search_property_of_entity",
+            "args": {
+              "kg": "wikidata",
+              "entity": "wd:Q735926",
+              "query": "character"
+            },
+            "result": "Top 10 property alternatives:\n1. characters (wd:P674 as wdt/p), also known as \"antagonist\", \"hero\", \"heroine\", \"protagonist\":\n  - characters which appear in this item (like plays, operas, operettas, books, comics, films, TV series, video games)\n2. cast member (wd:P161 as wdt/p, matched via \"actor\"), also known as \"actor\", \"actress\", \"contestant of a play\", \"feat.\", \"film starring\", etc.:\n  - actor in the subject production [use \"character role\" (P453) ... \"recorded participant\" (P11108) for non-fiction productions]\n3. performer (wd:P175 as wdt/p, matched via \"actor\"), also known as \"actor\", \"actress\", \"artist\", \"dancer\", \"musical artist\", etc.:\n  - actor, musician, band or other performer associated with this role or musical work\n4. instance of (wd:P31 as wdt/p, matched via \"type\"), also known as \"example of\", \"has type\", \"is a\", \"is an\", \"is of type\", etc.:\n  - type to which this subject corresponds/belongs. Different ... is an instance of mountain; volcano is a subclass of mountain\n5. voice actor (wd:P725 as wdt/p, matched via \"seiyū\"), also known as \"dubbed by\", \"seiyu\", \"seiyū\", \"seiyuu\", \"VA\", etc.:\n  - performer of a spoken role in a creative work such as ... as qualifier] [use \"cast member\" (P161) for live acting]\n6. different from (wd:P1889 as wdt/p, matched via \"not\"), also known as \"confused with\", \"different than\", \"different to\", \"differs from\", \"diff from\", etc.:\n  - item that is different from another item, with which it may be confused\n7. genre (wd:P136 as wdt/p), also known as \"artistic genre\", \"art style\", \"atlas genre\", \"film genre\", \"genre of literature\", etc.:\n  - creative work's genre or an artist's field of work (P101). Use main subject (P921) to relate creative works to their topic\n8. logo image (wd:P154 as wdt/p, matched via \"mark\"), also known as \"insignia\", \"logo\", \"logomark\", \"mark\", \"marque\", etc.:\n  - graphic mark or emblem commonly used by commercial enterprises, organizations and products\n9. narrative location (wd:P840 as wdt/p, matched via \"place of setting\"), also known as \"location of narrative\", \"narrative set in\", \"place of setting\", \"place set in\", \"playing in\", etc.:\n  - the narrative of the work is set in this location\n10. language of work or name (wd:P407 as wdt/p, matched via \"language\"), also known as \"audio language\", \"available in\", \"broadcasting language\", \"language\", \"language of name\", etc.:\n  - language associated with this creative work (such as books, ... (P103) and \"languages spoken, written or signed\" (P1412))"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 682,
+          "prompt_tokens": 4069,
+          "total_tokens": 4751
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "5c14ffc9f00642a7a57913c6d5542bce",
+        "message": null,
+        "reasoning": {
+          "id": "c8959721b2db4d0da0aa7c44240162f0",
+          "content": "Okay, let's tackle this question: \"who does the voice of Alistair in Dragon Age\". \n\nFirst, I need to figure out which Dragon Age game Alistair is from. From the previous search_entity result, Dragon Age: Origins (wd:Q735926) is the first main game where Alistair is a prominent character. So the entity for the game is wd:Q735926.\n\nNow, I need to find the voice actor for the character Alistair. In Wikidata, characters in a game might be linked through the \"characters\" property (P674) and then the voice actor could be linked via \"voice actor\" (P725) or maybe through another property like \"cast member\" (P161) with a role.\n\nFirst, let's find the character Alistair. The game Dragon Age: Origins has characters, so using wdt:P674 to get the characters. Let me check if Alistair is listed as a character here.\n\nWait, in the previous search_property_of_entity for wd:Q735926 with query \"character\", the top property was \"characters\" (P674). So we can use that to get the character entities.\n\nLet me try executing a SPARQL query to get the characters of Dragon Age: Origins (wd:Q735926):\n\nSELECT ?character WHERE {\n  wd:Q735926 wdt:P674 ?character.\n}\n\nBut since I can't execute it directly, I need to use the tools provided. Alternatively, use search_object_of_property with property wdt:P674 and query \"Alistair\".\n\nSo, call search_object_of_property(kg=\"wikidata\", property=\"wdt:P674\", query=\"Alistair\") for the game entity wd:Q735926.\n\nWait, the game entity is wd:Q735926, so the property wdt:P674 (characters) of the game should list the characters. So using search_object_of_property on wdt:P674 with query \"Alistair\" should find the character entity.\n\nOnce we have the character entity for Alistair, we can then find the voice actor. For that, the \"voice actor\" property (P725) might be used. So check if the Alistair character has a P725 value pointing to the actor.\n\nAlternatively, sometimes voice actors are linked through cast member (P161) with a role (P453) indicating voice acting.\n\nLet me proceed step by step.\n\nFirst, find the Alistair character in Wikidata.\n\nCall search_object_of_property with property wdt:P674 (since the game has characters), and query \"Alistair\".\n\nWait, the property wdt:P674 is \"characters\", so objects are the characters. So for the game wd:Q735926, the objects under P674 would be the characters. So we can search for \"Alistair\" in the objects of wdt:P674 for that game.\n\nSo function call: search_object_of_property(kg=\"wikidata\", property=\"wdt:P674\", query=\"Alistair\")\n\nThis should give the character entity for Alistair."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-9868f71892e6e6f2",
+            "name": "search_object_of_property",
+            "args": {
+              "kg": "wikidata",
+              "property": "wdt:P674",
+              "query": "Alistair"
+            },
+            "result": "Top 10 entity alternatives:\n1. Alistair (wd:Q4727253):\n  - fictional character from the Dragon Age franchise\n  - has occupation warrior\n  - is instance of fictional human\n  - is instance of video game character\n2. Alistair (wd:Q87272799):\n  - fictional character from Granblue Fantasy\n  - is instance of harvin\n  - is instance of manga character\n  - is instance of video game character\n3. Brigadier Lethbridge-Stewart (wd:Q4096431, matched via \"Alistair Lethbridge-Stewart\"), also known as \"Alistair Gordon Lethbridge-Stewart\", \"Alistair Lethbridge-Stewart\", \"the Brigadier\":\n  - fictional character from Doctor Who\n  - is instance of character in the Doctor Who Universe\n  - is instance of fictional human\n  - is instance of television character\n4. Alastair (wd:Q16150562), also known as \"Alastair (Supernatural)\":\n  - fictional demon in the TV series Supernatural\n  - has occupation torturer\n  - is instance of fictional demon\n  - is instance of television character\n5. Alistar (wd:Q100254965), also known as \"The Minotaur\":\n  - is instance of character\n  - playable character from the game League of Legends\n6. Alastair Campbell (wd:Q653236), also known as \"Alastair John Campbell\":\n  - British director of communications and strategy, journalist, author and broadcaster\n  - has occupation diarist\n  - has occupation journalist\n  - has occupation novelist\n  - has occupation podcaster\n  - has occupation politician\n  - has occupation press agent\n  - is instance of human\n7. Alastair Denniston (wd:Q833564), also known as \"Alexander Denniston\", \"Alexander Guthrie Denniston\":\n  - British cryptographer and Royal Navy Commander (1881-1961)\n  - has occupation cryptographer\n  - has occupation field hockey player\n  - has occupation mathematician\n  - is instance of human\n8. Alastair Burnet (wd:Q4708693), also known as \"Sir James William Alexander Burnet\":\n  - British magazine and news editor, biographer, television journalist (1928–2012)\n  - has occupation editor\n  - has occupation journalist\n  - has occupation television presenter\n  - is instance of human\n9. Amelda (wd:Q25410503, matched via \"Alister\"), also known as \"Alister\":\n  - is instance of anime character\n  - is instance of fictional human\n  - is instance of television character\n  - Yu-Gi-Oh! character\n10. Commander Denniston (wd:Q28846046, matched via \"Alastair Denniston\"), also known as \"Alastair Denniston\":\n  - fictional analogon of Alastair Denniston (1881-1961)\n  - is instance of fictional human\n  - is instance of film character"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 751,
+          "prompt_tokens": 4862,
+          "total_tokens": 5613
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "b3720d7f2b44426e8179218b2ee71dc9",
+        "message": null,
+        "reasoning": {
+          "id": "27c463f61db54b608d2ce6ddacfe438f",
+          "content": "Okay, let's try to figure out how to find who does the voice of Alistair in Dragon Age.\n\nFirst, the user is asking about the voice actor for a character named Alistair in the Dragon Age series. From the previous steps, we searched for the Dragon Age game entities. The top results included Dragon Age: Origins (wd:Q735926) and Dragon Age II (wd:Q1064927), but the specific character Alistair is from Dragon Age: Origins, I believe. \n\nThen, we looked up properties for the entity Dragon Age: Origins (wd:Q735926) related to \"character\" and found properties like 'characters' (wdt:P674) which lists the characters in the game. Next, we used 'search_object_of_property' with wdt:P674 (the characters property) and searched for \"Alistair\", which gave us the character entity Alistair (wd:Q4727253), a Dragon Age character.\n\nNow, to find the voice actor, we need to find a property related to voice acting for this character. In previous steps, when searching properties of Dragon Age: Origins, we saw 'voice actor' (wdt:P725) as one of the properties. However, that property might be at the game level, not the character level. Wait, but characters might have their own 'voice actor' relation.\n\nAlternatively, the character entity (wd:Q4727253) might have a 'voice actor' property. So, we should check the properties of the character entity Alistair (wd:Q4727253) to see if there's a voice actor property.\n\nSo, next step: use search_property_of_entity on wd:Q4727253 with a query like \"voice actor\" or \"voice\".\n\nWait, but the previous tool calls used 'search_property_of_entity' for the game entity. Now, for the character entity, let's do that.\n\nSo, call search_property_of_entity with entity wd:Q4727253 and query \"voice\".\n\nAlternatively, check for the property 'voice actor' (P725) directly. But since we don't know the exact property, searching might be better.\n\nOnce we find the correct property connecting the character to the voice actor, we can then retrieve the actor's name.\n\nSo, let's generate the next function call to search for properties related to 'voice' for the Alistair character entity."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-a44b382d4affb6dd",
+            "name": "search_property_of_entity",
+            "args": {
+              "kg": "wikidata",
+              "entity": "wd:Q4727253",
+              "query": "voice"
+            },
+            "result": "Top 10 property alternatives:\n1. performer (wd:P175 as wdt/p, matched via \"recording by\"), also known as \"actor\", \"actress\", \"artist\", \"dancer\", \"musical artist\", etc.:\n  - actor, musician, band or other performer associated with this role or musical work\n2. instance of (wd:P31 as wdt/p, matched via \"type\"), also known as \"example of\", \"has type\", \"is a\", \"is an\", \"is of type\", etc.:\n  - type to which this subject corresponds/belongs. Different ... is an instance of mountain; volcano is a subclass of mountain\n3. occupation (wd:P106 as wdt/p, matched via \"vocation\"), also known as \"avocation\", \"career\", \"craft\", \"employ\", \"employment\", etc.:\n  - occupation of a person. See also \"field of work\" ... (Property:P452), \"members have occupation\" (Property:P3989).\n4. position held (wd:P39 as wdt/p, matched via \"function\"), also known as \"function\", \"held position\", \"holds position\", \"job\", \"office held\", etc.:\n  - subject currently or formerly holds the object position or public office\n5. present in work (wd:P1441 as wdt/p, matched via \"character in\"), also known as \"appeared in\", \"appears in\", \"appears in work\", \"character in\", \"featured in work\", etc.:\n  - this (fictional or fictionalized) entity, place, or person ... P1343 for entities described in non-fictional accounts)\n6. sex or gender (wd:P21 as wdt/p, matched via \"gender\"), also known as \"biological sex\", \"gender\", \"gender expression\", \"gender identity\", \"gender or sex\", etc.:\n  - sex or gender identity of human or animal. For human: male, ... female organism. Groups of same gender use subclass of (P279)\n7. country of citizenship (wd:P27 as wdt/p, matched via \"nation\"), also known as \"citizen of\", \"citizenship\", \"country\", \"(legal) nationality\", \"nation\", etc.:\n  - the object is a country that recognizes the subject as its citizen\n8. Freebase ID (wd:P646 as wdt/p, matched via \"FID\"), also known as \"FID\", \"Freebase\", \"Freebase identifier\", \"MID\":\n  - identifier for a page in the Freebase database. Format: ... starting with \"/g/\", use Google Knowledge Graph ID (P2671)\n9. Fandom article ID (wd:P6262 as wdt/p, matched via \"P6262\"), also known as \"Fandom Wikia article ID\", \"Wikia article ID\":\n  - identifier of an article on Fandom (Wikia). Format: ... (language-code.subdomain:Page_title for non-English wikis)\n10. CharacTour character ID (wd:P5863 as wdt/p):\n  - identifier for fictional characters from the website CharacTour"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 586,
+          "prompt_tokens": 5625,
+          "total_tokens": 6211
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "3e99ceccc66f4dbb9eea8aa5ec86777e",
+        "message": null,
+        "reasoning": {
+          "id": "30b36186907d4cabb905e92b65bb4b1f",
+          "content": "Okay, let's try to figure out how to find who does the voice of Alistair in Dragon Age.\n\nFirst, the user is asking about the voice actor for a character named Alistair in the Dragon Age series. From the previous steps, we used search_entity to find Dragon Age-related entities and found that Alistair is a character in Dragon Age: Origins (wd:Q735926) with the entity Q4727253. Then, we looked for properties related to \"voice\" for that character entity.\n\nThe problem is that in Wikidata, the property for voice actor might not be directly linked to the character. Looking at the previous tool response, when we searched for properties of the Alistair entity (wd:Q4727253) with \"voice\", the top result was \"performer\" (P175), which is a general property for performers, not specifically voice actors. However, in Wikidata, the specific property for voice actor is \"voice actor\" (P725), but when we queried for \"voice\" earlier, we saw property P725 mentioned. Wait, in the earlier search_property_of_entity for \"voice\", the first result was \"performer\" (P175), but maybe there's another property.\n\nWait, actually, in the first function call when we searched properties for entity Q735926 (Dragon Age: Origins) with \"character\", the third result was \"voice actor\" (wdt:P725). So maybe the correct property is P725. However, when we queried the character entity Q4727253 (Alistair) for \"voice\", the results didn't show P725. Maybe because the character entity doesn't have a direct link to the voice actor, but the video game entity (Dragon Age: Origins) does.\n\nSo, perhaps the approach should be: find the Dragon Age: Origins game (Q735926), then find the voice actor for the character Alistair within that game.\n\nIn Wikidata, the way to link a character to an actor might be through the \"cast member\" property (P161) or \"voice actor\" (P725). The property P161 is for cast members in a film or TV show, but for video games, sometimes it's used with qualifiers. Alternatively, there's a \"voice actor\" property (P725), which is a subproperty of \"performer\" maybe.\n\nLooking back, when we did search_property_of_entity on wd:Q735926 (Dragon Age: Origins) with \"character\", the properties included \"characters\" (P674), which lists the characters in the game. Then, for each character, to get the voice actor, we might need to look for a property like \"voice actor\" or \"cast member\".\n\nAlternatively, the game entity (Q735926) may have a cast list via P161 (cast member), and each cast member entry would have a qualifier indicating the character they voiced.\n\nSo, the steps could be:\n\n1. Identify the game: Dragon Age: Origins (Q735926)\n2. Find the cast members (P161) of the game.\n3. Check if any of those cast members have a qualifier (like \"character role\" P453) indicating they voiced Alistair.\n\nIn SPARQL, this would involve:\n\n- Getting the game's cast members (P161)\n- For each cast member, check if they have a qualifier linking to the character Alistair (Q4727253)\n\nThe property for the role qualifier is P453 (character role). So the query would be:\n\nSELECT ?actor WHERE {\n  wd:Q735926 wdt:P161 ?actor.\n  ?actor ?role wd:Q4727253. \n  # But need to check the qualifier for the character role\n}\n\nWait, qualifiers in Wikidata are handled with statement nodes. The correct way is:\n\nSELECT ?actor WHERE {\n  wd:Q735926 p:P161 ?castStatement.\n  ?castStatement ps:P161 ?actor.\n  ?castStatement pq:P453 wd:Q4727253.\n}\n\nBut in QLever syntax, it's a bit different. The correct SPARQL for Wikidata using QLever would use the wdt: prefix for direct properties. However, for qualifiers, we need to use the ps and pq.\n\nWait, in standard Wikidata SPARQL, the structure is:\n\nSELECT ?actor WHERE {\n  wd:Q735926 p:P161/ps:P161 ?actor.\n  wd:Q735926 p:P161/pq:P453 wd:Q4727253.\n}\n\nBut actually, each statement has its own qualifiers. So the correct pattern is:\n\nSELECT ?actor WHERE {\n  ?castStatement ps:P161 ?actor;\n                pq:P453 wd:Q4727253;\n                prov:wasDerivedFrom wd:Q735926.\n}\n\nWait, maybe I need to use the property P161 with the game as subject, then get the statement, then check the qualifier.\n\nThe standard way in Wikidata SPARQL is:\n\nSELECT ?actor WHERE {\n  wd:Q735926 p:P161 ?castStatement.\n  ?castStatement ps:P161 ?actor.\n  ?castStatement pq:P453 wd:Q4727253.\n}\n\nBut in QLever, the syntax might be slightly different, but the structure is the same.\n\nAlternatively, using wdt:P161 for the direct property wouldn't capture qualifiers, so we need to use the p-statement approach.\n\nSo, the SPARQL query would be:\n\nSELECT ?actor WHERE {\n  wd:Q735926 p:P161 ?castStatement.\n  ?castStatement ps:P161 ?actor;\n                 pq:P453 wd:Q4727253.\n}\n\nBut need to confirm if pq:P453 is the correct way to get the qualifier.\n\nAlternatively, in some cases, the character role is specified as a value of the statement.\n\nWait, let's check an example. If I look up Dragon Age: Origins on Wikidata, and check its cast members.\n\nOn the Wikidata page for Q735926 (Dragon Age: Origins), under \"cast\", it lists actors along with their roles. For example, Simon Templeman is listed as voicing Loghain Mac Tir.\n\nLooking at the data, each cast member has a \"character role\" (P453) qualifier. So for Alistair, we need to find the cast member where the character role is Alistair (Q4727253).\n\nThus, the correct SPARQL would be:\n\nSELECT ?actor WHERE {\n  wd:Q735926 p:P161 ?statement.\n  ?statement ps:P161 ?actor;\n             pq:P453 wd:Q4727253.\n}\n\nNow, translating this into SPARQL with the correct prefixes.\n\nThe prefixes needed would be:\n\nPREFIX wd: <http://www.wikidata.org/entity/>\nPREFIX wdt: <http://www.wikidata.org/prop/direct/>\nPREFIX p: <http://www.wikidata.org/prop/>\nPREFIX ps: <http://www.wikidata.org/prop/statement/>\nPREFIX pq: <http://www.wikidata.org/prop/qualifier/>\n\nSo the query would be:\n\nSELECT ?actor WHERE {\n  wd:Q735926 p:P161 ?statement.\n  ?statement ps:P161 ?actor;\n             pq:P453 wd:Q4727253.\n}\n\nBut in QLever, the syntax might require using the correct URIs. Alternatively, sometimes p:P161 can be written as p:P161, but the exact prefixes are as defined.\n\nAnother way is to use the wikibase:property to get to the statement.\n\nAlternatively, using the wdt:P161 won't help since it's the direct property, which doesn't include qualifiers. So we need to use the p: and ps: as above.\n\nNow, need to verify if the character role qualifier is indeed P453. From the list of properties, P453 is \"character role\".\n\nYes, checking the properties, \"character role\" (P453) is the correct property for the role the actor plays.\n\nSo, the query looks correct.\n\nNow, executing this query should return the actor who voiced Alistair.\n\nBut let's check if the entity for Alistair is correctly Q4727253.\n\nFrom the previous tool response, when we searched for \"Alistair\" in characters, the first result was Alistair (wd:Q4727253), fictional character from Dragon Age.\n\nSo, using wd:Q4727253 as the character.\n\nThus, the SPARQL query should select the actor where the game's cast member statement has a qualifier P453 equal to wd:Q4727253.\n\nNow, to get the actual name of the actor, we might need to select ?actor and its label.\n\nBut the user just wants the name, so the query should return the actor's entity, which can then be labeled.\n\nBut the user asks for \"who does the voice\", so the answer is the name of the actor.\n\nThus, the SPARQL would return the actor's ID, and to get the name, we can add a label.\n\nBut according to the rules, the answer should include the IRIs, but may include labels optionally.\n\nIn this case, the answer would be the name of the actor.\n\nSo the final query would be:\n\nSELECT ?actor ?actorLabel WHERE {\n  wd:Q735926 p:P161 ?castStatement.\n  ?castofor now, the query is in draft.\n\nWait, let's structure it properly.\n\nSELECT ?actor ?actorLabel WHERE {\n  wd:Q735926 p:P161 ?castStatement.\n  ?castStatement ps:P161 ?actor.\n  ?castStatement pq:P453 wd:Q4727253.\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"en\". }\n}\n\nBut wait, the instructions say not to use SERVICE wikibase:label, as it's unsupported by QLever. Instead, need to get labels via rdfs:label.\n\nSo replace the SERVICE part with:\n\nOPTIONAL { ?actor rdfs:label ?actorLabel filter(lang(?actorLabel) = \"en\"). }\n\nSo the query becomes:\n\nSELECT ?actor ?actorLabel WHERE {\n  wd:Q735926 p:P161 ?castStatement.\n  ?castStatement ps:P161 ?actor.\n  ?castStatement pq:P453 wd:Q4727253.\n  OPTIONAL { ?actor rdfs:label ?actorLabel filter(lang(?actorLabel) = \"en\"). }\n}\n\nBut in some cases, the label might not exist, but for human actors, they should have an English label.\n\nAlternatively, since the user just needs the name, and we can assume the actor is a person, the rdfs:label should work.\n\nNow, let's check if this query is correct.\n\nFirst, confirm the game is Q735926 (Dragon Age: Origins).\n\nCharacter is Q4727253 (Alistair).\n\nProperty for cast member is P161.\n\nQualifier for character role is P453.\n\nYes.\n\nNow, let's test if such a statement exists.\n\nBut since I can't execute the query right now, based on prior knowledge, Alistair in Dragon Age: Origins is voiced by Steve Valentine. Let's see if in Wikidata, Steve Valentine (Q197600) is linked to the role.\n\nLooking up Steve Valentine on Wikidata: he has a statement under \"voice acting career\" with \"work period start\" and \"for work\" but need to check if he's linked to Dragon Age.\n\nAlternatively, checking Dragon Age: Origins cast on Wikidata: https://www.wikidata.org/wiki/Q735926\n\nLooking at the \"cast member\" property (P161), each entry has a \"character role\" (P453) qualifier.\n\nFor example, one entry for Simon Templeman has character role Loghain Mac Tir (Q1929556).\n\nLooking for Alistair (Q4727253), the corresponding cast member should be Steve Valentine.\n\nLet's check if there's a cast member with character role Q4727253.\n\nAssuming that's the case, the query should return Steve Valentine's entity.\n\nThus, the SPARQL query would get the ?actor as wd:Q197600, and the label would be \"Steve Valentine\".\n\nTherefore, the answer would be Steve Valentine.\n\nSo the final SPARQL query as constructed should return the correct result."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-934f5359b316e2e9",
+            "name": "execute",
+            "args": {
+              "kg": "wikidata",
+              "sparql": "SELECT ?actor ?actorLabel WHERE { wd:Q735926 p:P161 ?castStatement. ?castStatement ps:P161 ?actor. ?castStatement pq:P453 wd:Q4727253. OPTIONAL { ?actor rdfs:label ?actorLabel FILTER(lang(?actorLabel) = \"en\"). } }"
+            },
+            "result": "Got 1 row and 2 columns:\n| actor                        | actorLabel                |\n| ---------------------------- | ------------------------- |\n| Steve Valentine (wd:Q129160) | Steve Valentine (lang:en) |"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 2954,
+          "prompt_tokens": 6367,
+          "total_tokens": 9321
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "7fbfdb525c3641969b685d472df9d09e",
+        "message": null,
+        "reasoning": {
+          "id": "6e073c7f446849709275012f51de15aa",
+          "content": "Okay, let's see. The user asked who does the voice of Alistair in Dragon Age.\n\nFirst, I tried to figure out which Dragon Age game they're referring to. Since Alistair is a main character in Dragon Age: Origins, I checked the entity for Dragon Age: Origins (wd:Q735926). Then I looked for properties related to characters and voice actors.\n\nI used search_entity to find Alistair, which led me to wd:Q4727253. Then I searched for properties of that entity related to voice, but the top result was performer (P175). However, in the knowledge graph, voice actors might be listed under cast members with a specific role.\n\nI checked the cast members of Dragon Age: Origins (wd:Q735926) using P161 (cast member). To find Alistair specifically, I needed to link the cast member to the character. The qualifier P453 (character role) was used, where the value is wd:Q4727253 (Alistair). \n\nSo the SPARQL query selects the cast members where the role is Alistair. The result was Steve Valentine. The user probably wants the name of the actor, so the answer is Steve Valentine. I should confirm if there's any other possible data, but the query returned only one result, which matches known information. So the answer is correct."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-a36c48119fcf4e27",
+            "name": "answer",
+            "args": {
+              "kg": "wikidata",
+              "sparql": "SELECT ?actor ?actorLabel WHERE { wd:Q735926 p:P161 ?castStatement. ?castStatement ps:P161 ?actor. ?castStatement pq:P453 wd:Q4727253. OPTIONAL { ?actor rdfs:label ?actorLabel FILTER(lang(?actorLabel) = \"en\"). } }",
+              "answer": "Steve Valentine"
+            },
+            "result": "Stopping"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 421,
+          "prompt_tokens": 6532,
+          "total_tokens": 6953
+        }
+      }
+    }
+  ],
+  "known": [
+    "http://www.wikidata.org/entity/P840",
+    "http://www.wikidata.org/entity/P674",
+    "http://www.wikidata.org/entity/P175",
+    "http://www.wikidata.org/prop/direct/P136",
+    "http://www.wikidata.org/entity/Q1064927",
+    "http://www.wikidata.org/prop/direct/P1889",
+    "http://www.wikidata.org/entity/Q28846046",
+    "http://www.wikidata.org/entity/P39",
+    "http://www.wikidata.org/prop/direct/P39",
+    "http://www.wikidata.org/prop/P1889",
+    "http://www.wikidata.org/prop/P27",
+    "http://www.wikidata.org/prop/direct/P27",
+    "http://www.wikidata.org/prop/P646",
+    "http://www.wikidata.org/entity/Q104651901",
+    "http://www.wikidata.org/prop/direct/P175",
+    "http://www.wikidata.org/prop/direct/P21",
+    "http://www.wikidata.org/prop/direct/P106",
+    "http://www.wikidata.org/entity/P725",
+    "http://www.wikidata.org/prop/direct/P725",
+    "http://www.wikidata.org/prop/direct/P6262",
+    "http://www.wikidata.org/prop/P21",
+    "http://www.wikidata.org/entity/P6262",
+    "http://www.wikidata.org/prop/P136",
+    "http://www.wikidata.org/entity/Q7582244",
+    "http://www.wikidata.org/entity/Q735926",
+    "http://www.wikidata.org/prop/P674",
+    "http://www.wikidata.org/entity/P646",
+    "http://www.wikidata.org/prop/P725",
+    "http://www.wikidata.org/prop/P154",
+    "http://www.wikidata.org/entity/Q87272799",
+    "http://www.wikidata.org/prop/P6262",
+    "http://www.wikidata.org/entity/Q100254965",
+    "http://www.wikidata.org/entity/P21",
+    "http://www.wikidata.org/prop/direct/P161",
+    "http://www.wikidata.org/prop/P407",
+    "http://www.wikidata.org/entity/Q653236",
+    "http://www.wikidata.org/entity/P27",
+    "http://www.wikidata.org/entity/Q129160",
+    "http://www.wikidata.org/prop/direct/P674",
+    "http://www.wikidata.org/prop/direct/P154",
+    "http://www.wikidata.org/entity/Q16150562",
+    "http://www.wikidata.org/prop/direct/P1441",
+    "http://www.wikidata.org/prop/P840",
+    "http://www.wikidata.org/entity/Q833564",
+    "http://www.wikidata.org/entity/P407",
+    "http://www.wikidata.org/prop/direct/P5863",
+    "http://www.wikidata.org/prop/P175",
+    "http://www.wikidata.org/prop/P31",
+    "http://www.wikidata.org/entity/Q4727253",
+    "http://www.wikidata.org/prop/direct/P646",
+    "http://www.wikidata.org/prop/P1441",
+    "http://www.wikidata.org/prop/P5863",
+    "http://www.wikidata.org/entity/P154",
+    "http://www.wikidata.org/entity/Q4096431",
+    "http://www.wikidata.org/entity/P5863",
+    "http://www.wikidata.org/entity/P136",
+    "http://www.wikidata.org/entity/Q25410503",
+    "http://www.wikidata.org/prop/P161",
+    "http://www.wikidata.org/entity/P1441",
+    "http://www.wikidata.org/entity/Q4708693",
+    "http://www.wikidata.org/entity/P161",
+    "http://www.wikidata.org/entity/Q4037583",
+    "http://www.wikidata.org/prop/direct/P840",
+    "http://www.wikidata.org/entity/P106",
+    "http://www.wikidata.org/prop/direct/P31",
+    "http://www.wikidata.org/entity/Q1766436",
+    "http://www.wikidata.org/entity/P1889",
+    "http://www.wikidata.org/prop/P106",
+    "http://www.wikidata.org/entity/P31",
+    "http://www.wikidata.org/prop/direct/P407",
+    "http://www.wikidata.org/prop/P39"
+  ],
+  "id": "unknown",
+  "source_csv": "data/SimpleQA/NQ_table_test_simple.csv",
+  "row_index": 958,
+  "question": "who does the voice of alistair in dragon age",
+  "reference_answer": "Steve Valentine"
+}

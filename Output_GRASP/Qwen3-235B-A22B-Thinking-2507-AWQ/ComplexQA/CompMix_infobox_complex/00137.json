@@ -1,0 +1,283 @@
+{
+  "type": "output",
+  "task": "sparql-qa",
+  "output": {
+    "sparql": "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX wd: <http://www.wikidata.org/entity/>\nPREFIX wdt: <http://www.wikidata.org/prop/direct/>\nSELECT ?genre ?genreLabel WHERE {\n  wd:Q41663451 wdt:P136 ?genre .\n  OPTIONAL {\n    ?genre rdfs:label ?genreLabel\n    FILTER(lang(?genreLabel) = 'en')\n  }\n}",
+    "kg": "wikidata",
+    "selections": "Using entities:\n- The Long Way to a Small, Angry Planet (wd:Q41663451):\n  - 2014 science fiction novel by Becky Chambers\n  - is instance of literary work\n\nUsing properties:\n- genre (wd:P136 as wdt), also known as \"artistic genre\", \"art style\", \"atlas genre\", \"film genre\", \"genre of literature\", etc.:\n  - creative work's genre or an artist's field of work (P101). Use main subject (P921) to relate creative works to their topic",
+    "result": "Got 1 row and 2 columns:\n| genre                       | genreLabel                |\n| --------------------------- | ------------------------- |\n| science fiction (wd:Q24925) | science fiction (lang:en) |",
+    "endpoint": "https://qlever.dev/api/wikidata",
+    "type": "answer",
+    "answer": "science fiction",
+    "formatted": "science fiction\n\nSPARQL query over wikidata:\n```sparql\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX wd: <http://www.wikidata.org/entity/>\nPREFIX wdt: <http://www.wikidata.org/prop/direct/>\nSELECT ?genre ?genreLabel WHERE {\n  wd:Q41663451 wdt:P136 ?genre .\n  OPTIONAL {\n    ?genre rdfs:label ?genreLabel\n    FILTER(lang(?genreLabel) = 'en')\n  }\n}\n```\n\nUsing entities:\n- The Long Way to a Small, Angry Planet (wd:Q41663451):\n  - 2014 science fiction novel by Becky Chambers\n  - is instance of literary work\n\nUsing properties:\n- genre (wd:P136 as wdt), also known as \"artistic genre\", \"art style\", \"atlas genre\", \"film genre\", \"genre of literature\", etc.:\n  - creative work's genre or an artist's field of work (P101). Use main subject (P921) to relate creative works to their topic\n\nExecution result:\nGot 1 row and 2 columns:\n| genre                       | genreLabel                |\n| --------------------------- | ------------------------- |\n| science fiction (wd:Q24925) | science fiction (lang:en) |"
+  },
+  "elapsed": 53.423254,
+  "error": null,
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a question answering assistant. Your job is to generate a SPARQL query to answer a given user question.\n\nYou should follow a step-by-step approach to generate the SPARQL query:\n1. Determine possible entities and properties implied by the user question.\n2. Search for the entities and properties in the knowledge graphs. Where applicable, constrain the searches with already identified entities and properties.\n3. Gradually build up the SPARQL query using the identified entities and properties. Start with simple queries and add more complexity as needed. Execute intermediate queries to get feedback and to verify your assumptions. You may need to refine or rethink your current plan based on the query results and go back to step 2 if needed, possibly multiple times.\n4. Use the answer or cancel function to finalize your answer and stop the generation process.\n\nAvailable knowledge graphs:\n- \"wikidata\" at https://qlever.dev/api/wikidata\n  - \"entity\" index (type=\"fuzzy\"): Entities indexed by their labels and synonyms\n  - \"property\" index (type=\"embedding\", modalities=\"text\"): Properties indexed by their labels, synonyms, and identifiers\n\nIndex types used:\n- \"embedding\": Retrieves items by cosine similarity between their embeddings and the query embedding. The embedding model used depends on the index and may support text, images, or both.\n- \"fuzzy\": Retrieves items by overlap between their label words and the query keywords. The query keywords must not match label words exactly, but some fuzziness is allowed. The longer a query keyword is, the more it can deviate from a label word and still be considered a match, though it will also contribute less to the overall score. No special query operators like AND/OR are supported.\n\nSPARQL prefixes for use in function calls:\n- bd: http://www.bigdata.com/rdf#\n- cc: http://creativecommons.org/ns#\n- data: https://www.wikidata.org/wiki/Special:EntityData/\n- dc: http://purl.org/dc/elements/1.1/\n- dct: http://purl.org/dc/terms/\n- foaf: http://xmlns.com/foaf/0.1/\n- geo: http://www.opengis.net/ont/geosparql#\n- geof: http://www.opengis.net/def/function/geosparql/\n- gn: http://www.geonames.org/ontology#\n- hint: http://www.bigdata.com/queryHints#\n- imdb: https://www.imdb.com/\n- math: http://www.w3.org/2005/xpath-functions/math#\n- ontolex: http://www.w3.org/ns/lemon/ontolex#\n- owl: http://www.w3.org/2002/07/owl#\n- p: http://www.wikidata.org/prop/\n- pq: http://www.wikidata.org/prop/qualifier/\n- pqn: http://www.wikidata.org/prop/qualifier/value-normalized/\n- pqv: http://www.wikidata.org/prop/qualifier/value/\n- pr: http://www.wikidata.org/prop/reference/\n- prn: http://www.wikidata.org/prop/reference/value-normalized/\n- prov: http://www.w3.org/ns/prov#\n- prv: http://www.wikidata.org/prop/reference/value/\n- ps: http://www.wikidata.org/prop/statement/\n- psn: http://www.wikidata.org/prop/statement/value-normalized/\n- psv: http://www.wikidata.org/prop/statement/value/\n- qb: http://purl.org/linked-data/cube#\n- qfn: http://qlever.cs.uni-freiburg.de/function#\n- ql: http://qlever.cs.uni-freiburg.de/builtin-functions/\n- qlss: https://qlever.cs.uni-freiburg.de/spatialSearch/\n- rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#\n- rdfs: http://www.w3.org/2000/01/rdf-schema#\n- ref: http://www.wikidata.org/reference/\n- s: http://www.wikidata.org/entity/statement/\n- schema: http://schema.org/\n- skos: http://www.w3.org/2004/02/skos/core#\n- v: http://www.wikidata.org/value/\n- void: http://rdfs.org/ns/void#\n- wd: http://www.wikidata.org/entity/\n- wdno: http://www.wikidata.org/prop/novalue/\n- wdt: http://www.wikidata.org/prop/direct/\n- wdtn: http://www.wikidata.org/prop/direct-normalized/\n- wikibase: http://wikiba.se/ontology#\n- xsd: http://www.w3.org/2001/XMLSchema#\n\nAdditional rules to follow:\n- Explain your thought process before and after each step and function call.\n- Do not ask the user for clarification until you have made an initial attempt at completing the task. When the task input is incomplete or ambiguous, proceed based on reasonable assumptions.\n- Do not use \"SERVICE wikibase:label { bd:serviceParam wikibase:language ...\" in SPARQL queries. It is unsupported by the used QLever SPARQL endpoints. Use rdfs:label or similar properties to get labels instead.\n- Always execute your final SPARQL query before giving an answer to make sure it returns the expected results.\n- The SPARQL query should always return the actual identifiers / IRIs of the items in its result. It additionally may return labels or other human-readable information, but they are optional and should be put within optional clauses unless explicitly requested by the user.\n- Do not stop early if there are still obvious improvements to be made to the SPARQL query. For example, keep refining your SPARQL query if its result contains irrelevant items or is missing items you expected.\n- Do not perform additional computation (e.g. filtering, sorting, calculations) on the result of the SPARQL query to determine the answer. All computation should be done solely within SPARQL.\n- For questions with a \"True\" or \"False\" answer the SPARQL query should be an ASK query."
+    },
+    {
+      "role": "user",
+      "content": "What genre does The Long Way to a Small, Angry Planet belong to"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "b6aa6010c8c74a6992824bf69672f2b8",
+        "message": null,
+        "reasoning": {
+          "id": "6aeec3d0f7434db3b3278a35bf0b5b00",
+          "content": "Okay, let's tackle this question. The user is asking about the genre of the book \"The Long Way to a Small, Angry Planet.\" First, I need to figure out how to find this information using the knowledge graphs provided, which is Wikidata.\n\nSo, step 1: Determine possible entities and properties. The book title is given, so the main entity here is the book itself. In Wikidata, books are usually items with a specific QID. Then, the genre would be a property of that book. Common properties for genre in Wikidata might be something like \"genre\" (P136) or similar.\n\nStep 2: Search for the entity. I should use the search_entity function to find the correct Wikidata item for the book. Let me check the function parameters. The function search_entity(kg=\"wikidata\", query=\"The Long Way to a Small, Angry Planet\") should help locate the correct entity. Once I have the QID for the book, then I can look for the genre property.\n\nWait, the search_entity function uses the entity index, which is fuzzy. Let me make sure the title is exact enough. The title is a bit long, but maybe it's in Wikidata. Let me call search_entity first.\n\nAfter finding the entity, step 3: Find the property for genre. Maybe using search_property with \"genre\" as the query. The property P136 is \"genre\" in Wikidata, but I need to confirm. Alternatively, use search_property_of_entity once the book's QID is known.\n\nWait, maybe better to first get the entity ID for the book. Let's execute search_entity with the book title.\n\nAssuming the search returns the correct entity, say Q123456, then we need to find the genre. In Wikidata, the property for genre is indeed P136. So the next step is to query the book's P136 value.\n\nBut to be precise, maybe use the search_property_of_entity function. For example, if the entity is Qxxxx, then search_property_of_entity(kg=\"wikidata\", entity=\"wd:Qxxxx\", query=\"genre\") would help find the correct property.\n\nBut maybe it's straightforward. Once the entity is found, construct a SPARQL query like:\n\nSELECT ?genre WHERE {\n  wd:Qxxxx wdt:P136 ?genre .\n}\n\nSo the plan is:\n\n1. Find the entity for \"The Long Way to a Small, Angry Planet\" using search_entity.\n2. Identify the correct property for genre (likely P136).\n3. Construct and execute a SPARQL query to retrieve the genre.\n\nLet me start with step 1. Call search_entity with the book title."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-81e480372be35e3a",
+            "name": "search_entity",
+            "args": {
+              "kg": "wikidata",
+              "query": "The Long Way to a Small, Angry Planet"
+            },
+            "result": "Top 10 entity alternatives:\n1. The Long Way to a Small, Angry Planet (wd:Q41663451):\n  - 2014 science fiction novel by Becky Chambers\n  - is instance of literary work\n2. The Long Way to a Small, Angry Planet (wd:Q101229515):\n  - Hodder & Stoughton hardcover edition\n  - is instance of version, edition or translation\n3. The Long Way to a Small, Angry Planet (wd:Q126707962):\n  - is instance of version, edition or translation\n  - paperback edition (en)\n4. Ep 373 - The Long Way to a Small, Angry Planet, by Becky Chambers (w/ The Worst Bestsellers) (wd:Q116796411):\n  - is instance of podcast episode\n  - Overdue podcast episode\n5. Biodegradable polymers: a cure for the planet, but a long way to go (wd:Q126295480):\n  - is instance of scholarly article\n  - scholarly article\n6. Still a long way to go in the war against tobacco (wd:Q73612657):\n  - is instance of scholarly article\n  - scientific article published on 01 March 2001\n7. It's a Long, Long Way to the U.S.A. (wd:Q23002960):\n  - is instance of musical work/composition\n  - song composed by Harry Von Tilzer\n8. Pharmacy and the elderly: still a long way to go (wd:Q45732799):\n  - is instance of editorial\n  - is instance of scholarly article\n  - scientific article published on July 1, 1978\n9. Still a long way to go for the Lower Mississippi Delta. (wd:Q50786738):\n  - is instance of scholarly article\n  - scientific article published in January 2008\n10. Understanding the microcirculation in sepsis: still a long way to go... (wd:Q84009896):\n  - is instance of editorial\n  - is instance of scholarly article\n  - scientific article published on 30 April 2011"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 606,
+          "prompt_tokens": 3753,
+          "total_tokens": 4359
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "c4356c255a8d41469a27941d68ce114b",
+        "message": null,
+        "reasoning": {
+          "id": "a05d6a9dd6bb448997a4071e79662592",
+          "content": "Okay, so the user is asking about the genre of \"The Long Way to a Small, Angry Planet\". First, I need to confirm which entity they're referring to. From the search results, the top hit is wd:Q41663451, which is the 2014 science fiction novel by Becky Chambers. The other entries are different editions or similar titles, but the main work is the science fiction one.\n\nNext, I should find the genre property in Wikidata. Genres are usually under properties like \"genre\" (wdt:P136) or something similar. Let me check the properties for wd:Q41663451. \n\nI can use the list function to see all properties of the entity. But maybe first, search for the property related to genre. Since the user is asking for genre, I should look for properties that have \"genre\" in their label. \n\nUsing search_property with \"genre\" might help. Let me call search_property(kg=\"wikidata\", query=\"genre\") to find the correct property ID.\n\nOnce I have the property ID (probably wdt:P136), then I can query the entity wd:Q41663451 with that property to get the genre. \n\nWait, but looking at the initial search results, the first entry mentions it's a science fiction novel. So the genre is likely science fiction. But to get it from Wikidata, need to verify.\n\nSo steps:\n1. Confirm entity is wd:Q41663451.\n2. Find the correct genre property (probably P136).\n3. Query wd:Q41663451 using that property to get the genre value.\n\nLet me do the search_property for \"genre\" to get the exact property."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-9955622f985ed567",
+            "name": "search_property",
+            "args": {
+              "kg": "wikidata",
+              "query": "genre"
+            },
+            "result": "Top 10 property alternatives:\n1. genre (wd:P136 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv), also known as \"artistic genre\", \"art style\", \"atlas genre\", \"film genre\", \"genre of literature\", etc.:\n  - creative work's genre or an artist's field of work (P101). Use main subject (P921) to relate creative works to their topic\n2. radio format (wd:P415 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"genre\"), also known as \"format\", \"genre\", \"radio station format\":\n  - describes the overall content broadcast on a radio station\n3. subclass of (wd:P279 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"subgenre of\"), also known as \"all members of this class also belong to\", \"category of\", \"form of\", \"has superclass\", \"is a class of\", etc.:\n  - this item is a subclass (subset) of that item; ALL instances ... is a subclass of mountain; Everest is an instance of mountain\n4. culture (wd:P2596 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv), also known as \"archaeological culture\", \"civilisation\", \"civilization\":\n  - human culture or people (or several cultures) associated with this item\n5. ethnic group (wd:P172 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"culture\"), also known as \"(cultural) nationality\", \"culture\", \"ethnicity\", \"ethnic or cultural origin\", \"people\", etc.:\n  - subject's ethnicity (consensus is that a VERY high standard ... on by scholars, or 3) is fictional and portrayed as such)\n6. tracklist (wd:P658 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"songs\"), also known as \"list of tracks\", \"songs\", \"track list\", \"track listing\", \"tracks\":\n  - audio tracks contained in this release\n7. featured track(s) (wd:P10664 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"songs\"), also known as \"audio track\", \"audio tracks\", \"featured track\", \"music track\", \"music tracks\", etc.:\n  - soundtrack of this audiovisual work\n8. form of creative work (wd:P7937 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"song type\"), also known as \"album format\", \"album type\", \"art form\", \"artform\", \"artistic form\", etc.:\n  - structure of a creative work\n9. characters (wd:P674 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv), also known as \"antagonist\", \"hero\", \"heroine\", \"protagonist\":\n  - characters which appear in this item (like plays, operas, operettas, books, comics, films, TV series, video games)\n10. cast member (wd:P161 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"actor\"), also known as \"actor\", \"actress\", \"contestant of a play\", \"feat.\", \"film starring\", etc.:\n  - actor in the subject production [use \"character role\" (P453) ... \"recorded participant\" (P11108) for non-fiction productions]"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 411,
+          "prompt_tokens": 4317,
+          "total_tokens": 4728
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "1b11170c94754e8babab0df47beeb1ed",
+        "message": null,
+        "reasoning": {
+          "id": "e24cc519bb83449b8305ac030cee684f",
+          "content": "Okay, let's tackle this question. The user is asking about the genre of \"The Long Way to a Small, Angry Planet.\" So, first, I need to find the correct entity for the book in Wikidata.\n\nEarlier, I used search_entity with \"The Long Way to a Small, Angry Planet\" and got several results. The first one, Q41663451, seems to be the main entry for the 2014 science fiction novel by Becky Chambers. The other entries are editions or unrelated works. So I should focus on Q41663451.\n\nNext, I need to find the genre property. I ran search_property with \"genre\" and the top result was P136, which is labeled as \"genre.\" The description says it's for creative works, like books, using P136. So the property to use here is wdt:P136.\n\nNow, I'll check if the entity Q41663451 has the genre property. To do that, I can construct a SPARQL query. The query should select the genre of the book. The subject is wd:Q41663451, the property is wdt:P136, and the object would be the genre.\n\nWait, but sometimes genres in Wikidata might be linked through other properties or might have qualifiers. But the main direct property for genre is P136. Let me verify by checking if that property exists for the book.\n\nSo the SPARQL query would be:\n\nSELECT ?genre WHERE {\n  wd:Q41663451 wdt:P136 ?genre .\n}\n\nBut maybe there are multiple genres? The user is asking for \"genre,\" so it might have one or more. Also, I should check if the genre is correctly linked. Let me also check for labels to get the human-readable name.\n\nAdditionally, in Wikidata, sometimes the genre might be a subclass or have some hierarchy, but for the purpose of the answer, the direct value should suffice.\n\nWait, let me make sure that the book actually has the genre property set. Let me use the execute function to run this query. The knowledge graph is wikidata.\n\nIf that returns a genre like science fiction, then that's the answer. But if not, maybe it's under another property. But according to the search_property results, P136 is the main genre property.\n\nAnother thing to consider: the book is a literary work, so genre should be a category under P136. Let me check the results.\n\nAssuming that the query returns the genre, say 'science fiction,' then the answer would be science fiction. If it's linked to a Wikidata item for science fiction, which is likely, then the label would be science fiction.\n\nSo the final SPARQL query would select the genre labels. Wait, but the user might just want the name, not the ID. However, the instructions say the query should return identifiers but can include labels optionally.\n\nBut since the user is asking for the genre name, we should get the label. So the query would be:\n\nSELECT ?genre ?genreLabel WHERE {\n  wd:Q41663451 wdt:P136 ?genre .\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"en\" . }\n}\n\nWait, but the note says not to use SERVICE wikibase:label because it's unsupported. Instead, use rdfs:label. So adjust the query to get labels via rdfs:label.\n\nWait, the correct way without SERVICE is:\n\nSELECT ?genre ?genreLabel WHERE {\n  wd:Q41663451 wdt:P136 ?genre .\n  ?genre rdfs:label ?genreLabel .\n  FILTER(lang(?genreLabel) = 'en')\n}\n\nThat way, it gets the English label for the genre.\n\nLet me check if the genre item actually has an rdfs:label. In Wikidata, items have labels, so this should work.\n\nSo the plan is to execute this query. If it returns a result, then that's the answer. If not, maybe the genre isn't stored under P136, but another property.\n\nBut based on the earlier search_property results, P136 is the correct property for genre. Let's proceed.\n\nSo the next step is to run the execute function with the SPARQL query to get the genre."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-8a6969b2582c8167",
+            "name": "execute",
+            "args": {
+              "kg": "wikidata",
+              "sparql": "SELECT ?genre ?genreLabel WHERE { wd:Q41663451 wdt:P136 ?genre . ?genre rdfs:label ?genreLabel . FILTER(lang(?genreLabel) = 'en') }"
+            },
+            "result": "Got 1 row and 2 columns:\n| genre                       | genreLabel                |\n| --------------------------- | ------------------------- |\n| science fiction (wd:Q24925) | science fiction (lang:en) |"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 1009,
+          "prompt_tokens": 5240,
+          "total_tokens": 6249
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "e14d7f344ddf41e1ab892767ca8b76cd",
+        "message": null,
+        "reasoning": {
+          "id": "1cc59e0907f743579ef6dce7f7ce0d70",
+          "content": "Okay, let's see. The user asked for the genre of \"The Long Way to a Small, Angry Planet\". \n\nFirst, I used the search_entity function to find the correct entity. The top result was Q41663451, which is the novel by Becky Chambers. That makes sense.\n\nNext, I needed to find the genre property. I called search_property with \"genre\" and the first relevant property was P136 (genre). So I assumed that the genre is stored under wdt:P136.\n\nThen I executed a SPARQL query for wd:Q41663451 (the novel) with wdt:P136 to get the genre. The result was \"science fiction\".\n\nI should check if this is accurate. The novel is indeed a science fiction book, so the answer seems correct. The query returned the genre label in English, which matches the user's question. There's no need for more complexity here since the result is straightforward. I should present the answer as science fiction."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-b26f5699d2f5fe52",
+            "name": "answer",
+            "args": {
+              "kg": "wikidata",
+              "sparql": "SELECT ?genre ?genreLabel WHERE { wd:Q41663451 wdt:P136 ?genre . OPTIONAL { ?genre rdfs:label ?genreLabel FILTER(lang(?genreLabel) = 'en') } }",
+              "answer": "science fiction"
+            },
+            "result": "Stopping"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 305,
+          "prompt_tokens": 5373,
+          "total_tokens": 5678
+        }
+      }
+    }
+  ],
+  "known": [
+    "http://www.wikidata.org/prop/direct-normalized/P279",
+    "http://www.wikidata.org/prop/statement/P2596",
+    "http://www.wikidata.org/prop/statement/value/P161",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P658",
+    "http://www.wikidata.org/prop/statement/value/P658",
+    "http://www.wikidata.org/prop/P2596",
+    "http://www.wikidata.org/prop/direct/P2596",
+    "http://www.wikidata.org/prop/qualifier/value/P10664",
+    "http://www.wikidata.org/entity/P7937",
+    "http://www.wikidata.org/prop/P415",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P10664",
+    "http://www.wikidata.org/prop/qualifier/P7937",
+    "http://www.wikidata.org/prop/reference/P674",
+    "http://www.wikidata.org/prop/reference/value-normalized/P658",
+    "http://www.wikidata.org/prop/reference/value/P7937",
+    "http://www.wikidata.org/prop/reference/value/P279",
+    "http://www.wikidata.org/entity/P136",
+    "http://www.wikidata.org/prop/statement/value-normalized/P415",
+    "http://www.wikidata.org/entity/Q24925",
+    "http://www.wikidata.org/prop/statement/P10664",
+    "http://www.wikidata.org/prop/qualifier/value/P674",
+    "http://www.wikidata.org/prop/reference/value-normalized/P161",
+    "http://www.wikidata.org/entity/P172",
+    "http://www.wikidata.org/prop/direct/P658",
+    "http://www.wikidata.org/entity/P279",
+    "http://www.wikidata.org/entity/Q126295480",
+    "http://www.wikidata.org/prop/qualifier/P415",
+    "http://www.wikidata.org/prop/direct/P136",
+    "http://www.wikidata.org/prop/reference/value-normalized/P172",
+    "http://www.wikidata.org/prop/reference/value-normalized/P10664",
+    "http://www.wikidata.org/prop/reference/value/P2596",
+    "http://www.wikidata.org/prop/statement/value/P674",
+    "http://www.wikidata.org/prop/qualifier/value/P136",
+    "http://www.wikidata.org/entity/Q23002960",
+    "http://www.wikidata.org/prop/reference/value/P658",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P415",
+    "http://www.wikidata.org/prop/qualifier/value/P2596",
+    "http://www.wikidata.org/prop/statement/value-normalized/P7937",
+    "http://www.wikidata.org/entity/P415",
+    "http://www.wikidata.org/prop/P658",
+    "http://www.wikidata.org/prop/reference/value/P10664",
+    "http://www.wikidata.org/prop/direct-normalized/P7937",
+    "http://www.wikidata.org/entity/Q50786738",
+    "http://www.wikidata.org/prop/reference/P161",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P161",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P279",
+    "http://www.wikidata.org/prop/reference/P136",
+    "http://www.wikidata.org/prop/statement/value/P10664",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P674",
+    "http://www.wikidata.org/prop/statement/value-normalized/P658",
+    "http://www.wikidata.org/entity/Q101229515",
+    "http://www.wikidata.org/prop/direct/P172",
+    "http://www.wikidata.org/prop/statement/P7937",
+    "http://www.wikidata.org/prop/qualifier/P136",
+    "http://www.wikidata.org/prop/direct/P161",
+    "http://www.wikidata.org/prop/statement/P172",
+    "http://www.wikidata.org/prop/statement/value-normalized/P161",
+    "http://www.wikidata.org/prop/P7937",
+    "http://www.wikidata.org/prop/qualifier/P10664",
+    "http://www.wikidata.org/prop/qualifier/P161",
+    "http://www.wikidata.org/prop/reference/P658",
+    "http://www.wikidata.org/prop/statement/P161",
+    "http://www.wikidata.org/prop/qualifier/P658",
+    "http://www.wikidata.org/prop/statement/value-normalized/P136",
+    "http://www.wikidata.org/prop/qualifier/value/P172",
+    "http://www.wikidata.org/entity/Q84009896",
+    "http://www.wikidata.org/prop/P10664",
+    "http://www.wikidata.org/entity/Q41663451",
+    "http://www.wikidata.org/prop/reference/P172",
+    "http://www.wikidata.org/prop/direct/P279",
+    "http://www.wikidata.org/prop/qualifier/value/P658",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P136",
+    "http://www.wikidata.org/prop/reference/value/P136",
+    "http://www.wikidata.org/prop/statement/value-normalized/P2596",
+    "http://www.wikidata.org/prop/reference/value-normalized/P674",
+    "http://www.wikidata.org/prop/P136",
+    "http://www.wikidata.org/prop/reference/value-normalized/P2596",
+    "http://www.wikidata.org/prop/statement/P415",
+    "http://www.wikidata.org/entity/P658",
+    "http://www.wikidata.org/prop/reference/value/P415",
+    "http://www.wikidata.org/prop/reference/value-normalized/P7937",
+    "http://www.wikidata.org/prop/direct-normalized/P161",
+    "http://www.wikidata.org/prop/reference/value/P172",
+    "http://www.wikidata.org/prop/qualifier/P674",
+    "http://www.wikidata.org/prop/statement/value/P136",
+    "http://www.wikidata.org/prop/reference/value/P161",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P7937",
+    "http://www.wikidata.org/entity/P161",
+    "http://www.wikidata.org/prop/reference/value-normalized/P136",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P2596",
+    "http://www.wikidata.org/entity/Q45732799",
+    "http://www.wikidata.org/prop/P674",
+    "http://www.wikidata.org/prop/reference/P10664",
+    "http://www.wikidata.org/prop/statement/value/P279",
+    "http://www.wikidata.org/prop/qualifier/value/P7937",
+    "http://www.wikidata.org/prop/reference/value/P674",
+    "http://www.wikidata.org/prop/statement/value/P7937",
+    "http://www.wikidata.org/prop/reference/P415",
+    "http://www.wikidata.org/entity/Q116796411",
+    "http://www.wikidata.org/prop/direct-normalized/P10664",
+    "http://www.wikidata.org/prop/reference/P279",
+    "http://www.wikidata.org/prop/direct/P415",
+    "http://www.wikidata.org/prop/statement/value/P2596",
+    "http://www.wikidata.org/prop/qualifier/P279",
+    "http://www.wikidata.org/prop/P161",
+    "http://www.wikidata.org/prop/P279",
+    "http://www.wikidata.org/prop/qualifier/P2596",
+    "http://www.wikidata.org/prop/qualifier/value/P415",
+    "http://www.wikidata.org/entity/Q73612657",
+    "http://www.wikidata.org/prop/statement/P279",
+    "http://www.wikidata.org/prop/statement/value-normalized/P172",
+    "http://www.wikidata.org/prop/statement/value-normalized/P279",
+    "http://www.wikidata.org/prop/reference/value-normalized/P415",
+    "http://www.wikidata.org/prop/statement/value-normalized/P10664",
+    "http://www.wikidata.org/prop/direct/P10664",
+    "http://www.wikidata.org/prop/reference/P2596",
+    "http://www.wikidata.org/entity/P2596",
+    "http://www.wikidata.org/prop/statement/value/P172",
+    "http://www.wikidata.org/prop/direct-normalized/P136",
+    "http://www.wikidata.org/prop/direct-normalized/P2596",
+    "http://www.wikidata.org/prop/direct/P674",
+    "http://www.wikidata.org/prop/statement/P136",
+    "http://www.wikidata.org/prop/reference/value-normalized/P279",
+    "http://www.wikidata.org/prop/P172",
+    "http://www.wikidata.org/prop/direct-normalized/P415",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P172",
+    "http://www.wikidata.org/entity/Q126707962",
+    "http://www.wikidata.org/prop/direct-normalized/P172",
+    "http://www.wikidata.org/prop/qualifier/value/P279",
+    "http://www.wikidata.org/prop/direct-normalized/P674",
+    "http://www.wikidata.org/prop/qualifier/value/P161",
+    "http://www.wikidata.org/entity/P674",
+    "http://www.wikidata.org/prop/reference/P7937",
+    "http://www.wikidata.org/prop/statement/P658",
+    "http://www.wikidata.org/prop/statement/value/P415",
+    "http://www.wikidata.org/entity/P10664",
+    "http://www.wikidata.org/prop/statement/value-normalized/P674",
+    "http://www.wikidata.org/prop/direct-normalized/P658",
+    "http://www.wikidata.org/prop/direct/P7937",
+    "http://www.wikidata.org/prop/statement/P674",
+    "http://www.wikidata.org/prop/qualifier/P172"
+  ],
+  "id": "unknown",
+  "source_csv": "data/ComplexQA/CompMix_infobox_complex.csv",
+  "row_index": 137,
+  "question": "What genre does The Long Way to a Small, Angry Planet belong to",
+  "reference_answer": "Science fiction"
+}

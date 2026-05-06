@@ -1,0 +1,184 @@
+{
+  "type": "output",
+  "task": "sparql-qa",
+  "output": {
+    "sparql": "PREFIX wd: <http://www.wikidata.org/entity/>\nPREFIX wdt: <http://www.wikidata.org/prop/direct/>\nSELECT ?author WHERE {\n  wd:Q1360987 wdt:P50 ?author\n}",
+    "kg": "wikidata",
+    "selections": "Using entities:\n- Mary Had a Little Lamb (wd:Q1360987), also known as \"Mary’s Lamb\":\n  - 1830 poem cum nursery rhyme\n  - is instance of nursery rhyme\n\nUsing properties:\n- author (wd:P50 as wdt), also known as \"creator\", \"maker\", \"playwright\", \"poet\", \"writer\", etc.:\n  - main creator(s) of a written work (use on works, not humans); ... name string) when Wikidata item is unknown or does not exist",
+    "result": "Got 1 row and 1 column:\n| author                          |\n| ------------------------------- |\n| Sarah Josepha Hale (wd:Q430639) |",
+    "endpoint": "https://qlever.dev/api/wikidata",
+    "type": "answer",
+    "answer": "Sarah Josepha Hale",
+    "formatted": "Sarah Josepha Hale\n\nSPARQL query over wikidata:\n```sparql\nPREFIX wd: <http://www.wikidata.org/entity/>\nPREFIX wdt: <http://www.wikidata.org/prop/direct/>\nSELECT ?author WHERE {\n  wd:Q1360987 wdt:P50 ?author\n}\n```\n\nUsing entities:\n- Mary Had a Little Lamb (wd:Q1360987), also known as \"Mary’s Lamb\":\n  - 1830 poem cum nursery rhyme\n  - is instance of nursery rhyme\n\nUsing properties:\n- author (wd:P50 as wdt), also known as \"creator\", \"maker\", \"playwright\", \"poet\", \"writer\", etc.:\n  - main creator(s) of a written work (use on works, not humans); ... name string) when Wikidata item is unknown or does not exist\n\nExecution result:\nGot 1 row and 1 column:\n| author                          |\n| ------------------------------- |\n| Sarah Josepha Hale (wd:Q430639) |"
+  },
+  "elapsed": 49.504457,
+  "error": null,
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a question answering assistant. Your job is to generate a SPARQL query to answer a given user question.\n\nYou should follow a step-by-step approach to generate the SPARQL query:\n1. Determine possible entities and properties implied by the user question.\n2. Search for the entities and properties in the knowledge graphs. Where applicable, constrain the searches with already identified entities and properties.\n3. Gradually build up the SPARQL query using the identified entities and properties. Start with simple queries and add more complexity as needed. Execute intermediate queries to get feedback and to verify your assumptions. You may need to refine or rethink your current plan based on the query results and go back to step 2 if needed, possibly multiple times.\n4. Use the answer or cancel function to finalize your answer and stop the generation process.\n\nAvailable knowledge graphs:\n- \"wikidata\" at https://qlever.dev/api/wikidata\n  - \"entity\" index (type=\"fuzzy\"): Entities indexed by their labels and synonyms\n  - \"property\" index (type=\"embedding\", modalities=\"text\"): Properties indexed by their labels, synonyms, and identifiers\n\nIndex types used:\n- \"embedding\": Retrieves items by cosine similarity between their embeddings and the query embedding. The embedding model used depends on the index and may support text, images, or both.\n- \"fuzzy\": Retrieves items by overlap between their label words and the query keywords. The query keywords must not match label words exactly, but some fuzziness is allowed. The longer a query keyword is, the more it can deviate from a label word and still be considered a match, though it will also contribute less to the overall score. No special query operators like AND/OR are supported.\n\nSPARQL prefixes for use in function calls:\n- bd: http://www.bigdata.com/rdf#\n- cc: http://creativecommons.org/ns#\n- data: https://www.wikidata.org/wiki/Special:EntityData/\n- dc: http://purl.org/dc/elements/1.1/\n- dct: http://purl.org/dc/terms/\n- foaf: http://xmlns.com/foaf/0.1/\n- geo: http://www.opengis.net/ont/geosparql#\n- geof: http://www.opengis.net/def/function/geosparql/\n- gn: http://www.geonames.org/ontology#\n- hint: http://www.bigdata.com/queryHints#\n- imdb: https://www.imdb.com/\n- math: http://www.w3.org/2005/xpath-functions/math#\n- ontolex: http://www.w3.org/ns/lemon/ontolex#\n- owl: http://www.w3.org/2002/07/owl#\n- p: http://www.wikidata.org/prop/\n- pq: http://www.wikidata.org/prop/qualifier/\n- pqn: http://www.wikidata.org/prop/qualifier/value-normalized/\n- pqv: http://www.wikidata.org/prop/qualifier/value/\n- pr: http://www.wikidata.org/prop/reference/\n- prn: http://www.wikidata.org/prop/reference/value-normalized/\n- prov: http://www.w3.org/ns/prov#\n- prv: http://www.wikidata.org/prop/reference/value/\n- ps: http://www.wikidata.org/prop/statement/\n- psn: http://www.wikidata.org/prop/statement/value-normalized/\n- psv: http://www.wikidata.org/prop/statement/value/\n- qb: http://purl.org/linked-data/cube#\n- qfn: http://qlever.cs.uni-freiburg.de/function#\n- ql: http://qlever.cs.uni-freiburg.de/builtin-functions/\n- qlss: https://qlever.cs.uni-freiburg.de/spatialSearch/\n- rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#\n- rdfs: http://www.w3.org/2000/01/rdf-schema#\n- ref: http://www.wikidata.org/reference/\n- s: http://www.wikidata.org/entity/statement/\n- schema: http://schema.org/\n- skos: http://www.w3.org/2004/02/skos/core#\n- v: http://www.wikidata.org/value/\n- void: http://rdfs.org/ns/void#\n- wd: http://www.wikidata.org/entity/\n- wdno: http://www.wikidata.org/prop/novalue/\n- wdt: http://www.wikidata.org/prop/direct/\n- wdtn: http://www.wikidata.org/prop/direct-normalized/\n- wikibase: http://wikiba.se/ontology#\n- xsd: http://www.w3.org/2001/XMLSchema#\n\nAdditional rules to follow:\n- Explain your thought process before and after each step and function call.\n- Do not ask the user for clarification until you have made an initial attempt at completing the task. When the task input is incomplete or ambiguous, proceed based on reasonable assumptions.\n- Do not use \"SERVICE wikibase:label { bd:serviceParam wikibase:language ...\" in SPARQL queries. It is unsupported by the used QLever SPARQL endpoints. Use rdfs:label or similar properties to get labels instead.\n- Always execute your final SPARQL query before giving an answer to make sure it returns the expected results.\n- The SPARQL query should always return the actual identifiers / IRIs of the items in its result. It additionally may return labels or other human-readable information, but they are optional and should be put within optional clauses unless explicitly requested by the user.\n- Do not stop early if there are still obvious improvements to be made to the SPARQL query. For example, keep refining your SPARQL query if its result contains irrelevant items or is missing items you expected.\n- Do not perform additional computation (e.g. filtering, sorting, calculations) on the result of the SPARQL query to determine the answer. All computation should be done solely within SPARQL.\n- For questions with a \"True\" or \"False\" answer the SPARQL query should be an ASK query."
+    },
+    {
+      "role": "user",
+      "content": "who wrote the song mary had a little lamb"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "b3ea6bf95dd145eebd3b37faeab24060",
+        "message": null,
+        "reasoning": {
+          "id": "7df133b147054f30963fad3ae2c4f318",
+          "content": "Okay, let's tackle this question: \"who wrote the song mary had a little lamb\". I need to find out who the author of that song is. First, I should figure out if \"Mary Had a Little Lamb\" is a song, and if so, who wrote it.\n\nWait, I think \"Mary Had a Little Lamb\" is a nursery rhyme, maybe not originally a song but a poem. The original was written by Sarah Josepha Hale, right? But I need to verify this using the knowledge graph.\n\nSince the user is asking about the songwriter, I need to check if the song exists in Wikidata and find the composer or author. Let me start by searching for the song entity in Wikidata.\n\nFirst, I'll use the search_entity function with the query \"mary had a little lamb\". Let me call that.\n\nWait, the function search_entity(kg=\"wikidata\", query=\"mary had a little lamb\") should return possible entities related to the song. Let me see what that gives.\n\nBut maybe the title is slightly different. Sometimes it's \"Mary Had a Little Lamb\" as a song. Alternatively, the original poem might be the entry. Let me check.\n\nAfter getting the entity for the song, I need to find the property related to the author or composer. Common properties might be \"author\" (P50), \"composer\" (P86), or \"lyricist\" (P1050).\n\nSo steps:\n\n1. Search for the song entity in Wikidata using the title.\n2. Once the correct entity is found (probably Q3127), check its properties for author/composer.\n3. Retrieve the value of that property.\n\nWait, let's do the search first. Using search_entity for \"mary had a little lamb\".\n\nAssuming the entity ID is Q3127 (Mary Had a Little Lamb). Let me check via the function.\n\nBut to be precise, I need to execute the search_entity function.\n\nLet me call search_entity(kg=\"wikidata\", query=\"mary had a little lamb\").\n\nIf that returns Q3127, then we can proceed.\n\nOnce the entity is identified, look for properties like P50 (author) or P86 (composer).\n\nLet me check what properties are associated with Q3127.\n\nBut since I can't execute the functions yet in my mind, I need to simulate.\n\nIn Wikidata, the song \"Mary Had a Little Lamb\" is listed as Q3127. The author is Sarah Josepha Hale, as per common knowledge.\n\nChecking Wikidata: Q3127 has P50 (author) with value Q178396 (Sarah Josepha Hale).\n\nTherefore, the SPARQL query should select the author (P50) of the entity representing the song.\n\nSo the SPARQL would be:\n\nSELECT ?author WHERE {\n  wd:Q3127 wdt:P50 ?author.\n}\n\nBut need to confirm that Q3127 is the correct entity.\n\nWait, but to make sure, maybe the user is referring to a different version or a song adaptation. However, the original nursery rhyme is by Sarah Josepha Hale.\n\nAlternatively, there's a Led Zeppelin song called \"Black Dog\" which samples Mary Had a Little Lamb, but that's probably not the case here.\n\nAssuming the question is about the original nursery rhyme.\n\nSo the steps:\n\n1. Find the entity for \"Mary Had a Little Lamb\" using search_entity.\n2. Check its author property.\n\nSo first, call search_entity with the query."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-92705facc7cde62c",
+            "name": "search_entity",
+            "args": {
+              "kg": "wikidata",
+              "query": "mary had a little lamb"
+            },
+            "result": "Top 10 entity alternatives:\n1. Mary Had a Little Lamb (wd:Q1360987), also known as \"Mary’s Lamb\":\n  - 1830 poem cum nursery rhyme\n  - is instance of nursery rhyme\n2. Mary Had a Little Lamb (wd:Q2439433):\n  - 1972 single by Wings\n  - is instance of single\n3. Mary Had A Little Lamb (wd:Q3296184):\n  - is instance of Wikimedia disambiguation page\n  - Wikimedia disambiguation page\n4. Mary Had a Little Lamb (wd:Q113486377):\n  - is instance of version, edition or translation\n  - version in The Child's Own Music Book\n5. Mary Had a Little Lamb (wd:Q20802589):\n  - 1912 silent short film\n  - is instance of short film\n6. Mary Had a Little Lamb (wd:Q121227832):\n  - is instance of scholarly article\n7. Mary Had a Little Lamb (wd:Q124387434)\n8. Mary Has a Little Lamb (wd:Q114524191):\n  - episode of The Golden Girls (S5 E13)\n  - is instance of television series episode\n9. Evolution: Mary had a littler lamb (wd:Q71865770):\n  - is instance of scholarly article\n  - journal article; published in Nature on 2009-7\n10. Mary Had a Little Boy (wd:Q18809048):\n  - 1990 single by Snap!\n  - is instance of single"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 776,
+          "prompt_tokens": 3748,
+          "total_tokens": 4524
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "28f7549b98464fa98c20bfa2a5f3b165",
+        "message": null,
+        "reasoning": {
+          "id": "0e08b5faaf3642beb169cfaab3544350",
+          "content": "Okay, let's tackle the user's question: \"Who wrote the song 'Mary Had a Little Lamb'?\"\n\nFirst, I need to figure out which \"Mary Had a Little Lamb\" they're referring to. The search_entity results show that there's a nursery rhyme from 1830 (Q1360987), a Wings single from 1972 (Q2439433), a 1912 film (Q20802589), etc. The user mentioned \"song,\" so it's likely either the nursery rhyme or the Wings single. But typically, when someone refers to the song \"Mary Had a Little Lamb,\" they're probably thinking of the traditional nursery rhyme, not the Wings version. However, nursery rhymes often have unknown authors, but maybe there's a credited writer here.\n\nLooking at the nursery rhyme entry (Q1360987), it's listed as a poem cum nursery rhyme from 1830. I need to check who the author is. To do this, I should find the properties of Q1360987. The main property for authorship in Wikidata is 'author' (wdt:P50) or maybe 'lyrics by' (wdt:P676) if it's a song.\n\nSo next, I should use search_property_of_entity to find properties related to authorship for Q1360987. Let me try that. The query would be for entity wd:Q1360987 and search for \"author\" or \"lyrics\".\n\nAlternatively, maybe list the properties of Q1360987 to see what's there. Using the list function with subject wd:Q1360987 could show all properties. But since the user is asking for the song, maybe the nursery rhyme's author is different from the poem.\n\nWait, the nursery rhyme \"Mary Had a Little Lamb\" is based on a poem supposedly written by Sarah Josepha Hale in 1830. Let me verify if Wikidata has that information.\n\nSo, using search_property_of_entity on wd:Q1360987 with query \"author\" should give the relevant properties. Let's do that."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-a70439a8987bcbb7",
+            "name": "search_property_of_entity",
+            "args": {
+              "kg": "wikidata",
+              "entity": "wd:Q1360987",
+              "query": "author"
+            },
+            "result": "Top 10 property alternatives:\n1. author (wd:P50 as wdt/p), also known as \"creator\", \"maker\", \"playwright\", \"poet\", \"writer\", etc.:\n  - main creator(s) of a written work (use on works, not humans); ... name string) when Wikidata item is unknown or does not exist\n2. performer (wd:P175 as wdt/p, matched via \"artist\"), also known as \"actor\", \"actress\", \"artist\", \"dancer\", \"musical artist\", etc.:\n  - actor, musician, band or other performer associated with this role or musical work\n3. main subject (wd:P921 as wdt/p, matched via \"of\"), also known as \"about\", \"artistic theme\", \"/common/topic/subject\", \"content deals with\", \"content describes\", etc.:\n  - primary topic of a work or act of communication\n4. publication date (wd:P577 as wdt/p, matched via \"pubdate\"), also known as \"air date\", \"airdate\", \"be published during\", \"be published in\", \"broadcast date\", etc.:\n  - date or point in time when a work or product was first published or released\n5. published in (wd:P1433 as wdt/p), also known as \"article of\", \"chapter of\", \"essay of\", \"magazine\", \"manga magazine\", etc.:\n  - larger work that a given work was published in, like a journal, a website, a collection, a book or a music album\n6. language of work or name (wd:P407 as wdt/p, matched via \"language\"), also known as \"audio language\", \"available in\", \"broadcasting language\", \"language\", \"language of name\", etc.:\n  - language associated with this creative work (such as books, ... (P103) and \"languages spoken, written or signed\" (P1412))\n7. first line (wd:P1922 as wdt/p, matched via \"incipit\"), also known as \"1st line\", \"1st sentence\", \"first sentence\", \"first verse\", \"fl\", etc.:\n  - first line (incipit) of a poem, first sentence of a novel, speech, etc.\n8. instance of (wd:P31 as wdt/p, matched via \"is a\"), also known as \"example of\", \"has type\", \"is a\", \"is an\", \"is of type\", etc.:\n  - type to which this subject corresponds/belongs. Different ... is an instance of mountain; volcano is a subclass of mountain\n9. described by source (wd:P1343 as wdt/p, matched via \"desc by biography\"), also known as \"dbs\", \"def in\", \"defined in\", \"desc by biography\", \"desc by encyclopedia\", etc.:\n  - work where this item is described, in statistical contexts, a methodological note describing the data\n10. copyright status (wd:P6216 as wdt/p, matched via \"copyrighted\"), also known as \"copyrighted\", \"copyright restriction\":\n  - copyright status for intellectual creations like works of art, publications, software, etc."
+          }
+        ],
+        "usage": {
+          "completion_tokens": 525,
+          "prompt_tokens": 4185,
+          "total_tokens": 4710
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "67cad1df12864064a198f3ccb0a26ade",
+        "message": null,
+        "reasoning": {
+          "id": "041b3527446b430ea41bbe7a8f1e61a8",
+          "content": "Okay, let's tackle this question. The user is asking, \"who wrote the song Mary Had a Little Lamb\". \n\nFirst, I need to clarify which \"Mary Had a Little Lamb\" they're referring to. From the previous search_entity results, there are multiple entries. The top one is the 1830 nursery rhyme (wd:Q1360987), which is likely the original. The user mentioned it's a song, but the nursery rhyme is often sung, so it's probably the one they mean.\n\nNext step: check the author of this nursery rhyme. In the search_property_of_entity with entity wd:Q1360987 and query \"author\", the top property is author (P50). But I need to confirm if this property has a value pointing to the actual author.\n\nSo, I should execute a SPARQL query to get the author. The entity is wd:Q1360987, and the property is wdt:P50. Let me check if that gives a result.\n\nWait, the nursery rhyme \"Mary Had a Little Lamb\" is traditionally attributed to Sarah Josepha Hale. But does Wikidata have this information? Let me verify with a SPARQL query.\n\nConstructing the query: \nSELECT ?author ?authorLabel WHERE {\n  wd:Q1360987 wdt:P50 ?author.\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"en\". }\n}\n\nBut wait, the instructions say not to use SERVICE wikibase:label. Instead, use rdfs:label. However, the user wants the actual entity ID and maybe the label. So adjust the query:\n\nSELECT ?author ?label WHERE {\n  wd:Q1360987 wdt:P50 ?author.\n  ?author rdfs:label ?label.\n  FILTER (LANG(?label) = \"en\")\n}\n\nBut when I tried execute(kg=\"wikidata\", sparql=...), but first I need to see what the result is. However, maybe the P50 property is not directly used here. Sometimes nursery rhymes might not have a specific author, or it might be linked through another property.\n\nWait, looking back at the search_property_of_entity results for wd:Q1360987 and query \"author\", the first property is P50 (author). So using wdt:P50 should get the author.\n\nLet me try executing a query to get the author. If there's a result, that's the answer. If not, maybe the information isn't in Wikidata, or a different property is used.\n\nSo, the SPARQL would be:\n\nSELECT ?author WHERE {\n  wd:Q1360987 wdt:P50 ?author.\n}\n\nBut need to check if this returns anything. If it does, then get the label for the author."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-a2d271160ac6531d",
+            "name": "execute",
+            "args": {
+              "kg": "wikidata",
+              "sparql": "SELECT ?author ?label WHERE { wd:Q1360987 wdt:P50 ?author . ?author rdfs:label ?label . FILTER (LANG(?label) = 'en') }"
+            },
+            "result": "Got 1 row and 2 columns:\n| author                          | label                        |\n| ------------------------------- | ---------------------------- |\n| Sarah Josepha Hale (wd:Q430639) | Sarah Josepha Hale (lang:en) |"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 683,
+          "prompt_tokens": 4935,
+          "total_tokens": 5618
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "100b9daf78ae4265b1d7723c7970edbf",
+        "message": null,
+        "reasoning": {
+          "id": "9cdf15e574774fbab8621da1c8fb353b",
+          "content": "Okay, let's see. The user asked who wrote the song \"Mary Had a Little Lamb.\" \n\nFirst, I used the search_entity function to find which entity in Wikidata corresponds to \"Mary Had a Little Lamb.\" The top result was Q1360987, which is the 1830 nursery rhyme. That makes sense because the song is originally a nursery rhyme.\n\nNext, I wanted to find out the author. So I used search_property_of_entity with the entity Q1360987 and searched for \"author.\" The top property alternative was author (P50), which is the correct property for creators of works. \n\nThen, I executed a SPARQL query to get the author. I used wdt:P50 (author property) and retrieved the label in English. The result was Sarah Josepha Hale (Q430639). \n\nWait, I remember that the nursery rhyme is often attributed to Sarah Josepha Hale. Let me confirm. The query result shows her as the author. But I should check if there's any ambiguity here. The entity Q1360987 is the poem/nursery rhyme, and the author property points to Sarah Josepha Hale. \n\nI think that's correct. Sometimes people might confuse it with other versions or adaptations, like the Wings song, but the original nursery rhyme is by Hale. So the answer should be Sarah Josepha Hale."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-a26b0369db9d8be2",
+            "name": "answer",
+            "args": {
+              "kg": "wikidata",
+              "sparql": "SELECT ?author WHERE { wd:Q1360987 wdt:P50 ?author }",
+              "answer": "Sarah Josepha Hale"
+            },
+            "result": "Stopping"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 360,
+          "prompt_tokens": 5068,
+          "total_tokens": 5428
+        }
+      }
+    }
+  ],
+  "known": [
+    "http://www.wikidata.org/prop/P1343",
+    "http://www.wikidata.org/prop/P407",
+    "http://www.wikidata.org/entity/Q20802589",
+    "http://www.wikidata.org/prop/P6216",
+    "http://www.wikidata.org/entity/P407",
+    "http://www.wikidata.org/entity/Q18809048",
+    "http://www.wikidata.org/entity/P175",
+    "http://www.wikidata.org/entity/Q1360987",
+    "http://www.wikidata.org/entity/Q113486377",
+    "http://www.wikidata.org/prop/direct/P407",
+    "http://www.wikidata.org/prop/direct/P175",
+    "http://www.wikidata.org/entity/Q124387434",
+    "http://www.wikidata.org/prop/direct/P921",
+    "http://www.wikidata.org/prop/direct/P1922",
+    "http://www.wikidata.org/prop/direct/P1433",
+    "http://www.wikidata.org/entity/Q71865770",
+    "http://www.wikidata.org/prop/P175",
+    "http://www.wikidata.org/entity/P1343",
+    "http://www.wikidata.org/prop/P31",
+    "http://www.wikidata.org/prop/P1433",
+    "http://www.wikidata.org/prop/direct/P6216",
+    "http://www.wikidata.org/prop/direct/P1343",
+    "http://www.wikidata.org/prop/direct/P31",
+    "http://www.wikidata.org/prop/P577",
+    "http://www.wikidata.org/entity/Q3296184",
+    "http://www.wikidata.org/entity/P31",
+    "http://www.wikidata.org/entity/Q121227832",
+    "http://www.wikidata.org/entity/P577",
+    "http://www.wikidata.org/prop/P50",
+    "http://www.wikidata.org/prop/direct/P50",
+    "http://www.wikidata.org/entity/Q114524191",
+    "http://www.wikidata.org/entity/P50",
+    "http://www.wikidata.org/prop/direct/P577",
+    "http://www.wikidata.org/entity/P6216",
+    "http://www.wikidata.org/entity/Q430639",
+    "http://www.wikidata.org/entity/Q2439433",
+    "http://www.wikidata.org/entity/P1922",
+    "http://www.wikidata.org/entity/P921",
+    "http://www.wikidata.org/entity/P1433",
+    "http://www.wikidata.org/prop/P921",
+    "http://www.wikidata.org/prop/P1922"
+  ],
+  "id": "unknown",
+  "source_csv": "data/SimpleQA/NQ_table_test_simple.csv",
+  "row_index": 797,
+  "question": "who wrote the song mary had a little lamb",
+  "reference_answer": "Sarah Josepha Hale | John Roulstone"
+}

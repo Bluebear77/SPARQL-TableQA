@@ -1,0 +1,152 @@
+{
+  "type": "output",
+  "task": "sparql-qa",
+  "output": {
+    "sparql": "PREFIX wdt: <http://www.wikidata.org/prop/direct/>\nPREFIX wd: <http://www.wikidata.org/entity/>\nSELECT(YEAR(?date) AS ?year) WHERE {\n  wd:Q943992 wdt:P577 ?date .\n}",
+    "kg": "wikidata",
+    "selections": "Using entities:\n- A Night at the Opera (wd:Q943992), also known as \"Night at the Opera\":\n  - 1935 Marx Brothers film by Sam Wood\n  - is instance of film\n\nUsing properties:\n- publication date (wd:P577 as wdt), also known as \"air date\", \"airdate\", \"be published during\", \"be published in\", \"broadcast date\", etc.:\n  - date or point in time when a work or product was first published or released",
+    "result": "Got 1 row and 1 column:\n| year           |\n| -------------- |\n| 1935 (xsd:int) |",
+    "endpoint": "https://qlever.dev/api/wikidata",
+    "type": "answer",
+    "answer": "1935",
+    "formatted": "1935\n\nSPARQL query over wikidata:\n```sparql\nPREFIX wdt: <http://www.wikidata.org/prop/direct/>\nPREFIX wd: <http://www.wikidata.org/entity/>\nSELECT(YEAR(?date) AS ?year) WHERE {\n  wd:Q943992 wdt:P577 ?date .\n}\n```\n\nUsing entities:\n- A Night at the Opera (wd:Q943992), also known as \"Night at the Opera\":\n  - 1935 Marx Brothers film by Sam Wood\n  - is instance of film\n\nUsing properties:\n- publication date (wd:P577 as wdt), also known as \"air date\", \"airdate\", \"be published during\", \"be published in\", \"broadcast date\", etc.:\n  - date or point in time when a work or product was first published or released\n\nExecution result:\nGot 1 row and 1 column:\n| year           |\n| -------------- |\n| 1935 (xsd:int) |"
+  },
+  "elapsed": 62.460118,
+  "error": null,
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a question answering assistant. Your job is to generate a SPARQL query to answer a given user question.\n\nYou should follow a step-by-step approach to generate the SPARQL query:\n1. Determine possible entities and properties implied by the user question.\n2. Search for the entities and properties in the knowledge graphs. Where applicable, constrain the searches with already identified entities and properties.\n3. Gradually build up the SPARQL query using the identified entities and properties. Start with simple queries and add more complexity as needed. Execute intermediate queries to get feedback and to verify your assumptions. You may need to refine or rethink your current plan based on the query results and go back to step 2 if needed, possibly multiple times.\n4. Use the answer or cancel function to finalize your answer and stop the generation process.\n\nAvailable knowledge graphs:\n- \"wikidata\" at https://qlever.dev/api/wikidata\n  - \"entity\" index (type=\"fuzzy\"): Entities indexed by their labels and synonyms\n  - \"property\" index (type=\"embedding\", modalities=\"text\"): Properties indexed by their labels, synonyms, and identifiers\n\nIndex types used:\n- \"embedding\": Retrieves items by cosine similarity between their embeddings and the query embedding. The embedding model used depends on the index and may support text, images, or both.\n- \"fuzzy\": Retrieves items by overlap between their label words and the query keywords. The query keywords must not match label words exactly, but some fuzziness is allowed. The longer a query keyword is, the more it can deviate from a label word and still be considered a match, though it will also contribute less to the overall score. No special query operators like AND/OR are supported.\n\nSPARQL prefixes for use in function calls:\n- bd: http://www.bigdata.com/rdf#\n- cc: http://creativecommons.org/ns#\n- data: https://www.wikidata.org/wiki/Special:EntityData/\n- dc: http://purl.org/dc/elements/1.1/\n- dct: http://purl.org/dc/terms/\n- foaf: http://xmlns.com/foaf/0.1/\n- geo: http://www.opengis.net/ont/geosparql#\n- geof: http://www.opengis.net/def/function/geosparql/\n- gn: http://www.geonames.org/ontology#\n- hint: http://www.bigdata.com/queryHints#\n- imdb: https://www.imdb.com/\n- math: http://www.w3.org/2005/xpath-functions/math#\n- ontolex: http://www.w3.org/ns/lemon/ontolex#\n- owl: http://www.w3.org/2002/07/owl#\n- p: http://www.wikidata.org/prop/\n- pq: http://www.wikidata.org/prop/qualifier/\n- pqn: http://www.wikidata.org/prop/qualifier/value-normalized/\n- pqv: http://www.wikidata.org/prop/qualifier/value/\n- pr: http://www.wikidata.org/prop/reference/\n- prn: http://www.wikidata.org/prop/reference/value-normalized/\n- prov: http://www.w3.org/ns/prov#\n- prv: http://www.wikidata.org/prop/reference/value/\n- ps: http://www.wikidata.org/prop/statement/\n- psn: http://www.wikidata.org/prop/statement/value-normalized/\n- psv: http://www.wikidata.org/prop/statement/value/\n- qb: http://purl.org/linked-data/cube#\n- qfn: http://qlever.cs.uni-freiburg.de/function#\n- ql: http://qlever.cs.uni-freiburg.de/builtin-functions/\n- qlss: https://qlever.cs.uni-freiburg.de/spatialSearch/\n- rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#\n- rdfs: http://www.w3.org/2000/01/rdf-schema#\n- ref: http://www.wikidata.org/reference/\n- s: http://www.wikidata.org/entity/statement/\n- schema: http://schema.org/\n- skos: http://www.w3.org/2004/02/skos/core#\n- v: http://www.wikidata.org/value/\n- void: http://rdfs.org/ns/void#\n- wd: http://www.wikidata.org/entity/\n- wdno: http://www.wikidata.org/prop/novalue/\n- wdt: http://www.wikidata.org/prop/direct/\n- wdtn: http://www.wikidata.org/prop/direct-normalized/\n- wikibase: http://wikiba.se/ontology#\n- xsd: http://www.w3.org/2001/XMLSchema#\n\nAdditional rules to follow:\n- Explain your thought process before and after each step and function call.\n- Do not ask the user for clarification until you have made an initial attempt at completing the task. When the task input is incomplete or ambiguous, proceed based on reasonable assumptions.\n- Do not use \"SERVICE wikibase:label { bd:serviceParam wikibase:language ...\" in SPARQL queries. It is unsupported by the used QLever SPARQL endpoints. Use rdfs:label or similar properties to get labels instead.\n- Always execute your final SPARQL query before giving an answer to make sure it returns the expected results.\n- The SPARQL query should always return the actual identifiers / IRIs of the items in its result. It additionally may return labels or other human-readable information, but they are optional and should be put within optional clauses unless explicitly requested by the user.\n- Do not stop early if there are still obvious improvements to be made to the SPARQL query. For example, keep refining your SPARQL query if its result contains irrelevant items or is missing items you expected.\n- Do not perform additional computation (e.g. filtering, sorting, calculations) on the result of the SPARQL query to determine the answer. All computation should be done solely within SPARQL.\n- For questions with a \"True\" or \"False\" answer the SPARQL query should be an ASK query."
+    },
+    {
+      "role": "user",
+      "content": "In which year was the film A Night at the Opera released"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "0c0e9537367f4f168c72b75b1ca677ac",
+        "message": null,
+        "reasoning": {
+          "id": "ca4927b32e524d66a195f77b2d48001f",
+          "content": "Okay, let's tackle this question: \"In which year was the film A Night at the Opera released\". First, I need to find out the year of release for the film titled \"A Night at the Opera\". \n\nStep 1: Determine possible entities and properties.\nThe main entity here is the film \"A Night at the Opera\". The property we need is the publication or release year. In Wikidata, the property for publication date is usually P577 (publication date) or sometimes P1191 (publication date for films). But I think P577 is the standard one.\n\nStep 2: Search for the entity.\nFirst, I need to confirm the correct Wikidata item for \"A Night at the Opera\". There might be multiple works with similar titles, so I should check. Let's use the search_entity function for \"A Night at the Opera\" in Wikidata.\n\nWait, the user might be referring to the 1935 Marx Brothers film. Let me make sure. So, I'll first search for the entity using \"A Night at the Opera\" as the query.\n\nCalling search_entity(kg=\"wikidata\", query=\"A Night at the Opera\") should give me possible entities. Let me simulate that. The top result is probably Q508815 (A Night at the Opera), which is the 1935 film.\n\nStep 3: Find the correct property.\nNow, once we have the entity (say Q508815), we need to find the release year. The property for publication date is P577. Let me check if that's the right property here. On Wikidata, for instance, the \"A Night at the Opera\" movie page has the property \"publication date\" with value 1935. So querying wdt:P577 should give the correct year.\n\nStep 4: Construct the SPARQL query.\nThe query should select the year from the item's publication date. Since we need the year as a numeric value, but the date might be stored as a full date (like 1935-01-01T00:00:00Z), we can use YEAR() function from SPARQL to extract the year.\n\nWait, but Wikidata's SPARQL might support that. Let me recall. The standard way is to use something like:\n\nSELECT ?year WHERE {\n  wd:Q508815 wdt:P577 ?date .\n  BIND(YEAR(?date) AS ?year)\n}\n\nBut I need to confirm that the property P577 is correctly linked and that the date is in a format that YEAR() can parse.\n\nAlternatively, sometimes the date might be stored as a string, but in Wikidata, dates are usually in the correct time format. So the above query should work.\n\nBut first, I need to verify that Q508815 is indeed the correct entity. Let me check by using the list function for the entity to see its properties.\n\nWait, maybe I should first execute a search_entity to find the correct QID.\n\nSo first step: call search_entity for \"A Night at the Opera\".\n\nAssuming that search returns Q508815 as the correct ID, then proceed.\n\nNext, check if that entity has the P577 property.\n\nUsing list(kg=\"wikidata\", subject=\"wd:Q508815\", property=\"wdt:P577\") would show the publication date.\n\nBut since I can't execute these steps yet, I have to assume based on prior knowledge.\n\nAlternatively, maybe the film's item in Wikidata has the \"publication date\" (P577) as 1935.\n\nSo the SPARQL query would be:\n\nSELECT ?year WHERE {\n  wd:Q508815 wdt:P577 ?date .\n  BIND(YEAR(?date) AS ?year)\n}\n\nBut wait, in SPARQL, the YEAR function is part of the SPARQL 1.1 standard, but sometimes it's written as YEAR(?date) or maybe using a filter. Wait, no, actually, in Wikidata's SPARQL endpoint, they support the YEAR function as part of the extension. Let me check previous examples.\n\nAlternatively, you can extract the year from the date using string functions, but using YEAR() is better.\n\nWait, the correct syntax might be:\n\nSELECT (YEAR(?date) AS ?year) WHERE {\n  wd:Q508815 wdt:P577 ?date .\n}\n\nBut the year might be stored as a full date, so YEAR should extract it.\n\nWait, in practice, when I've done this before, sometimes the date is stored as a time, so using YEAR(?date) works.\n\nSo the query should return 1935.\n\nBut I need to confirm that Q508815 is the correct ID.\n\nLet me simulate the search_entity step.\n\nCalling search_entity(kg=\"wikidata\", query=\"A Night at the Opera\") would return a list of items. The first one is likely the 1935 film. Let's assume that's Q508815.\n\nNow, to make sure, maybe in the next step, when constructing the query, if we get no results, we might need to adjust. But given common knowledge, 1935 is the release year.\n\nSo the final SPARQL query would select the year from P577 for the film's entity.\n\nThus, the answer should be 1935.\n\nWait, but to be thorough, let's outline the steps:\n\n1. Find the correct QID for \"A Night at the Opera\".\n2. Check that it has a publication date (P577).\n3. Extract the year from that date.\n\nSince I can't execute the functions yet in my mind, but following the process, I should first call search_entity to find the correct entity.\n\nBut since I need to generate the SPARQL query, I'll proceed with Q508815 as the entity.\n\nSo the final query would be:\n\nSELECT ?year WHERE {\n  wd:Q508815 wdt:P577 ?date .\n  BIND(YEAR(?date) AS ?year)\n}\n\nBut to format it correctly, perhaps using the YEAR function properly.\n\nAlternatively, if the date is stored as a xsd:gYear, but usually, it's a full date. Hmm.\n\nAlternatively, maybe just using the sample query from Wikidata examples.\n\nAnother approach: the release date might be stored as a point in time, and using YEAR() on it.\n\nIn practice, executing the query:\n\nSELECT ?year WHERE {\n  wd:Q508815 wdt:P577 ?date .\n  BIND(year(?date) AS ?year)\n}\n\nBut in SPARQL, the function is year(), not YEAR(), but in Wikidata's endpoint, it's case-insensitive perhaps. Wait, no—SPARQL functions are case-sensitive; the correct function is xsd:year(?date) or actually, the standard SPARQL function is fn:year-from-dateTime, but I think in Wikidata's implementation, they alias year() as a function.\n\nAlternatively, use (SUBSTR(STR(?date), 1, 4) AS ?year) to extract the year as a string. But that's less reliable.\n\nWait, checking the documentation: In Wikidata's SPARQL, you can use the YEAR function as follows:\n\n(BIND(YEAR(?date) AS ?year))\n\nYes, for example, see here: https://www.wikidata.org/wiki/Wikidata:SPARQL_query_service/SPARQL_tutorial#Dates_and_times\n\nBut the tutorial suggests using:\n\nSELECT ?year\nWHERE\n{\n  wd:Q508815 wdt:P577 ?publication_date .\n  BIND(YEAR(?publication_date) AS ?year)\n}\n\nSo that's the correct approach.\n\nTherefore, the query should be:\n\nSELECT ?year WHERE {\n  wd:Q508815 wdt:P577 ?date .\n  BIND(YEAR(?date) AS ?year)\n}\n\nBut wait, let's make sure that the entity's P577 is correctly linked. Let's imagine running this query.\n\nAssuming we get 1935, that's the correct answer.\n\nBut before finalizing, I should check if there's a need for multiple results or if the date is uncertain. But the user is asking for the year, so likely 1935.\n\nTherefore, the answer is 1935."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-9a630a2765df3db9",
+            "name": "search_entity",
+            "args": {
+              "kg": "wikidata",
+              "query": "A Night at the Opera"
+            },
+            "result": "Top 10 entity alternatives:\n1. A Night at the Opera (wd:Q193477):\n  - 1975 studio album by Queen\n  - is instance of album\n2. A Night at the Opera (wd:Q943992), also known as \"Night at the Opera\":\n  - 1935 Marx Brothers film by Sam Wood\n  - is instance of film\n3. A Night at the Opera (wd:Q300501):\n  - 2002 album by Blind Guardian\n  - is instance of album\n4. A Night at the Opera (wd:Q15838797):\n  - is instance of Wikimedia disambiguation page\n  - Wikimedia disambiguation page\n5. A Night at the Opera (wd:Q12300131):\n  - DVD by Queen\n  - is instance of video album\n6. A night at the opera (wd:Q61960368):\n  - album by Teitur Lassen\n  - is instance of album\n7. A Night at the Opera (wd:Q114529695):\n  - episode of Jackie Chan Adventures (S3 E16)\n  - is instance of television series episode\n8. A Night at the Opera (wd:Q132753775):\n  - is instance of online exhibition\n  - online exhibition from Library of Congress\n9. A Night at the Opera (wd:Q51121238):\n  - episode of The Hills (S3 E16)\n  - is instance of television series episode\n10. A Night at the Opera (wd:Q58890625):\n  - episode of Younger (S3 E4)\n  - is instance of television series episode"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 1849,
+          "prompt_tokens": 3751,
+          "total_tokens": 5600
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "8658badac29f46079df95289bc39a10f",
+        "message": null,
+        "reasoning": {
+          "id": "3cff718df5974114b2ae5bd922f32ca1",
+          "content": "Okay, let's tackle this question. The user is asking for the release year of the film \"A Night at the Opera.\" First, I need to figure out which specific entity they're referring to because there are multiple entries with the same title.\n\nFrom the search_entity result, the second entry (wd:Q943992) is the 1935 Marx Brothers film directed by Sam Wood. The first entry is a Queen album, so that's not relevant here. The user specified it's a film, so we can ignore the album and other non-film entries.\n\nNow, I need to get the release year for wd:Q943992. In Wikidata, the property for publication date or release date is usually P577 (publication date). But films might use different properties like P1191 (release date) or P577. Wait, checking Wikidata's common properties, P577 is often used for \"publication date,\" which for films is the release date.\n\nSo the next step is to construct a SPARQL query that retrieves the publication date (P577) for the entity wd:Q943992. The query should select the year, so maybe we need to extract the year from the date. But the user just asks for the year, so if the date is stored as a full date (e.g., 1935-01-01), we can use MINUS or some date extraction. However, in Wikidata queries, using YEAR(?date) might not be directly possible in SPARQL 1.1, but some endpoints support it. Alternatively, we can filter by the year part using regex or string functions.\n\nWait, the standard way in Wikidata SPARQL is to use (year(?date) as ?year). Let me check. Yes, in QLever, which the endpoint uses, functions like MINUS may not support all SPARQL 1.1 functions, but date extraction might be possible. Alternatively, the date might be stored with precision, so if the precision is set to year, the date would be stored as 1935-01-01T00:00:00Z/9, where 9 is the precision for year. But when querying, we can just take the year part.\n\nSo the SPARQL would look like:\n\nSELECT ?releaseYear WHERE {\n  wd:Q943992 wdt:P577 ?date .\n  BIND(YEAR(?date) AS ?releaseYear)\n}\n\nBut wait, does Wikidata have the YEAR function? In standard SPARQL, it's not part of the core functions, but some endpoints implement it. Alternatively, we can cast the date to a string and extract the first 4 characters.\n\nAnother approach: since the date is in xsd:dateTime, we can use:\n\nBIND(SUBSTR(STR(?date), 1, 4) AS ?releaseYear)\n\nBut maybe the date is not in full precision. Let's check what the actual data is. To do that, I can run a query to get the date value first.\n\nWait, perhaps it's better to first check what values are present for P577 on wd:Q943992.\n\nLet me construct a simple query:\n\nSELECT ?date WHERE {\n  wd:Q943992 wdt:P577 ?date.\n}\n\nRun that and see the result. If the date is something like \"1935-01-01T00:00:00Z\", then we can extract the year as 1935.\n\nBut the user just wants the year, so the answer should be 1935.\n\nBut I need to make sure that the correct property is used. Let me verify if the film's release date is indeed stored under P577.\n\nIn Wikidata, the property P577 is \"publication date,\" which is commonly used for films as well. Let me confirm with an example. For instance, The Godfather is wd:Q194, and its release date is under P577.\n\nSo proceeding with that, the query should fetch the date, then extract the year.\n\nAlternatively, sometimes the release date might be under a different property like P1191 (release date) but checking the entity page for Q943992 on Wikidata would help, but since I can't do that directly, I'll have to rely on standard practices.\n\nGiven that, the SPARQL query would be:\n\nSELECT (YEAR(?date) AS ?year) WHERE {\n  wd:Q943992 wdt:P577 ?date.\n}\n\nBut if YEAR function isn't supported, using SUBSTR:\n\nSELECT (SUBSTR(STR(?date), 1, 4) AS ?year) WHERE {\n  wd:Q943992 wdt:P577 ?date.\n}\n\nHowever, depending on how the date is stored, this could include the timezone, but the year should still be the first four digits.\n\nAlternatively, if the date has the precision specified, but maybe the query result just gives the year part.\n\nBut since I need to be sure, perhaps first execute a query to get the actual date value.\n\nLet me use the execute function to check what the date is for wd:Q943992 and P577.\n\nSo step by step:\n\n1. Confirm the correct entity is wd:Q943992 (the Marx Brothers film)\n2. Check what property holds the release date (likely P577)\n3. Retrieve the date value and process it to get the year\n\nLet me call execute with kg=\"wikidata\" and a query to get the date.\n\nThe SPARQL would be:\n\nSELECT ?date WHERE {\n  wd:Q943992 wdt:P577 ?date.\n}\n\nIf this returns a date, then we can format it."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-a0b6832d945c8e3d",
+            "name": "execute",
+            "args": {
+              "kg": "wikidata",
+              "sparql": "SELECT ?date WHERE { wd:Q943992 wdt:P577 ?date . }"
+            },
+            "result": "Got 1 row and 1 column:\n| date                                |\n| ----------------------------------- |\n| 1935-01-01T00:00:00Z (xsd:dateTime) |"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 1319,
+          "prompt_tokens": 4200,
+          "total_tokens": 5519
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "6a97fb6eac1f4358ac8870099632a6c6",
+        "message": null,
+        "reasoning": {
+          "id": "370d52f1b94649b28cef28c3d1641280",
+          "content": "Okay, let's see. The user asked for the release year of the film \"A Night at the Opera\". From the initial search_entity, we found that the correct entity is wd:Q943992, which is the 1935 Marx Brothers film. Then, we executed a SPARQL query to get the publication date (wdt:P577) for that entity. The result was 1935-01-01T00:00:00Z, which is a dateTime value.\n\nHmm, but the user just wants the year. In SPARQL, I can use the YEAR function to extract the year from the dateTime. Let me check if the endpoint supports that. The QLever endpoint does support standard SPARQL functions like YEAR. So, modifying the query to SELECT (YEAR(?date) as ?year) WHERE { wd:Q943992 wdt:P577 ?date . } would give the year directly.\n\nWait, the current query gives the full date, but the answer should be just 1935. Let me adjust the query to extract the year. That way, the result will be the year as a number or string, which is what the user needs. Let me test this by executing the modified query. The previous result showed the date as 1935-01-01, so using YEAR should correctly return 1935. Then, we can present that as the answer. I think that's all. The final answer would be 1935."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-81cf337a94823826",
+            "name": "execute",
+            "args": {
+              "kg": "wikidata",
+              "sparql": "SELECT (YEAR(?date) AS ?year) WHERE { wd:Q943992 wdt:P577 ?date . }"
+            },
+            "result": "Got 1 row and 1 column:\n| year           |\n| -------------- |\n| 1935 (xsd:int) |"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 394,
+          "prompt_tokens": 4307,
+          "total_tokens": 4701
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "74deead560a4487fb29ad08788b00211",
+        "message": null,
+        "reasoning": {
+          "id": "ad2c564ed0944cd785b074f18091ce66",
+          "content": "Okay, let's see. The user asked for the year the film A Night at the Opera was released. First, I used the search_entity function to find the correct entity. Among the results, the second entry was the 1935 Marx Brothers film, identified as wd:Q943992. \n\nNext, I checked the release date by querying the P577 property, which is the publication date in Wikidata. The initial query returned the full date 1935-01-01T00:00:00Z. Since the user only wants the year, I modified the query to extract the year using the YEAR function. The result was 1935, which matches the expected answer.\n\nI should confirm that this is the correct entity. The first result was a Queen album, which is different. The correct film entry under Q943992 has the instance of film, so the date makes sense. The final query gives the year directly, so the answer is 1935."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-b3b841f713f86dbf",
+            "name": "answer",
+            "args": {
+              "kg": "wikidata",
+              "sparql": "SELECT (YEAR(?date) AS ?year) WHERE { wd:Q943992 wdt:P577 ?date . }",
+              "answer": "1935"
+            },
+            "result": "Stopping"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 291,
+          "prompt_tokens": 4404,
+          "total_tokens": 4695
+        }
+      }
+    }
+  ],
+  "known": [
+    "http://www.wikidata.org/entity/Q300501",
+    "http://www.wikidata.org/entity/Q58890625",
+    "http://www.wikidata.org/entity/Q61960368",
+    "http://www.wikidata.org/entity/Q51121238",
+    "http://www.wikidata.org/entity/Q114529695",
+    "http://www.wikidata.org/entity/Q12300131",
+    "http://www.wikidata.org/entity/Q943992",
+    "http://www.wikidata.org/entity/Q15838797",
+    "http://www.wikidata.org/entity/Q132753775",
+    "http://www.wikidata.org/entity/Q193477"
+  ],
+  "id": "unknown",
+  "source_csv": "data/ComplexQA/CompMix_infobox_complex.csv",
+  "row_index": 296,
+  "question": "In which year was the film A Night at the Opera released",
+  "reference_answer": "1935"
+}

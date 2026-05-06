@@ -5,8 +5,6 @@ Total JSON files: 150
 Valid cases: 50 (33.33%)
 Invalid cases: 100 (66.67%)
 
-!extracted_output/Monaco_non_time_complex_valid_vs_invalid_pie.png
-
 ## Invalid case breakdown
 
 - null_output: 11 (7.33%)

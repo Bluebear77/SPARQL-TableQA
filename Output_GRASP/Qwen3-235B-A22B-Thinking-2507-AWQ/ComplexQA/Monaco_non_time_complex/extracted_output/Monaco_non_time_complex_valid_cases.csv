@@ -1,0 +1,766 @@
+question,gold_answer,result_cleaned,result,sparql,file_path
+Who are the warring sides in the second Libyan Civil War Who are their leaders,"[['Government of National Accord', 'Fayez al-Sarraj'], ['Government of National Accord', 'Ahmed Maiteeq'], ['Government of National Accord', 'Musa Al-Koni'], ['Government of National Accord', 'Fathi Al-Mijabri'], ['Government of National Accord', 'Fakhr Muftah Bufernah'], ['Government of National Accord', 'Juma Abdullah Drissi'], ['Government of National Accord', 'Omar Bashir Al-Taher'], ['Government of National Accord', 'Al-Aref al-Khoga'], ['Government of National Accord', 'Abdussalam Ashour'], ['Government of National Accord', 'Fathi Bashagha'], ['Government of National Accord', 'Mohamed Khalifa Al-Azzabi'], ['Government of National Accord', 'Mohamed Taha Siala'], ['Government of National Accord', 'Al-Mahdi Al-Barghathi'], ['Government of National Accord', 'Al-Hadi Al-Taher Al-Juhaimi'], ['Government of National Accord', 'Faida Mansour El-Shafi'], ['Government of National Accord', 'Abdulmutaleb Ahmed Abu Farwa'], ['Government of National Accord', 'Ali Galma Mohamed'], ['Government of National Accord', 'Asma Mustafa Usta'], ['Government of National Accord', 'Muhannad Said Younis'], ['Government of National Accord', 'Iman Mohammed Ben Younes'], ['Government of National Accord', 'Abdeljawad Faraj Al-Obaidi'], ['Government of National Accord', 'Yousef Abubakr Jalalah'], ['National Salvation Government', 'Khalifa al-Ghawil'], ['House of Representatives', 'Aguila Saleh Issa'], ['House of Representatives', 'Imhemed Shaib'], ['House of Representatives', 'Musaab al-Abed'], ['Islamic State', 'Abu Hafs al-Hashimi al-Qurashi']]",Government of National Accord (lang:en)|Fayez al-Sarraj (lang:en),"| sideLabel                               | leaderLabel               |
+| --------------------------------------- | ------------------------- |
+| Government of National Accord (lang:en) | Fayez al-Sarraj (lang:en) |","SELECT DISTINCT ?sideLabel ?leaderLabel WHERE {
+  {
+    wd:Q16911838 wdt:P710 ?side .
+    ?side rdfs:label ?sideLabel .
+    FILTER(LANG(?sideLabel) = 'en')
+    .
+    ?side(wdt:P6 | wdt:P1037) ?leader .
+    ?leader rdfs:label ?leaderLabel .
+    FILTER(LANG(?leaderLabel) = 'en')
+    .
+  } UNION {
+    wd:Q16911838 wdt:P607 ?leader .
+    ?leader wdt:P241 ?side .
+    ?side rdfs:label ?sideLabel .
+    ?leader rdfs:label ?leaderLabel .
+    FILTER(LANG(?sideLabel) = 'en' && LANG(?leaderLabel) = 'en')
+    .
+  }
+}",ComplexQA/Monaco_non_time_complex/00022.json
+Return the major ancestry groups of Asian Americans along with the languages and major religions practiced by each group.,"[['Chinese American', 'various varieties of Chinese', '52% Irreligion'], ['Filipino Americans', 'Filipino', 'Christianity'], ['Vietnamese Americans', 'English', 'Buddhism (43%)'], ['Indian Americans', 'Hindi', 'Hinduism'], ['Indian Americans', 'Hindi', 'Christianity'], ['Indian Americans', 'Hindi', 'Islam'], ['Indian Americans', 'Hindi', 'Sikhism'], ['Indian Americans', 'Hindi', 'Other religion'], ['Indian Americans', 'Hindi', 'No religion'], ['Korean Americans', 'English', '61% Protestantism'], ['Korean Americans', 'English', '23% Unaffiliated'], ['Korean Americans', 'English', '10% Roman Catholicism'], ['Korean Americans', 'English', '6% Buddhism'], ['Korean Americans', 'Korean', '61% Protestantism'], ['Korean Americans', 'Korean', '23% Unaffiliated'], ['Korean Americans', 'Korean', '10% Roman Catholicism'], ['Korean Americans', 'Korean', '6% Buddhism'], ['Japanese Americans', 'American English', 'Protestantism'], ['Japanese Americans', 'American English', 'Unaffiliated'], ['Japanese Americans', 'American English', 'Buddhism'], ['Japanese Americans', 'American English', 'Catholicism'], ['Japanese Americans', 'American English', 'Shinto'], ['Japanese Americans', 'Japanese', 'Protestantism'], ['Japanese Americans', 'Japanese', 'Unaffiliated'], ['Japanese Americans', 'Japanese', 'Buddhism'], ['Japanese Americans', 'Japanese', 'Catholicism'], ['Japanese Americans', 'Japanese', 'Shinto']]","Chinese Americans (lang:en)|Putonghua|
+Filipino Americans (lang:en)|English, Taglish, Filipino|Christianity, Islam, Catholicism
+Indian Americans (lang:en)|English, Hindi|Jainism, Hinduism, Buddhism, Sikhism, Christianity, Islam
+Japanese Americans (lang:en)|Japanese|Christianity, Buddhism, Shinto
+Korean Americans (lang:en)|Korean, Korean Sign Language|Buddhism, Catholicism, Protestantism
+Vietnamese Americans (lang:en)|Vietnamese|Hòa Hảo, Protestantism, Buddhism, Caodaism, Catholicism","| subgroupLabel                  | languages                    | religions                                                 |
+| ------------------------------ | ---------------------------- | --------------------------------------------------------- |
+| Chinese Americans (lang:en)    | Putonghua                    |                                                           |
+| Filipino Americans (lang:en)   | English, Taglish, Filipino   | Christianity, Islam, Catholicism                          |
+| Indian Americans (lang:en)     | English, Hindi               | Jainism, Hinduism, Buddhism, Sikhism, Christianity, Islam |
+| Japanese Americans (lang:en)   | Japanese                     | Christianity, Buddhism, Shinto                            |
+| Korean Americans (lang:en)     | Korean, Korean Sign Language | Buddhism, Catholicism, Protestantism                      |
+| Vietnamese Americans (lang:en) | Vietnamese                   | Hòa Hảo, Protestantism, Buddhism, Caodaism, Catholicism   |","SELECT ?subgroupLabel(GROUP_CONCAT(DISTINCT ?languageLabel ; SEPARATOR = "", "") AS ?languages)(GROUP_CONCAT(DISTINCT ?religionLabel ; SEPARATOR = "", "") AS ?religions) WHERE {
+  VALUES(?subgroup ?subgroupLabel ?country) {(wd:Q1146100 ""Chinese Americans"" @en wd:Q148)(wd:Q2643509 ""Indian Americans"" @en wd:Q668)(wd:Q2655978 ""Filipino Americans"" @en wd:Q928)(wd:Q2657969 ""Vietnamese Americans"" @en wd:Q881)(wd:Q2650528 ""Korean Americans"" @en wd:Q884)(wd:Q192917 ""Japanese Americans"" @en wd:Q17)
+  }
+  OPTIONAL {
+    ?country wdt:P37 ?language .
+    ?language rdfs:label ?languageLabel .
+    FILTER(LANG(?languageLabel) = ""en"")
+  }
+  OPTIONAL {
+    ?country wdt:P140 ?religion .
+    ?religion rdfs:label ?religionLabel .
+    FILTER(LANG(?religionLabel) = ""en"")
+  }
+}
+GROUP BY ?subgroupLabel
+ORDER BY ?subgroupLabel",ComplexQA/Monaco_non_time_complex/00024.json
+"Name all the battles between the Dutch and English in the First, Second and Third Anglo-Dutch Wars, and list the victor of each battle.","[[['Dover', 'inconclusive'], ['Plymouth', 'Dutch Republic'], ['Elba', 'United Provinces (Dutch victory)'], ['Kentish Knock', 'Commonwealth of England'], ['Dungeness', 'Dutch'], ['Portland', 'Commonwealth of England'], ['Leghorn', 'United Provinces (Dutch victory)'], ['Gabbard', 'Commonwealth of England'], ['Scheveningen', 'English Commonwealth']], [['Lowestoft', 'England'], ['Vågen', ['Dutch Republic', 'Denmark–Norway']], [""Four Days' Battle"", 'Dutch Republic'], [""St. James' Day"", 'England'], [""Holmes'Bonfire"", 'England'], ['Dungeness Raid on the Medway', 'Dutch Republic'], ['Landguard Fort', 'England'], ['New Netherland', 'England'], ['Barbados', 'England'], ['Nevis', 'England'], ['Martinique', 'England'], ['Cayenne', 'England'], ['Fort Zeelandia', 'England']], [['Action of 12 March 1672', 'Dutch Republic'], ['Battle of Solebay', 'Dutch Republic'], ['1st Dutch invasion of Saint Helena', 'Dutch Republic'], ['Dutch Raid on North America', 'Dutch'], ['Reconquest of New Netherland', 'Dutch Republic'], ['Second Battle of the James River (1673)', 'Dutch Republic'], ['2nd Dutch invasion of Saint Helena', 'England'], ['First Battle of the Schooneveld', 'Dutch Republic'], ['Second Battle of the Schooneveld', 'Dutch Republic'], ['Battle of Texel', 'Dutch Republic'], ['Battle of Masulipatnam', 'Dutch Republic'], ['Battle of Ronas Voe', 'Kingdom of England']]]","Action of 29 January 1654 (lang:en)|First Anglo-Dutch War (lang:en)
+Battle of Elba (lang:en)|First Anglo-Dutch War (lang:en)
+Battle of the Kentish Knock (lang:en)|First Anglo-Dutch War (lang:en)
+Battle of Dungeness (lang:en)|First Anglo-Dutch War (lang:en)
+Battle of Portland (lang:en)|First Anglo-Dutch War (lang:en)
+...|...
+Battle of Ronas Voe (lang:en)|Third Anglo-Dutch War (lang:en)
+Battles of Schooneveld (lang:en)|Third Anglo-Dutch War (lang:en)
+Dutch Raid on North America (lang:en)|Third Anglo-Dutch War (lang:en)
+Reconquest of New Netherland (lang:en)|Third Anglo-Dutch War (lang:en)
+Dutch invasion of Saint Helena (lang:en)|Third Anglo-Dutch War (lang:en)","| battleLabel                              | warLabel                        |
+| ---------------------------------------- | ------------------------------- |
+| Action of 29 January 1654 (lang:en)      | First Anglo-Dutch War (lang:en) |
+| Battle of Elba (lang:en)                 | First Anglo-Dutch War (lang:en) |
+| Battle of the Kentish Knock (lang:en)    | First Anglo-Dutch War (lang:en) |
+| Battle of Dungeness (lang:en)            | First Anglo-Dutch War (lang:en) |
+| Battle of Portland (lang:en)             | First Anglo-Dutch War (lang:en) |
+| ...                                      | ...                             |
+| Battle of Ronas Voe (lang:en)            | Third Anglo-Dutch War (lang:en) |
+| Battles of Schooneveld (lang:en)         | Third Anglo-Dutch War (lang:en) |
+| Dutch Raid on North America (lang:en)    | Third Anglo-Dutch War (lang:en) |
+| Reconquest of New Netherland (lang:en)   | Third Anglo-Dutch War (lang:en) |
+| Dutch invasion of Saint Helena (lang:en) | Third Anglo-Dutch War (lang:en) |","SELECT ?battleLabel ?warLabel WHERE {
+  VALUES ?war {
+    wd:Q1151913 wd:Q916495 wd:Q1342568
+  }
+  ?battle wdt:P361 ?war .
+  ?battle rdfs:label ?battleLabel .
+  ?war rdfs:label ?warLabel .
+  FILTER(LANG(?battleLabel) = ""en"")
+  FILTER(LANG(?warLabel) = ""en"")
+}
+ORDER BY ?warLabel",ComplexQA/Monaco_non_time_complex/00026.json
+Who were the leaders of the First Crusade and what were their titles,"[['Raymond IV of Toulouse', 'count of Toulouse'], ['Raymond IV of Toulouse', 'duke of Narbonne'], ['Raymond IV of Toulouse', 'margrave of Provence'], ['Adhemar of Le Puy #', 'bishop of Puy-en-Velay'], ['Godfrey of Bouillon', 'prince'], ['Godfrey of Bouillon', 'Advocatus Sancti Sepulchri'], ['Godfrey of Bouillon', 'Duke of Lower Lorraine'], ['Baldwin of Boulogne', 'count of Edessa'], ['Baldwin of Boulogne', 'king of Jerusalem'], ['Hugh of Vermandois', 'Count of Vermandois'], ['Stephen of Blois', 'King of England'], ['Stephen of Blois', 'Count of Boulogne jure uxoris'], ['Stephen of Blois', 'Duke of Normandy'], ['Robert II of Flanders', 'Count of Flanders'], ['Robert Curthose', 'Duke of Normandy'], ['Bohemond of Taranto', 'Prince'], ['Tancred', 'Prince of Galilee'], ['Alexios I Komnenos', 'emperor'], ['Tatikios', 'general'], ['Manuel Boutoumites', 'general'], ['Kilij Arslan', 'Seljuq Sultan of Rum'], ['Yaghi-Siyan X', 'commander'], ['Yaghi-Siyan X', 'governor'], ['Kerbogha', 'atabeg of Mosul'], ['Ridwan', 'emir of Aleppo'], ['Toghtekin', 'emir of Damascus'], ['Janah ad-Dawla', 'emir of Homs'], ['Janah ad-Dawla', 'atabeg of Ridwan'], ['Iftikhar al-Dawla', 'governor'], ['Al-Afdal Shahanshah', 'vizier'], ['Duqaq', 'Emir of Damascus']]","Laugier d'Agoult|Laugier d'Agoult (lang:en)|Roman Catholic Bishop of Apt (lang:en)
+Gilles de Chin|Gilles de Chin (lang:en)|
+Raymond of Aguilers|Raymond of Aguilers (lang:en)|
+Guillaume I de Sabran|Guillaume I de Sabran (lang:en)|","| leader                               | leaderLabel                     | positionLabel                          |
+| ------------------------------------ | ------------------------------- | -------------------------------------- |
+| Laugier d'Agoult (wd:Q3218607)       | Laugier d'Agoult (lang:en)      | Roman Catholic Bishop of Apt (lang:en) |
+| Gilles de Chin (wd:Q3106567)         | Gilles de Chin (lang:en)        |                                        |
+| Raymond of Aguilers (wd:Q4273)       | Raymond of Aguilers (lang:en)   |                                        |
+| Guillaume I de Sabran (wd:Q99304038) | Guillaume I de Sabran (lang:en) |                                        |","SELECT ?leader ?leaderLabel ?positionLabel WHERE {
+  ?leader wdt:P1344 wd:Q51649 .
+  ?leader rdfs:label ?leaderLabel .
+  FILTER(LANG(?leaderLabel) = ""en"")
+  .
+  OPTIONAL {
+    ?leader wdt:P39 ?position .
+    ?position rdfs:label ?positionLabel .
+    FILTER(LANG(?positionLabel) = ""en"")
+    .
+  }
+}",ComplexQA/Monaco_non_time_complex/00029.json
+What is the form of government in all states bordering states that border Germany,"[['Germany', 'federal, parliamentary, representative democratic republic'], ['Slovenia', 'Unitary parliamentary republic'], ['Austria', 'Federal parliamentary republic'], ['Poland', 'Unitary parliamentary republic'], ['Czech Republic', 'Unitary parliamentary republic'], ['Lithuania', 'Unitary semi-presidential republic'], ['Netherlands', 'Unitary parliamentary constitutional monarchy'], ['Belarus', 'presidential republic'], ['Ukraine', 'Unitary semi-presidential republic'], ['Russia', 'Federal semi-presidential republic under an authoritarian dictatorship'], ['Switzerland', 'Federal assembly-independent directorial republic with elements of a semi-direct democracy'], ['Liechtenstein', 'direct democracy'], ['Slovakia', 'Unitary parliamentary republic'], ['Italy', 'Unitary parliamentary republic'], ['Belgium', 'Federal parliamentary'], ['Belgium', 'constitutional monarchy'], ['Luxembourg', 'Unitary parliamentary constitutional monarchy'], ['Hungary', 'parliamentary republic'], ['France', 'Unitary semi-presidential republic'], ['Monaco', 'Unitary parliamentary semi-constitutional monarchy'], ['Andorra', 'Unitary parliamentary constitutional elective diarchy'], ['Spain', 'Unitary parliamentary constitutional monarchy']]","Andorra (lang:en)|parliamentary coprincipality (lang:en)
+Austria (lang:en)|federal parliamentary republic (lang:en)
+Austria (lang:en)|semi-presidential system (lang:en)
+Austria (lang:en)|republic (lang:en)
+Belarus (lang:en)|presidential system (lang:en)
+...|...
+Sweden (lang:en)|constitutional monarchy (lang:en)
+Sweden (lang:en)|representative democracy (lang:en)
+Switzerland (lang:en)|directorial system (lang:en)
+Switzerland (lang:en)|federal republic (lang:en)
+Ukraine (lang:en)|semi-presidential system (lang:en)","| countryLabel          | formLabel                                |
+| --------------------- | ---------------------------------------- |
+| Andorra (lang:en)     | parliamentary coprincipality (lang:en)   |
+| Austria (lang:en)     | federal parliamentary republic (lang:en) |
+| Austria (lang:en)     | semi-presidential system (lang:en)       |
+| Austria (lang:en)     | republic (lang:en)                       |
+| Belarus (lang:en)     | presidential system (lang:en)            |
+| ...                   | ...                                      |
+| Sweden (lang:en)      | constitutional monarchy (lang:en)        |
+| Sweden (lang:en)      | representative democracy (lang:en)       |
+| Switzerland (lang:en) | directorial system (lang:en)             |
+| Switzerland (lang:en) | federal republic (lang:en)               |
+| Ukraine (lang:en)     | semi-presidential system (lang:en)       |","SELECT DISTINCT ?countryLabel ?formLabel WHERE {
+  wd:Q183 wdt:P47 ?borderingCountry .
+  ?borderingCountry wdt:P47 ?country .
+  ?country wdt:P31 wd:Q6256 .
+  ?country wdt:P122 ?form .
+  ?form rdfs:label ?formLabel .
+  ?country rdfs:label ?countryLabel .
+  FILTER(LANG(?formLabel) = ""en"")
+  .
+  FILTER(LANG(?countryLabel) = ""en"")
+  .
+}
+ORDER BY ?countryLabel",ComplexQA/Monaco_non_time_complex/00030.json
+List female poets of Andalusian Spain along with their year of birth and year of death.,"[['Aisha (poet)', '10 century CE', '1009 or 1010 CE'], ['Maria Alphaizuli', '8th century CE', '8th century CE'], [""Buthaina bint al-Mu'tamid ibn Abbad"", '1070 CE', 'probably early 12 century CE'], ['Al-Gassaniyya', '10th or 11th century', '11th century CE'], ['Hafsa bint al-Hajj al-Rukuniyya', '1135 CE', '1190–91 CE'], ['Hamda bint Ziyad al-Muaddib', '12th century CE', '12 century CE'], ['Lubna of Córdoba', 'second half of the 10th century', 'after 962 CE'], ['Muhja bint al-Tayyani', '11th century CE', '1097 CE'], ['Nazhun al-Garnatiya bint al-Qulaiʽiya', '12th century', '12th-century CE'], ['Qasmuna', '11th or 12th century CE', '12th century CE'], ['Al-Rumaikiyya', 'c. 1045-1047', '1091 CE'], ['Umm Al-Kiram', 'late 11th century', 'late 11 century to early 12 century CE'], [""Umm Assa'd bint Isam al-Himyari"", 'unknown', '1243 CE'], ['Wallada bint al-Mustakfi', '994 CE or 1001 CE', '26 March 1091'], ['Zaynab al-Mariyya', '11th–13th centuries', '11th or 12 century CE']]","Yaḥyā Ibn-Ḥakam al-Ġazāl|Yaḥyā Ibn-Ḥakam al-Ġazāl (lang:en)|772|866
+Álvaro of Córdoba|Álvaro of Córdoba (lang:en)|800|861
+Abbas Ibn Firnas|Abbas Ibn Firnas (lang:en)|810|887
+Muqàddam ibn Muafa al-Qabri|Muqàddam ibn Muafa al-Qabri (lang:en)|847|912
+Saʽid bin Judi|Saʽid bin Judi (lang:en)|852|897
+...|...|...|...
+Jorge Manrique|Jorge Manrique (lang:en)|1440|1479
+Garci Sánchez de Badajoz|Garci Sánchez de Badajoz (lang:en)|1460|1526
+Pedro Nuñez Delgado|Pedro Nuñez Delgado (lang:en)|1478|1535
+Pedro Fernández de Castilleja|Pedro Fernández de Castilleja (lang:en)|1487|1574
+Juan Ginés de Sepúlveda|Juan Ginés de Sepúlveda (lang:en)|1490|1573","| poet                                         | poetLabel                               | birthYear      | deathYear      |
+| -------------------------------------------- | --------------------------------------- | -------------- | -------------- |
+| Yaḥyā Ibn-Ḥakam al-Ġazāl (wd:Q428185)        | Yaḥyā Ibn-Ḥakam al-Ġazāl (lang:en)      | 772 (xsd:int)  | 866 (xsd:int)  |
+| Álvaro of Córdoba (wd:Q3893707)              | Álvaro of Córdoba (lang:en)             | 800 (xsd:int)  | 861 (xsd:int)  |
+| Abbas Ibn Firnas (wd:Q305975)                | Abbas Ibn Firnas (lang:en)              | 810 (xsd:int)  | 887 (xsd:int)  |
+| Muqàddam ibn Muafa al-Qabri (wd:Q11938003)   | Muqàddam ibn Muafa al-Qabri (lang:en)   | 847 (xsd:int)  | 912 (xsd:int)  |
+| Saʽid bin Judi (wd:Q110811642)               | Saʽid bin Judi (lang:en)                | 852 (xsd:int)  | 897 (xsd:int)  |
+| ...                                          | ...                                     | ...            | ...            |
+| Jorge Manrique (wd:Q389233)                  | Jorge Manrique (lang:en)                | 1440 (xsd:int) | 1479 (xsd:int) |
+| Garci Sánchez de Badajoz (wd:Q5522075)       | Garci Sánchez de Badajoz (lang:en)      | 1460 (xsd:int) | 1526 (xsd:int) |
+| Pedro Nuñez Delgado (wd:Q105773530)          | Pedro Nuñez Delgado (lang:en)           | 1478 (xsd:int) | 1535 (xsd:int) |
+| Pedro Fernández de Castilleja (wd:Q24942922) | Pedro Fernández de Castilleja (lang:en) | 1487 (xsd:int) | 1574 (xsd:int) |
+| Juan Ginés de Sepúlveda (wd:Q940132)         | Juan Ginés de Sepúlveda (lang:en)       | 1490 (xsd:int) | 1573 (xsd:int) |","SELECT DISTINCT ?poet ?poetLabel(YEAR(?birthDate) AS ?birthYear)(YEAR(?deathDate) AS ?deathYear) WHERE {
+  ?poet wdt:P106 wd:Q49757 .
+  ?poet wdt:P21 wd:Q6581097 .
+  ?poet wdt:P19 ?birthPlace .
+  ?birthPlace wdt:P131 * wd:Q5783 .
+  ?poet wdt:P569 ?birthDate .
+  ?poet wdt:P570 ?deathDate .
+  ?poet rdfs:label ?poetLabel .
+  FILTER(LANG(?poetLabel) = ""en"")
+  FILTER(YEAR(?birthDate) >= 700 && YEAR(?birthDate) <= 1500)
+}
+ORDER BY ?birthYear",ComplexQA/Monaco_non_time_complex/00037.json
+What were the British royal houses and how did each of them take the throne,"[['House of Stuart', 'Bill of Rights 1689'], ['House of Hanover', 'A great-grandson of King James VI and I, George I, who was prince-elector of Hanover, became the first Hanoverian monarch of Great Britain and Ireland in 1714.'], ['House of Saxe-Coburg and Gotha', ""Ernest I's second son, Prince Albert (1819–1861), married his first cousin Queen Victoria in 1840 (Victoria's mother was a sister of Ernest I). Prince Albert thus is the progenitor of the United Kingdom's current royal family, called the House of Windsor since 1917""], ['House of Windsor', 'Eventually in 1901, a line of the House of Saxe-Coburg and Gotha succeeded the House of Hanover to the British monarchy with the accession of King Edward VII, son of Queen Victoria and Prince Albert of Saxe-Coburg and Gotha. In 1917, the name of the British royal house was changed from the German Saxe-Coburg and Gotha to the English Windsor, taking its name from the royal residence in Berkshire']]","House of Wessex|House of Wessex (lang:en)|Alfred the Great|Alfred the Great (lang:en)|0871-04-27T00:00:00Z|
+House of Knýtlinga|House of Knýtlinga (lang:en)|Sweyn I of Denmark|Sweyn I of Denmark (lang:en)|1013-01-01T00:00:00Z|
+House of Godwin|House of Godwin (lang:en)|Harold Godwinson|Harold Godwinson (lang:en)|1066-01-11T00:00:00Z|
+House of Normandy|House of Normandy (lang:en)|William the Conqueror|William the Conqueror (lang:en)|1066-12-31T00:00:00Z|
+House of Blois|House of Blois (lang:en)|Stephen, King of England|Stephen, King of England (lang:en)|1135-12-29T00:00:00Z|
+...|...|...|...|...|...
+Spanish House of Habsburg|Spanish House of Habsburg (lang:en)|Philip II of Spain|Philip II of Spain (lang:en)|1554-08-04T00:00:00Z|
+Habsburg Spain|Habsburg Spain (lang:en)|Philip II of Spain|Philip II of Spain (lang:en)|1554-08-04T00:00:00Z|
+House of Stewart di Darnley|House of Stewart di Darnley (lang:en)|James VI and I|James VI and I (lang:en)|1603-04-03T00:00:00Z|
+House of Stuart|House of Stuart (lang:en)|Charles I of England|Charles I of England (lang:en)|1625-03-27T00:00:00Z|
+House of Orange-Nassau|House of Orange-Nassau (lang:en)|William III of England|William III of England (lang:en)|1689-02-13T00:00:00Z|","| dynasty                                   | dynastyLabel                          | monarch                              | monarchLabel                       | startTime                           | methodLabel |
+| ----------------------------------------- | ------------------------------------- | ------------------------------------ | ---------------------------------- | ----------------------------------- | ----------- |
+| House of Wessex (wd:Q511482)              | House of Wessex (lang:en)             | Alfred the Great (wd:Q83476)         | Alfred the Great (lang:en)         | 0871-04-27T00:00:00Z (xsd:dateTime) |             |
+| House of Knýtlinga (wd:Q1064630)          | House of Knýtlinga (lang:en)          | Sweyn I of Denmark (wd:Q181896)      | Sweyn I of Denmark (lang:en)       | 1013-01-01T00:00:00Z (xsd:dateTime) |             |
+| House of Godwin (wd:Q65089021)            | House of Godwin (lang:en)             | Harold Godwinson (wd:Q159597)        | Harold Godwinson (lang:en)         | 1066-01-11T00:00:00Z (xsd:dateTime) |             |
+| House of Normandy (wd:Q516569)            | House of Normandy (lang:en)           | William the Conqueror (wd:Q37594)    | William the Conqueror (lang:en)    | 1066-12-31T00:00:00Z (xsd:dateTime) |             |
+| House of Blois (wd:Q1590002)              | House of Blois (lang:en)              | Stephen, King of England (wd:Q60849) | Stephen, King of England (lang:en) | 1135-12-29T00:00:00Z (xsd:dateTime) |             |
+| ...                                       | ...                                   | ...                                  | ...                                | ...                                 | ...         |
+| Spanish House of Habsburg (wd:Q3624777)   | Spanish House of Habsburg (lang:en)   | Philip II of Spain (wd:Q34417)       | Philip II of Spain (lang:en)       | 1554-08-04T00:00:00Z (xsd:dateTime) |             |
+| Habsburg Spain (wd:Q600093)               | Habsburg Spain (lang:en)              | Philip II of Spain (wd:Q34417)       | Philip II of Spain (lang:en)       | 1554-08-04T00:00:00Z (xsd:dateTime) |             |
+| House of Stewart di Darnley (wd:Q3973466) | House of Stewart di Darnley (lang:en) | James VI and I (wd:Q79972)           | James VI and I (lang:en)           | 1603-04-03T00:00:00Z (xsd:dateTime) |             |
+| House of Stuart (wd:Q179840)              | House of Stuart (lang:en)             | Charles I of England (wd:Q81506)     | Charles I of England (lang:en)     | 1625-03-27T00:00:00Z (xsd:dateTime) |             |
+| House of Orange-Nassau (wd:Q155483)       | House of Orange-Nassau (lang:en)      | William III of England (wd:Q129987)  | William III of England (lang:en)   | 1689-02-13T00:00:00Z (xsd:dateTime) |             |","SELECT ?dynasty ?dynastyLabel ?monarch ?monarchLabel ?startTime ?methodLabel WHERE {
+  {
+    SELECT ?dynasty(MIN(?startTime) AS ?earliestStart) WHERE {
+      ?monarch wdt:P53 ?dynasty .
+      ?monarch p:P39 ?position .
+      ?position ps:P39 / wdt:P279 * wd:Q18810062 .
+      ?position pq:P580 ?startTime .
+      FILTER(?startTime >= ""0001-01-01T00:00:00Z"" ^^ xsd:dateTime)
+    }
+    GROUP BY ?dynasty
+  }
+  ?monarch wdt:P53 ?dynasty .
+  ?monarch p:P39 ?position .
+  ?position ps:P39 / wdt:P279 * wd:Q18810062 .
+  ?position pq:P580 ?startTime .
+  FILTER(?startTime = ?earliestStart)
+  OPTIONAL {
+    ?position pq:P5102 ?method .
+    ?method rdfs:label ?methodLabel .
+    FILTER(LANG(?methodLabel) = ""en"")
+  }
+  ?dynasty rdfs:label ?dynastyLabel .
+  ?monarch rdfs:label ?monarchLabel .
+  FILTER(LANG(?dynastyLabel) = ""en"")
+  FILTER(LANG(?monarchLabel) = ""en"")
+}
+ORDER BY ?startTime",ComplexQA/Monaco_non_time_complex/00038.json
+Tell me what's the national dish of each country in Central Europe,"[['Austria', 'Wiener schnitzel'], ['Croatia', 'Zagorski štrukli'], ['Czechia', 'vepřo knedlo zelo (Roast pork with dumplings) and sauerkraut)'], ['Czechia', 'svíčková'], ['Germany', 'schnitzel'], ['Germany', 'schweinshaxe'], ['Germany', 'bratwurst'], ['Germany', 'sauerbraten'], ['Germany', 'döner kebab'], ['Germany', 'currywurst'], ['Germany', 'eisbein with sauerkraut'], ['Hungary', 'Goulash'], ['Lithuania', 'bigos'], ['Lithuania', 'cepelinai'], ['Lithuania', 'šaltibarščiai'], ['Poland', 'bigos'], ['Poland', 'pierogi'], ['Poland', 'kotlet schabowy'], ['Poland', 'Barszcz, Rosół'], ['Slovakia', 'pierogi'], ['Slovakia', 'bryndzové halušky'], ['Slovenia', 'buckwheat dumplings'], ['Slovenia', 'štruklji'], ['Slovenia', 'Idrijski žlikrofi'], ['Switzerland', 'Fondue'], ['Switzerland', 'Muesli'], ['Switzerland', 'Raclette'], ['Switzerland', 'Rösti'], ['Switzerland', 'Cervelat'], ['Switzerland', 'Zürcher geschnetzeltes']]","Czech Republic|Czech Republic (lang:en)|wd:Q107782305|
+Czech Republic|Czech Republic (lang:en)|Vepřo knedlo zelo|Vepřo knedlo zelo (lang:en)
+Czech Republic|Czech Republic (lang:en)|wd:Q63349173|
+Czech Republic|Czech Republic (lang:en)|Christmas carp|Christmas carp (lang:en)
+Czech Republic|Czech Republic (lang:en)|serviettenknödel|serviettenknödel (lang:en)
+...|...|...|...
+Austria|Austria (lang:en)|wd:Q114496226|
+Austria|Austria (lang:en)|wd:Q111913166|
+Austria|Austria (lang:en)|Erdäpfelknödel|Erdäpfelknödel (lang:en)
+Austria|Austria (lang:en)|St. Martin's goose|St. Martin's goose (lang:en)
+Austria|Austria (lang:en)|wd:Q100148345|","| country                  | countryLabel             | dish                               | dishLabel                    |
+| ------------------------ | ------------------------ | ---------------------------------- | ---------------------------- |
+| Czech Republic (wd:Q213) | Czech Republic (lang:en) | wd:Q107782305                      |                              |
+| Czech Republic (wd:Q213) | Czech Republic (lang:en) | Vepřo knedlo zelo (wd:Q107308168)  | Vepřo knedlo zelo (lang:en)  |
+| Czech Republic (wd:Q213) | Czech Republic (lang:en) | wd:Q63349173                       |                              |
+| Czech Republic (wd:Q213) | Czech Republic (lang:en) | Christmas carp (wd:Q2555488)       | Christmas carp (lang:en)     |
+| Czech Republic (wd:Q213) | Czech Republic (lang:en) | serviettenknödel (wd:Q2274269)     | serviettenknödel (lang:en)   |
+| ...                      | ...                      | ...                                | ...                          |
+| Austria (wd:Q40)         | Austria (lang:en)        | wd:Q114496226                      |                              |
+| Austria (wd:Q40)         | Austria (lang:en)        | wd:Q111913166                      |                              |
+| Austria (wd:Q40)         | Austria (lang:en)        | Erdäpfelknödel (wd:Q101198711)     | Erdäpfelknödel (lang:en)     |
+| Austria (wd:Q40)         | Austria (lang:en)        | St. Martin's goose (wd:Q101122441) | St. Martin's goose (lang:en) |
+| Austria (wd:Q40)         | Austria (lang:en)        | wd:Q100148345                      |                              |","SELECT DISTINCT ?country ?countryLabel ?dish ?dishLabel WHERE {
+  VALUES ?country {
+    wd:Q40 wd:Q213 wd:Q214 wd:Q36 wd:Q218 wd:Q39 wd:Q697 wd:Q38
+  }
+  .
+  ?dish wdt:P495 ?country .
+  ?dish wdt:P31 / wdt:P279 * wd:Q2095 .
+  OPTIONAL {
+    ?country rdfs:label ?countryLabel
+    FILTER(LANG(?countryLabel) = 'en')
+  }
+  OPTIONAL {
+    ?dish rdfs:label ?dishLabel
+    FILTER(LANG(?dishLabel) = 'en')
+  }
+}
+ORDER BY ?country",ComplexQA/Monaco_non_time_complex/00041.json
+What are the main prevention methods for each of the four most common cancers among women,"[['colorectal cancer', 'Diagnosis of cases of colorectal cancer through screening'], ['colorectal cancer', 'engaging in physical activity'], ['colorectal cancer', 'consuming a diet high in fiber'], ['colorectal cancer', 'quitting smoking and limiting alcohol consumption'], ['colorectal cancer', 'Aspirin'], ['colorectal cancer', 'celecoxib'], ['cervical cancer', 'Pap test screening'], ['lung cancer', 'avoid hazardous chemicals and quit smoking'], ['breast cancer', 'maintaining a healthy weight'], ['breast cancer', 'reducing alcohol use'], ['breast cancer', 'increasing physical activity'], ['breast cancer', 'breast-feeding'], ['breast cancer', 'Removal of both breasts before any cancer has been diagnosed or any suspicious lump or other lesion has appeared'], ['breast cancer', 'selective estrogen receptor modulators'], ['breast cancer', 'Aromatase inhibitors']]","breast cancer|breast cancer management
+breast cancer|idarubicin
+breast cancer|doxorubicin
+breast cancer|letrozole
+breast cancer|melphalan
+...|...
+breast cancer|dexrazoxane
+breast cancer|fulvestrant
+breast cancer|neratinib
+breast cancer|leuprolide
+colorectal cancer|irinotecan","| cancer                         | method                                 |
+| ------------------------------ | -------------------------------------- |
+| breast cancer (wd:Q128581)     | breast cancer management (wd:Q1661453) |
+| breast cancer (wd:Q128581)     | idarubicin (wd:Q1063862)               |
+| breast cancer (wd:Q128581)     | doxorubicin (wd:Q18936)                |
+| breast cancer (wd:Q128581)     | letrozole (wd:Q194974)                 |
+| breast cancer (wd:Q128581)     | melphalan (wd:Q2298283)                |
+| ...                            | ...                                    |
+| breast cancer (wd:Q128581)     | dexrazoxane (wd:Q524995)               |
+| breast cancer (wd:Q128581)     | fulvestrant (wd:Q5508491)              |
+| breast cancer (wd:Q128581)     | neratinib (wd:Q6995920)                |
+| breast cancer (wd:Q128581)     | leuprolide (wd:Q907160)                |
+| colorectal cancer (wd:Q188874) | irinotecan (wd:Q412197)                |","SELECT ?cancer ?method WHERE {
+  VALUES ?cancer {
+    wd:Q128581 wd:Q188874 wd:Q47912 wd:Q160105
+  }
+  {
+    ?cancer wdt:P11738 ?method
+  } UNION {
+    ?cancer wdt:P2176 ?method
+  } UNION {
+    ?cancer wdt:P4954 ?method
+  }
+}",ComplexQA/Monaco_non_time_complex/00043.json
+What films did Tom Hanks appear in between 1985 and 2015,"['The Man with One Red Shoe', 'Volunteers', 'The Money Pit', 'Nothing in Common', 'Every Time We Say Goodbye', 'Dragnet', 'Big', 'Punchline', ""The 'Burbs"", 'Turner & Hooch', 'Joe Versus the Volcano', 'The Bonfire of the Vanities', 'Radio Flyer', 'A League of Their Own', 'Sleepless in Seattle', 'Philadelphia', 'Forrest Gump', 'Apollo 13', 'Toy Story', 'That Thing You Do!', 'Saving Private Ryan', ""You've Got Mail"", 'Toy Story 2', 'The Green Mile', 'Cast Away', 'Road to Perdition', 'Catch Me If You Can', 'The Ladykillers', 'The Terminal', 'The Polar Express', 'The Da Vinci Code', ""Charlie Wilson's War"", 'The Great Buck Howard', 'Angels & Demons', 'Toy Story 3', 'Larry Crowne', 'Extremely Loud & Incredibly Close', 'Cloud Atlas', 'Captain Phillips', 'Saving Mr. Banks', 'Bridge of Spies']","Volunteers|Volunteers (lang:en)
+The Man with One Red Shoe|The Man with One Red Shoe (lang:en)
+The Money Pit|The Money Pit (lang:en)
+The Money Pit|The Money Pit (lang:en)
+Nothing in Common|Nothing in Common (lang:en)
+...|...
+And the Oscar Goes To...|And the Oscar Goes To... (lang:en)
+I Really Like You|I Really Like You (lang:en)
+Bridge of Spies|Bridge of Spies (lang:en)
+Bridge of Spies|Bridge of Spies (lang:en)
+Ithaca|Ithaca (lang:en)","| film                                    | filmLabel                           |
+| --------------------------------------- | ----------------------------------- |
+| Volunteers (wd:Q1786324)                | Volunteers (lang:en)                |
+| The Man with One Red Shoe (wd:Q1161624) | The Man with One Red Shoe (lang:en) |
+| The Money Pit (wd:Q969651)              | The Money Pit (lang:en)             |
+| The Money Pit (wd:Q969651)              | The Money Pit (lang:en)             |
+| Nothing in Common (wd:Q1781116)         | Nothing in Common (lang:en)         |
+| ...                                     | ...                                 |
+| And the Oscar Goes To... (wd:Q47500942) | And the Oscar Goes To... (lang:en)  |
+| I Really Like You (wd:Q121895310)       | I Really Like You (lang:en)         |
+| Bridge of Spies (wd:Q18067135)          | Bridge of Spies (lang:en)           |
+| Bridge of Spies (wd:Q18067135)          | Bridge of Spies (lang:en)           |
+| Ithaca (wd:Q18151148)                   | Ithaca (lang:en)                    |","SELECT ?film ?filmLabel WHERE {
+  ?film wdt:P161 wd:Q2263 .
+  ?film wdt:P577 ?releaseDate .
+  FILTER(YEAR(?releaseDate) >= 1985 && YEAR(?releaseDate) <= 2015)
+  .
+  ?film rdfs:label ?filmLabel .
+  FILTER(LANG(?filmLabel) = ""en"")
+}
+ORDER BY YEAR(?releaseDate)",ComplexQA/Monaco_non_time_complex/00045.json
+What were the incidents that sparked each one of the Napoleonic wars,"[['the Peninsular War', 'French and Spanish armies invaded and occupied Portugal in 1807 by transiting through Spain.'], ['the War of the Third Coalition', 'Napoleon sent an expeditionary force to attempt to re-establish control over Haiti, which led Britain to declare war on France on 18 May 1803.'], ['the War of the Fourth Coalition', 'Prussian ultimatum'], ['the War of the Fifth Coalition', 'The deterioration of British-french relations after 1802 Treaty of Amiens'], ['the War of the Sixth Coalition', 'disastrous French invasion of Russia of 1812'], ['the War of the Seventh Coalition', 'Waterloo campaign'], ['the French invasion of Russia', 'control of Poland']]","War of the Sixth Coalition|War of the Sixth Coalition (lang:en)
+War of the Third Coalition|War of the Third Coalition (lang:en)
+War of the Seventh Coalition|War of the Seventh Coalition (lang:en)
+Portuguese conquest of French Guiana|Portuguese conquest of French Guiana (lang:en)
+War of the Fourth Coalition|War of the Fourth Coalition (lang:en)
+War of the Fifth Coalition|War of the Fifth Coalition (lang:en)","| war                                                | warLabel                                       |
+| -------------------------------------------------- | ---------------------------------------------- |
+| War of the Sixth Coalition (wd:Q138107)            | War of the Sixth Coalition (lang:en)           |
+| War of the Third Coalition (wd:Q249232)            | War of the Third Coalition (lang:en)           |
+| War of the Seventh Coalition (wd:Q2724511)         | War of the Seventh Coalition (lang:en)         |
+| Portuguese conquest of French Guiana (wd:Q3286965) | Portuguese conquest of French Guiana (lang:en) |
+| War of the Fourth Coalition (wd:Q605977)           | War of the Fourth Coalition (lang:en)          |
+| War of the Fifth Coalition (wd:Q684324)            | War of the Fifth Coalition (lang:en)           |","SELECT ?war ?warLabel WHERE {
+  wd:Q78994 wdt:P527 ?war .
+  ?war rdfs:label ?warLabel .
+  FILTER(LANG(?warLabel) = 'en')
+  .
+}",ComplexQA/Monaco_non_time_complex/00051.json
+What are the different branches and offices of the Biden White House,"[['{}'], ['Office of the Chief of Staff', 'Office of the National Security Advisor', 'Domestic Policy Council', 'National Economic Council', 'Office of Cabinet Affairs', 'Office of Digital Strategy', 'White House Office of Communications', 'Office of the First Lady', 'Office of Intergovernmental Affairs', 'Office of Legislative Affairs', 'Office of Management and Administration', 'Office of Political Affairs', 'Office of Public Engagement', 'Office of Presidential Personnel', 'Office of Scheduling and Advance', 'Office of the Staff Secretary', 'Office of White House Counsel', 'Oval Office Operations', 'White House Fellows', 'White House Military Office']]","Council of Economic Advisers|Council of Economic Advisers (lang:en)
+Council on Environmental Quality|Council on Environmental Quality (lang:en)
+Homeland Security Advisor|Homeland Security Advisor (lang:en)
+National Labor Relations Board|National Labor Relations Board (lang:en)
+Office of Management and Budget|Office of Management and Budget (lang:en)
+...|...
+United States Homeland Security Council|United States Homeland Security Council (lang:en)
+United States National Security Advisor|United States National Security Advisor (lang:en)
+United States National Security Council|United States National Security Council (lang:en)
+U.S. Special Presidential Envoy for Climate|U.S. Special Presidential Envoy for Climate (lang:en)
+White House Office|White House Office (lang:en)","| office                                                      | officeLabel                                           |
+| ----------------------------------------------------------- | ----------------------------------------------------- |
+| Council of Economic Advisers (wd:Q1137023)                  | Council of Economic Advisers (lang:en)                |
+| Council on Environmental Quality (wd:Q5176561)              | Council on Environmental Quality (lang:en)            |
+| Homeland Security Advisor (wd:Q28069466)                    | Homeland Security Advisor (lang:en)                   |
+| National Labor Relations Board (wd:Q3024155)                | National Labor Relations Board (lang:en)              |
+| Office of Management and Budget (wd:Q284392)                | Office of Management and Budget (lang:en)             |
+| ...                                                         | ...                                                   |
+| United States Homeland Security Council (wd:Q7889925)       | United States Homeland Security Council (lang:en)     |
+| United States National Security Advisor (wd:Q1414246)       | United States National Security Advisor (lang:en)     |
+| United States National Security Council (wd:Q851756)        | United States National Security Council (lang:en)     |
+| U.S. Special Presidential Envoy for Climate (wd:Q103974274) | U.S. Special Presidential Envoy for Climate (lang:en) |
+| White House Office (wd:Q9287183)                            | White House Office (lang:en)                          |","SELECT DISTINCT ?office ?officeLabel WHERE {
+  ?office wdt:P749 wd:Q1355327 .
+  OPTIONAL {
+    ?office wdt:P576 ?dissolved .
+  }
+  FILTER(! BOUND(?dissolved) || ?dissolved > ""2021-01-20T00:00:00Z"" ^^ xsd:dateTime)
+  OPTIONAL {
+    ?office rdfs:label ?officeLabel
+    FILTER(LANG(?officeLabel) = ""en"")
+    .
+  }
+}
+ORDER BY ?officeLabel",ComplexQA/Monaco_non_time_complex/00052.json
+Which animals belong to the same family as coyotes,"['Short-eared dog', 'African wolf', 'Coyote', 'Dog', 'Ethiopian wolf', 'Golden jackal', 'Wolf', 'Crab-eating fox', 'Maned wolf', 'Dhole', 'Falkland Islands wolf', 'South American fox', 'Black-backed jackal', 'Side-striped jackal', 'Culpeo', ""Darwin's fox"", 'Hoary fox', 'Pampas fox', 'Sechuran fox', 'South American gray fox', 'African wild dog', 'Bush dog', 'Common raccoon dog', 'Japanese raccoon dog', 'Bat-eared fox', 'Arctic fox', 'Bengal fox', ""Blanford's fox"", 'Cap fox', 'Corsac fox', 'Fennec fox', 'Kit fox', 'Pale fox', ""Rüppell's fox"", 'Red fox', 'Swift fox', 'Tibetan fox', 'Gray fox', 'Island fox']","Canis floridanus|Canis floridanus (lang:en)
+African wolf|African wolf (lang:en)
+Canis procyonoides|Canis procyonoides (lang:en)
+Canis antonii|Canis antonii (lang:en)
+Canis teilhardi|Canis teilhardi (lang:en)
+Canis longdanensis|Canis longdanensis (lang:en)
+Canis brevicephalus|Canis brevicephalus (lang:en)
+Canis chihliensis|Canis chihliensis (lang:en)
+Canis alpinus|Canis alpinus (lang:en)
+Canis australis|Canis australis (lang:en)","| species                             | speciesLabel                  |
+| ----------------------------------- | ----------------------------- |
+| Canis floridanus (wd:Q104253203)    | Canis floridanus (lang:en)    |
+| African wolf (wd:Q105272263)        | African wolf (lang:en)        |
+| Canis procyonoides (wd:Q106448077)  | Canis procyonoides (lang:en)  |
+| Canis antonii (wd:Q107368660)       | Canis antonii (lang:en)       |
+| Canis teilhardi (wd:Q107368667)     | Canis teilhardi (lang:en)     |
+| Canis longdanensis (wd:Q107368673)  | Canis longdanensis (lang:en)  |
+| Canis brevicephalus (wd:Q107368675) | Canis brevicephalus (lang:en) |
+| Canis chihliensis (wd:Q107368718)   | Canis chihliensis (lang:en)   |
+| Canis alpinus (wd:Q109647079)       | Canis alpinus (lang:en)       |
+| Canis australis (wd:Q109647081)     | Canis australis (lang:en)     |","SELECT ?species ?speciesLabel WHERE {
+  wd:Q44299 wdt:P171 / wdt:P171 ?family .
+  ?species wdt:P171 / wdt:P171 ?family .
+  ?species wdt:P105 wd:Q7432 .
+  ?species rdfs:label ?speciesLabel .
+  FILTER(LANG(?speciesLabel) = ""en"")
+}
+LIMIT 10",ComplexQA/Monaco_non_time_complex/00053.json
+In which city is each Charles Dickens novel set,"[['The Pickwick Papers', 'London'], ['Oliver Twist', 'London'], ['The Old Curiosity Shop', 'London'], ['Barnaby Rudge', 'London (Chigwell)'], ['Martin Chuzzlewit', 'London'], ['Bleak House', 'London'], ['Hard Times', 'Coketown'], ['Little Dorrit', 'London'], ['A Tale of Two Cities', 'London'], ['A Tale of Two Cities', 'Paris'], ['Great Expectations', 'Kent'], ['Great Expectations', 'London'], ['Our Mutual Friend', 'London'], ['No Thoroughfare', 'London'], ['The Mystery of Edwin Drood', 'Cloisterham'], ['Nicholas Nickleby', 'London'], ['Dombey and Son', 'London'], ['David Copperfield', 'Blunderstone']]","Oliver Twist|Oliver Twist (lang:en)|London|London (lang:en)
+Great Expectations|Great Expectations (lang:en)|London|London (lang:en)
+The Old Curiosity Shop|The Old Curiosity Shop (lang:en)|London|London (lang:en)
+A Tale of Two Cities|A Tale of Two Cities (lang:en)|London|London (lang:en)
+Gone Astray - Night Walks|Gone Astray - Night Walks (lang:en)|London|London (lang:en)
+A Christmas Carol|A Christmas Carol (lang:en)|London|London (lang:en)
+The Cricket on the Hearth|The Cricket on the Hearth (lang:en)|London|London (lang:en)
+Nicholas Nickleby|Nicholas Nickleby (lang:en)|London|London (lang:en)","| novel                                   | novelLabel                          | city            | cityLabel        |
+| --------------------------------------- | ----------------------------------- | --------------- | ---------------- |
+| Oliver Twist (wd:Q164974)               | Oliver Twist (lang:en)              | London (wd:Q84) | London (lang:en) |
+| Great Expectations (wd:Q219552)         | Great Expectations (lang:en)        | London (wd:Q84) | London (lang:en) |
+| The Old Curiosity Shop (wd:Q2700616)    | The Old Curiosity Shop (lang:en)    | London (wd:Q84) | London (lang:en) |
+| A Tale of Two Cities (wd:Q308918)       | A Tale of Two Cities (lang:en)      | London (wd:Q84) | London (lang:en) |
+| Gone Astray - Night Walks (wd:Q3899721) | Gone Astray - Night Walks (lang:en) | London (wd:Q84) | London (lang:en) |
+| A Christmas Carol (wd:Q62879)           | A Christmas Carol (lang:en)         | London (wd:Q84) | London (lang:en) |
+| The Cricket on the Hearth (wd:Q825220)  | The Cricket on the Hearth (lang:en) | London (wd:Q84) | London (lang:en) |
+| Nicholas Nickleby (wd:Q847642)          | Nicholas Nickleby (lang:en)         | London (wd:Q84) | London (lang:en) |","SELECT ?novel ?novelLabel ?city ?cityLabel WHERE {
+  ?novel wdt:P50 wd:Q5686 .
+  ?novel wdt:P840 ?city .
+  ?city wdt:P31 wd:Q515 .
+  ?novel rdfs:label ?novelLabel .
+  ?city rdfs:label ?cityLabel .
+  FILTER(LANG(?novelLabel) = 'en' && LANG(?cityLabel) = 'en')
+}",ComplexQA/Monaco_non_time_complex/00054.json
+"Listed by date of Theatrical release, chronologically, what are Neil Simon's plays which have also been made into movies","['Come Blow Your Horn (1961)', 'Barefoot in the Park (1963)', 'The Odd Couple (1965)', 'Sweet Charity (1966)', 'The Star-Spangled Girl (1966)', 'Plaza Suite (1968)', 'Last of the Red Hot Lovers (1969)', 'The Gingerbread Lady (1970)', 'The Sunshine Boys (1972)', 'The Prisoner of Second Avenue (1971)', 'California Suite (1976)', 'Chapter Two (1977)', 'I Ought to Be in Pictures (1980)', 'Brighton Beach Memoirs (1983)', 'Biloxi Blues (1985)', 'Broadway Bound (1986)', 'Lost in Yonkers (1991)', ""Jake's Women (1992)"", 'Laughter on the 23rd Floor (1993)', 'London Suite (1995)']","Come Blow Your Horn|Come Blow Your Horn (lang:en)|Come Blow Your Horn|Come Blow Your Horn (lang:en)|1963-01-01T00:00:00Z
+The Odd Couple|The Odd Couple (lang:en)|The Odd Couple|The Odd Couple (lang:en)|1968-01-01T00:00:00Z
+Plaza Suite|Plaza Suite (lang:en)|Plaza Suite|Plaza Suite (lang:en)|1971-05-12T00:00:00Z
+Last of the Red Hot Lovers|Last of the Red Hot Lovers (lang:en)|Last of the Red Hot Lovers|Last of the Red Hot Lovers (lang:en)|1972-08-17T00:00:00Z
+The Prisoner of Second Avenue|The Prisoner of Second Avenue (lang:en)|The Prisoner of Second Avenue|The Prisoner of Second Avenue (lang:en)|1975-03-14T00:00:00Z
+The Sunshine Boys|The Sunshine Boys (lang:en)|The Sunshine Boys|The Sunshine Boys (lang:en)|1975-11-06T00:00:00Z
+Chapter Two|Chapter Two (lang:en)|Chapter Two|Chapter Two (lang:en)|1979-01-01T00:00:00Z
+Brighton Beach Memoirs|Brighton Beach Memoirs (lang:en)|Brighton Beach Memoirs|Brighton Beach Memoirs (lang:en)|1986-12-25T00:00:00Z
+Lost in Yonkers|Lost in Yonkers (lang:en)|Lost in Yonkers|Lost in Yonkers (lang:en)|1993-05-14T00:00:00Z","| play                                          | playLabel                               | film                                        | filmLabel                               | earliestRelease                     |
+| --------------------------------------------- | --------------------------------------- | ------------------------------------------- | --------------------------------------- | ----------------------------------- |
+| Come Blow Your Horn (wd:Q3612365)             | Come Blow Your Horn (lang:en)           | Come Blow Your Horn (wd:Q1758773)           | Come Blow Your Horn (lang:en)           | 1963-01-01T00:00:00Z (xsd:dateTime) |
+| The Odd Couple (wd:Q1889422)                  | The Odd Couple (lang:en)                | The Odd Couple (wd:Q1077690)                | The Odd Couple (lang:en)                | 1968-01-01T00:00:00Z (xsd:dateTime) |
+| Plaza Suite (wd:Q4797873)                     | Plaza Suite (lang:en)                   | Plaza Suite (wd:Q3280692)                   | Plaza Suite (lang:en)                   | 1971-05-12T00:00:00Z (xsd:dateTime) |
+| Last of the Red Hot Lovers (wd:Q6494843)      | Last of the Red Hot Lovers (lang:en)    | Last of the Red Hot Lovers (wd:Q6494844)    | Last of the Red Hot Lovers (lang:en)    | 1972-08-17T00:00:00Z (xsd:dateTime) |
+| The Prisoner of Second Avenue (wd:Q107521621) | The Prisoner of Second Avenue (lang:en) | The Prisoner of Second Avenue (wd:Q1169965) | The Prisoner of Second Avenue (lang:en) | 1975-03-14T00:00:00Z (xsd:dateTime) |
+| The Sunshine Boys (wd:Q925855)                | The Sunshine Boys (lang:en)             | The Sunshine Boys (wd:Q15623971)            | The Sunshine Boys (lang:en)             | 1975-11-06T00:00:00Z (xsd:dateTime) |
+| Chapter Two (wd:Q1169421)                     | Chapter Two (lang:en)                   | Chapter Two (wd:Q16972394)                  | Chapter Two (lang:en)                   | 1979-01-01T00:00:00Z (xsd:dateTime) |
+| Brighton Beach Memoirs (wd:Q4967605)          | Brighton Beach Memoirs (lang:en)        | Brighton Beach Memoirs (wd:Q17512010)       | Brighton Beach Memoirs (lang:en)        | 1986-12-25T00:00:00Z (xsd:dateTime) |
+| Lost in Yonkers (wd:Q4817639)                 | Lost in Yonkers (lang:en)               | Lost in Yonkers (wd:Q6684435)               | Lost in Yonkers (lang:en)               | 1993-05-14T00:00:00Z (xsd:dateTime) |","SELECT ?play ?playLabel ?film ?filmLabel(MIN(?release) AS ?earliestRelease) WHERE {
+  ?play wdt:P50 wd:Q315808 .
+  ?film wdt:P144 ?play ; wdt:P31 wd:Q11424 ; wdt:P577 ?release .
+  OPTIONAL {
+    ?play rdfs:label ?playLabel
+    FILTER(LANG(?playLabel) = ""en"")
+  }
+  OPTIONAL {
+    ?film rdfs:label ?filmLabel
+    FILTER(LANG(?filmLabel) = ""en"")
+  }
+}
+GROUP BY ?play ?playLabel ?film ?filmLabel
+ORDER BY ?earliestRelease",ComplexQA/Monaco_non_time_complex/00057.json
+"Which historic empires ruled over Anatolia from the classical period and until modern-day Tukey, and during what years","[['Assyrian Empire', '911 BC to 626 BC'], ['Kingdom of Lydia', '1200 BC to 546 BC'], ['Macedonian Empire', '335 BC to 323 BC'], ['Seleucid Empire', '312 BC to 63 BC'], ['Byzantine Empire', '324 to 1475'], ['Sultanate of Rum', '1077-1086 and 1303-1308'], ['Seljuk Empire', '1077-1308'], ['Achaemenid Empire', '550BC-330BC'], ['Roman Empire', '88CE-217CE'], ['Ottoman Empire', 'c. 1299–1922']]","Roman Empire|Roman Empire (lang:en)|-0026-01-01T00:00:00Z|0395-01-01T00:00:00Z
+Byzantine Empire|Byzantine Empire (lang:en)|0395-01-01T00:00:00Z|1354-01-01T00:00:00Z
+Ottoman Empire|Ottoman Empire (lang:en)|1354-01-01T00:00:00Z|1922-01-01T00:00:00Z","| empire                       | empireLabel                | start                                | end                                 |
+| ---------------------------- | -------------------------- | ------------------------------------ | ----------------------------------- |
+| Roman Empire (wd:Q2277)      | Roman Empire (lang:en)     | -0026-01-01T00:00:00Z (xsd:dateTime) | 0395-01-01T00:00:00Z (xsd:dateTime) |
+| Byzantine Empire (wd:Q12544) | Byzantine Empire (lang:en) | 0395-01-01T00:00:00Z (xsd:dateTime)  | 1354-01-01T00:00:00Z (xsd:dateTime) |
+| Ottoman Empire (wd:Q12560)   | Ottoman Empire (lang:en)   | 1354-01-01T00:00:00Z (xsd:dateTime)  | 1922-01-01T00:00:00Z (xsd:dateTime) |","SELECT ?empire ?empireLabel ?start ?end WHERE {
+  wd:Q51614 p:P17 ?statement .
+  ?statement ps:P17 ?empire .
+  ?empire wdt:P31 / wdt:P279 * wd:Q3024240 .
+  OPTIONAL {
+    ?statement pq:P580 ?start .
+  }
+  OPTIONAL {
+    ?statement pq:P582 ?end .
+  }
+  OPTIONAL {
+    ?empire rdfs:label ?empireLabel
+    FILTER(LANG(?empireLabel) = ""en"")
+    .
+  }
+}
+ORDER BY ?start",ComplexQA/Monaco_non_time_complex/00073.json
+What conflicts was Romania involved in during the 1900s,"[""1907 Romanian Peasants' Revolt"", 'Second Balkan War', 'World War I', 'Polish–Ukrainian War', 'Hungarian–Romanian War', 'Bender Uprising', '1920 Romanian General Strike', 'Tatarbunary Uprising', 'Lupeni Strike', 'Grivița Strike', ""Legionnaires' Rebellion and Bucharest Pogrom"", 'World War II', 'Romanian anti-communist resistance movement', 'Brașov Rebellion', 'Romanian Revolution']","Eastern Front|Eastern Front (lang:en)|1941-06-22T00:00:00Z|1945-05-07T00:00:00Z
+Eastern Front|Eastern Front (lang:en)|1941-06-22T00:00:00Z|1955-01-21T00:00:00Z
+Hungarian–Romanian War|Hungarian–Romanian War (lang:en)|1918-11-01T00:00:00Z|1920-03-01T00:00:00Z
+Second Balkan War|Second Balkan War (lang:en)|1913-06-29T00:00:00Z|1913-08-10T00:00:00Z","| conflict                            | label                            | start                               | end                                 |
+| ----------------------------------- | -------------------------------- | ----------------------------------- | ----------------------------------- |
+| Eastern Front (wd:Q189266)          | Eastern Front (lang:en)          | 1941-06-22T00:00:00Z (xsd:dateTime) | 1945-05-07T00:00:00Z (xsd:dateTime) |
+| Eastern Front (wd:Q189266)          | Eastern Front (lang:en)          | 1941-06-22T00:00:00Z (xsd:dateTime) | 1955-01-21T00:00:00Z (xsd:dateTime) |
+| Hungarian–Romanian War (wd:Q252298) | Hungarian–Romanian War (lang:en) | 1918-11-01T00:00:00Z (xsd:dateTime) | 1920-03-01T00:00:00Z (xsd:dateTime) |
+| Second Balkan War (wd:Q184183)      | Second Balkan War (lang:en)      | 1913-06-29T00:00:00Z (xsd:dateTime) | 1913-08-10T00:00:00Z (xsd:dateTime) |","SELECT DISTINCT ?conflict ?label ?start ?end WHERE {
+  VALUES ?country {
+    wd:Q218 wd:Q203493
+  }
+  ?conflict wdt:P710 ?country .
+  ?conflict wdt:P31 wd:Q198 .
+  ?conflict rdfs:label ?label .
+  FILTER(LANG(?label) = ""en"")
+  ?conflict wdt:P580 ?start .
+  ?conflict wdt:P582 ?end .
+  FILTER((YEAR(?start) <= 1999 && YEAR(?end) >= 1900) ||(BOUND(?start) && ! BOUND(?end) && YEAR(?start) <= 1999) ||(! BOUND(?start) && BOUND(?end) && YEAR(?end) >= 1900))
+}
+ORDER BY DESC(YEAR(?start))
+LIMIT 10",ComplexQA/Monaco_non_time_complex/00074.json
+What titles did the fathers of Henry VIII wives hold,"[['King of Aragon', 'King of Castile'], ['Earl of Wiltshire', '1st Earl of Ormond', '1st Viscount Rochford'], ['Knight banneret'], ['Duke of Cleves', 'Count of Mark', 'Lord of Ravensberg'], ['Marshal of the Horse', 'Controller of Calais'], ['Master of the Wards', 'Master of the Guards', 'Comptroller to the King', 'High Sheriff of Northamptonshire', 'High Sheriff of Lincolnshire']]","Duke of Gandía|Duke of Gandía (lang:en)
+ambassador|ambassador (lang:en)
+Member of Parliament in the Parliament of England|Member of Parliament in the Parliament of England (lang:en)
+regent|regent (lang:en)
+Count of Ribagorza|Count of Ribagorza (lang:en)
+...|...
+King of Castile and León (Iure uxoris)|King of Castile and León (Iure uxoris) (lang:en)
+Member of the 1529-36 Parliament|Member of the 1529-36 Parliament (lang:en)
+Grand Master of the Order of Santiago|Grand Master of the Order of Santiago (lang:en)
+Treasurer of the Household|Treasurer of the Household (lang:en)
+Lord Privy Seal|Lord Privy Seal (lang:en)","| title                                                            | titleLabel                                                  |
+| ---------------------------------------------------------------- | ----------------------------------------------------------- |
+| Duke of Gandía (wd:Q112061791)                                   | Duke of Gandía (lang:en)                                    |
+| ambassador (wd:Q121998)                                          | ambassador (lang:en)                                        |
+| Member of Parliament in the Parliament of England (wd:Q18018860) | Member of Parliament in the Parliament of England (lang:en) |
+| regent (wd:Q477406)                                              | regent (lang:en)                                            |
+| Count of Ribagorza (wd:Q58002672)                                | Count of Ribagorza (lang:en)                                |
+| ...                                                              | ...                                                         |
+| King of Castile and León (Iure uxoris) (wd:Q58806386)            | King of Castile and León (Iure uxoris) (lang:en)            |
+| Member of the 1529-36 Parliament (wd:Q60585654)                  | Member of the 1529-36 Parliament (lang:en)                  |
+| Grand Master of the Order of Santiago (wd:Q67220948)             | Grand Master of the Order of Santiago (lang:en)             |
+| Treasurer of the Household (wd:Q7836765)                         | Treasurer of the Household (lang:en)                        |
+| Lord Privy Seal (wd:Q910308)                                     | Lord Privy Seal (lang:en)                                   |","SELECT DISTINCT ?title ?titleLabel WHERE {
+  wd:Q38370 wdt:P26 ?wife .
+  ?wife wdt:P22 ?father .
+  ?father wdt:P39 ?title .
+  OPTIONAL {
+    ?title rdfs:label ?titleLabel
+    FILTER(LANG(?titleLabel) = ""en"")
+    .
+  }
+}",ComplexQA/Monaco_non_time_complex/00075.json
+which French monarchs have reigned for 30 years or more,"['Charles II The Bald', 'Lothair', 'Robert II the Pious', 'Philip I the Amorous', 'Louis VII the Young', 'Philip II Augustus', 'Louis IX the Saint', 'Charles VI the Mad the Beloved', 'Henry VI of England (claimant)', 'Charles VII the Victorious the Well-Served', 'Francis I the Father of Letters', 'Louis XIII the Just', 'Louis XIV the Great the Sun King', 'Louis XV the Beloved']","Louis XIV of France|Louis XIV of France (lang:en)|72
+Louis XV of France|Louis XV of France (lang:en)|59
+Louis IX of France|Louis IX of France (lang:en)|44
+Philip II of France|Philip II of France (lang:en)|43
+Charles VI of France|Charles VI of France (lang:en)|42
+Charles VII of France|Charles VII of France (lang:en)|39
+Francis I of France|Francis I of France (lang:en)|32","| monarch                            | monarchLabel                    | duration     |
+| ---------------------------------- | ------------------------------- | ------------ |
+| Louis XIV of France (wd:Q7742)     | Louis XIV of France (lang:en)   | 72 (xsd:int) |
+| Louis XV of France (wd:Q7738)      | Louis XV of France (lang:en)    | 59 (xsd:int) |
+| Louis IX of France (wd:Q346)       | Louis IX of France (lang:en)    | 44 (xsd:int) |
+| Philip II of France (wd:Q34428)    | Philip II of France (lang:en)   | 43 (xsd:int) |
+| Charles VI of France (wd:Q160349)  | Charles VI of France (lang:en)  | 42 (xsd:int) |
+| Charles VII of France (wd:Q133372) | Charles VII of France (lang:en) | 39 (xsd:int) |
+| Francis I of France (wd:Q129857)   | Francis I of France (lang:en)   | 32 (xsd:int) |","SELECT ?monarch ?monarchLabel ?duration WHERE {
+  ?monarch p:P39 ?position .
+  VALUES ?positionType {
+    wd:Q18384454 wd:Q3439798
+  }
+  ?position ps:P39 ?positionType .
+  ?position pq:P580 ?start .
+  ?position pq:P582 ?end .
+  BIND(xsd:integer(SUBSTR(STR(?start) , 1 , 4)) AS ?startYear)
+  BIND(xsd:integer(SUBSTR(STR(?end) , 1 , 4)) AS ?endYear)
+  BIND(?endYear - ?startYear AS ?duration)
+  FILTER(?duration >= 30)
+  OPTIONAL {
+    ?monarch rdfs:label ?monarchLabel
+    FILTER(LANG(?monarchLabel) = 'en')
+  }
+}
+ORDER BY DESC(?duration)",ComplexQA/Monaco_non_time_complex/00077.json
+"For each country in East Asia, return its name and its national dish.","[['China', 'Peking duck'], ['Hong Kong', 'Pineapple bun'], ['Hong Kong', 'Dim sum'], ['Macau', 'Minchee'], ['Japan', 'Sushi'], ['Japan', 'Japanese curry'], ['Japan', 'Ramen'], ['Japan', 'Tempura'], ['Japan', 'Wagashi'], ['Japan', 'Sashimi'], ['Japan', 'Miso soup'], ['Mongolia', 'Buuz'], ['North Korea', 'kimchi'], ['South Korea', 'Kimchi'], ['Taiwan', 'Beef noodle soup']]","People's Republic of China|People's Republic of China (lang:en)||
+Japan|Japan (lang:en)||
+North Korea|North Korea (lang:en)||
+Mongolia|Mongolia (lang:en)||
+Taiwan|Taiwan (lang:en)||
+South Korea|South Korea (lang:en)||","| country                              | countryLabel                         | dish | dishLabel |
+| ------------------------------------ | ------------------------------------ | ---- | --------- |
+| People's Republic of China (wd:Q148) | People's Republic of China (lang:en) |      |           |
+| Japan (wd:Q17)                       | Japan (lang:en)                      |      |           |
+| North Korea (wd:Q423)                | North Korea (lang:en)                |      |           |
+| Mongolia (wd:Q711)                   | Mongolia (lang:en)                   |      |           |
+| Taiwan (wd:Q865)                     | Taiwan (lang:en)                     |      |           |
+| South Korea (wd:Q884)                | South Korea (lang:en)                |      |           |","SELECT ?country ?countryLabel ?dish ?dishLabel WHERE {
+  wd:Q27231 wdt:P17 ?country .
+  ?country rdfs:label ?countryLabel .
+  FILTER(LANG(?countryLabel) = ""en"")
+  .
+  OPTIONAL {
+    ?country wdt:P8326 ?dish .
+    ?dish rdfs:label ?dishLabel .
+    FILTER(LANG(?dishLabel) = ""en"")
+  }
+}",ComplexQA/Monaco_non_time_complex/00079.json
+"What are the most common styles of suit jacket lapels, and when is each lapel style most appropriate","[['Peaked', 'Peaked style of lapels are used for formal events and are nearly always used with double-breasted jackets but also frequently appears on single breasted ones'], ['Notched', 'Notched lapels are the standard on single-breasted suits, and is used on nearly all suit jackets, blazers, and sports jackets.'], ['Shawl', 'used when wearing dinner jacket or tuxedo.']]",button-back lapel|button-back lapel (lang:en),"| style                           | label                       |
+| ------------------------------- | --------------------------- |
+| button-back lapel (wd:Q2124860) | button-back lapel (lang:en) |","SELECT ?style ?label WHERE {
+  ?style wdt:P279 wd:Q607688 .
+  ?style rdfs:label ?label .
+  FILTER(LANG(?label) = ""en"")
+}",ComplexQA/Monaco_non_time_complex/00080.json
+What were the origins of the foreign pharaonic dynasties that ruled over Egypt,"[['Dynasty XV (Hyksos), Avaris', 'Hyksos, Canaanite'], ['Dynasty XXII (Meshwesh), Tanis and Bubastis', 'Libya'], ['Dynasty XXV (Nubian), Memphis and Napata', 'Napata in Kush'], ['Dynasty XXVII (Persian), Babylon', 'Persian'], ['Dynasty XXXI (Persian), Babylon', 'Persia'], ['Argead dynasty (Greek), Pella', 'Greek'], ['Ptolemaic dynasty (Greek), Alexandria', 'Macedonia']]",Canaan (lang:en),"| originLabel      |
+| ---------------- |
+| Canaan (lang:en) |","SELECT DISTINCT ?originLabel WHERE {
+  VALUES ?group {
+    wd:Q192319 wd:Q204989 wd:Q253368 wd:Q253925
+  }
+  ?group wdt:P740 | wdt:P170 ?origin .
+  ?origin rdfs:label ?originLabel .
+  FILTER(LANG(?originLabel) = 'en')
+}",ComplexQA/Monaco_non_time_complex/00081.json
+"What was the age of each of the founders of Apple, Microsoft, Facebook and Twitter when they founded their respective companies","[['Steve Wozniak', 'Steve Jobs', 'Ronald Wayne', ['25-26'], ['20-21'], ['41-42']], ['Bill Gates', 'Paul Allen', ['19-20'], ['21-22']], ['Mark Zuckerberg', 'Dustin Moskovitz', 'Chris Hughes', 'Andrew McCollum', 'Eduardo Saverin', ['20'], ['20'], ['21'], ['21'], ['22']], ['Jack Dorsey', 'Noah Glass', 'Biz Stone', 'Evan Williams', ['30'], ['{}'], ['32'], ['34']]]","Apple Inc.|Steve Jobs|21|Apple Inc. (lang:en)|Steve Jobs (lang:en)
+Apple Inc.|Ronald Wayne|41|Apple Inc. (lang:en)|Ronald Wayne (lang:en)
+Apple Inc.|Steve Wozniak|25|Apple Inc. (lang:en)|Steve Wozniak (lang:en)
+X|Jack Dorsey|29|X (lang:en)|Jack Dorsey (lang:en)
+X|Evan Williams|33|X (lang:en)|Evan Williams (lang:en)
+X|Noah Glass|25|X (lang:en)|Noah Glass (lang:en)
+X|Biz Stone|32|X (lang:en)|Biz Stone (lang:en)","| company              | founder                    | exactAge     | companyLabel         | founderLabel            |
+| -------------------- | -------------------------- | ------------ | -------------------- | ----------------------- |
+| Apple Inc. (wd:Q312) | Steve Jobs (wd:Q19837)     | 21 (xsd:int) | Apple Inc. (lang:en) | Steve Jobs (lang:en)    |
+| Apple Inc. (wd:Q312) | Ronald Wayne (wd:Q332591)  | 41 (xsd:int) | Apple Inc. (lang:en) | Ronald Wayne (lang:en)  |
+| Apple Inc. (wd:Q312) | Steve Wozniak (wd:Q483382) | 25 (xsd:int) | Apple Inc. (lang:en) | Steve Wozniak (lang:en) |
+| X (wd:Q918)          | Jack Dorsey (wd:Q335552)   | 29 (xsd:int) | X (lang:en)          | Jack Dorsey (lang:en)   |
+| X (wd:Q918)          | Evan Williams (wd:Q561960) | 33 (xsd:int) | X (lang:en)          | Evan Williams (lang:en) |
+| X (wd:Q918)          | Noah Glass (wd:Q6596009)   | 25 (xsd:int) | X (lang:en)          | Noah Glass (lang:en)    |
+| X (wd:Q918)          | Biz Stone (wd:Q879247)     | 32 (xsd:int) | X (lang:en)          | Biz Stone (lang:en)     |","SELECT ?company ?founder ?exactAge ?companyLabel ?founderLabel WHERE {
+  VALUES ?company {
+    wd:Q312 wd:Q21198 wd:Q44300 wd:Q918
+  }
+  ?company wdt:P112 ?founder ; wdt:P571 ?founded .
+  ?founder wdt:P569 ?birth .
+  ?company rdfs:label ?companyLabel .
+  ?founder rdfs:label ?founderLabel .
+  FILTER(LANG(?companyLabel) = ""en"" && LANG(?founderLabel) = ""en"")
+  .
+  BIND(YEAR(?founded) AS ?foundedYear)
+  BIND(MONTH(?founded) AS ?foundedMonth)
+  BIND(DAY(?founded) AS ?foundedDay)
+  BIND(YEAR(?birth) AS ?birthYear)
+  BIND(MONTH(?birth) AS ?birthMonth)
+  BIND(DAY(?birth) AS ?birthDay)
+  BIND(IF(?foundedMonth > ?birthMonth ||(?foundedMonth = ?birthMonth && ?foundedDay >= ?birthDay) ,(?foundedYear - ?birthYear) ,(?foundedYear - ?birthYear - 1)) AS ?exactAge)
+}
+ORDER BY ?company ?founder",ComplexQA/Monaco_non_time_complex/00083.json
+Who are the seven Archons in Gnostic belief and what is the origin of each of their names,"[['Yaldabaoth', 'Aramaic word meaning chaos'], ['Sabaoth', ""'Jehovah of Armies'""], ['Astaphanos', 'The angel Astanphaeus in Gnosticism'], ['Iao', 'Perhaps from Yahu, YHWH, but possibly also from the magic cry iao in the Mysteries.'], ['Adonaios', 'From the Hebrew term for the Lord, used of God'], ['Elaios', 'From Elohim, God (El).'], ['Horaios', 'beautiful']]","Yaldabaoth|Yaldabaoth (lang:en)|Ialdabaoth (lang:la)
+Yaldabaoth|Yaldabaoth (lang:en)|Ιαλδαβαώθ (lang:grc)
+Yaldabaoth|Yaldabaoth (lang:en)|ⲒⲀⲖⲦⲀⲂⲀⲰⲐ (lang:cop)
+Sabaoth|Sabaoth (lang:en)|","| archon                   | label                | nativeLabel          |
+| ------------------------ | -------------------- | -------------------- |
+| Yaldabaoth (wd:Q2603125) | Yaldabaoth (lang:en) | Ialdabaoth (lang:la) |
+| Yaldabaoth (wd:Q2603125) | Yaldabaoth (lang:en) | Ιαλδαβαώθ (lang:grc) |
+| Yaldabaoth (wd:Q2603125) | Yaldabaoth (lang:en) | ⲒⲀⲖⲦⲀⲂⲀⲰⲐ (lang:cop) |
+| Sabaoth (wd:Q97358258)   | Sabaoth (lang:en)    |                      |","SELECT DISTINCT ?archon ?label ?nativeLabel WHERE {
+  ?archon wdt:P140 wd:Q48420 .
+  OPTIONAL {
+    ?archon rdfs:label ?label .
+    FILTER(lang(?label) = 'en')
+  }
+  OPTIONAL {
+    ?archon wdt:P1705 ?nativeLabel
+  }
+  VALUES ?archon {
+    wd:Q2603125 wd:Q97358258 wd:Q1193956
+  }
+}
+ORDER BY ?archon",ComplexQA/Monaco_non_time_complex/00084.json
+Which Ottoman sultans were not the son of the previous sultan,"['Murad V', 'Abdul Hamid II', 'Mehmed V', 'Mehmed VI', 'Abdulmejid II', 'Süleyman Çelebi', 'Musa Çelebi', 'Mehmed Çelebi', 'Mustafa Çelebi', 'Mustafa I', 'Osman II', 'Murad IV', 'Ibrahim', 'Suleiman II', 'Ahmed II', 'Mustafa II', 'Ahmed III', 'Mahmud I', 'Osman III', 'Mustafa III', 'Abdul Hamid I', 'Selim III', 'Mustafa IV', 'Mahmud II', 'Abdulaziz']",Abdülaziz|Abdülaziz (lang:en)|Abdülmecid I|Abdülmecid I (lang:en)|Mahmud II|Mahmud II (lang:en),"| sultan                 | sultanLabel         | predecessor               | predecessorLabel       | father                 | fatherLabel         |
+| ---------------------- | ------------------- | ------------------------- | ---------------------- | ---------------------- | ------------------- |
+| Abdülaziz (wd:Q151500) | Abdülaziz (lang:en) | Abdülmecid I (wd:Q174772) | Abdülmecid I (lang:en) | Mahmud II (wd:Q174791) | Mahmud II (lang:en) |","SELECT DISTINCT ?sultan ?sultanLabel ?predecessor ?predecessorLabel ?father ?fatherLabel WHERE {
+  ?sultan wdt:P39 wd:Q15315411 .
+  ?sultan wdt:P155 ?predecessor .
+  ?predecessor wdt:P39 wd:Q15315411 .
+  ?sultan wdt:P22 ?father .
+  ?sultan rdfs:label ?sultanLabel .
+  ?predecessor rdfs:label ?predecessorLabel .
+  ?father rdfs:label ?fatherLabel .
+  FILTER(LANG(?sultanLabel) = ""en"")
+  FILTER(LANG(?predecessorLabel) = ""en"")
+  FILTER(LANG(?fatherLabel) = ""en"")
+  FILTER(?father != ?predecessor)
+}
+ORDER BY ?sultan",ComplexQA/Monaco_non_time_complex/00085.json
+Which mythical creatures appear in Ibsen's Peer Gynt,"['A pastor/The Devil (Peer Gynt thinks he is a pastor)', 'A green-clad woman, a troll princess', 'The Old Man of the Mountains, a troll king (Also known as The Mountain King)', 'Multiple troll-courtiers, troll-maidens and troll-urchins', 'Brownies, nixies, gnomes, et al.', 'The Bøyg, a voice in the darkness', 'The Sphinx at Giza', 'A button-moulder']","The Mountain King|The Mountain King (lang:en)
+A Buttonmoulder|A Buttonmoulder (lang:en)","| creature                         | creatureLabel               |
+| -------------------------------- | --------------------------- |
+| The Mountain King (wd:Q11172152) | The Mountain King (lang:en) |
+| A Buttonmoulder (wd:Q21283451)   | A Buttonmoulder (lang:en)   |","SELECT ?creature ?creatureLabel WHERE {
+  wd:Q208094 wdt:P674 ?creature .
+  ?creature rdfs:label ?creatureLabel .
+  FILTER(LANG(?creatureLabel) = 'en')
+  .
+  FILTER(CONTAINS(LCASE(?creatureLabel) , 'mountain king') || CONTAINS(LCASE(?creatureLabel) , 'buttonmoulder'))
+}",ComplexQA/Monaco_non_time_complex/00086.json
+What languages are spoken in Scandinavia,"[['Danish', 'German'], ['Norwegian', 'Kven', 'Romani', 'Scandoromani', 'Norwegian Sign Language'], ['Swedish', 'Sámi', 'Finnish', 'Meänkieli', 'Romani', 'Yiddish'], ['Swedish'], ['Faroese', 'Danish'], ['Finnish', 'Swedish', 'Sami', 'Karelian', 'Finnish Kalo', 'Finnish Sign Language', 'Finland-Swedish Sign Language'], ['Icelandic']]","Traveller Danish|Traveller Danish (lang:en)
+Southern Sami|Southern Sami (lang:en)
+Meänkieli|Meänkieli (lang:en)
+Finnish|Finnish (lang:en)
+Kalaallisut|Kalaallisut (lang:en)
+...|...
+Ume Sami|Ume Sami (lang:en)
+Yiddish|Yiddish (lang:en)
+Swedish|Swedish (lang:en)
+Danish|Danish (lang:en)
+Norwegian|Norwegian (lang:en)","| language                        | languageLabel              |
+| ------------------------------- | -------------------------- |
+| Traveller Danish (wd:Q12640779) | Traveller Danish (lang:en) |
+| Southern Sami (wd:Q13293)       | Southern Sami (lang:en)    |
+| Meänkieli (wd:Q13357)           | Meänkieli (lang:en)        |
+| Finnish (wd:Q1412)              | Finnish (lang:en)          |
+| Kalaallisut (wd:Q15665351)      | Kalaallisut (lang:en)      |
+| ...                             | ...                        |
+| Ume Sami (wd:Q56415)            | Ume Sami (lang:en)         |
+| Yiddish (wd:Q8641)              | Yiddish (lang:en)          |
+| Swedish (wd:Q9027)              | Swedish (lang:en)          |
+| Danish (wd:Q9035)               | Danish (lang:en)           |
+| Norwegian (wd:Q9043)            | Norwegian (lang:en)        |","SELECT DISTINCT ?language ?languageLabel WHERE {
+  VALUES ?country {
+    wd:Q20 wd:Q34 wd:Q35
+  }
+  ?country wdt:P2936 ?language .
+  OPTIONAL {
+    ?language rdfs:label ?languageLabel .
+    FILTER(LANG(?languageLabel) = 'en')
+  }
+}",ComplexQA/Monaco_non_time_complex/00089.json
+What was the percentage of female MKs in each party of the 17th Knesset,"[['Kadima', 20.689655172413794], ['Labor-Meimad', 26.315789473684205], ['Shas', 0.0], ['Gil', 14.285714285714292], ['Likud', 8.333333333333329], ['National Union-NRP', 0.0], ['United Torah Judaism', 0.0], ['Meretz-Yachad', 40.0], ['United Arab List', 0.0], ['Hadash', 0.0], ['Yisrael Beiteinu', 27.272727272727266], ['Balad', 0.0]]","Israeli Labor Party|Israeli Labor Party (lang:en)|1|1|100.0
+New Hope|New Hope (lang:en)|1|0|0.0
+Likud|Likud (lang:en)|2|0|0.0
+Kadima|Kadima (lang:en)|1|0|0.0","| party                            | partyLabel                    | total       | females     | percentage          |
+| -------------------------------- | ----------------------------- | ----------- | ----------- | ------------------- |
+| Israeli Labor Party (wd:Q210703) | Israeli Labor Party (lang:en) | 1 (xsd:int) | 1 (xsd:int) | 100.0 (xsd:decimal) |
+| New Hope (wd:Q104073895)         | New Hope (lang:en)            | 1 (xsd:int) | 0 (xsd:int) | 0.0 (xsd:decimal)   |
+| Likud (wd:Q187009)               | Likud (lang:en)               | 2 (xsd:int) | 0 (xsd:int) | 0.0 (xsd:decimal)   |
+| Kadima (wd:Q39655)               | Kadima (lang:en)              | 1 (xsd:int) | 0 (xsd:int) | 0.0 (xsd:decimal)   |","SELECT ?party ?partyLabel(COUNT(?person) AS ?total)(COUNT(?female) AS ?females)(ROUND(COUNT(?female) * 100 / COUNT(?person)) AS ?percentage) WHERE {
+  VALUES ?term {
+    wd:Q125207967
+  }
+  ?person p:P39 ?statement .
+  ?statement ps:P39 wd:Q4047513 ; pq:P2937 ?term .
+  ?person wdt:P102 ?party .
+  ?party rdfs:label ?partyLabel .
+  FILTER(LANG(?partyLabel) = ""en"")
+  .
+  OPTIONAL {
+    ?person wdt:P21 wd:Q6581072 .
+    BIND(?person AS ?female)
+  }
+}
+GROUP BY ?party ?partyLabel
+ORDER BY DESC(?percentage)",ComplexQA/Monaco_non_time_complex/00090.json
+"What are the four grand slams, and where are they held","[['Australian Open', 'Melbourne Park in Melbourne, Victoria, Australia'], ['French Open', 'Stade Roland Garros in Paris, France'], ['Wimbledon', 'All England Lawn Tennis and Croquet Club in Wimbledon, London'], ['US Open', 'USTA Billie Jean King National Tennis Center in Flushing Meadows–Corona Park, Queens, New York City']]","Australian Open (lang:en)|Melbourne Park (lang:en)
+French Open (lang:en)|Stade Roland Garros (lang:en)
+US Open (lang:en)|USTA Billie Jean King National Tennis Center (lang:en)
+Wimbledon Championships (lang:en)|All England Lawn Tennis and Croquet Club (lang:en)","| tournamentLabel                   | locationLabel                                          |
+| --------------------------------- | ------------------------------------------------------ |
+| Australian Open (lang:en)         | Melbourne Park (lang:en)                               |
+| French Open (lang:en)             | Stade Roland Garros (lang:en)                          |
+| US Open (lang:en)                 | USTA Billie Jean King National Tennis Center (lang:en) |
+| Wimbledon Championships (lang:en) | All England Lawn Tennis and Croquet Club (lang:en)     |","SELECT DISTINCT ?tournamentLabel ?locationLabel WHERE {
+  ?tournament wdt:P361 wd:Q102113 ; rdfs:label ?tournamentLabel ; wdt:P276 ?location .
+  ?location rdfs:label ?locationLabel .
+  FILTER(LANG(?tournamentLabel) = 'en')
+  FILTER(LANG(?locationLabel) = 'en')
+  FILTER(! REGEX(?tournamentLabel , '^[0-9]{4}' , 'i'))
+}
+LIMIT 4",ComplexQA/Monaco_non_time_complex/00092.json

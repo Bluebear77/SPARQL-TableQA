@@ -1,0 +1,185 @@
+{
+  "type": "output",
+  "task": "sparql-qa",
+  "output": {
+    "sparql": "PREFIX wd: <http://www.wikidata.org/entity/>\nPREFIX wdt: <http://www.wikidata.org/prop/direct/>\nSELECT ?actor WHERE {\n  wd:Q1781831 wdt:P161 ?actor\n}",
+    "kg": "wikidata",
+    "selections": "Using entities:\n- Summer of '42 (wd:Q1781831):\n  - 1971 film by Robert Mulligan\n  - is instance of film\n\nUsing properties:\n- cast member (wd:P161 as wdt), also known as \"actor\", \"actress\", \"contestant of a play\", \"feat.\", \"film starring\", etc.:\n  - actor in the subject production [use \"character role\" (P453) ... \"recorded participant\" (P11108) for non-fiction productions]",
+    "result": "Got 6 rows and 1 column:\n| actor                           |\n| ------------------------------- |\n| Jennifer O'Neill (wd:Q240460)   |\n| Gary Grimes (wd:Q3098560)       |\n| Jerry Houser (wd:Q3177473)      |\n| Lou Frizzell (wd:Q3260124)      |\n| Christopher Norris (wd:Q530672) |\n| Oliver Conant (wd:Q7087460)     |",
+    "endpoint": "https://qlever.dev/api/wikidata",
+    "type": "answer",
+    "answer": "Jennifer O'Neill, Gary Grimes, Jerry Houser, Lou Frizzell, Christopher Norris, and Oliver Conant starred in the movie Summer of '42 (1971).",
+    "formatted": "Jennifer O'Neill, Gary Grimes, Jerry Houser, Lou Frizzell, Christopher Norris, and Oliver Conant starred in the movie Summer of '42 (1971).\n\nSPARQL query over wikidata:\n```sparql\nPREFIX wd: <http://www.wikidata.org/entity/>\nPREFIX wdt: <http://www.wikidata.org/prop/direct/>\nSELECT ?actor WHERE {\n  wd:Q1781831 wdt:P161 ?actor\n}\n```\n\nUsing entities:\n- Summer of '42 (wd:Q1781831):\n  - 1971 film by Robert Mulligan\n  - is instance of film\n\nUsing properties:\n- cast member (wd:P161 as wdt), also known as \"actor\", \"actress\", \"contestant of a play\", \"feat.\", \"film starring\", etc.:\n  - actor in the subject production [use \"character role\" (P453) ... \"recorded participant\" (P11108) for non-fiction productions]\n\nExecution result:\nGot 6 rows and 1 column:\n| actor                           |\n| ------------------------------- |\n| Jennifer O'Neill (wd:Q240460)   |\n| Gary Grimes (wd:Q3098560)       |\n| Jerry Houser (wd:Q3177473)      |\n| Lou Frizzell (wd:Q3260124)      |\n| Christopher Norris (wd:Q530672) |\n| Oliver Conant (wd:Q7087460)     |"
+  },
+  "elapsed": 54.762671,
+  "error": null,
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a question answering assistant. Your job is to generate a SPARQL query to answer a given user question.\n\nYou should follow a step-by-step approach to generate the SPARQL query:\n1. Determine possible entities and properties implied by the user question.\n2. Search for the entities and properties in the knowledge graphs. Where applicable, constrain the searches with already identified entities and properties.\n3. Gradually build up the SPARQL query using the identified entities and properties. Start with simple queries and add more complexity as needed. Execute intermediate queries to get feedback and to verify your assumptions. You may need to refine or rethink your current plan based on the query results and go back to step 2 if needed, possibly multiple times.\n4. Use the answer or cancel function to finalize your answer and stop the generation process.\n\nAvailable knowledge graphs:\n- \"wikidata\" at https://qlever.dev/api/wikidata\n  - \"entity\" index (type=\"fuzzy\"): Entities indexed by their labels and synonyms\n  - \"property\" index (type=\"embedding\", modalities=\"text\"): Properties indexed by their labels, synonyms, and identifiers\n\nIndex types used:\n- \"embedding\": Retrieves items by cosine similarity between their embeddings and the query embedding. The embedding model used depends on the index and may support text, images, or both.\n- \"fuzzy\": Retrieves items by overlap between their label words and the query keywords. The query keywords must not match label words exactly, but some fuzziness is allowed. The longer a query keyword is, the more it can deviate from a label word and still be considered a match, though it will also contribute less to the overall score. No special query operators like AND/OR are supported.\n\nSPARQL prefixes for use in function calls:\n- bd: http://www.bigdata.com/rdf#\n- cc: http://creativecommons.org/ns#\n- data: https://www.wikidata.org/wiki/Special:EntityData/\n- dc: http://purl.org/dc/elements/1.1/\n- dct: http://purl.org/dc/terms/\n- foaf: http://xmlns.com/foaf/0.1/\n- geo: http://www.opengis.net/ont/geosparql#\n- geof: http://www.opengis.net/def/function/geosparql/\n- gn: http://www.geonames.org/ontology#\n- hint: http://www.bigdata.com/queryHints#\n- imdb: https://www.imdb.com/\n- math: http://www.w3.org/2005/xpath-functions/math#\n- ontolex: http://www.w3.org/ns/lemon/ontolex#\n- owl: http://www.w3.org/2002/07/owl#\n- p: http://www.wikidata.org/prop/\n- pq: http://www.wikidata.org/prop/qualifier/\n- pqn: http://www.wikidata.org/prop/qualifier/value-normalized/\n- pqv: http://www.wikidata.org/prop/qualifier/value/\n- pr: http://www.wikidata.org/prop/reference/\n- prn: http://www.wikidata.org/prop/reference/value-normalized/\n- prov: http://www.w3.org/ns/prov#\n- prv: http://www.wikidata.org/prop/reference/value/\n- ps: http://www.wikidata.org/prop/statement/\n- psn: http://www.wikidata.org/prop/statement/value-normalized/\n- psv: http://www.wikidata.org/prop/statement/value/\n- qb: http://purl.org/linked-data/cube#\n- qfn: http://qlever.cs.uni-freiburg.de/function#\n- ql: http://qlever.cs.uni-freiburg.de/builtin-functions/\n- qlss: https://qlever.cs.uni-freiburg.de/spatialSearch/\n- rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#\n- rdfs: http://www.w3.org/2000/01/rdf-schema#\n- ref: http://www.wikidata.org/reference/\n- s: http://www.wikidata.org/entity/statement/\n- schema: http://schema.org/\n- skos: http://www.w3.org/2004/02/skos/core#\n- v: http://www.wikidata.org/value/\n- void: http://rdfs.org/ns/void#\n- wd: http://www.wikidata.org/entity/\n- wdno: http://www.wikidata.org/prop/novalue/\n- wdt: http://www.wikidata.org/prop/direct/\n- wdtn: http://www.wikidata.org/prop/direct-normalized/\n- wikibase: http://wikiba.se/ontology#\n- xsd: http://www.w3.org/2001/XMLSchema#\n\nAdditional rules to follow:\n- Explain your thought process before and after each step and function call.\n- Do not ask the user for clarification until you have made an initial attempt at completing the task. When the task input is incomplete or ambiguous, proceed based on reasonable assumptions.\n- Do not use \"SERVICE wikibase:label { bd:serviceParam wikibase:language ...\" in SPARQL queries. It is unsupported by the used QLever SPARQL endpoints. Use rdfs:label or similar properties to get labels instead.\n- Always execute your final SPARQL query before giving an answer to make sure it returns the expected results.\n- The SPARQL query should always return the actual identifiers / IRIs of the items in its result. It additionally may return labels or other human-readable information, but they are optional and should be put within optional clauses unless explicitly requested by the user.\n- Do not stop early if there are still obvious improvements to be made to the SPARQL query. For example, keep refining your SPARQL query if its result contains irrelevant items or is missing items you expected.\n- Do not perform additional computation (e.g. filtering, sorting, calculations) on the result of the SPARQL query to determine the answer. All computation should be done solely within SPARQL.\n- For questions with a \"True\" or \"False\" answer the SPARQL query should be an ASK query."
+    },
+    {
+      "role": "user",
+      "content": "who starred in the movie summer of 42"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "922bd80582354b7bbbd9f9742ce87a2b",
+        "message": null,
+        "reasoning": {
+          "id": "80289bc5e798422fb31e445ebd70af75",
+          "content": "Okay, let's tackle the user's question: \"Who starred in the movie Summer of '42\". First, I need to find out the correct entity for the movie. The title is \"Summer of '42\", which might be written as \"Summer of 42\" without the apostrophe, but I should check.\n\nStarting with step 1: Determine possible entities and properties. The main entity here is the movie \"Summer of 42\". The property we need is probably the cast member or actor, which in Wikidata would be P161 (cast member) or P170 (creator), but for actors, P161 is more likely.\n\nNext, I need to find the correct Wikidata item for the movie. I'll use the search_entity function to look up \"Summer of 42\" in Wikidata. Let me call search_entity with kg=\"wikidata\" and query=\"summer of 42\".\n\nAfter getting the movie entity, say wd:Q123456, then I need to find all actors linked via P161. So the SPARQL would select ?actor WHERE { wd:Q123456 wdt:P161 ?actor }.\n\nWait, but maybe the user used the apostrophe in '42, but the actual title might not have it. Let's check. The correct title might be \"Summer of '42\" with the apostrophe, but sometimes it's written as \"1942\" or other variants. Let's search with variations.\n\nFirst, let's search using search_entity for \"Summer of 42\". Let's see what results we get."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-b5aafaf5a3a7fed0",
+            "name": "search_entity",
+            "args": {
+              "kg": "wikidata",
+              "query": "Summer of 42"
+            },
+            "result": "Top 10 entity alternatives:\n1. Summer of '42 (wd:Q1781831):\n  - 1971 film by Robert Mulligan\n  - is instance of film\n2. Summer of '42 (wd:Q25095084):\n  - album by Tony Bennett\n  - is instance of album\n3. Summer of '42 (wd:Q7637499):\n  - 1971 novelization of screenplay\n  - is instance of literary work\n4. The Bummer of 42 (wd:Q114509708):\n  - episode of Murphy Brown (S3 E9)\n  - is instance of television series episode\n5. Summer of Love (wd:Q932701):\n  - is instance of social phenomenon\n  - mid 1967 social and political phenomenon in San Francisco, California, USA\n6. Google Summer of Code (wd:Q1324301, matched via \"Summer of Code\"), also known as \"google summer of code\", \"GSoC\", \"Summer of Code\":\n  - annual program that offers open-source software projects to post-secondary student developers\n  - is instance of recurring event\n  - is instance of scholarship\n  - is instance of summer coding program\n7. Summer of '69 (wd:Q1472791):\n  - is instance of musical work/composition\n  - song written and composed by Bryan Adams and Jim Vallance, originally recorded by Bryan Adams in 1984\n8. Summer of 85 (wd:Q85855063):\n  - 2020 film directed by François Ozon\n  - is instance of film\n9. Summer of Sam (wd:Q1150713):\n  - 1999 film directed by Spike Lee\n  - is instance of film\n10. The Kings of Summer (wd:Q13423400, matched via \"Kings of Summer\"), also known as \"Kings of Summer\", \"Toy's House\":\n  - 2013 film by Jordan Vogt-Roberts\n  - is instance of film"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 383,
+          "prompt_tokens": 3749,
+          "total_tokens": 4132
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "67f46ea24ce74e20886104dc69283b36",
+        "message": null,
+        "reasoning": {
+          "id": "2aae7441fefc4816ae1adf8ab396f700",
+          "content": "Okay, let's tackle the user's question: \"Who starred in the movie Summer of 42\". \n\nFirst, I need to figure out which \"Summer of 42\" they're referring to. From the search_entity results, the top hit is wd:Q1781831, which is the 1971 film by Robert Mulligan. That's the movie, not the album or novelization. So the entity we're dealing with is Q1781831.\n\nNext step: find the actors (starring) in this movie. In Wikidata, the property for \"starring\" is usually P161 (https://www.wikidata.org/wiki/Property:P161). So I should query for all instances of P161 for the entity wd:Q1781831.\n\nBut wait, let me confirm. Maybe I should check what properties are associated with this entity. Using the list function might help. Let me try listing triples where the subject is Q1781831. So list(kg=\"wikidata\", subject=\"wd:Q1781831\") would show all properties connected to the film.\n\nAlternatively, since I suspect P161 is the correct property, I can construct a SPARQL query to select ?actor where wd:Q1781831 wdt:P161 ?actor.\n\nBut to be thorough, maybe first check what properties exist for this film. Let me use the list function.\n\nWait, the user's question is about who starred in it, so the main cast. The property P161 is indeed \"cast member\" or \"starring\". Let me proceed.\n\nSo the SPARQL query would be:\n\nSELECT ?actor ?actorLabel WHERE {\n  wd:Q1781831 wdt:P161 ?actor.\n  SERVICE wikibase:label { bd:serviceParam wikibase:language \"en\". }\n}\n\nBut wait, the instructions say not to use SERVICE wikibase:label. So instead, use rdfs:label in an optional clause. Let me adjust that.\n\nActually, the proper way without SERVICE is:\n\nSELECT ?actor (SAMPLE(?actorLabel) AS ?label) WHERE {\n  wd:Q1781831 wdt:P161 ?actor.\n  OPTIONAL { ?actor rdfs:label ?actorLabel FILTER (LANG(?actorLabel) = \"en\") }\n}\nGROUP BY ?actor\n\nBut since the task says that labels are optional, maybe just get the IRIs of the actors. But the user probably wants the names. However, the answer requires the actual identifiers. Wait, the instructions say: \"The SPARQL query should always return the actual identifiers / IRIs of the items in its result. It additionally may return labels or other human-readable information, but they are optional and should be put within optional clauses unless explicitly requested by the user.\"\n\nSince the user is asking for \"who starred\", they likely want the names. But per rules, the main result should be the IRIs. However, the answer function's answer parameter should provide the human-readable answer. So the SPARQL query returns the IRIs and maybe labels, but the final answer will list the names.\n\nSo first, confirm the property.\n\nLet me verify using the search_property_of_entity. Let's call search_property_of_entity(kg=\"wikidata\", entity=\"wd:Q1781831\", query=\"starring\"). Wait, but the function uses the index. Alternatively, search_property with \"starring\".\n\nAlternatively, use search_property to find the correct property. But given that P161 is the standard for cast members, but just to make sure.\n\nWait, let me check the search_property function for \"starring\" to confirm the property.\n\nBut given time constraints, maybe proceed with P161. However, the user might have meant the main actors. Let's check.\n\nAlternatively, use the list function on the entity to see what properties it has. Let's do that.\n\nCall list(kg=\"wikidata\", subject=\"wd:Q1781831\"). Let's see what properties exist.\n\nBut since I can't actually execute it, but in reality, the assistant would. From prior knowledge, films on Wikidata usually have P161 as the cast member property.\n\nAssuming that's correct, the SPARQL would be:\n\nSELECT ?actor WHERE {\n  wd:Q1781831 wdt:P161 ?actor.\n}\n\nBut to get labels:\n\nSELECT ?actor ?actorLabel WHERE {\n  wd:Q1781831 wdt:P161 ?actor.\n  ?actor rdfs:label ?actorLabel.\n  FILTER(LANG(?actorLabel) = \"en\")\n}\n\nBut per instructions, the labels are optional. So better to include them in an optional clause.\n\nSo:\n\nSELECT ?actor (SAMPLE(?actorLabel) AS ?label) WHERE {\n  wd:Q1781831 wdt:P161 ?actor.\n  OPTIONAL { ?actor rdfs:label ?actorLabel FILTER(LANG(?actorLabel) = \"en\") }\n}\nGROUP BY ?actor\n\nThen, in the answer, we can list the labels.\n\nBut first, we need to confirm that P161 is the correct property for this film.\n\nWait, let's check the search_property_of_entity for entity Q1781831 and query \"starring\".\n\nBut since I can't actually do that here, based on standard Wikidata practices, P161 is the right property.\n\nAlternatively, maybe the film has \"cast member\" (P161) property.\n\nAnother check: The movie \"Summer of '42\" (1971) cast includes Jennifer O'Neill, Gary Grimes, etc. Let's see if those names exist in Wikidata.\n\nBut since we need to generate the SPARQL, proceed.\n\nThus, the final query should select all ?actor where wd:Q1781831 wdt:P161 ?actor, and optionally get their labels.\n\nNow, the answer should list the actors. Based on real knowledge, the main actors are Jennifer O'Neill, Gary Grimes, Jerry Houser, Oliver Conant.\n\nBut need to make sure the SPARQL returns those. So the query is correct.\n\nTherefore, the SPARQL query is:\n\nSELECT ?actor ?actorLabel WHERE {\n  wd:Q1781831 wdt:P161 ?actor.\n  OPTIONAL { ?actor rdfs:label ?actorLabel FILTER(LANG(?actorLabel) = \"en\") }\n}\n\nThen, the answer would be the list of labels."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-9573f2f2ec46e7f5",
+            "name": "list",
+            "args": {
+              "kg": "wikidata",
+              "subject": "wd:Q1781831",
+              "property": null,
+              "object": null
+            },
+            "result": "Got 286 rows and 3 columns, showing the first 10 rows below:\n| subject                     | property                     | object                                                        |\n| --------------------------- | ---------------------------- | ------------------------------------------------------------- |\n| Summer of '42 (wd:Q1781831) | instance of (wdt:P31)        | film (wd:Q11424)                                              |\n| Summer of '42 (wd:Q1781831) | title (wdt:P1476)            | Summer of '42 (lang:en)                                       |\n| Summer of '42 (wd:Q1781831) | publication date (wdt:P577)  | 1971-04-09T00:00:00Z (xsd:dateTime)                           |\n| Summer of '42 (wd:Q1781831) | main subject (wdt:P921)      | virginity (wd:Q170538)                                        |\n| Summer of '42 (wd:Q1781831) | Freebase ID (wdt:P646)       | /m/05x6nr                                                     |\n| Summer of '42 (wd:Q1781831) | country of origin (wdt:P495) | United States (wd:Q30)                                        |\n| Summer of '42 (wd:Q1781831) | genre (wdt:P136)             | drama film (wd:Q130232)                                       |\n| Summer of '42 (wd:Q1781831) | award received (wdt:P166)    | Academy Award for Best Original Dramatic Score (wd:Q22235329) |\n| Summer of '42 (wd:Q1781831) | cast member (wdt:P161)       | Jennifer O'Neill (wd:Q240460)                                 |\n| Summer of '42 (wd:Q1781831) | IMDb ID (wdt:P345)           | tt0067803                                                     |\n| ...                         | ...                          | ...                                                           |"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 1463,
+          "prompt_tokens": 4281,
+          "total_tokens": 5744
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "5e6c9886a3064fb29efa23813c9dd003",
+        "message": null,
+        "reasoning": {
+          "id": "cedfdd7abc62486595913b1b8fcbfbc8",
+          "content": "Okay, let's tackle the user's question: \"Who starred in the movie Summer of 42\". \n\nFirst, I need to figure out which \"Summer of 42\" they're referring to. When I used the search_entity function with \"Summer of 42\", the top result was Q1781831, which is the 1971 film directed by Robert Mulligan. The other results were an album, a novelization, episodes, etc., so I can safely assume the user is talking about the movie.\n\nNext, I checked the properties of Q1781831 using the list function. Scanning through the properties, I noticed \"cast member (wdt:P161)\" listed, which seems relevant. The example row showed Jennifer O'Neill as a cast member. So, the property wdt:P161 (cast member) is used here.\n\nNow, to get all actors who starred in the movie, I need to construct a SPARQL query that selects all values of the cast member property for Q1781831. In Wikidata, the direct property for cast members is indeed wdt:P161. Each cast member entry should point to a person entity (like Jennifer O'Neill with Q240460 in the example).\n\nBut wait, sometimes there might be qualifiers or additional properties, but the user just wants the list of actors, so it's straightforward. The query would be something like:\n\nSELECT ?actor WHERE {\n  wd:Q1781831 wdt:P161 ?actor.\n}\n\nBut the user might also want the labels of the actors, not just their QIDs. So adding an OPTIONAL clause for labels would make the answer more user-friendly. However, according to the problem statement, the SPARQL query should return the actual identifiers (IRIs), and labels are optional but should be in optional clauses. Since the user asked \"who starred\", they probably expect the names, so including rdfs:label makes sense.\n\nSo the query should be:\n\nSELECT ?actor ?actorLabel WHERE {\n  wd:Q1781831 wdt:P161 ?actor.\n  OPTIONAL { ?actor rdfs:label ?actorLabel . }\n}\n\nWait, but in the list output, the object for cast member is the actor's entity (like wd:Q240460). So in SPARQL, it's just selecting ?actor where the triple is (Q1781831, wdt:P161, ?actor). Then getting their labels.\n\nI should verify if wdt:P161 is indeed the correct property. Looking back at the list results, the property was \"cast member (wdt:P161)\", so yes, that's correct. So the query should work.\n\nLet me check if there are multiple cast members. The example had Jennifer O'Neill, but maybe there are others. The list function showed 286 rows, and one of them was Jennifer O'Neill. So the SPARQL when executed should return all cast members.\n\nBefore finalizing, perhaps I should execute a test query to ensure that wdt:P161 returns the actors. Let me simulate:\n\nSELECT ?actor WHERE {\n  wd:Q1781831 wdt:P161 ?actor.\n}\n\nThis should return all the cast member entities. Including their labels would help the user identify them by name.\n\nAlso, checking that the property is correctly 'cast member'. In Wikidata, P161 is 'cast member', which is the correct property for this use case.\n\nSo the final SPARQL query would select the actors and their labels. The answer should list the names of the actors who starred in the movie."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-b061a6ff5e6c9ef9",
+            "name": "execute",
+            "args": {
+              "kg": "wikidata",
+              "sparql": "SELECT ?actor ?label WHERE { wd:Q1781831 wdt:P161 ?actor . OPTIONAL { ?actor rdfs:label ?label . FILTER(lang(?label) = \"en\") } }"
+            },
+            "result": "Got 6 rows and 2 columns:\n| actor                           | label                        |\n| ------------------------------- | ---------------------------- |\n| Jennifer O'Neill (wd:Q240460)   | Jennifer O'Neill (lang:en)   |\n| Gary Grimes (wd:Q3098560)       | Gary Grimes (lang:en)        |\n| Jerry Houser (wd:Q3177473)      | Jerry Houser (lang:en)       |\n| Lou Frizzell (wd:Q3260124)      | Lou Frizzell (lang:en)       |\n| Christopher Norris (wd:Q530672) | Christopher Norris (lang:en) |\n| Oliver Conant (wd:Q7087460)     | Oliver Conant (lang:en)      |"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 867,
+          "prompt_tokens": 4849,
+          "total_tokens": 5716
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "161b8a20d16d4bafbbc0b46f7e14fc59",
+        "message": null,
+        "reasoning": {
+          "id": "a2852837814e42e5a377f2e033e2d274",
+          "content": "Okay, let's see. The user asked \"who starred in the movie summer of 42\". \n\nFirst, I used the search_entity function to find the correct entity for the movie. The top result was Summer of '42 (wd:Q1781831), which is the 1971 film. I checked that it's an instance of film and matches the query well.\n\nNext, I ran a list command to see what properties the movie has. Looking at the results, there's a cast member property (P161) which seems relevant for actors. The example showed Jennifer O'Neill as a cast member, so that's promising.\n\nThen, I constructed a SPARQL query to get all actors. The query uses wd:Q1781831 (the movie) connected via wdt:P161 to get the actors. I also included optional labels in English to make the results readable.\n\nThe execute function returned six actors: Jennifer O'Neill, Gary Grimes, Jerry Houser, Lou Frizzell, Christopher Norris, and Oliver Conant. These are the main cast members of the movie.\n\nI need to verify if these are indeed the stars. Since the user asked for \"starred in\", the cast members listed via P161 should be the correct answer. The query worked, and the results look accurate based on the initial entity search and property check.\n\nSo the final answer should list these actors as the ones who starred in Summer of '42."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-9879f70da73a868e",
+            "name": "answer",
+            "args": {
+              "kg": "wikidata",
+              "sparql": "SELECT ?actor WHERE { wd:Q1781831 wdt:P161 ?actor }",
+              "answer": "Jennifer O'Neill, Gary Grimes, Jerry Houser, Lou Frizzell, Christopher Norris, and Oliver Conant starred in the movie Summer of '42 (1971)."
+            },
+            "result": "Stopping"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 411,
+          "prompt_tokens": 5122,
+          "total_tokens": 5533
+        }
+      }
+    }
+  ],
+  "known": [
+    "http://www.wikidata.org/entity/Q932701",
+    "http://www.wikidata.org/entity/Q7087460",
+    "http://www.wikidata.org/entity/Q170538",
+    "http://www.wikidata.org/entity/Q85855063",
+    "http://www.wikidata.org/entity/P136",
+    "http://www.wikidata.org/entity/P161",
+    "http://www.wikidata.org/prop/direct/P577",
+    "http://www.wikidata.org/prop/direct/P161",
+    "http://www.wikidata.org/prop/direct/P31",
+    "http://www.wikidata.org/entity/Q1781831",
+    "http://www.wikidata.org/prop/direct/P495",
+    "http://www.wikidata.org/entity/Q240460",
+    "http://www.wikidata.org/entity/Q130232",
+    "http://www.wikidata.org/prop/direct/P136",
+    "http://www.wikidata.org/entity/Q11424",
+    "http://www.wikidata.org/entity/Q25095084",
+    "http://www.wikidata.org/entity/Q30",
+    "http://www.wikidata.org/entity/P495",
+    "http://www.wikidata.org/entity/Q3177473",
+    "http://www.wikidata.org/entity/P921",
+    "http://www.wikidata.org/entity/Q3260124",
+    "http://www.wikidata.org/prop/direct/P345",
+    "http://www.wikidata.org/entity/P1476",
+    "http://www.wikidata.org/prop/direct/P646",
+    "http://www.wikidata.org/entity/P646",
+    "http://www.wikidata.org/entity/Q1150713",
+    "http://www.wikidata.org/entity/P345",
+    "http://www.wikidata.org/entity/Q1472791",
+    "http://www.wikidata.org/entity/P166",
+    "http://www.wikidata.org/entity/P577",
+    "http://www.wikidata.org/entity/Q7637499",
+    "http://www.wikidata.org/entity/Q114509708",
+    "http://www.wikidata.org/entity/Q1324301",
+    "http://www.wikidata.org/prop/direct/P1476",
+    "http://www.wikidata.org/entity/Q13423400",
+    "http://www.wikidata.org/entity/Q530672",
+    "http://www.wikidata.org/entity/P31",
+    "http://www.wikidata.org/entity/Q3098560",
+    "http://www.wikidata.org/entity/Q22235329",
+    "http://www.wikidata.org/prop/direct/P166",
+    "http://www.wikidata.org/prop/direct/P921"
+  ],
+  "id": "unknown",
+  "source_csv": "data/SimpleQA/NQ_table_test_simple.csv",
+  "row_index": 613,
+  "question": "who starred in the movie summer of 42",
+  "reference_answer": "Jennifer O'Neill | Gary Grimes | Jerry Houser | Oliver Conant"
+}
