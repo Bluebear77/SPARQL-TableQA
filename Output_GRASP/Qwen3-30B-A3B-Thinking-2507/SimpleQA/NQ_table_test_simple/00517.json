@@ -1,11 +1,132 @@
 {
-  "error": "invalid_json_stdout",
-  "elapsed": 14.149358,
+  "type": "output",
+  "task": "sparql-qa",
+  "output": {
+    "sparql": "PREFIX wdt: <http://www.wikidata.org/prop/direct/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?date WHERE {\n  ?organization rdfs:label \"South Asian Association for Regional Cooperation\" @en .\n  ?organization wdt:P571 ?date .\n}",
+    "kg": "wikidata",
+    "selections": "",
+    "result": "Got 1 row and 1 column:\n| date                                |\n| ----------------------------------- |\n| 1985-12-08T00:00:00Z (xsd:dateTime) |",
+    "endpoint": "https://qlever.dev/api/wikidata",
+    "type": "answer",
+    "answer": "The South Asian Association for Regional Co-operation (SAARC) was formed on December 8, 1985.\n\n<answer>\nThe South Asian Association for Regional Co-operation (SAARC) was formed on 1985-12-08.\n</answer>",
+    "formatted": "The South Asian Association for Regional Co-operation (SAARC) was formed on December 8, 1985.\n\n<answer>\nThe South Asian Association for Regional Co-operation (SAARC) was formed on 1985-12-08.\n</answer>\n\nSPARQL query over wikidata:\n```sparql\nPREFIX wdt: <http://www.wikidata.org/prop/direct/>\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nSELECT ?date WHERE {\n  ?organization rdfs:label \"South Asian Association for Regional Cooperation\" @en .\n  ?organization wdt:P571 ?date .\n}\n```\n\nExecution result:\nGot 1 row and 1 column:\n| date                                |\n| ----------------------------------- |\n| 1985-12-08T00:00:00Z (xsd:dateTime) |"
+  },
+  "elapsed": 30.533679,
+  "error": null,
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a question answering assistant. Your job is to generate a SPARQL query to answer a given user question.\n\nYou should follow a step-by-step approach to generate the SPARQL query:\n1. Determine possible entities and properties implied by the user question.\n2. Search for the entities and properties in the knowledge graphs. Where applicable, constrain the searches with already identified entities and properties.\n3. Gradually build up the SPARQL query using the identified entities and properties. Start with simple queries and add more complexity as needed. Execute intermediate queries to get feedback and to verify your assumptions. You may need to refine or rethink your current plan based on the query results and go back to step 2 if needed, possibly multiple times.\n4. Use the answer or cancel function to finalize your answer and stop the generation process.\n\nAvailable knowledge graphs:\n- \"wikidata\" at https://qlever.dev/api/wikidata\n\nIndex types used:\n\n\nSPARQL prefixes for use in function calls:\n- bd: http://www.bigdata.com/rdf#\n- cc: http://creativecommons.org/ns#\n- data: https://www.wikidata.org/wiki/Special:EntityData/\n- dc: http://purl.org/dc/elements/1.1/\n- dct: http://purl.org/dc/terms/\n- foaf: http://xmlns.com/foaf/0.1/\n- geo: http://www.opengis.net/ont/geosparql#\n- geof: http://www.opengis.net/def/function/geosparql/\n- gn: http://www.geonames.org/ontology#\n- hint: http://www.bigdata.com/queryHints#\n- imdb: https://www.imdb.com/\n- math: http://www.w3.org/2005/xpath-functions/math#\n- ontolex: http://www.w3.org/ns/lemon/ontolex#\n- owl: http://www.w3.org/2002/07/owl#\n- p: http://www.wikidata.org/prop/\n- pq: http://www.wikidata.org/prop/qualifier/\n- pqn: http://www.wikidata.org/prop/qualifier/value-normalized/\n- pqv: http://www.wikidata.org/prop/qualifier/value/\n- pr: http://www.wikidata.org/prop/reference/\n- prn: http://www.wikidata.org/prop/reference/value-normalized/\n- prov: http://www.w3.org/ns/prov#\n- prv: http://www.wikidata.org/prop/reference/value/\n- ps: http://www.wikidata.org/prop/statement/\n- psn: http://www.wikidata.org/prop/statement/value-normalized/\n- psv: http://www.wikidata.org/prop/statement/value/\n- qb: http://purl.org/linked-data/cube#\n- qfn: http://qlever.cs.uni-freiburg.de/function#\n- ql: http://qlever.cs.uni-freiburg.de/builtin-functions/\n- qlss: https://qlever.cs.uni-freiburg.de/spatialSearch/\n- rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#\n- rdfs: http://www.w3.org/2000/01/rdf-schema#\n- ref: http://www.wikidata.org/reference/\n- s: http://www.wikidata.org/entity/statement/\n- schema: http://schema.org/\n- skos: http://www.w3.org/2004/02/skos/core#\n- v: http://www.wikidata.org/value/\n- void: http://rdfs.org/ns/void#\n- wd: http://www.wikidata.org/entity/\n- wdno: http://www.wikidata.org/prop/novalue/\n- wdt: http://www.wikidata.org/prop/direct/\n- wdtn: http://www.wikidata.org/prop/direct-normalized/\n- wikibase: http://wikiba.se/ontology#\n- xsd: http://www.w3.org/2001/XMLSchema#\n\nAdditional rules to follow:\n- Explain your thought process before and after each step and function call.\n- Do not ask the user for clarification until you have made an initial attempt at completing the task. When the task input is incomplete or ambiguous, proceed based on reasonable assumptions.\n- Do not use \"SERVICE wikibase:label { bd:serviceParam wikibase:language ...\" in SPARQL queries. It is unsupported by the used QLever SPARQL endpoints. Use rdfs:label or similar properties to get labels instead.\n- Always execute your final SPARQL query before giving an answer to make sure it returns the expected results.\n- The SPARQL query should always return the actual identifiers / IRIs of the items in its result. It additionally may return labels or other human-readable information, but they are optional and should be put within optional clauses unless explicitly requested by the user.\n- Do not stop early if there are still obvious improvements to be made to the SPARQL query. For example, keep refining your SPARQL query if its result contains irrelevant items or is missing items you expected.\n- Do not perform additional computation (e.g. filtering, sorting, calculations) on the result of the SPARQL query to determine the answer. All computation should be done solely within SPARQL.\n- For questions with a \"True\" or \"False\" answer the SPARQL query should be an ASK query."
+    },
+    {
+      "role": "user",
+      "content": "when was the south asian association for regional co-operation (saarc) formed"
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "f9b8c4c5fcfe48e0aec03af56cc2f3b7",
+        "message": null,
+        "reasoning": {
+          "id": "5efb614b61454cb78c649aa4d757166e",
+          "content": "Okay, let's see. The user is asking when the South Asian Association for Regional Co-operation (SAARC) was formed. I need to find the correct year or date it was established.\n\nFirst, I should look up SAARC in Wikidata. Since it's an organization, the date of formation would be under a specific property. Let me think about what property that might be. In Wikidata, organizations often have a \"date of foundation\" property. The standard property for that is P571, which is \"date of foundation\" according to the Wikidata properties.\n\nSo, I need to find the entity for SAARC. The full name is South Asian Association for Regional Co-operation. Let me search for that entity. I'll use the search_entity function with the query \"south asian association for regional co-operation\".\n\nWait, but maybe the entity name uses a different structure. Sometimes organizations have their own code or acronym. SAARC is the common acronym, so maybe the entity's label includes \"SAARC\" as well. Alternatively, I should first find the correct entity using a search.\n\nLet me call search_entity with the query \"south asian association for regional co-operation\" to get the Wikidata ID. Once I have the ID, I can check what property holds the formation date.\n\nAssuming the search returns the correct entity, probably wd:Q2441720, but I need to verify. Wait, I'm not sure. Let's execute the search.\n\nWait, but since I can't actually run the tool until I make the tool call, I'll have to plan. But according to the tool setup, I need to generate the correct function calls step by step.\n\nFirst step: search_entity for \"south asian association for regional co-operation\" in Wikidata. Let's do that.\n\nSo, using search_entity(kg=\"wikidata\", query=\"south asian association for regional co-operation\"). That should give me the correct entity ID, like Q54429 or something similar.\n\nOnce I have the entity ID, the next step is to find the date of foundation. The property for that is P571. So the SPARQL query would look for the entity, then get its P571 value.\n\nWait, but need to make sure that SAARC is indeed the entity we're looking for. Let's say the search returns the entity wd:Q54429. Then the SPARQL would be SELECT ?date WHERE { wd:Q54429 wdt:P571 ?date }.\n\nThen, the result should be the date. But I should check if that's the correct property. Maybe the date is under another property, like founding date. Let me confirm: in Wikidata, the standard property for the founding date of an organization is P571 (date of foundation).\n\nSo steps:\n\n1. Find SAARC's entity ID via search_entity.\n2. Use that ID in a SPARQL query to get the date from wdt:P571.\n\nBut first, need to get the entity ID. Let's make the search_entity call."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-9301fc804b5d9e32",
+            "name": "search_entity",
+            "args": {
+              "kg": "wikidata",
+              "query": "south asian association for regional co-operation"
+            },
+            "result": "Call to function search_entity returned an error:\nEntity index is not loaded",
+            "error": "Entity index is not loaded"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 677,
+          "prompt_tokens": 3584,
+          "total_tokens": 4261
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "e30bad495c1347f8ab66f5f984af0bde",
+        "message": null,
+        "reasoning": {
+          "id": "386c6dc4759f42c6a97854ee6dcdbe49",
+          "content": "Okay, the user asked when SAARC was formed. First, I tried to search for the entity \"south asian association for regional co-operation\" using the search_entity function. But got an error saying \"Entity index is not loaded\". Hmm, maybe the index isn't available, or the name is slightly off.\n\nLet me think. SAARC is a common acronym, so maybe the correct entity name uses the acronym or a different phrasing. The user might have used the full name, but Wikidata could have it under \"South Asian Association for Regional Cooperation\" or maybe \"SAARC\". Let me try searching again with a slightly different query. Maybe \"SAARC\" instead of the full name. Or perhaps check the standard name used in Wikidata.\n\nWait, the error message says the entity index isn't loaded. But the knowledge graph is supposed to be loaded. Maybe it's a typo in the function name or the parameters. Wait, no, the function is correct. Maybe the problem is that the search_entity function is expecting a different index. But the error says the index isn't loaded, which is confusing. Maybe I should try a different function.\n\nAlternatively, maybe the correct entity ID for SAARC is known. Let me recall, SAARC's Wikipedia page says it was founded in 1985. But I need to confirm via Wikidata. Maybe the entity in Wikidata is \"South Asian Association for Regional Cooperation\", so I should search for that exact phrase.\n\nWait, the first search used \"south asian association for regional co-operation\" (with 'co-operation' spelled with a 'u'), which might not match. The correct spelling in Wikidata might be 'cooperation' without the 'u'. Let me try \"south asian association for regional cooperation\" instead.\n\nSo, I'll call search_entity again with the corrected spelling. Let's see. Let me adjust the query to \"south asian association for regional cooperation\" without the 'u' in cooperation."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-8d3676aa0fa9ab48",
+            "name": "search_entity",
+            "args": {
+              "kg": "wikidata",
+              "query": "south asian association for regional cooperation"
+            },
+            "result": "Call to function search_entity returned an error:\nEntity index is not loaded",
+            "error": "Entity index is not loaded"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 435,
+          "prompt_tokens": 3644,
+          "total_tokens": 4079
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "849c0dcdf3044fba8ca563aa08c384ed",
+        "message": null,
+        "reasoning": {
+          "id": "9e51d1a561324ce7b8f2eb3c92b6f46c",
+          "content": "Okay, the user is asking when the South Asian Association for Regional Co-operation (SAARC) was formed. Let me try to figure this out.\n\nFirst, I tried to search for \"south asian association for regional co-operation\" using the search_entity function, but got an error about the entity index not being loaded. Then I tried again with \"south asian association for regional cooperation\" (without the 'e' in co-operation), but still got the same error. Hmm, maybe the index isn't loaded, but I need to proceed.\n\nSince the search_entity isn't working, maybe I should use another approach. Let me recall common entities. SAARC is an international organization, so it's probably a Wikidata entity. I remember that SAARC's main page in Wikidata is Q171840. Wait, but I'm not sure. Maybe I should look for the entity another way.\n\nAnother function available is search_property_of_entity. But I need an entity first. Maybe I should look for the entity by searching for 'SAARC' first. Wait, the previous attempts to search for the full name didn't work, but maybe searching for 'SAARC' as the query would help. Let me try search_entity with \"SAARC\".\n\nWait, the error says \"Entity index is not loaded\". Maybe the server isn't set up to handle those searches properly, but the user expects a SPARQL query. So perhaps I need to construct the SPARQL query directly without using the search functions. Let me think about the structure.\n\nSAARC is an international organization. In Wikidata, organizations often have a 'country' or 'founding date' property. The property for founding date is usually 'P571' (date of official establishment). So I need to find the entity for SAARC and then get its P571 value.\n\nBut how to find the entity for SAARC? Maybe I can use the label. The label is \"South Asian Association for Regional Co-operation\", so in SPARQL, we can search for that. The query would be:\n\nSELECT ?saarc ?date WHERE {\n  wd:Q171840 rdfs:label ?label . \n  FILTER (CONTAINS(LCASE(?label), \"south asian association for regional co-operation\")) .\n  wd:Q171840 wdt:P571 ?date .\n}\n\nWait, but I don't know the QID. Maybe I should look up the QID first. Since the search_entity isn't working, perhaps I should assume a common QID. But that's risky. Alternatively, use the label directly in the SPARQL.\n\nWait, in Wikidata, the standard way to find entities by label is to use the 'rdfs:label' property. So maybe:\n\nSELECT ?organization ?date WHERE {\n  ?organization rdfs:label \"South Asian Association for Regional Co-operation\"@en .\n  ?organization wdt:P571 ?date .\n}\n\nBut I need to make sure the label matches. The label might have variations. SAARC's official name might be slightly different. Let's check common knowledge: SAARC was founded on December 8, 1985. So the founding date should be 1985-12-08.\n\nLet me verify using SPARQL. If I can construct the query to find the organization with the label and get the founding date.\n\nBut first, to confirm the entity. The query would use rdfs:label with language '@en' for English. So:\n\nSELECT ?saarc ?date WHERE {\n  ?saarc rdfs:label \"South Asian Association for Regional Co-operation\"@en ;\n         wdt:P571 ?date .\n}\n\nWait, but maybe the label in Wikidata is \"South Asian Association for Regional Cooperation\" (without the 'e' in co-operation). Let's correct that. In the user's question, it's spelled \"co-operation\", but maybe the Wikidata entry uses the standard \"cooperation\".\n\nSo maybe:\n\nSELECT ?saarc ?date WHERE {\n  ?saarc rdfs:label \"South Asian Association for Regional Cooperation\"@en ;\n         wdt:P571 ?date .\n}\n\nThis should return the founding date. Let's assume that's the correct query. If that returns the date, then the answer is 1985-12-08.\n\nAlternatively, the date might be a timestamp, so the answer would be that date.\n\nLet me check the expected answer. SAARC was indeed formed in 1985. So the SPARQL query should get 1985-12-08.\n\nSo the SPARQL query should select the date using the correct label. Since the user's question has \"co-operation\", but the Wikidata label uses \"cooperation\", I'll adjust the query accordingly.\n\nNow, to write the SPARQL. Also, using 'wdt:P571' for the founding date. So the query should work.\n\nLet me test this in my mind. If I run:\n\nSELECT ?date WHERE {\n  ?org wdt:P31 wd:Q43229;  # Instance of international organization\n  rdfs:label \"South Asian Association for Regional Cooperation\"@en ;\n  wdt:P571 ?date .\n}\n\nBut maybe the type is not necessary, but including it might help. But the user's question is straightforward, so maybe just use the label.\n\nSo the SPARQL query would be:\n\nSELECT ?date WHERE {\n  ?organization rdfs:label \"South Asian Association for Regional Cooperation\"@en .\n  ?organization wdt:P571 ?date .\n}\n\nThis should return the date.\n\nWait, but in the user's question, it's \"South Asian Association for Regional Co-operation\" with a hyphenated 'co-operation', but Wikidata likely uses 'cooperation' without the hyphen. So the label as per Wikidata is probably without the hyphen. So the query should use \"cooperation\".\n\nTherefore, the correct SPARQL query is as above. I'll execute it.\n\nNow, to confirm, let's see what the result would be. If it returns 1985-12-08, then that's the answer.\n\nSo the final answer should be December 8, 1985, so the date is 1985-12-08.\n\nThe SPARQL query is:\n\nSELECT ?date WHERE {\n  ?organization rdfs:label \"South Asian Association for Regional Cooperation\"@en .\n  ?organization wdt:P571 ?date .\n}\n\nI think that's right. Now, to make sure, but since we can't execute it yet, but according to my knowledge, SAARC was founded in 1985. So the answer should be 1985."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-a8efc81ef7183232",
+            "name": "execute",
+            "args": {
+              "kg": "wikidata",
+              "sparql": "SELECT ?date WHERE { ?organization rdfs:label \"South Asian Association for Regional Cooperation\"@en . ?organization wdt:P571 ?date . }"
+            },
+            "result": "Got 1 row and 1 column:\n| date                                |\n| ----------------------------------- |\n| 1985-12-08T00:00:00Z (xsd:dateTime) |"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 1485,
+          "prompt_tokens": 3703,
+          "total_tokens": 5188
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "08ecfb8319554d088941a63dae82d2ce",
+        "message": "The South Asian Association for Regional Co-operation (SAARC) was formed on December 8, 1985.\n\n<answer>\nThe South Asian Association for Regional Co-operation (SAARC) was formed on 1985-12-08.\n</answer>",
+        "reasoning": {
+          "id": "cbd77d64e2a8450ab842654655535fe9",
+          "content": "Okay, let's see. The user is asking when SAARC was formed. I tried searching for the entity first, but the search_entity function kept giving an error about the entity index not being loaded. Then I decided to write a SPARQL query directly.\n\nI used the label \"South Asian Association for Regional Cooperation\" in English and looked for the P571 property, which is the P571, I recall means date of formation or inception. The query returned a date, which is 1985-12-08. So SAARC was formed on December 8, 1985. I need to confirm if that's correct.\n\nWait, maybe I should check if the label matches exactly. The user said \"south asian association for regional co-operation\" with a 'co-operation' spelled with a 'u', but the Wikidata label might be using 'cooperation' without the 'u'. But the query used \"co-operation\" as written, but in the SPARQL, I used \"South Asian Association for Regional Cooperation\" (without the u). Maybe Wikidata's label has the 'u' or not. However, the query did return a result, so it's probably correct.\n\nWait, the user's question has \"co-operation\" with a 'u', but in the SPARQL I used the standard spelling. But the result came back, so the entity might have the label in a different spelling, but it still matched. The date is 1985-12-08. The answer should be that SAARC was formed on December 8, 1985.\n\nI should make sure that the date is correctly formatted. The SPARQL result shows it as 1985-12-08T00:00:00Z, which is the date in ISO format. So the year is 1985, month 12 (December), day 08. So the answer is December 8, 1985.\n\nNo other entities were found, so the query seems correct. Therefore, the final answer should state the formation date as 1985."
+        },
+        "tool_calls": [],
+        "usage": {
+          "completion_tokens": 514,
+          "prompt_tokens": 3820,
+          "total_tokens": 4334
+        }
+      }
+    }
+  ],
+  "known": [],
+  "id": "unknown",
   "source_csv": "data/SimpleQA/NQ_table_test_simple.csv",
   "row_index": 517,
-  "returncode": 0,
-  "stdout_preview": "\n\u001b[1;31mGive Feedback / Get Help: https://github.com/BerriAI/litellm/issues/new\u001b[0m\nLiteLLM.Info: If you need to debug this error, use `litellm._turn_on_debug()'.\n\n\n\u001b[1;31mProvider List: https://docs.litellm.ai/docs/providers\u001b[0m\n\n\n\u001b[1;31mGive Feedback / Get Help: https://github.com/BerriAI/litellm/issues/new\u001b[0m\nLiteLLM.Info: If you need to debug this error, use `litellm._turn_on_debug()'.\n\n\n\u001b[1;31mProvider List: https://docs.litellm.ai/docs/providers\u001b[0m\n\n\n\u001b[1;31mGive Feedback / Get Help: https://github.com/BerriAI/litellm/issues/new\u001b[0m\nLiteLLM.Info: If you need to debug this error, use `litellm._turn_on_debug()'.\n\n\n\u001b[1;31mProvider List: https://docs.litellm.ai/docs/providers\u001b[0m\n\n{\"type\": \"output\", \"task\": \"sparql-qa\", \"output\": null, \"elapsed\": 0.04214874189347029, \"error\": {\"content\": \"Failed to generate response:\\nlitellm.InternalServerError: InternalServerError: Hosted_vllmException - [Errno 111] Connection refused\", \"reason\": \"api\"}, \"messages\": [{\"role\": \"system\", \"content\": \"You are a question answering assistant. Your job is to generate a SPARQL query to answer a given user question.\\n\\nYou should follow a step-by-step approach to generate the SPARQL query:\\n1. Determine possible entities and properties implied by the user question.\\n2. Search for the entities and properties in the knowledge graphs. Where applicable, constrain the searches with already identified entities and properties.\\n3. Gradually build up the SPARQL query using the identified entities and properties. Start with simple queries and add more complexity as needed. Execute intermediate queries to get feedback and to verify your assumptions. You may need to refine or rethink your current plan based on the query results and go back to step 2 if needed, possibly multiple times.\\n4. Use the answer or cancel function to finalize your answer and stop the generation process.\\n\\nAvailable knowledge graphs:\\n- \\\"wikidata\\\" at https://qlever.dev/api/wikidata\\n\\nIndex types used:\\n\\n\\nSPARQL prefixes for use in function calls:\\n- bd: http://www.bigdata.com/rdf#\\n- cc: http://creativecommons.org/ns#\\n- data: https://www.wikidata.org/wiki/Special:EntityData/\\n- dc: http://purl.org/dc/elements/1.1/\\n- dct: http://purl.org/dc/terms/\\n- foaf: http://xmlns.com/foaf/0.1/\\n- geo: http://www.opengis.net/ont/geosparql#\\n- geof: http://www.opengis.net/def/function/geosparql/\\n- gn: http://www.geonames.org/ontology#\\n- hint: http://www.bigdata.com/queryHints#\\n- imdb: https://www.imdb.com/\\n- math: http://www.w3.org/2005/xpath-functions/math#\\n- ontolex: http://www.w3.org/ns/lemon/ontolex#\\n- owl: http://www.w3.org/2002/07/owl#\\n- p: http://www.wikidata.org/prop/\\n- pq: http://www.wikidata.org/prop/qualifier/\\n- pqn: http://www.wikidata.org/prop/qualifier/value-normalized/\\n- pqv: http://www.wikidata.org/prop/qualifier/value/\\n- pr: http://www.wikidata.org/prop/reference/\\n- prn: http://www.wikidata.org/prop/reference/value-normalized/\\n- prov: http://www.w3.org/ns/prov#\\n- prv: http://www.wikidata.org/prop/reference/value/\\n- ps: http://www.wikidata.org/prop/statement/\\n- psn: http://www.wikidata.org/prop/statement/value-normalized/\\n- psv: http://www.wikidata.org/prop/statement/value/\\n- qb: http://purl.org/linked-data/cube#\\n- qfn: http://qlever.cs.uni-freiburg.de/function#\\n- ql: http://qlever.cs.uni-freiburg.de/builtin-functions/\\n- qlss: https://qlever.cs.uni-freiburg.de/spatialSearch/\\n- rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#\\n- rdfs: http://www.w3.org/2000/01/rdf-schema#\\n- ref: http://www.wikidata.org/reference/\\n- s: http://www.wikidata.org/entity/statement/\\n- schema: http://schema.org/\\n- skos: http://www.w3.org/2004/02/skos/core#\\n- v: http://www.wikidata.org/value/\\n- void: http://rdfs.org/ns/void#\\n- wd: http://www.wikidata.org/entity/\\n- wdno: http://www.wikidata.org/prop/novalue/\\n- wdt: http://www.wikidata.org/prop/direct/\\n- wdtn: http://www.wikidata.org/prop/direct-normalized/\\n- wikibase: http://wikiba.se/ontology#\\n- xsd: http://www.w3.org",
-  "stderr_preview": "/bin/cat: /etc/distrib_version: No such file or directory\n/homes/wei/.profile: line 13: /home/wei/.cargo/env: No such file or directory\n[2026-04-30 18:07:08,810] {KG INDEX LOADING - WARNING} Failed to load data from /scratches/wei/data/kg-index/wikidata/entities: Failed to load index data from /scratches/wei/data/kg-index/wikidata/entities\n[2026-04-30 18:07:08,810] {KG INDEX LOADING - WARNING} Failed to load data from /scratches/wei/data/kg-index/wikidata/properties: Failed to load index data from /scratches/wei/data/kg-index/wikidata/properties\nWarning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\n\nLoading weights:   0%|          | 0/310 [00:00<?, ?it/s]\nLoading weights: 100%|██████████| 310/310 [00:00<00:00, 21959.34it/s]\n/homes/wei/miniconda3/envs/grasp_v1/lib/python3.12/site-packages/search_rdf/model/embedding.py:24: FutureWarning: The `get_sentence_embedding_dimension` method has been renamed to `get_embedding_dimension`.\n  self.dim: int = self.encoder.get_sentence_embedding_dimension()  # type: ignore\n[2026-04-30 18:07:12,997] {GRASP - ERROR} ERROR (reason=api)\nFailed to generate response:\nlitellm.InternalServerError: InternalServerError: Hosted_vllmException - [Errno 111] Connection refused\n[2026-04-30 18:07:12,997] {GRASP - INFO} OUTPUT\nNo output\n",
   "question": "when was the south asian association for regional co-operation (saarc) formed",
   "reference_answer": "8 December 1985"
 }
