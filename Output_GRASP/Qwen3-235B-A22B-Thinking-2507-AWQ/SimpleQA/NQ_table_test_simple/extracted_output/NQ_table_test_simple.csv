@@ -4757,7 +4757,11 @@ SELECT (""8th to 11th century"" AS ?compositionLabel) ?eventLabel WHERE {
   ?event rdfs:label ?eventLabel .
   FILTER(LANG(?eventLabel) = ""en"").
 }"
-who does the music for shimmer and shine,Joachim Svare | Joleen Belle | Melanie Fontana | Bobby Tahouri,,,
+who does the music for shimmer and shine,Joachim Svare | Joleen Belle | Melanie Fontana | Bobby Tahouri,Bobby Tahouri,"| composer                     |
+| ---------------------------- |
+| Bobby Tahouri (wd:Q28457140) |","SELECT ?composer WHERE {
+  wd:Q20899576 wdt:P86 ?composer
+}"
 when was the suite life of zack and cody made,"March 18, 2005 – September 1, 2008",2005-03-18T00:00:00Z|2008-09-01T00:00:00Z,"| startDate                           | endDate                             |
 | ----------------------------------- | ----------------------------------- |
 | 2005-03-18T00:00:00Z (xsd:dateTime) | 2008-09-01T00:00:00Z (xsd:dateTime) |","SELECT ?startDate ?endDate WHERE {
@@ -7315,7 +7319,13 @@ where does the paraguay river start and end,"Parecis plateau, Mato Grosso, Brazi
     FILTER(lang(?mouthLabel) = 'en' && lang(?sourceCountryLabel) = 'en')
   }
 }"
-what does ctrl+shift+t do,New tab | Open a previously closed tab,,,
+what does ctrl+shift+t do,New tab | Open a previously closed tab,,,"SELECT ?commandLabel WHERE {
+  ?command wdt:P4998 ?shortcut.
+  ?command rdfs:label ?commandofcommand. ?commandofcommand ?label.
+  FILTER(REGEX(?shortcut, ""Ctrl\\s*\\+\\s*Shift\\s*\\+\\s*T"", ""i""))
+  FILTER(LANG(?label) = ""en"")
+  BIND(REPLACE(?label, ""command"", """") AS ?commandLabel)
+} LIMIT 1"
 who wins the next iron chef super chefs,Zakarian,,,"SELECT ?winner WHERE {
   wd:Q1307433 wdt:P1344 ?winner
 }"

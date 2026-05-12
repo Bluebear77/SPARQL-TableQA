@@ -13734,7 +13734,6 @@ SELECT (""8th to 11th century"" AS ?compositionLabel) ?eventLabel WHERE {
 Execution result:
 Error executing SPARQL query over wikidata:
 failed to parse input: parse error at position 275 for token UNION with content 'UNION' (the input most likely does not follow the grammar)"
-SimpleQA/NQ_table_test_simple/00547.json,null_output,who does the music for shimmer and shine,Joachim Svare | Joleen Belle | Melanie Fontana | Bobby Tahouri,,,,,
 SimpleQA/NQ_table_test_simple/00549.json,empty_sparql_result,who has the most number one single hits,The Beatles,"SELECT ?artist ?artistLabel(COUNT(DISTINCT ?single) AS ?count) WHERE {
   ?single wdt:P31 wd:Q134556 .
   ?single p:P4527 ?statement .
@@ -18029,7 +18028,30 @@ Error while executing a SERVICE request to <https://qlever.cs.uni-freiburg.de:44
 <html lang=""en"">
 <head>
   <meta http-equiv=""content-type"" content=""text/html; charse'"
-SimpleQA/NQ_table_test_simple/00865.json,null_output,what does ctrl+shift+t do,New tab | Open a previously closed tab,,,,,
+SimpleQA/NQ_table_test_simple/00865.json,sparql_execution_failed (preprocessing),what does ctrl+shift+t do,New tab | Open a previously closed tab,"SELECT ?commandLabel WHERE {
+  ?command wdt:P4998 ?shortcut.
+  ?command rdfs:label ?commandofcommand. ?commandofcommand ?label.
+  FILTER(REGEX(?shortcut, ""Ctrl\\s*\\+\\s*Shift\\s*\\+\\s*T"", ""i""))
+  FILTER(LANG(?label) = ""en"")
+  BIND(REPLACE(?label, ""command"", """") AS ?commandLabel)
+} LIMIT 1","Error executing SPARQL query over wikidata:
+failed to parse input: parse error at position 177 for token . with content '.' (the input most likely does not follow the grammar)",Ctrl+Shift+T reopens the last closed tab in web browsers like Firefox and Chrome.,,"Ctrl+Shift+T reopens the last closed tab in web browsers like Firefox and Chrome.
+
+SPARQL query over wikidata:
+```sparql
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+SELECT ?commandLabel WHERE {
+  ?command wdt:P4998 ?shortcut.
+  ?command rdfs:label ?commandofcommand. ?commandofcommand ?label.
+  FILTER(REGEX(?shortcut, ""Ctrl\\s*\\+\\s*Shift\\s*\\+\\s*T"", ""i""))
+  FILTER(LANG(?label) = ""en"")
+  BIND(REPLACE(?label, ""command"", """") AS ?commandLabel)
+} LIMIT 1
+```
+
+Execution result:
+Error executing SPARQL query over wikidata:
+failed to parse input: parse error at position 177 for token . with content '.' (the input most likely does not follow the grammar)"
 SimpleQA/NQ_table_test_simple/00866.json,empty_sparql_result,who wins the next iron chef super chefs,Zakarian,"SELECT ?winner WHERE {
   wd:Q1307433 wdt:P1344 ?winner
 }",Got no rows and 1 columns,,"The question asks for the winner of the 'next' Iron Chef Super Chefs competition, which refers to a future event. Wikidata only contains historical/verified facts and does not store predictions or future event outcomes. No existing entities or properties in Wikidata (e.g., Iron Chef series like wd:Q1307433 or Iron Chef America wd:Q6072379) include future episode winners or scheduled competitions beyond recorded history.","The question asks for the winner of the 'next' Iron Chef Super Chefs competition, which refers to a future event. Wikidata only contains historical/verified facts and does not store predictions or future event outcomes. No existing entities or properties in Wikidata (e.g., Iron Chef series like wd:Q1307433 or Iron Chef America wd:Q6072379) include future episode winners or scheduled competitions beyond recorded history.
