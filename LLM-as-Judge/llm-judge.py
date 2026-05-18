@@ -8,42 +8,45 @@ export MODEL_ENDPOINT="https://litellm.tools.eurecom.fr/v1"
 export OPENAI_API_KEY="your_api_key_here"
 
 python llm-judge.py \
-  --input_csvs different_unclassified_question_235B.csv different_unclassified_question_4B.csv \
+  --input_csv different_unclassified_question_30B.csv \
+  --output_csv judge_outputs/30B_judge.csv \
   --model "$MODEL" \
   --base_url "$MODEL_ENDPOINT" \
   --api_key "$OPENAI_API_KEY" \
   --resume \
-  --rerun_failed yes \
   --max_tokens 4096 \
   --disable_guided_json \
-  --save_every 1
+  --save_every 1 \
+  --stream_reasoning
 
 What this script does:
-1. Reads one or more input CSV files row by row.
+1. Reads a raw input CSV row by row.
 2. Sends each (question, gold_answer, KG answer) triple to an LLM judge.
 3. Keeps thinking mode enabled for thinking models.
-4. Extracts final JSON from:
-      - message.content
-      - message.reasoning
-      - message.reasoning_content
+4. Streams live model output to the terminal while each row is being judged.
+5. Extracts final JSON from:
+      - streamed/final message.content
+      - streamed/final message.reasoning
+      - streamed/final message.reasoning_content
       - text containing <think>...</think> followed by JSON
-5. Parses the JSON in Python.
-6. Writes the parsed results into one output CSV per input file by adding:
+6. Parses the JSON in Python.
+7. Writes the parsed results into one full output CSV by adding:
       - source_row_id
       - taxonomy_label
       - LLM explanation
       - difference_severity
       - optionally LLM raw JSON
-7. Shows a tqdm progress bar while processing rows.
-8. Prints each row result immediately after it is judged.
-9. Periodically saves progress so long runs can be resumed safely.
-10. Supports resume and can retry failed ERROR rows.
-11. Sorts each final output CSV by taxonomy_label.
-12. Writes one Markdown statistics report per input CSV.
+8. Shows a tqdm progress bar while processing rows.
+9. Prints each row result immediately after it is judged.
+10. Periodically saves progress so long runs can be resumed safely.
+11. Supports resume by loading the output CSV and skipping already judged rows.
+12. Sorts the final output CSV by taxonomy_label.
+13. Writes one Markdown statistics report.
 
 Important:
 - Do not hardcode real API keys in this file.
 - Use environment variables instead.
+- Live reasoning display depends on whether the endpoint exposes reasoning deltas.
 """
 
 from __future__ import annotations
@@ -55,32 +58,25 @@ import re
 import sys
 import time
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 
 import pandas as pd
 from openai import OpenAI
 from tqdm import tqdm
 
-
 # ============================================================
 # 1) Default file paths and server settings
 # ============================================================
 
-DEFAULT_INPUT_CSVS = [
-    #"different_unclassified_question_235B.csv",
-    "different_unclassified_question_4B.csv",
-]
-
-DEFAULT_OUTPUT_DIR = "judge_outputs"
+DEFAULT_INPUT_CSV = "different_unclassified_question_30B.csv"
+DEFAULT_OUTPUT_CSV = "judge_outputs/30B_judge.csv"
 DEFAULT_BASE_URL = "https://litellm.tools.eurecom.fr/v1"
 DEFAULT_API_KEY = "EMPTY"
 DEFAULT_MODEL = "Qwen/Qwen3-30B-A3B-Thinking-2507"
 
-DEFAULT_OUTPUT_SUFFIX = "_judged.csv"
 DEFAULT_STATS_SUFFIX = "_taxonomy_label_statistics.md"
 
 SOURCE_ROW_ID_COL = "source_row_id"
-
 
 # ============================================================
 # 2) Taxonomy labels
@@ -97,7 +93,6 @@ VALID_LABELS = [
 ERROR_LABEL = "ERROR"
 
 LABEL_SORT_ORDER = VALID_LABELS + [ERROR_LABEL]
-
 
 # ============================================================
 # 3) Prompt template
@@ -276,8 +271,11 @@ Output requirements:
 
 Allowed taxonomy labels:
 {valid_labels_json}
-""".strip()
 
+Return exactly one valid JSON object and nothing else.
+Do not output free-form analysis, markdown, prefixes, suffixes, or code fences.
+If the case is ambiguous, still choose the best label and return JSON only.
+""".strip()
 
 # ============================================================
 # 4) JSON schema for guided output
@@ -306,7 +304,6 @@ GUIDED_JSON_SCHEMA: Dict[str, Any] = {
     ],
 }
 
-
 # ============================================================
 # 5) Utility helpers
 # ============================================================
@@ -319,7 +316,6 @@ def build_prompt(question: str, gold_answer: str, kg_answer: str) -> str:
         valid_labels_json=json.dumps(VALID_LABELS, ensure_ascii=False),
     )
 
-
 def ensure_required_columns(df: pd.DataFrame) -> None:
     required = {"question", "gold_answer", "KG answer"}
     missing = required - set(df.columns)
@@ -329,10 +325,8 @@ def ensure_required_columns(df: pd.DataFrame) -> None:
             "Input CSV is missing required columns: " + ", ".join(sorted(missing))
         )
 
-
 def normalize_text_cell(value: Any) -> str:
     return "" if pd.isna(value) else str(value)
-
 
 def compact_text(value: Any, max_chars: int = 120) -> str:
     text = normalize_text_cell(value).replace("\n", " ").replace("\r", " ")
@@ -343,68 +337,7 @@ def compact_text(value: Any, max_chars: int = 120) -> str:
 
     return text[: max_chars - 3] + "..."
 
-
-def parse_yes_no_answer(answer: str) -> Optional[bool]:
-    normalized = answer.strip().lower()
-
-    if normalized in {"y", "yes"}:
-        return True
-
-    if normalized in {"n", "no"}:
-        return False
-
-    return None
-
-
-def ask_yes_no(question: str, default: bool = False) -> bool:
-    default_hint = "Y/n" if default else "y/N"
-
-    while True:
-        try:
-            answer = input(f"{question} [{default_hint}]: ").strip()
-        except EOFError:
-            return default
-
-        if not answer:
-            return default
-
-        parsed = parse_yes_no_answer(answer)
-
-        if parsed is not None:
-            return parsed
-
-        print("Please answer yes or no.", flush=True)
-
-
-def resolve_rerun_failed_choice(choice: str, failed_count: int) -> bool:
-    if failed_count <= 0:
-        return False
-
-    choice = choice.lower().strip()
-
-    if choice == "yes":
-        return True
-
-    if choice == "no":
-        return False
-
-    if choice == "ask":
-        return ask_yes_no(
-            f"Found {failed_count} failed row(s) marked as {ERROR_LABEL}. Re-run failed cases?",
-            default=False,
-        )
-
-    raise ValueError(f"Invalid rerun_failed choice: {choice}")
-
-
-# ============================================================
-# 6) Robust extraction for thinking models
-# ============================================================
-
 def object_to_debug_json(obj: Any) -> str:
-    """
-    Convert an OpenAI response object to a debug string.
-    """
     try:
         return obj.model_dump_json(indent=2)
     except Exception:
@@ -415,64 +348,35 @@ def object_to_debug_json(obj: Any) -> str:
     except Exception:
         return repr(obj)
 
+# ============================================================
+# 6) Robust extraction for thinking models
+# ============================================================
 
 def extract_message_fields(message: Any) -> Dict[str, str]:
-    """
-    Extract all likely text fields from a chat message.
-
-    Thinking model servers may use different field names depending on the backend:
-    - content
-    - reasoning
-    - reasoning_content
-    - tool_calls or other non-text fields are ignored here
-    """
     fields: Dict[str, str] = {}
 
-    for field_name in [
-        "content",
-        "reasoning",
-        "reasoning_content",
-    ]:
+    for field_name in ["content", "reasoning", "reasoning_content"]:
         value = getattr(message, field_name, None)
-
         if value is not None and str(value).strip():
             fields[field_name] = str(value).strip()
 
-    # Some clients store extra fields inside dictionaries.
     try:
         message_dict = message.model_dump()
     except Exception:
         message_dict = None
 
     if isinstance(message_dict, dict):
-        for field_name in [
-            "content",
-            "reasoning",
-            "reasoning_content",
-        ]:
+        for field_name in ["content", "reasoning", "reasoning_content"]:
             value = message_dict.get(field_name)
-
             if value is not None and str(value).strip():
                 fields[field_name] = str(value).strip()
 
     return fields
 
-
 def extract_chat_text(completion: Any) -> str:
-    """
-    Extract usable text from a chat completion response.
-
-    For thinking models, the useful text may be in:
-    - message.content
-    - message.reasoning
-    - message.reasoning_content
-
-    We return the concatenation of available fields. This helps when the final JSON
-    is accidentally included in a reasoning-related field.
-    """
     try:
         message = completion.choices[0].message
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         raise ValueError("Could not extract message from chat completion response") from exc
 
     fields = extract_message_fields(message)
@@ -482,22 +386,16 @@ def extract_chat_text(completion: Any) -> str:
         for key in ["content", "reasoning", "reasoning_content"]:
             if key in fields:
                 combined_parts.append(fields[key])
-
         return "\n\n".join(combined_parts).strip()
 
     debug_payload = object_to_debug_json(completion)
-
     print("\nFULL EMPTY-CONTENT COMPLETION DEBUG:")
     print(debug_payload)
     print("", flush=True)
 
     raise ValueError("Chat completion returned empty content")
 
-
 def strip_markdown_code_fence(text: str) -> str:
-    """
-    Remove markdown code fences if the model wraps JSON in ```json ... ```.
-    """
     text = text.strip()
 
     if text.startswith("```"):
@@ -506,36 +404,17 @@ def strip_markdown_code_fence(text: str) -> str:
 
     return text.strip()
 
-
 def remove_think_blocks(text: str) -> str:
-    """
-    Remove common Qwen-style thinking blocks.
-
-    Example:
-        <think>
-        reasoning...
-        </think>
-        {"taxonomy_label": "..."}
-    """
     text = text.strip()
-
     text = re.sub(
         r"<think>.*?</think>",
         "",
         text,
         flags=re.DOTALL | re.IGNORECASE,
     )
-
     return text.strip()
 
-
 def find_json_candidates(text: str) -> List[str]:
-    """
-    Find possible JSON object substrings.
-
-    This uses brace matching instead of a simple greedy regex, so it is more robust
-    when strings contain braces.
-    """
     candidates: List[str] = []
     stack: List[int] = []
     in_string = False
@@ -571,21 +450,7 @@ def find_json_candidates(text: str) -> List[str]:
 
     return candidates
 
-
 def extract_json_object(text: str) -> Dict[str, Any]:
-    """
-    Extract the first valid JSON object from model output.
-
-    This is useful for thinking models that may return:
-        <think>...</think>
-        {"taxonomy_label": "...", ...}
-
-    Or:
-        Explanation text...
-        ```json
-        {"taxonomy_label": "...", ...}
-        ```
-    """
     original_text = text.strip()
 
     attempts = [
@@ -597,7 +462,6 @@ def extract_json_object(text: str) -> Dict[str, Any]:
 
     for candidate in attempts:
         candidate = candidate.strip()
-
         if not candidate:
             continue
 
@@ -629,9 +493,130 @@ def extract_json_object(text: str) -> Dict[str, Any]:
     preview = original_text[:1000].replace("\n", "\\n")
     raise ValueError(f"No valid JSON object found in model output. Preview: {preview}")
 
+# ============================================================
+# 7) Streaming helpers
+# ============================================================
+
+def extract_delta_fields(delta: Any) -> Dict[str, str]:
+    fields: Dict[str, str] = {}
+
+    for field_name in ["content", "reasoning", "reasoning_content"]:
+        value = getattr(delta, field_name, None)
+        if value is not None and str(value):
+            fields[field_name] = str(value)
+
+    try:
+        delta_dict = delta.model_dump()
+    except Exception:
+        delta_dict = None
+
+    if isinstance(delta_dict, dict):
+        for field_name in ["content", "reasoning", "reasoning_content"]:
+            value = delta_dict.get(field_name)
+            if value is not None and str(value):
+                fields[field_name] = str(value)
+
+    return fields
+
+def print_stream_header(*, source_row_id: Any, question: str, show_inputs: bool) -> None:
+    tqdm.write("")
+    tqdm.write("-" * 90)
+    tqdm.write(f"Streaming judge output for {SOURCE_ROW_ID_COL}={source_row_id}")
+    if show_inputs:
+        tqdm.write(f"Question: {compact_text(question, 220)}")
+    tqdm.write("-" * 90)
+    sys.stdout.flush()
+    sys.stderr.flush()
+
+def print_stream_footer() -> None:
+    sys.stdout.write("\n")
+    sys.stdout.flush()
+    tqdm.write("-" * 90)
+    sys.stdout.flush()
+    sys.stderr.flush()
+
+def stream_chat_text(
+    client: OpenAI,
+    request_kwargs: Dict[str, Any],
+    stream_reasoning: bool = True,
+) -> str:
+    full_content_parts: List[str] = []
+    full_reasoning_parts: List[str] = []
+    full_reasoning_content_parts: List[str] = []
+
+    seen_any_stream_text = False
+    printed_reasoning_prefix = False
+    printed_content_prefix = False
+
+    stream = client.chat.completions.create(stream=True, **request_kwargs)
+
+    for chunk in stream:
+        try:
+            choice = chunk.choices[0]
+        except Exception:
+            continue
+
+        delta = getattr(choice, "delta", None)
+        if delta is None:
+            continue
+
+        fields = extract_delta_fields(delta)
+
+        reasoning_piece = ""
+        content_piece = ""
+
+        if stream_reasoning:
+            reasoning_piece = fields.get("reasoning", "") + fields.get("reasoning_content", "")
+
+        if fields.get("content"):
+            content_piece = fields["content"]
+
+        if reasoning_piece:
+            if not printed_reasoning_prefix:
+                sys.stdout.write("[reasoning] ")
+                printed_reasoning_prefix = True
+                seen_any_stream_text = True
+            sys.stdout.write(reasoning_piece)
+            sys.stdout.flush()
+
+        if content_piece:
+            if stream_reasoning and printed_reasoning_prefix and not printed_content_prefix:
+                sys.stdout.write("\n[final] ")
+                printed_content_prefix = True
+            elif not printed_content_prefix:
+                sys.stdout.write("[final] ")
+                printed_content_prefix = True
+                seen_any_stream_text = True
+            sys.stdout.write(content_piece)
+            sys.stdout.flush()
+
+        if fields.get("reasoning"):
+            full_reasoning_parts.append(fields["reasoning"])
+
+        if fields.get("reasoning_content"):
+            full_reasoning_content_parts.append(fields["reasoning_content"])
+
+        if fields.get("content"):
+            full_content_parts.append(fields["content"])
+
+    if seen_any_stream_text:
+        sys.stdout.write("\n")
+        sys.stdout.flush()
+
+    combined_parts: List[str] = []
+
+    content_text = "".join(full_content_parts).strip()
+    reasoning_text = "".join(full_reasoning_parts).strip()
+    reasoning_content_text = "".join(full_reasoning_content_parts).strip()
+
+    for part in [content_text, reasoning_text, reasoning_content_text]:
+        if part:
+            combined_parts.append(part)
+
+    return "\n\n".join(combined_parts).strip()
 
 # ============================================================
-# 7) Sorting and output
+# 8) Sorting and output
 # ============================================================
 
 def sort_dataframe_by_taxonomy_label(df: pd.DataFrame) -> pd.DataFrame:
@@ -644,24 +629,27 @@ def sort_dataframe_by_taxonomy_label(df: pd.DataFrame) -> pd.DataFrame:
         lambda x: order_map.get(str(x), fallback_index)
     )
 
+    sort_columns = ["_taxonomy_sort_key", "taxonomy_label"]
+    if SOURCE_ROW_ID_COL in sorted_df.columns:
+        sort_columns.append(SOURCE_ROW_ID_COL)
+
     sorted_df = sorted_df.sort_values(
-        by=["_taxonomy_sort_key", "taxonomy_label", SOURCE_ROW_ID_COL],
+        by=sort_columns,
         kind="stable",
     ).drop(columns=["_taxonomy_sort_key"])
 
     return sorted_df
 
+def build_stats_path(output_csv: str) -> str:
+    output_path = Path(output_csv)
+    return str(output_path.with_name(output_path.stem + DEFAULT_STATS_SUFFIX))
 
 def write_taxonomy_statistics_markdown(df: pd.DataFrame, output_path: str) -> None:
     total_rows = len(df)
-
     label_counts = df["taxonomy_label"].fillna("").astype(str).value_counts().to_dict()
 
     labels_to_report = list(LABEL_SORT_ORDER)
-
-    unexpected_labels = [
-        label for label in label_counts.keys() if label not in labels_to_report
-    ]
+    unexpected_labels = [label for label in label_counts.keys() if label not in labels_to_report]
     labels_to_report.extend(sorted(unexpected_labels))
 
     lines = []
@@ -682,32 +670,19 @@ def write_taxonomy_statistics_markdown(df: pd.DataFrame, output_path: str) -> No
     with open(output_path, "w", encoding="utf-8") as f:
         f.write("\n".join(lines))
 
-
 def save_outputs(df: pd.DataFrame, output_csv: str, stats_md: str) -> None:
     sorted_df = sort_dataframe_by_taxonomy_label(df)
     sorted_df.to_csv(output_csv, index=False)
     write_taxonomy_statistics_markdown(sorted_df, stats_md)
 
-
-def build_output_paths(input_csv: str, output_dir: str) -> Tuple[str, str]:
-    input_path = Path(input_csv)
-    stem = input_path.stem
-
-    output_csv = str(Path(output_dir) / f"{stem}{DEFAULT_OUTPUT_SUFFIX}")
-    stats_md = str(Path(output_dir) / f"{stem}{DEFAULT_STATS_SUFFIX}")
-
-    return output_csv, stats_md
-
-
 # ============================================================
-# 8) Live row output
+# 9) Live row output
 # ============================================================
 
 def print_row_result(
     *,
-    input_csv: str,
     row_number: int,
-    source_row_id: int,
+    source_row_id: Any,
     question: str,
     gold_answer: str,
     kg_answer: str,
@@ -721,7 +696,6 @@ def print_row_result(
     lines = []
     lines.append("")
     lines.append("=" * 90)
-    lines.append(f"File: {Path(input_csv).name}")
     lines.append(f"Processed row: {row_number}")
     lines.append(f"{SOURCE_ROW_ID_COL}: {source_row_id}")
     lines.append(f"taxonomy_label: {label}")
@@ -740,9 +714,8 @@ def print_row_result(
     sys.stdout.flush()
     sys.stderr.flush()
 
-
 # ============================================================
-# 9) LLM judging
+# 10) LLM judging
 # ============================================================
 
 def judge_row(
@@ -757,6 +730,9 @@ def judge_row(
     max_tokens: int = 4096,
     use_guided_json: bool = True,
     debug_empty: bool = False,
+    stream_reasoning: bool = False,
+    source_row_id: Any = None,
+    show_inputs: bool = False,
 ) -> Dict[str, str]:
     prompt = build_prompt(question, gold_answer, kg_answer)
 
@@ -789,11 +765,23 @@ def judge_row(
                     "guided_json": GUIDED_JSON_SCHEMA,
                 }
 
-            completion = client.chat.completions.create(**request_kwargs)
+            if stream_reasoning:
+                print_stream_header(
+                    source_row_id=source_row_id,
+                    question=question,
+                    show_inputs=show_inputs,
+                )
+                raw_text = stream_chat_text(
+                    client=client,
+                    request_kwargs=request_kwargs,
+                    stream_reasoning=True,
+                )
+                print_stream_footer()
+            else:
+                completion = client.chat.completions.create(**request_kwargs)
+                raw_text = extract_chat_text(completion)
 
-            raw_text = extract_chat_text(completion)
             last_raw_text = raw_text
-
             parsed = extract_json_object(raw_text)
 
             taxonomy_label = parsed["taxonomy_label"]
@@ -804,9 +792,7 @@ def judge_row(
                 raise ValueError(f"Invalid taxonomy label returned: {taxonomy_label}")
 
             if difference_severity not in {"none", "minor", "moderate", "major"}:
-                raise ValueError(
-                    f"Invalid difference_severity returned: {difference_severity}"
-                )
+                raise ValueError(f"Invalid difference_severity returned: {difference_severity}")
 
             return {
                 "taxonomy_label": taxonomy_label,
@@ -815,7 +801,7 @@ def judge_row(
                 "LLM raw JSON": raw_text,
             }
 
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             last_error = exc
 
             if debug_empty:
@@ -839,9 +825,8 @@ def judge_row(
         "LLM raw JSON": last_raw_text,
     }
 
-
 # ============================================================
-# 10) Loading and resume
+# 11) Loading and resume
 # ============================================================
 
 def initialize_output_columns(df: pd.DataFrame, save_raw_json: bool) -> pd.DataFrame:
@@ -864,7 +849,6 @@ def initialize_output_columns(df: pd.DataFrame, save_raw_json: bool) -> pd.DataF
 
     return df
 
-
 def load_existing_judgments(
     df: pd.DataFrame,
     output_csv: str,
@@ -876,33 +860,6 @@ def load_existing_judgments(
     existing = pd.read_csv(output_csv)
 
     if SOURCE_ROW_ID_COL not in existing.columns:
-        print(
-            f"Warning: Existing output file has no {SOURCE_ROW_ID_COL}. "
-            "Falling back to positional resume. This is only safe if the file was not sorted.",
-            flush=True,
-        )
-
-        if len(existing) != len(df):
-            print(
-                "Warning: Existing output length does not match input length. "
-                "Skipping resume for this file.",
-                flush=True,
-            )
-            return df
-
-        columns_to_copy = [
-            "taxonomy_label",
-            "LLM explanation",
-            "difference_severity",
-        ]
-
-        if save_raw_json:
-            columns_to_copy.append("LLM raw JSON")
-
-        for col in columns_to_copy:
-            if col in existing.columns:
-                df[col] = existing[col]
-
         return df
 
     columns_to_merge = [
@@ -917,32 +874,24 @@ def load_existing_judgments(
 
     columns_to_merge = [col for col in columns_to_merge if col in existing.columns]
 
-    existing_subset = existing[columns_to_merge].copy()
-
-    existing_subset = existing_subset.drop_duplicates(
+    existing_subset = existing[columns_to_merge].copy().drop_duplicates(
         subset=[SOURCE_ROW_ID_COL],
         keep="last",
     )
 
     df = df.drop(
         columns=[
-            col
-            for col in [
+            col for col in [
                 "taxonomy_label",
                 "LLM explanation",
                 "difference_severity",
                 "LLM raw JSON",
-            ]
-            if col in df.columns
+            ] if col in df.columns
         ],
         errors="ignore",
     )
 
-    df = df.merge(
-        existing_subset,
-        on=SOURCE_ROW_ID_COL,
-        how="left",
-    )
+    df = df.merge(existing_subset, on=SOURCE_ROW_ID_COL, how="left")
 
     for col in ["taxonomy_label", "LLM explanation", "difference_severity"]:
         if col not in df.columns:
@@ -955,7 +904,6 @@ def load_existing_judgments(
         df["LLM raw JSON"] = df["LLM raw JSON"].fillna("")
 
     return df
-
 
 def load_or_initialize_dataframe(
     input_csv: str,
@@ -977,12 +925,7 @@ def load_or_initialize_dataframe(
 
     return df
 
-
-def build_indices_to_process(
-    df: pd.DataFrame,
-    resume: bool,
-    rerun_failed: bool,
-) -> List[int]:
+def build_indices_to_process(df: pd.DataFrame, resume: bool) -> List[int]:
     indices_to_process: List[int] = []
 
     for idx, row in df.iterrows():
@@ -996,15 +939,14 @@ def build_indices_to_process(
             indices_to_process.append(idx)
             continue
 
-        if label == ERROR_LABEL and rerun_failed:
+        if label == ERROR_LABEL:
             indices_to_process.append(idx)
             continue
 
     return indices_to_process
 
-
 # ============================================================
-# 11) Processing
+# 12) Processing
 # ============================================================
 
 def process_single_csv(
@@ -1014,7 +956,6 @@ def process_single_csv(
     stats_md: str,
     model: str,
     resume: bool,
-    rerun_failed_choice: str,
     save_every: int,
     max_retries: int,
     temperature: float,
@@ -1023,6 +964,7 @@ def process_single_csv(
     use_guided_json: bool,
     show_inputs: bool,
     debug_empty: bool,
+    stream_reasoning: bool,
 ) -> None:
     Path(output_csv).parent.mkdir(parents=True, exist_ok=True)
     Path(stats_md).parent.mkdir(parents=True, exist_ok=True)
@@ -1034,24 +976,7 @@ def process_single_csv(
         save_raw_json=save_raw_json,
     )
 
-    existing_failed_count = int(
-        (df["taxonomy_label"].fillna("").astype(str).str.strip() == ERROR_LABEL).sum()
-    )
-
-    rerun_failed = False
-
-    if resume:
-        rerun_failed = resolve_rerun_failed_choice(
-            choice=rerun_failed_choice,
-            failed_count=existing_failed_count,
-        )
-
-    indices_to_process = build_indices_to_process(
-        df=df,
-        resume=resume,
-        rerun_failed=rerun_failed,
-    )
-
+    indices_to_process = build_indices_to_process(df=df, resume=resume)
     already_done_count = len(df) - len(indices_to_process)
 
     print("", flush=True)
@@ -1061,11 +986,6 @@ def process_single_csv(
     print(f"Total rows: {len(df)}", flush=True)
     print(f"Rows already judged/skipped: {already_done_count}", flush=True)
     print(f"Rows to process now: {len(indices_to_process)}", flush=True)
-
-    if resume:
-        print(f"Existing failed ERROR rows: {existing_failed_count}", flush=True)
-        print(f"Re-run failed rows: {'yes' if rerun_failed else 'no'}", flush=True)
-
     print("", flush=True)
 
     processed_since_save = 0
@@ -1096,6 +1016,9 @@ def process_single_csv(
             max_tokens=max_tokens,
             use_guided_json=use_guided_json,
             debug_empty=debug_empty,
+            stream_reasoning=stream_reasoning,
+            source_row_id=source_row_id,
+            show_inputs=show_inputs,
         )
 
         df.at[idx, "taxonomy_label"] = result["taxonomy_label"]
@@ -1107,13 +1030,9 @@ def process_single_csv(
 
         processed_since_save += 1
 
-        progress_bar.set_postfix(
-            label=result["taxonomy_label"],
-            refresh=True,
-        )
+        progress_bar.set_postfix(label=result["taxonomy_label"], refresh=True)
 
         print_row_result(
-            input_csv=input_csv,
             row_number=processed_number,
             source_row_id=source_row_id,
             question=question,
@@ -1135,30 +1054,25 @@ def process_single_csv(
     print(f"Done. Wrote judged CSV to: {output_csv}", flush=True)
     print(f"Done. Wrote taxonomy statistics to: {stats_md}", flush=True)
 
-
 # ============================================================
-# 12) CLI
+# 13) CLI
 # ============================================================
 
 def main() -> None:
     parser = argparse.ArgumentParser(
-        description="Run an LLM-as-judge taxonomy experiment using an OpenAI-compatible server."
+        description="Run a full first-pass LLM-as-judge experiment on a new input CSV."
     )
 
     parser.add_argument(
-        "--input_csvs",
-        nargs="+",
-        default=DEFAULT_INPUT_CSVS,
-        help=(
-            "One or more input CSV paths. "
-            f"Default: {' '.join(DEFAULT_INPUT_CSVS)}"
-        ),
+        "--input_csv",
+        default=DEFAULT_INPUT_CSV,
+        help=f"Raw input CSV file to judge. Default: {DEFAULT_INPUT_CSV}",
     )
 
     parser.add_argument(
-        "--output_dir",
-        default=DEFAULT_OUTPUT_DIR,
-        help=f"Directory where per-input output files will be written. Default: {DEFAULT_OUTPUT_DIR}",
+        "--output_csv",
+        default=DEFAULT_OUTPUT_CSV,
+        help=f"Output CSV path for judged results. Default: {DEFAULT_OUTPUT_CSV}",
     )
 
     parser.add_argument(
@@ -1182,17 +1096,7 @@ def main() -> None:
     parser.add_argument(
         "--resume",
         action="store_true",
-        help="Resume from existing judged CSV files by skipping already judged rows.",
-    )
-
-    parser.add_argument(
-        "--rerun_failed",
-        choices=["ask", "yes", "no"],
-        default="ask",
-        help=(
-            "When --resume is used and ERROR rows exist, choose whether to rerun them. "
-            "Default: ask."
-        ),
+        help="Resume from an existing judged output CSV by skipping already judged rows.",
     )
 
     parser.add_argument(
@@ -1220,10 +1124,7 @@ def main() -> None:
         "--max_tokens",
         type=int,
         default=4096,
-        help=(
-            "Maximum completion tokens per judgment. "
-            "Thinking models may need 4096 or 8192."
-        ),
+        help="Maximum completion tokens per judgment.",
     )
 
     parser.add_argument(
@@ -1235,28 +1136,25 @@ def main() -> None:
     parser.add_argument(
         "--disable_guided_json",
         action="store_true",
-        help=(
-            "Disable `guided_json` for endpoints that do not support it. "
-            "Recommended for some thinking-model proxy setups."
-        ),
+        help="Disable `guided_json` for endpoints that do not support it.",
     )
 
     parser.add_argument(
         "--show_inputs",
         action="store_true",
-        help=(
-            "Print the question, gold answer, and KG answer with every live row result. "
-            "By default, only the row id, label, severity, and explanation are printed."
-        ),
+        help="Print the question, gold answer, and KG answer with every live row result.",
     )
 
     parser.add_argument(
         "--debug_empty",
         action="store_true",
-        help=(
-            "Print extra debug information when extraction or parsing fails. "
-            "Useful for diagnosing empty thinking-model outputs."
-        ),
+        help="Print extra debug information when extraction or parsing fails.",
+    )
+
+    parser.add_argument(
+        "--stream_reasoning",
+        action="store_true",
+        help="Stream live model output to the terminal.",
     )
 
     args = parser.parse_args()
@@ -1264,37 +1162,31 @@ def main() -> None:
     if args.save_every <= 0:
         raise ValueError("--save_every must be greater than 0")
 
-    Path(args.output_dir).mkdir(parents=True, exist_ok=True)
+    Path(args.output_csv).parent.mkdir(parents=True, exist_ok=True)
+    stats_md = build_stats_path(args.output_csv)
 
     client = OpenAI(
         api_key=args.api_key,
         base_url=args.base_url,
     )
 
-    for input_csv in args.input_csvs:
-        output_csv, stats_md = build_output_paths(
-            input_csv=input_csv,
-            output_dir=args.output_dir,
-        )
-
-        process_single_csv(
-            client=client,
-            input_csv=input_csv,
-            output_csv=output_csv,
-            stats_md=stats_md,
-            model=args.model,
-            resume=args.resume,
-            rerun_failed_choice=args.rerun_failed,
-            save_every=args.save_every,
-            max_retries=args.max_retries,
-            temperature=args.temperature,
-            max_tokens=args.max_tokens,
-            save_raw_json=args.save_raw_json,
-            use_guided_json=not args.disable_guided_json,
-            show_inputs=args.show_inputs,
-            debug_empty=args.debug_empty,
-        )
-
+    process_single_csv(
+        client=client,
+        input_csv=args.input_csv,
+        output_csv=args.output_csv,
+        stats_md=stats_md,
+        model=args.model,
+        resume=args.resume,
+        save_every=args.save_every,
+        max_retries=args.max_retries,
+        temperature=args.temperature,
+        max_tokens=args.max_tokens,
+        save_raw_json=args.save_raw_json,
+        use_guided_json=not args.disable_guided_json,
+        show_inputs=args.show_inputs,
+        debug_empty=args.debug_empty,
+        stream_reasoning=args.stream_reasoning,
+    )
 
 if __name__ == "__main__":
     main()
