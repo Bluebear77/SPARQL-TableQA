@@ -48,7 +48,7 @@ INVALID_COLUMNS = [
 ]
 
 # Taxonomy thresholds inherited from the original tag.py behavior.
-SAME_THRESHOLD = 0.90
+SAME_THRESHOLD = 0.95
 PERFECT_MATCH_THRESHOLD = 0.995
 LOW_SCORE_THRESHOLD = 0.10
 STRICT_ALIGNMENT_THRESHOLD = 0.35
@@ -132,12 +132,42 @@ def extract_table(text: str) -> str:
     return "\n".join(table_lines).strip()
 
 
+def dedupe_cleaned_answer_text(text: str) -> str:
+    """
+    Deduplicate cleaned answer items while preserving first-seen display text.
+
+    Items are split on pipe delimiters and newlines. Comparison normalizes
+    casing, surrounding and internal whitespace, and simple quote characters.
+    """
+    if not text:
+        return ""
+
+    deduped_items: List[str] = []
+    seen_keys = set()
+
+    for item in re.split(r"\||\n+", text):
+        display_item = item.strip()
+        if not display_item:
+            continue
+
+        key = display_item.lower()
+        key = re.sub(r"[\"'`]", "", key)
+        key = re.sub(r"\s+", " ", key).strip()
+
+        if key and key not in seen_keys:
+            seen_keys.add(key)
+            deduped_items.append(display_item)
+
+    return "|".join(deduped_items)
+
+
 def clean_result_all_cells(result_table: str) -> str:
     """
     Flatten a markdown result table into compact answer text.
 
     We skip the header row and the markdown separator row, then clean each cell
-    by removing embedded Wikidata IDs and datatype suffixes.
+    by removing embedded Wikidata IDs and datatype suffixes. Duplicate cleaned
+    answer items are removed before CSV output is written.
     """
     if not result_table:
         return ""
@@ -160,13 +190,14 @@ def clean_result_all_cells(result_table: str) -> str:
         for cell in cells:
             cell = re.sub(r"\s*\(wd:Q[^)]*\)", "", cell).strip()
             cell = re.sub(r"\s*\(xsd:[^)]+\)", "", cell).strip()
+            cell = re.sub(r"\s*\(lang:[^)]+\)", "", cell).strip()
             cell = " ".join(cell.split())
             cleaned_cells.append(cell)
 
         if cleaned_cells:
             cleaned_rows.append("|".join(cleaned_cells))
 
-    return "\n".join(cleaned_rows)
+    return dedupe_cleaned_answer_text("\n".join(cleaned_rows))
 
 
 def classify_case(output_obj: Any, sparql_text: str, result_raw: str) -> Tuple[str, str]:
@@ -481,13 +512,25 @@ def normalize_delimiters(text: str) -> str:
 
 
 def split_answers(answer_string: Any) -> List[str]:
-    """Split an answer field into items using '|' or newlines."""
+    """Split an answer field into items using '|' or newlines, then deduplicate equivalent items."""
     if pd.isna(answer_string):
         return []
+
     text = normalize_delimiters(str(answer_string))
-    parts = re.split(r"\||\n+", text)
+   # parts = re.split(r"\||\n+", text)
+    parts = re.split(r"\||;|\n+", text)
     items = [clean_text(part) for part in parts]
-    return [item for item in items if item]
+    items = [item for item in items if item]
+
+    deduped_items: List[str] = []
+    seen_keys = set()
+    for item in items:
+        key = normalize_text_for_similarity(item)
+        if key and key not in seen_keys:
+            seen_keys.add(key)
+            deduped_items.append(item)
+
+    return deduped_items
 
 
 def parse_date_string(value: str) -> Optional[ParsedDate]:
@@ -507,7 +550,7 @@ def parse_date_string(value: str) -> Optional[ParsedDate]:
         if 1 <= month <= 12:
             return ParsedDate(normalized=f"{year:04d}-{month:02d}", precision="month", year=year, month=month)
 
-    m = re.fullmatch(r"(\d{4})-(\d{2})-(\d{2})(?:T\d{2}:\d{2}:\d{2}Z)?", text)
+    m = re.fullmatch(r"(\d{4})-(\d{2})-(\d{2})(?:[Tt]\d{2}:\d{2}:\d{2}[Zz])?", text)
     if m:
         year, month, day = map(int, m.groups())
         if 1 <= month <= 12 and 1 <= day <= 31:
@@ -537,22 +580,49 @@ def parse_date_string(value: str) -> Optional[ParsedDate]:
     return None
 
 
+def is_january_first_day(date_value: ParsedDate) -> bool:
+    """Return True when a day-level date is effectively a year placeholder."""
+    return date_value.precision == "day" and date_value.month == 1 and date_value.day == 1
+
+
+def effective_date_precision_for_comparison(date_value: ParsedDate) -> str:
+    """
+    Treat January 1 day-level timestamps as year-level dates.
+
+    This handles Wikidata-style placeholder dates such as
+    2000-01-01T00:00:00Z, which often mean only the year is known.
+    """
+    if is_january_first_day(date_value):
+        return "year"
+    return date_value.precision
+
+
 def compare_dates(gold: ParsedDate, pred: ParsedDate) -> float:
-    """Compare two normalized dates and return a soft similarity score."""
-    if gold.precision == pred.precision and gold.normalized == pred.normalized:
-        return 1.0
-    if gold.precision == "year" and pred.precision == "day" and pred.month == 1 and pred.day == 1 and gold.year == pred.year:
-        return 1.0
-    if pred.precision == "year" and gold.precision == "day" and gold.month == 1 and gold.day == 1 and gold.year == pred.year:
-        return 1.0
+    """Compare two normalized dates and return a score used by the metrics."""
+    gold_precision = effective_date_precision_for_comparison(gold)
+    pred_precision = effective_date_precision_for_comparison(pred)
+
     if gold.year != pred.year:
         return 0.0
-    if gold.precision == "year" or pred.precision == "year":
-        return 0.95
-    if gold.month != pred.month:
-        return 0.0
-    if gold.precision == "month" or pred.precision == "month":
-        return 0.97
+
+    if gold_precision == "year" and pred_precision == "year":
+        return 1.0
+
+    if gold_precision == "month" and pred_precision == "month":
+        return 1.0 if gold.month == pred.month else 0.0
+
+    if gold_precision == "day" and pred_precision == "day":
+        return 1.0 if gold.normalized == pred.normalized else 0.0
+
+    # Same year but one side is more precise. This is partial similarity,
+    # not enough to be Same under SAME_THRESHOLD = 0.95.
+    if gold_precision == "year" or pred_precision == "year":
+        return 0.80
+
+    # Same year and same month, but one side has day precision.
+    if gold_precision == "month" or pred_precision == "month":
+        return 0.85 if gold.month == pred.month else 0.0
+
     return 0.0
 
 
@@ -643,7 +713,6 @@ def assign_taxonomy_label(metrics: Dict[str, float], gold_answer: Any, pred_answ
     """Assign one taxonomy label to a valid case."""
     recall = metrics["recall"]
     precision = metrics["precision"]
-    f1_score = metrics["f1_score"]
     gold_size = metrics["gold_size"]
     pred_size = metrics["pred_size"]
     max_gold_to_pred = metrics["max_gold_to_pred"]
@@ -652,25 +721,34 @@ def assign_taxonomy_label(metrics: Dict[str, float], gold_answer: Any, pred_answ
     gold_items = split_answers(gold_answer)
     pred_items = split_answers(pred_answer)
 
+    # Date-specific handling for one-answer date cases.
     if gold_size == 1 and pred_size == 1:
         gold_date = parse_date_string(gold_items[0]) if gold_items else None
         pred_date = parse_date_string(pred_items[0]) if pred_items else None
         if gold_date and pred_date:
+            gold_precision = effective_date_precision_for_comparison(gold_date)
+            pred_precision = effective_date_precision_for_comparison(pred_date)
             sim = compare_dates(gold_date, pred_date)
+
             if sim >= SAME_THRESHOLD:
-                return "same"
-            if gold_date.year == pred_date.year and pred_date.precision != gold_date.precision:
-                if pred_date.precision == "day" and gold_date.precision in {"year", "month"}:
+                return "Same"
+
+            if gold_date.year == pred_date.year:
+                if gold_precision == "year" and pred_precision in {"month", "day"}:
                     return "Higher accuracy in KG than in Table"
-                if gold_date.precision == "day" and pred_date.precision in {"year", "month"}:
+                if pred_precision == "year" and gold_precision in {"month", "day"}:
                     return "Higher accuracy in Table than in KG"
 
-    if f1_score >= SAME_THRESHOLD:
-        return "same"
-    if recall >= PERFECT_MATCH_THRESHOLD and precision < PERFECT_MATCH_THRESHOLD and pred_size > gold_size:
+    # Same should mean near-perfect coverage in both directions and no extra/missing answers.
+    if gold_size == pred_size and recall >= SAME_THRESHOLD and precision >= SAME_THRESHOLD:
+        return "Same"
+
+    # Explicit subset-style cases.
+    if recall >= SAME_THRESHOLD and pred_size > gold_size:
         return "Higher accuracy in KG than in Table"
-    if precision >= PERFECT_MATCH_THRESHOLD and recall < PERFECT_MATCH_THRESHOLD and gold_size > pred_size:
+    if precision >= SAME_THRESHOLD and gold_size > pred_size:
         return "Higher accuracy in Table than in KG"
+
     if (
         gold_size == pred_size
         and recall <= LOW_SCORE_THRESHOLD
@@ -894,6 +972,25 @@ def extract_unclassified(root_dir: Path) -> None:
 
 
 # -----------------------------------------------------------------------------
+# Interactive checkpoint
+# -----------------------------------------------------------------------------
+
+def ask_continue_after_stage_1() -> bool:
+    """Ask whether to continue with SBERT taxonomy tagging after Stage 1 finishes."""
+    while True:
+        response = input(
+            "\nStage 1 finished. Continue with Stage 2 taxonomy tagging using SBERT? [y/N]: "
+        ).strip().lower()
+
+        if response in {"y", "yes"}:
+            return True
+        if response in {"", "n", "no"}:
+            return False
+
+        print("Please answer 'y' or 'n'.")
+
+
+# -----------------------------------------------------------------------------
 # Main
 # -----------------------------------------------------------------------------
 
@@ -931,6 +1028,11 @@ def main() -> None:
     log_print(f"✓ Combined valid rows: {len(all_valid_rows)}")
     log_print(f"✓ Combined invalid rows: {len(all_invalid_rows)}")
     progress.update(1)
+
+    if not ask_continue_after_stage_1():
+        progress.close()
+        log_print("\nStopped after Stage 1. Stage 2 SBERT taxonomy tagging was not run.")
+        return
 
     log_print(f"\n[Stage 2/{len(stages)}] {stages[1]}")
     run_taxonomy(root_dir)
