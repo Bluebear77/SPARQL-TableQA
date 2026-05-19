@@ -1,29 +1,28 @@
 #!/usr/bin/env python3
 """
+python patch_empty_sparql_as_valid.py \
+  Qwen3-235B-A22B-Thinking-2507-AWQ \
+  --dry-run
+
+python patch_empty_sparql_as_valid.py \
+  Qwen3-235B-A22B-Thinking-2507-AWQ \
+  --apply
+  
 Patch an existing Qwen3-235B-A22B-Thinking-2507-AWQ output tree so that
 `empty_sparql_result` is counted as VALID rather than INVALID.
 
 This version is tailored to the layout produced by your output.py:
 
-MODEL_ROOT/
-  all_valid_cases.csv
-  all_invalid_cases.csv
-  all_valid_empty.csv
-  SimpleQA/
-    all_valid_cases.csv
-    all_invalid_cases.csv
-    <dataset>/
-      *.json
-      extracted_output/
-        <dataset>_valid_cases.csv
-        <dataset>_invalid_cases.csv
-        <dataset>_invalid_summary.md
-  ComplexQA/
-    ...
-  statistics/
-    summary.md
-    per_folder_breakdown.csv
-    error_distribution_total.csv
+Main effects in --apply mode:
+  - Move rows whose error category is exactly `empty_sparql_result`
+    from invalid-case CSVs into all_valid_empty.csv.
+  - Remove `empty_sparql_result` from invalid breakdowns.
+  - Recompute valid/invalid counts bottom-up.
+  - Rewrite dataset-level `*_invalid_summary.md`.
+  - Rewrite group-level and root-level `summary.md` / statistics markdown where found.
+  - Rewrite summary CSVs where found.
+  - Create exactly one human-readable report:
+        <MODEL_ROOT>/patch_summary.md
 
 What --apply does:
   1. For each dataset extracted_output/:
@@ -45,6 +44,7 @@ What --apply does:
        - MODEL_ROOT/<model_name>_invalid_summary.md
   5. Write exactly one report:
        - MODEL_ROOT/patch_summary.md
+
 
 No patched_* files are generated.
 
