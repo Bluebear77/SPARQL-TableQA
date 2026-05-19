@@ -1,103 +1,109 @@
 question,gold_answer,result_cleaned,result,sparql
-"Who won the Best Actor award in the Los Angeles Film Critics Association Awards for the movie ""Taxi Driver""?",Robert De Niro,,,"SELECT ?winnerLabel WHERE {
-  wd:Q663791 wdt:P2882 ?award .
-  ?award wdt:P802 wd:Q43880 .
-  ?award rdfs:label ?awardLabel .
-  ?winner rdfs:label ?winnerLabel .
-  FILTER(CONTAINS(LCASE(?awardLabel) , ""los angeles film critics association award for best actor""))
-  ?award wdt:P2088 ?winner .
+"Who won the Best Actor award in the Los Angeles Film Critics Association Awards for the movie ""Taxi Driver""?",Robert De Niro,,,"SELECT ?actor ?actorLabel WHERE {
+  wd:Q47221 wdt:P166 ?award .
+  ?award wdt:P746 wd:Q1638418 .
+  ?award wdt:P2302 ?actor .
+  ?actor rdfs:label ?actorLabel .
+  FILTER(LANG(?actorLabel) = ""en"")
 }"
-Lin-Manuel Miranda played the role of who in the musical Hamilton?,Alexander Hamilton,,,"SELECT ?characterLabel WHERE {
-  wd:Q70696 p:P161 ?statement .
-  ?statement ps:P161 wd:Q9126203 .
-  ?statement pq:P136 ?character .
-  ?character rdfs:label ?characterLabel .
-  FILTER(LANG(?characterLabel) = 'en')
+Lin-Manuel Miranda played the role of who in the musical Hamilton?,Alexander Hamilton,,,"SELECT ?roleLabel WHERE {
+  wd:Q19320959 p:P161 ?statement .
+  ?statement ps:P161 wd:Q1646482 .
+  ?statement pq:P453 ?role .
+  ?role rdfs:label ?roleLabel .
+  FILTER(lang(?roleLabel) = 'en')
 }"
-what is the creator name of Trailer Park Boys series?,Mike Clattenburg,,,"SELECT ?creatorLabel WHERE {
-  wd:Q14757498 wdt:P170 ?creator .
+what is the creator name of Trailer Park Boys series?,Mike Clattenburg,Mike Clattenburg|Mike Clattenburg (lang:en),"| creator                        | creatorLabel               |
+| ------------------------------ | -------------------------- |
+| Mike Clattenburg (wd:Q3313267) | Mike Clattenburg (lang:en) |","SELECT ?creator ?creatorLabel WHERE {
+  wd:Q1400775 wdt:P170 ?creator .
   ?creator rdfs:label ?creatorLabel .
-  FILTER(LANG(?creatorLabel) = ""en"")
+  FILTER(langMatches(lang(?creatorLabel) , 'en'))
 }"
-Did Sigourney Weaver reprise her role as Ripley in any of the Alien sequels?,Yes,,,"SELECT ?film WHERE {
-  wd:Q102124 p:P161 ?statement;
-  ?statement ps:P161 ?film;
-  ?statement pq:P527 wd:Q988925.
+Did Sigourney Weaver reprise her role as Ripley in any of the Alien sequels?,Yes,,,"SELECT DISTINCT ?film ?filmLabel WHERE {
+  wd:Q102124 p:P161 ?roleStatement .
+  ?roleStatement ps:P161 ?film .
+  ?roleStatement pq:P1342 wd:Q988925 .
+  ?film rdfs:label ?filmLabel .
+  FILTER(lang(?filmLabel) = 'en')
 }"
 What is the rank of album Funeral in LAS Magazine?,1,,,"SELECT ?rank WHERE {
-  wd:Q1929670 p:P1161 ?stmt .
-  ?stmt pr:P248 wd:Q3222304 .
-  ?stmt ps:P1161 ?rank .
+  wd:Q526196 wdt:P1352 ?rank .
+  wd:Q526196 p:P1352 ?statement .
+  ?statement pr:P143 wd:Q6681932
 }"
-What is the name of the film that was the sequel to The Terminator movie?,Terminator 2: Judgment Day,Terminator 2: Judgment Day (lang:en),"| sequelLabel                          |
-| ------------------------------------ |
-| Terminator 2: Judgment Day (lang:en) |","SELECT ?sequelLabel WHERE {
-  ?sequel wdt:P155 wd:Q162255 .
-  ?sequel rdfs:label ?sequelLabel .
+What is the name of the film that was the sequel to The Terminator movie?,Terminator 2: Judgment Day,,,"SELECT ?sequelLabel WHERE {
+  wd:Q162255 wdt:P366 ?sequel ; rdfs:label ?sequelLabel .
   FILTER(LANG(?sequelLabel) = 'en')
 }"
-Which type of The Scarlet Letter genre?,"Romantic, Historical","contemporary R&B (lang:en)
-drama film (lang:en)
-erotic film (lang:en)
-erotic thriller (lang:en)
-historical fiction (lang:en)
-...
-LGBTQ-related film (lang:en)
-melodrama (lang:en)
-romance film (lang:en)
-romantic fiction (lang:en)
-silent film (lang:en)","| genreLabel                   |
+Which type of The Scarlet Letter genre?,"Romantic, Historical","historical fiction (lang:en)
+romantic fiction (lang:en)","| genreLabel                   |
 | ---------------------------- |
-| contemporary R&B (lang:en)   |
-| drama film (lang:en)         |
-| erotic film (lang:en)        |
-| erotic thriller (lang:en)    |
 | historical fiction (lang:en) |
-| ...                          |
-| LGBTQ-related film (lang:en) |
-| melodrama (lang:en)          |
-| romance film (lang:en)       |
-| romantic fiction (lang:en)   |
-| silent film (lang:en)        |","SELECT DISTINCT ?genreLabel WHERE {
-  ?work rdfs:label 'The Scarlet Letter' @en ; wdt:P136 ?genre .
+| romantic fiction (lang:en)   |","SELECT ?genreLabel WHERE {
+  wd:Q907568 wdt:P136 ?genre .
   ?genre rdfs:label ?genreLabel .
-  FILTER(lang(?genreLabel) = 'en')
+  FILTER(LANG(?genreLabel) = 'en')
 }"
-Which is the national team of Salif Diao?,Senegal national football team,,,"SELECT ?nationalTeamLabel WHERE {
-  wd:Q350785 wdt:P5064 ?nationalTeam .
-  ?nationalTeam rdfs:label ?nationalTeamLabel .
-  FILTER(LANG(?nationalTeamLabel) = 'en')
+Which is the national team of Salif Diao?,Senegal national football team,"Liverpool F.C.
+S.A.S. Épinal
+AS Monaco FC
+Stoke City F.C.
+Birmingham City F.C.
+Portsmouth F.C.
+Senegal men's national association football team
+CS Sedan Ardennes","| team                                                          |
+| ------------------------------------------------------------- |
+| Liverpool F.C. (wd:Q1130849)                                  |
+| S.A.S. Épinal (wd:Q1573797)                                   |
+| AS Monaco FC (wd:Q180305)                                     |
+| Stoke City F.C. (wd:Q18736)                                   |
+| Birmingham City F.C. (wd:Q19444)                              |
+| Portsmouth F.C. (wd:Q19604)                                   |
+| Senegal men's national association football team (wd:Q207441) |
+| CS Sedan Ardennes (wd:Q608988)                                |","SELECT ?team WHERE {
+  wd:Q350785 wdt:P54 ?team
 }"
-Who is the director of the TV series Hanna?,Sarah Adina Smith,,,"SELECT ?directorLabel WHERE {
-  wd:Q17866320 wdt:P57 ?director .
+Who is the director of the TV series Hanna?,Sarah Adina Smith,Sarah Adina Smith (lang:en),"| directorLabel               |
+| --------------------------- |
+| Sarah Adina Smith (lang:en) |","SELECT ?directorLabel WHERE {
+  wd:Q48102683 wdt:P57 ?director .
   ?director rdfs:label ?directorLabel .
   FILTER(LANG(?directorLabel) = 'en')
 }"
 Did Paul Verhoeven direct all three RoboCop movies from the original trilogy?,No,,,
-What is the name of the one TV series directed by Stephen Sommers?,The Mummy,,,"SELECT ?series ?seriesLabel WHERE {
-  ?person rdfs:label ""Stephen Sommers"" @en .
-  ?series wdt:P57 ?person .
-  ?series wdt:P31 wd:Q1824313 .
-  ?series rdfs:label ?seriesLabel .
-  FILTER(LANG(?seriesLabel) = ""en"")
+What is the name of the one TV series directed by Stephen Sommers?,The Mummy,,,"SELECT ?work ?workLabel WHERE {
+  wd:Q363402 wdt:P57 ?work .
+  ?work rdfs:label ?workLabel .
+  FILTER(LANG(?workLabel) = 'en')
 }"
-Name the character played by the actor Robin Williams in the play Waiting for Godot.,Estragon,,,"SELECT ?character WHERE {
-  wd:Q35317 p:P161 ?roleStatement .
-  ?roleStatement ps:P161 wd:Q6378 .
-  ?roleStatement pq:P1390 ?character .
+Name the character played by the actor Robin Williams in the play Waiting for Godot.,Estragon,,,"SELECT ?characterLabel WHERE {
+  wd:Q19871 wdt:P161 wd:Q83338 .
+  wd:Q19871 p:P161 ?statement .
+  ?statement ps:P161 wd:Q83338 .
+  ?statement pq:P1613 ?character .
+  OPTIONAL {
+    ?character rdfs:label ?characterLabel
+    FILTER(LANG(?characterLabel) = 'en')
+    .
+  }
 }"
-What country did Raúl González represent in football?,Spain,,,"SELECT ?countryLabel WHERE {
-  wd:Q1567 wdt:P27 ?country .
+What country did Raúl González represent in football?,Spain,Argentina (lang:en),"| countryLabel        |
+| ------------------- |
+| Argentina (lang:en) |","SELECT ?countryLabel WHERE {
+  wd:Q3930817 wdt:P27 ?country .
   ?country rdfs:label ?countryLabel .
   FILTER(LANG(?countryLabel) = 'en')
 }"
-Who is the production company behind the TV series Locke & Key?,IDW Publishing,,,"SELECT ?company ?companyLabel WHERE {
-  wd:Q6665342 wdt:P158 ?company .
-  ?company rdfs:label ?companyLabel .
-  FILTER(LANG(?companyLabel) = 'en')
+Who is the production company behind the TV series Locke & Key?,IDW Publishing,IDW Publishing,"| productionCompany            |
+| ---------------------------- |
+| IDW Publishing (wd:Q3146596) |","SELECT ?productionCompany WHERE {
+  wd:Q56274745 wdt:P272 ?productionCompany
 }"
-who was the vocal artist of Toosie slide song?,Drake,,,"SELECT ?artist WHERE {
-  wd:Q10430789 wdt:P106 ?artist .
+who was the vocal artist of Toosie slide song?,Drake,Drake,"| artist            |
+| ----------------- |
+| Drake (wd:Q33240) |","SELECT ?artist WHERE {
+  wd:Q89324673 wdt:P175 ?artist
 }"
 Selena Gomez's music genre?,"pop rock, electropop, dance-pop","electropop (lang:en)
 dance-pop (lang:en)
@@ -117,1734 +123,1892 @@ contemporary R&B (lang:en)","| genreLabel                 |
   FILTER(LANG(?genreLabel) = 'en')
 }"
 which period of using adidas kits at Manchester United F.C.?,2015;2021,,,"SELECT ?start ?end WHERE {
-  wd:Q18387 p:P1235 ?statement .
-  ?statement ps:P1235 wd:Q143152 .
+  wd:Q18656 p:P1418 ?statement .
+  ?statement ps:P1418 wd:Q3895 .
   ?statement pq:P580 ?start .
   OPTIONAL {
     ?statement pq:P582 ?end .
   }
 }"
-Did John Prine win a Grammy for Fair & Square?,Yes,,,
-Director of the movie lord of the rings?,Peter Jackson,,,"SELECT ?directorLabel WHERE {
-  wd:Q11602 rdfs:label ""The Lord of the Rings"" @en ; wdt:P57 ?director .
-  ?director rdfs:label ?directorLabel .
-  FILTER(LANG(?directorLabel) = ""en"")
+Did John Prine win a Grammy for Fair & Square?,Yes,,,"SELECT ?award WHERE {
+  wd:Q520296 wdt:P166 ?award .
+  FILTER(contains(str(?award) , ""Grammy""))
+  .
+  FILTER(strstarts(str(?award) , ""Grammy Award for Best Contemporary Folk Album""))
 }"
-who is Origin of the music Avenged Sevenfold ?,Huntington Beach,,,"SELECT ?countryLabel WHERE {
-  wd:Q165193 wdt:P2554 ?location .
-  ?location wdt:P17 ?country .
-  ?country rdfs:label ?countryLabel .
-  FILTER(LANG(?countryLabel) = 'en')
+Director of the movie lord of the rings?,Peter Jackson,Peter Jackson,"| director                 |
+| ------------------------ |
+| Peter Jackson (wd:Q4465) |","SELECT ?director WHERE {
+  wd:Q190214 wdt:P57 ?director
+}"
+who is Origin of the music Avenged Sevenfold ?,Huntington Beach,Orange County (lang:en),"| locationLabel           |
+| ----------------------- |
+| Orange County (lang:en) |","SELECT ?locationLabel WHERE {
+  wd:Q165193 wdt:P740 ?location .
+  ?location rdfs:label ?locationLabel .
+  FILTER(LANG(?locationLabel) = 'en')
 }"
 who is the publisher of Writers & Lovers book?,Grove Press,,,"SELECT ?publisher WHERE {
-  ?book wdt:P31 wd:Q571 ; wdt:P50 wd:Q6548507 ; rdfs:label ?title ; wdt:P123 ?publisher .
-  FILTER(LANG(?title) = 'en' && REGEX(STR(?title) , 'Writers[ &] Lovers' , 'i'))
+  wd:Q96415602 wdt:P123 ?publisher
 }"
-Who is the Rose Patten Preceded by Chancellor of the University of Toronto?,Michael Wilson,,,"SELECT ?predecessor ?predecessorLabel WHERE {
-  wd:Q108953047 p:P39 ?currentStatement ; pq:P580 ?currentStart .
-  ?predecessor p:P39 ?prevStatement ; wdt:P39 wd:Q137830812 ; rdfs:label ?predecessorLabel .
-  ?prevStatement pq:P580 ?prevStart .
-  FILTER(LANG(?predecessorLabel) = 'en')
-  FILTER(?prevStart < ?currentStart)
-}
-ORDER BY DESC(?prevStart)
-LIMIT 1"
+Who is the Rose Patten Preceded by Chancellor of the University of Toronto?,Michael Wilson,Wes Hall|Wes Hall (lang:en),"| chancellor               | chancellorLabel    |
+| ------------------------ | ------------------ |
+| Wes Hall (wd:Q108953047) | Wes Hall (lang:en) |","SELECT ?chancellor ?chancellorLabel WHERE {
+  ?chancellor wdt:P39 wd:Q137830812 .
+  ?chancellor rdfs:label ?chancellorLabel .
+  FILTER(LANG(?chancellorLabel) = 'en')
+}"
 What is the name of the album by The Police that won a Grammy award as well as a Juno award?,Synchronicity,,,"SELECT ?album ?albumLabel WHERE {
-  ?album wdt:P175 wd:Q275328 ; wdt:P166 wd:Q366197 ; wdt:P166 wd:Q37572 .
+  ?album wdt:P31 wd:Q386224 ; wdt:P175 wd:Q178095 ; wdt:P166 wd:Q144498 ; wdt:P166 wd:Q372482 .
   ?album rdfs:label ?albumLabel .
-  FILTER(LANG(?albumLabel) = 'en')
+  FILTER(langMatches(lang(?albumLabel) , ""en""))
 }"
-Who was the distributor of the picture 12 Years as a Slave?,"InterCom, ProVideo, Netflix",,,"SELECT ?distributorLabel WHERE {
-  wd:Q3023357 wdt:P276 ?distributor .
+Who was the distributor of the picture 12 Years as a Slave?,"InterCom, ProVideo, Netflix","InterCom (lang:en)
+ProVideo (lang:en)
+Netflix (lang:en)","| distributorLabel   |
+| ------------------ |
+| InterCom (lang:en) |
+| ProVideo (lang:en) |
+| Netflix (lang:en)  |","SELECT ?distributorLabel WHERE {
+  wd:Q3023357 wdt:P750 ?distributor .
   ?distributor rdfs:label ?distributorLabel .
-  FILTER(LANG(?distributorLabel) = 'en')
+  FILTER(LANG(?distributorLabel) = ""en"")
 }"
-What is the name of the original broadcaster in Game of Thrones?,HBO,HBO (lang:en),"| broadcasterLabel |
-| ---------------- |
-| HBO (lang:en)    |","SELECT ?broadcasterLabel WHERE {
-  wd:Q23572 wdt:P449 ?broadcaster .
-  ?broadcaster rdfs:label ?broadcasterLabel .
-  FILTER(LANG(?broadcasterLabel) = 'en')
+What is the name of the original broadcaster in Game of Thrones?,HBO,HBO,"| broadcaster     |
+| --------------- |
+| HBO (wd:Q23633) |","SELECT ?broadcaster WHERE {
+  wd:Q23572 wdt:P449 ?broadcaster
 }"
-With whom did Dove Cameron collaborate on Taste of You?,Rezz,,,"SELECT DISTINCT ?collaborator WHERE {
-  ?song wdt:P1476 ""Taste of You"" @en ; wdt:P175 ?collaborator .
+With whom did Dove Cameron collaborate on Taste of You?,Rezz,,,"SELECT ?collaborator WHERE {
+  wd:Q20553371 wdt:P175 ?collaborator .
   FILTER(?collaborator != wd:Q13560423)
 }"
-what is the length of love me like you do song?,4:13,,,"SELECT ?duration WHERE {
-  wd:Q18758167 wdt:P2484 ?duration .
+what is the length of love me like you do song?,4:13,252.0,"| duration            |
+| ------------------- |
+| 252.0 (xsd:decimal) |","SELECT ?duration WHERE {
+  wd:Q18758167 wdt:P2047 ?duration
 }"
-what is the notable work by the Composer Tan Dun?,The First Emperor,"wd:Q106898718|The Banquet – Music from the Original Soundtrack (lang:en)
-wd:Q4597906|2000 Today (lang:en)
-wd:Q5189032|Crouching Tiger, Hidden Dragon (lang:en)","| work          | workLabel                                                  |
-| ------------- | ---------------------------------------------------------- |
-| wd:Q106898718 | The Banquet – Music from the Original Soundtrack (lang:en) |
-| wd:Q4597906   | 2000 Today (lang:en)                                       |
-| wd:Q5189032   | Crouching Tiger, Hidden Dragon (lang:en)                   |","SELECT ?work ?workLabel WHERE {
-  ?work wdt:P175 wd:Q314176 .
+what is the notable work by the Composer Tan Dun?,The First Emperor,"The First Emperor|The First Emperor (lang:en)
+Marco Polo|Marco Polo (lang:en)
+Martial Arts Trilogy|Martial Arts Trilogy (lang:en)","| work                                | workLabel                      |
+| ----------------------------------- | ------------------------------ |
+| The First Emperor (wd:Q5236883)     | The First Emperor (lang:en)    |
+| Marco Polo (wd:Q6757680)            | Marco Polo (lang:en)           |
+| Martial Arts Trilogy (wd:Q97067138) | Martial Arts Trilogy (lang:en) |","SELECT ?work ?workLabel WHERE {
+  wd:Q314176 wdt:P800 ?work .
   ?work rdfs:label ?workLabel .
   FILTER(LANG(?workLabel) = 'en')
 }"
-Who is the main character in the film Shawshank Redemption?,Tim Robbins,,,"SELECT ?characterLabel WHERE {
-  wd:Q172241 wdt:P161 ?actor .
-  ?actor p:P161 ?statement .
-  ?statement ps:P161 ?actor .
-  ?statement pq:P2045 ?character .
+Who is the main character in the film Shawshank Redemption?,Tim Robbins,Andy Dufresne|Andy Dufresne (lang:en),"| character                    | characterLabel          |
+| ---------------------------- | ----------------------- |
+| Andy Dufresne (wd:Q56240620) | Andy Dufresne (lang:en) |","SELECT ?character ?characterLabel WHERE {
+  wd:Q172241 wdt:P674 ?character .
   ?character rdfs:label ?characterLabel .
   FILTER(LANG(?characterLabel) = 'en')
 }"
-Who is the author of the Eragon book?,Christopher Paolini,Christopher Paolini (lang:en),"| authorLabel                   |
-| ----------------------------- |
-| Christopher Paolini (lang:en) |","SELECT DISTINCT ?authorLabel WHERE {
-  ?book wdt:P1476 ""Eragon"" @en ; wdt:P50 ?author .
-  ?author rdfs:label ?authorLabel .
-  FILTER(LANG(?authorLabel) = ""en"")
+Who is the author of the Eragon book?,Christopher Paolini,Christopher Paolini,"| author                          |
+| ------------------------------- |
+| Christopher Paolini (wd:Q93620) |","SELECT ?author WHERE {
+  wd:Q185449 wdt:P50 ?author
 }"
-Initial movie in The Hobbit film series?,The Hobbit: An Unexpected Journey,wd:Q80379,"| film      |
-| --------- |
-| wd:Q80379 |","SELECT ?film WHERE {
-  ?film rdfs:label ""The Hobbit: An Unexpected Journey"" @en .
-}
-LIMIT 1"
-Who played the character of Krishna of Goloka in RadhaKrishn?,Himanshu Soni,,,"SELECT ?actor ?actorLabel WHERE {
-  ?show wdt:P31 wd:Q29550 ; rdfs:label ?showLabel .
-  FILTER(regex(STR(?showLabel) , ""radhakrishna"" , ""i"") && LANG(?showLabel) = ""en"")
-  ?show wdt:P161 ?actorStatement .
-  ?actorStatement pq:P165 ?character .
-  ?character rdfs:label ?characterLabel .
-  FILTER(regex(STR(?characterLabel) , ""krishna"" , ""i"") && LANG(?characterLabel) = ""en"")
-  ?actorStatement ps:P161 ?actor .
-  ?actor rdfs:label ?actorLabel .
-  FILTER(LANG(?actorLabel) = ""en"")
+Initial movie in The Hobbit film series?,The Hobbit: An Unexpected Journey,The Hobbit: An Unexpected Journey (lang:en),"| title                                       |
+| ------------------------------------------- |
+| The Hobbit: An Unexpected Journey (lang:en) |","SELECT ?title WHERE {
+  wd:Q80379 rdfs:label ?title .
+  FILTER(LANG(?title) = 'en')
 }"
-Which national team does Robert Lewandowski captain?,Poland,,,"SELECT ?teamLabel WHERE {
-  wd:Q16596664 p:P535 ?statement .
-  ?statement ps:P535 ?team .
-  ?statement pq:P5204 wd:Q255 .
-  ?team rdfs:label ?teamLabel .
-  FILTER(LANG(?teamLabel) = ""en"")
-  .
+Who played the character of Krishna of Goloka in RadhaKrishn?,Himanshu Soni,Sumedh Mudgalkar,"| actor                           |
+| ------------------------------- |
+| Sumedh Mudgalkar (wd:Q55634195) |","SELECT ?actor WHERE {
+  wd:Q56485183 wdt:P161 ?actor
 }"
-"Who won the Best Film Editing award in Academy Awards for the movie ""The Matrix""?",Zach Staenberg,,,"SELECT ?winner WHERE {
-  ?award wdt:P550 wd:Q11411 ; wdt:P1343 ?category ; wdt:P166 ?winner .
-  ?category rdfs:label ""Academy Award for Best Film Editing"" @en .
+Which national team does Robert Lewandowski captain?,Poland,,,"SELECT ?team WHERE {
+  wd:Q151269 wdt:P247 ?team
 }"
-"Director's name for the initial four ""Scream"" movies?",Wes Craven,"Alfonso Ungría (lang:en)
-Rod Hardy (lang:en)","| directorLabel            |
-| ------------------------ |
-| Alfonso Ungría (lang:en) |
-| Rod Hardy (lang:en)      |","SELECT DISTINCT ?directorLabel WHERE {
-  VALUES ?imdbid {
-    ""tt0118231"" ""tt0118248"" ""tt0131730"" ""tt1271830""
+"Who won the Best Film Editing award in Academy Awards for the movie ""The Matrix""?",Zach Staenberg,,,"SELECT ?winner ?winnerLabel WHERE {
+  ?award wdt:P31 wd:Q281939 ; wdt:P1118 wd:Q83495 ; wdt:P1021 ?winner .
+  ?winner rdfs:label ?winnerLabel .
+  FILTER(LANG(?winnerLabel) = 'en')
+}"
+"Director's name for the initial four ""Scream"" movies?",Wes Craven,"Byron Quisenberry (lang:en)
+Matt Bettinelli-Olpin (lang:en)
+Tyler Gillett (lang:en)
+Wes Craven (lang:en)","| directorLabel                   |
+| ------------------------------- |
+| Byron Quisenberry (lang:en)     |
+| Matt Bettinelli-Olpin (lang:en) |
+| Tyler Gillett (lang:en)         |
+| Wes Craven (lang:en)            |","SELECT DISTINCT ?directorLabel WHERE {
+  VALUES ?movieLabel {
+    ""Scream"" @en ""Scream 2"" @en ""Scream 3"" @en ""Scream 4"" @en
   }
-  ?movie wdt:P345 ?imdbid .
+  ?movie rdfs:label ?movieLabel .
+  FILTER(LANG(?movieLabel) = 'en')
   ?movie wdt:P57 ?director .
-  ?director rdfs:label ?directorLabel .
-  FILTER(LANG(?directorLabel) = ""en"")
-}"
-Who played teenage Martha in Dark?,Lisa Vicari,,,"SELECT DISTINCT ?actor WHERE {
-  wd:Q24449258 wdt:P355 ?character .
-  ?character rdfs:label ""Martha Nielsen"" @en .
-  ?character p:P1365 ?statement .
-  ?statement ps:P1365 ?actor .
-  ?statement pq:P3866 ?age .
-  FILTER(?age >= 13 && ?age < 20)
-}"
-Which is the notable work of the Amit V. Masurkar?,Newton (film),"wd:Q107176275|Sherni (lang:en)
-wd:Q18786717|Sulemani Keeda (lang:en)
-wd:Q28914754|Newton (lang:en)","| work          | workLabel                |
-| ------------- | ------------------------ |
-| wd:Q107176275 | Sherni (lang:en)         |
-| wd:Q18786717  | Sulemani Keeda (lang:en) |
-| wd:Q28914754  | Newton (lang:en)         |","SELECT ?work ?workLabel WHERE {
-  ?work wdt:P57 wd:Q28914756 ; rdfs:label ?workLabel .
-  FILTER(lang(?workLabel) = ""en"")
-}"
-Which nation did Raúl González play soccer for?,Spain,Malta (lang:en),"| countryLabel    |
-| --------------- |
-| Malta (lang:en) |","SELECT ?countryLabel WHERE {
-  wd:Q57502 wdt:P27 ?country .
-  ?country rdfs:label ?countryLabel .
-  FILTER(LANG(?countryLabel) = 'en')
-}"
-Who was the guitarist of Madonna?,philanthropist,,,"SELECT DISTINCT ?guitarist WHERE {
-  wd:Q22353 p:P1608 ?statement ; ps:P1608 ?guitarist .
-}"
-Who is the voice actor of the character of Lois Griffin?,Alex Borstein,,,"SELECT ?voiceActor ?voiceActorLabel WHERE {
-  wd:Q853073 wdt:P2048 ?voiceActor .
-  ?voiceActor rdfs:label ?voiceActorLabel .
-  FILTER(LANG(?voiceActorLabel) = 'en')
-}"
-Who is the current head coach of Chicago Fire?,Ezra Hendrickson,,,"SELECT ?coach ?coachLabel WHERE {
-  wd:Q308683 wdt:P1083 ?coach .
-  ?coach rdfs:label ?coachLabel .
-  FILTER(LANG(?coachLabel) = 'en')
-}"
-who was the director for the Movie Batman v Superman: Dawn of Justice?,Zack Snyder,Zack Snyder (lang:en),"| directorLabel         |
-| --------------------- |
-| Zack Snyder (lang:en) |","SELECT ?directorLabel WHERE {
-  wd:Q14772351 wdt:P57 ?director .
   ?director rdfs:label ?directorLabel .
   FILTER(LANG(?directorLabel) = 'en')
 }"
-who is the fitness coach of Argentina national football team ?,Luis Martín,,,"SELECT ?coach WHERE {
-  ?coach wdt:P39 wd:Q7847279 ; wdt:P1088 wd:Q414 .
+Who played teenage Martha in Dark?,Lisa Vicari,,,"SELECT ?actor WHERE {
+  wd:Q28443710 p:P170 ?castStatement .
+  ?castStatement ps:P170 ?actor .
+  ?castStatement pq:P1343 ""Martha Nielsen"" @en .
 }"
-Budget of Titanic movie?,$200 million,,,"SELECT ?budget WHERE {
-  wd:Q10187 wdt:P508 ?budget
+Which is the notable work of the Amit V. Masurkar?,Newton (film),"Sherni|Sherni (lang:en)
+Sulemani Keeda|Sulemani Keeda (lang:en)
+Newton|Newton (lang:en)","| work                          | workLabel                |
+| ----------------------------- | ------------------------ |
+| Sherni (wd:Q107176275)        | Sherni (lang:en)         |
+| Sulemani Keeda (wd:Q18786717) | Sulemani Keeda (lang:en) |
+| Newton (wd:Q28914754)         | Newton (lang:en)         |","SELECT ?work ?workLabel WHERE {
+  ?work wdt:P57 wd:Q28914756 .
+  ?work rdfs:label ?workLabel .
+  FILTER(LANG(?workLabel) = 'en')
+}"
+Which nation did Raúl González play soccer for?,Spain,Argentina,"| country             |
+| ------------------- |
+| Argentina (wd:Q414) |","SELECT ?country WHERE {
+  wd:Q3930817 wdt:P27 ?country
+}"
+Who was the guitarist of Madonna?,philanthropist,,,
+Who is the voice actor of the character of Lois Griffin?,Alex Borstein,Alex Borstein,"| voiceActor                 |
+| -------------------------- |
+| Alex Borstein (wd:Q116219) |","SELECT ?voiceActor WHERE {
+  wd:Q853073 wdt:P725 ?voiceActor
+}"
+Who is the current head coach of Chicago Fire?,Ezra Hendrickson,Gregg Berhalter|Gregg Berhalter (lang:en),"| coach                        | coachLabel                |
+| ---------------------------- | ------------------------- |
+| Gregg Berhalter (wd:Q708694) | Gregg Berhalter (lang:en) |","SELECT ?coach ?coachLabel WHERE {
+  wd:Q308683 p:P286 ?statement .
+  ?statement ps:P286 ?coach .
+  ?statement pq:P580 ?start .
+  FILTER NOT EXISTS {
+    ?statement pq:P582 ?end
+  }
+  .
+  ?coach rdfs:label ?coachLabel .
+  FILTER(LANG(?coachLabel) = ""en"")
+}"
+who was the director for the Movie Batman v Superman: Dawn of Justice?,Zack Snyder,Zack Snyder,"| director                 |
+| ------------------------ |
+| Zack Snyder (wd:Q139890) |","SELECT ?director WHERE {
+  wd:Q14772351 wdt:P57 ?director
+}"
+who is the fitness coach of Argentina national football team ?,Luis Martín,Lionel Scaloni,"| coach                       |
+| --------------------------- |
+| Lionel Scaloni (wd:Q311586) |","SELECT ?coach WHERE {
+  wd:Q79800 wdt:P286 ?coach
+}"
+Budget of Titanic movie?,$200 million,200000000.0,"| budget                    |
+| ------------------------- |
+| 200000000.0 (xsd:decimal) |","SELECT ?budget WHERE {
+  wd:Q44578 wdt:P2130 ?budget .
 }"
 Peaky Blinders web series is from?,United Kingdom,United Kingdom (lang:en),"| countryLabel             |
 | ------------------------ |
 | United Kingdom (lang:en) |","SELECT ?countryLabel WHERE {
-  ?item rdfs:label ""Peaky Blinders"" @en .
-  ?item wdt:P495 ?country .
+  wd:Q14944179 wdt:P495 ?country .
   ?country rdfs:label ?countryLabel .
-  FILTER(LANG(?countryLabel) = ""en"")
+  FILTER(lang(?countryLabel) = 'en')
 }"
-What is the name of the actress who played teenage Martha in Dark?,Lisa Vicari,,,"SELECT ?actressLabel WHERE {
-  wd:Q3713414 p:P178 ?statement .
-  ?statement ps:P178 ?character .
+What is the name of the actress who played teenage Martha in Dark?,Lisa Vicari,,,"SELECT ?actress ?actressLabel WHERE {
+  ?character wdt:P1704 wd:Q28443710 .
   ?character rdfs:label ?charLabel .
-  FILTER(CONTAINS(LCASE(STR(?charLabel)) , 'martha') && CONTAINS(LCASE(STR(?charLabel)) , 'nielsen'))
+  FILTER(LANG(?charLabel) = 'en')
   .
-  ?character wdt:P161 ?actress .
+  FILTER(CONTAINS(LCASE(?charLabel) , 'martha') && CONTAINS(LCASE(?charLabel) , 'teen'))
+  ?actress wdt:P175 ?character .
   ?actress rdfs:label ?actressLabel .
   FILTER(LANG(?actressLabel) = 'en')
+  .
 }"
-What is the name of the director of Passengers?,Morten Tyldum,"Morten Tyldum (lang:en)
-Rodrigo García Márquez (lang:en)","| directorLabel                    |
-| -------------------------------- |
-| Morten Tyldum (lang:en)          |
-| Rodrigo García Márquez (lang:en) |","SELECT ?directorLabel WHERE {
-  ?film wdt:P31 wd:Q11424 ; wdt:P1476 ""Passengers"" @en ; wdt:P57 ?director .
+What is the name of the director of Passengers?,Morten Tyldum,Morten Tyldum (lang:en),"| directorLabel           |
+| ----------------------- |
+| Morten Tyldum (lang:en) |","SELECT ?directorLabel WHERE {
+  wd:Q20962283 wdt:P57 ?director .
   ?director rdfs:label ?directorLabel .
   FILTER(LANG(?directorLabel) = 'en')
 }"
-"Did Tom Tom Club's song ""Genius of Love"" reach No. 1 position on any Billboard charts?",Yes,,,"SELECT ?song WHERE {
-  ?song wdt:P31 wd:Q754152 .
-  ?song rdfs:label ""Genius of Love"" @en .
-  ?song wdt:P175 wd:Q310220 .
-  ?song wdt:P179 ?chart .
+"Did Tom Tom Club's song ""Genius of Love"" reach No. 1 position on any Billboard charts?",Yes,,,
+The Need of Love was on which music charts?,Billboard,,,"SELECT DISTINCT ?chartLabel WHERE {
+  wd:Q3988450 p:P1344 [ ps:P1344 ?position ; pq:P2927 ?chart ] .
   ?chart rdfs:label ?chartLabel .
-  FILTER(REGEX(LCASE(?chartLabel) , ""billboard"" , ""i""))
-  .
-  ?song wdt:P2176 ?position .
-  FILTER(?position = 1)
+  FILTER(LANG(?chartLabel) = ""en"")
 }"
-The Need of Love was on which music charts?,Billboard,,,"SELECT DISTINCT ?chart WHERE {
-  ?song rdfs:label ?label .
-  FILTER(LANG(?label) = ""en"" && regex(?label , ""Need of Love"" , ""i""))
-  .
-  ?song wdt:P31 wd:Q814815 .
-  ?song wdt:P2015 ?chartEntry .
-  ?chartEntry wdt:P2038 ?chart .
+what is the Nick name of Man united?,Red Devils,"Manchester United (lang:cy)
+Manchester United (lang:en)
+Man United (lang:cy)
+Man United (lang:en)","| nickname                    |
+| --------------------------- |
+| Manchester United (lang:cy) |
+| Manchester United (lang:en) |
+| Man United (lang:cy)        |
+| Man United (lang:en)        |","SELECT ?nickname WHERE {
+  wd:Q18656 wdt:P2561 ?nickname
 }"
-what is the Nick name of Man united?,Red Devils,,,"SELECT ?nickname WHERE {
-  wd:Q1755 wdt:P1343 ?nickname
-}"
-Did Neil Grayston appear in Psych?,Yes,0,"| count       |
-| ----------- |
-| 0 (xsd:int) |","SELECT(COUNT(?actor) AS ?count) WHERE {
-  wd:Q320912 wdt:P161 ?actor .
-  ?actor rdfs:label ""Neil Grayston"" @en
-}"
-Who is the Skyfall movie's hero?,Daniel Craig,,,"SELECT ?characterLabel WHERE {
-  wd:Q4941 wdt:P161 wd:Q29991 .
-  wd:Q29991 wdt:P1681 ?character .
+Did Neil Grayston appear in Psych?,Yes,,,
+Who is the Skyfall movie's hero?,Daniel Craig,James Bond (lang:en),"| characterLabel       |
+| -------------------- |
+| James Bond (lang:en) |","SELECT ?characterLabel WHERE {
+  wd:Q4941 wdt:P674 ?character .
   ?character rdfs:label ?characterLabel .
-  FILTER(LANG(?characterLabel) = 'en')
+  FILTER(LANG(?characterLabel) = ""en"")
 }"
-What was the name of author who wrote Things Fall Apart?,Chinua Achebe,"Chinua Achebe (lang:en)
-Chinua Achebe (lang:en)
-Kevin Dilmore (lang:en)
-Randall Munroe (lang:en)
-Humayun Azad (lang:en)
-Dayton Ward (lang:en)","| authorLabel              |
-| ------------------------ |
-| Chinua Achebe (lang:en)  |
-| Chinua Achebe (lang:en)  |
-| Kevin Dilmore (lang:en)  |
-| Randall Munroe (lang:en) |
-| Humayun Azad (lang:en)   |
-| Dayton Ward (lang:en)    |","SELECT ?authorLabel WHERE {
-  ?book wdt:P1476 ""Things Fall Apart"" @en .
-  ?book wdt:P50 ?author .
+What was the name of author who wrote Things Fall Apart?,Chinua Achebe,Chinua Achebe (lang:en),"| authorLabel             |
+| ----------------------- |
+| Chinua Achebe (lang:en) |","SELECT ?authorLabel WHERE {
+  wd:Q622400 wdt:P50 ?author .
   ?author rdfs:label ?authorLabel .
-  FILTER(LANG(?authorLabel) = ""en"")
+  FILTER(LANG(?authorLabel) = 'en')
 }"
-Which are the teams participated in the inaugural UEFA Championship?,Soviet Union; Yugoslavia; Czechoslovakia; France,,,"SELECT DISTINCT ?team WHERE {
-  {
-    wd:Q172831 wdt:P368 ?match .
-    ?match wdt:P400 ?team .
-  } UNION {
-    wd:Q172831 wdt:P368 ?match .
-    ?match wdt:P401 ?team .
+Which are the teams participated in the inaugural UEFA Championship?,Soviet Union; Yugoslavia; Czechoslovakia; France,"Czechoslovakia men's national association football team|Czechoslovakia men's national association football team (lang:en)
+Yugoslavia men's national football team|Yugoslavia men's national football team (lang:en)
+Soviet Union national association football team|Soviet Union national association football team (lang:en)
+France men's national association football team|France men's national association football team (lang:en)","| team                                                                 | teamLabel                                                         |
+| -------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| Czechoslovakia men's national association football team (wd:Q182072) | Czechoslovakia men's national association football team (lang:en) |
+| Yugoslavia men's national football team (wd:Q188363)                 | Yugoslavia men's national football team (lang:en)                 |
+| Soviet Union national association football team (wd:Q189275)         | Soviet Union national association football team (lang:en)         |
+| France men's national association football team (wd:Q47774)          | France men's national association football team (lang:en)         |","SELECT DISTINCT ?team ?teamLabel WHERE {
+  wd:Q172831 wdt:P1923 ?team .
+  OPTIONAL {
+    ?team rdfs:label ?teamLabel
+    FILTER(LANG(?teamLabel) = 'en')
   }
 }"
-what is the rank of amazon music Blinding Lights song?,3,,,"SELECT ?position WHERE {
-  wd:Q712959 p:P145 ?statement ; ps:P145 ?position ; pq:P4525 wd:Q6315 .
+what is the rank of amazon music Blinding Lights song?,3,,,"SELECT ?rank WHERE {
+  wd:Q76566134 p:P1352 ?statement ; ps:P1352 ?rank ; pq:P196 wd:Q180072
 }"
-What is kylian mbappé current soccer team?,Paris Saint-Germain F.C.,wd:Q8682,"| team     |
-| -------- |
-| wd:Q8682 |","SELECT ?team WHERE {
+What is kylian mbappé current soccer team?,Paris Saint-Germain F.C.,Real Madrid Club de Fútbol,"| team                                  |
+| ------------------------------------- |
+| Real Madrid Club de Fútbol (wd:Q8682) |","SELECT ?team WHERE {
   wd:Q21621995 wdt:P54 ?team
 }"
-What is the box office collection of the movie Oblivion?,$287.9 million,,,
+What is the box office collection of the movie Oblivion?,$287.9 million,286168572.0,"| boxOffice                 |
+| ------------------------- |
+| 286168572.0 (xsd:decimal) |","SELECT ?boxOffice WHERE {
+  wd:Q638544 wdt:P2142 ?boxOffice
+}"
 What awards did A Wrinkle in Time win?,St. Louis Film Critics Awards,Newbery Medal (lang:en),"| awardLabel              |
 | ----------------------- |
 | Newbery Medal (lang:en) |","SELECT ?awardLabel WHERE {
   wd:Q2268391 wdt:P166 ?award .
   ?award rdfs:label ?awardLabel .
-  FILTER(LANG(?awardLabel) = 'en')
+  FILTER(LANGMATCHES(LANG(?awardLabel) , ""en""))
 }"
-Argentina national football team captain?,2018 FIFA World Cup,wd:Q17415291,"| captain      |
-| ------------ |
-| wd:Q17415291 |","SELECT ?captain WHERE {
-  ?captain wdt:P551 wd:Q1193 .
+Argentina national football team captain?,2018 FIFA World Cup,Lionel Messi,"| captain                |
+| ---------------------- |
+| Lionel Messi (wd:Q615) |","SELECT ?captain WHERE {
+  wd:Q79800 wdt:P634 ?captain .
 }"
-Which is the 2nd novel of Mulk Raj Anand?,Coolie,,,"SELECT ?novel ?novelLabel WHERE {
-  wd:Q732434 wdt:P50 ?novel .
-  ?novel wdt:P31 wd:Q571 .
-  ?novel wdt:P577 ?date .
-  ?novel rdfs:label ?novelLabel .
-  FILTER(LANG(?novelLabel) = ""en"")
+Which is the 2nd novel of Mulk Raj Anand?,Coolie,,,"SELECT ?book WHERE {
+  ?book wdt:P50 wd:Q732434 ; wdt:P31 wd:Q571 ; wdt:P577 ?date
 }
 ORDER BY ?date
-LIMIT 1
+LIMIT 2
 OFFSET 1"
-Who is the Head coach of the Real Madrid CF?,Carlo Ancelotti,,,"SELECT ?coach ?coachLabel WHERE {
-  ?coach wdt:P358 wd:Q6362982 .
-  ?coach rdfs:label ?coachLabel .
-  FILTER(LANG(?coachLabel) = 'en')
+Who is the Head coach of the Real Madrid CF?,Carlo Ancelotti,Álvaro Arbeloa,"| coach                       |
+| --------------------------- |
+| Álvaro Arbeloa (wd:Q250901) |","SELECT ?coach WHERE {
+  wd:Q8682 wdt:P286 ?coach
 }"
-which country of origin of the Nineteen Eighty-Four  Book?,United Kingdom,"wd:Q145
-wd:Q145
-wd:Q145","| country |
-| ------- |
-| wd:Q145 |
-| wd:Q145 |
-| wd:Q145 |","SELECT ?country WHERE {
-  ?book rdfs:label ""Nineteen Eighty-Four"" @en ; wdt:P495 ?country .
-}"
-What id the position of Brazil chart Blank Space song?,74,,,"SELECT ?position WHERE {
-  wd:Q18441355 p:P2892 ?statement .
-  ?statement ps:P2892 ?position .
-  ?statement pq:P17 wd:Q153 .
-}"
-What is the budget of Titanic?,$200 million,,,"SELECT ?budget WHERE {
-  wd:Q10698747 wdt:P1114 ?budget .
-}"
-Who was the commander of that mission?,Yury Lonchakov,"wd:Q7320
-wd:Q7320
-wd:Q7320
-wd:Q537303
-wd:Q29552
-...
-wd:Q157537
-wd:Q29468
-wd:Q29552
-wd:Q186867
-wd:Q79854","| commander  |
-| ---------- |
-| wd:Q7320   |
-| wd:Q7320   |
-| wd:Q7320   |
-| wd:Q537303 |
-| wd:Q29552  |
-| ...        |
-| wd:Q157537 |
-| wd:Q29468  |
-| wd:Q29552  |
-| wd:Q186867 |
-| wd:Q79854  |","SELECT ?commander WHERE {
-  ?mission wdt:P102 ?commander
-}"
-Did Nathan Fillion play in Buffy?,Yes,,,
-What was the name of English Singer who performed in Toosie Slide?,Drake,wd:Q33240|Drake (lang:en),"| artist    | artistLabel     |
-| --------- | --------------- |
-| wd:Q33240 | Drake (lang:en) |","SELECT ?artist ?artistLabel WHERE {
-  wd:Q89324673 wdt:P175 ?artist .
-  ?artist rdfs:label ?artistLabel .
-  FILTER(LANG(?artistLabel) = ""en"")
-}"
-who directs the tv series Squid Game?,Hwang Dong-hyeok,,,"SELECT ?director WHERE {
-  ?series rdfs:label ""Squid Game"" @en ; wdt:P31 wd:Q19508 ; wdt:P57 ?director .
-}"
-Who was the kit manufacturer of the Columbus Crew Soccer Club?,Adidas,,,"SELECT ?manufacturer ?manufacturerLabel WHERE {
-  wd:Q728699 wdt:P1275 ?manufacturer .
-  OPTIONAL {
-    ?manufacturer rdfs:label ?manufacturerLabel .
-  }
-}"
-What album followed Red Medicine?,End Hits,,,"SELECT ?album WHERE {
-  ?album wdt:P31 wd:Q386724 ; rdfs:label ""Red Medicine"" @en ; wdt:P1352 ?nextAlbum
-}"
-What is Metacritic rating of Sour?,83/100,,,"SELECT ?rating WHERE {
-  ?album wdt:P31 wd:Q386724 ; rdfs:label ?label ; wdt:P1838 ?rating .
-  FILTER(lang(?label) = 'en')
-  FILTER(REGEX(LCASE(?label) , 'sour'))
-}"
-Did Sandra Bullock win an Academy Award for best actress for the movie Gravity?,No,,,"SELECT DISTINCT ?award WHERE {
-  wd:Q40791 wdt:P166 ?award ; wdt:P1545 wd:Q431525 ; wdt:P161 wd:Q2257138
-}"
-What is the Mohamed Salah sport number?,11,,,"SELECT ?number WHERE {
-  wd:Q4012787 p:P54 ?statement .
-  ?statement ps:P54 wd:Q26285 .
-  ?statement pq:P2519 ?number .
-}"
-What is the score of album Demi on Metacritic?,64/100,,,"SELECT ?score WHERE {
-  wd:Q50553707 wdt:P1429 ?score
-}"
-What is the name of the actor playing the character of Bill Compton in the TV series True Blood?,Stephen Moyer,,,"SELECT ?actorLabel WHERE {
-  wd:Q1771309 wdt:P3373 ?actor .
-  ?actor rdfs:label ?actorLabel .
-  FILTER(LANGMATCHES(LANG(?actorLabel) , ""en""))
-}"
-which award win the Best Supporting Actor role Birds of Prey movie?,Hollywood Critics Association Midseason Awards,,,"SELECT ?award ?awardLabel WHERE {
-  wd:Q4033224 wdt:P161 ?actor .
-  ?actor wdt:P166 ?award .
-  ?award rdfs:label ?awardLabel .
-  FILTER(LANG(?awardLabel) = ""en"")
-  FILTER(CONTAINS(LCASE(?awardLabel) , ""best supporting actor""))
-}"
-What is the award nominated for Best Actress?,César Award for Best Actress,,,"SELECT ?award ?awardLabel WHERE {
-  ?award wdt:P31 wd:Q307148 ; rdfs:label ?awardLabel .
-  FILTER(LANG(?awardLabel) = 'en' && CONTAINS(LCASE(?awardLabel) , 'academy award'))
-}
-LIMIT 1"
-What is the current soccer team of kylian mbappé?,Paris Saint-Germain F.C.,"Paris Saint-Germain FC (lang:en)
-Real Madrid Club de Fútbol (lang:en)","| teamLabel                            |
-| ------------------------------------ |
-| Paris Saint-Germain FC (lang:en)     |
-| Real Madrid Club de Fútbol (lang:en) |","SELECT ?teamLabel WHERE {
-  ?player rdfs:label ""Kylian Mbappé"" @en ; wdt:P54 ?team .
-  ?team rdfs:label ?teamLabel .
-  FILTER(LANG(?teamLabel) = ""en"")
-  .
-  FILTER NOT EXISTS {
-    ?player p:P54 / psv:P582 []
-  }
-}"
-Did Josh Duhamel act in Las Vegas TV series?,Yes,,,
-What is the rating given by Entertainment Weekly to the album Confident?,B+,,,"SELECT ?rating WHERE {
-  wd:Q5155434 p:P1098 ?ratingStatement .
-  ?ratingStatement pr:P143 wd:Q1534296 .
-  ?ratingStatement ps:P1098 ?rating
-}"
-What is the budget of Rise of the Planet of the Apes movie?,$93 million,,,"SELECT ?budget WHERE {
-  wd:Q243983 wdt:P1026 ?budget
-}"
-What is the rating given by Metacritic to the album Confident?,74/100,,,"SELECT ?metascore WHERE {
-  wd:Q5724730 wdt:P1586 ?metascore
-}"
-which position of Brazil country chart Bad Blood  song?,60,,,"SELECT ?position WHERE {
-  wd:Q19892111 p:P2665 ?statement .
-  ?statement ps:P2665 ?position ; pq:P17 wd:Q156 .
-}"
-What is the name of the role played by actor Hugh Grant in the Bridget Jones series?,Daniel Cleaver,,,"SELECT ?characterLabel WHERE {
-  wd:Q454763 p:P161 ?statement .
-  ?statement ps:P161 wd:Q16670 .
-  ?statement pq:P3349 ?character .
-  ?character rdfs:label ?characterLabel .
-  FILTER(LANG(?characterLabel) = 'en')
-}"
-What award did Ellen DeGeneres receive for playing Dory with the category Favorite Animated Movie Voice?,People's Choice Award,,,"SELECT ?awardLabel WHERE {
-  wd:Q15655 wdt:P166 ?award .
-  ?award rdfs:label ?awardLabel .
-  FILTER(LANG(?awardLabel) = 'en')
-  FILTER(regex(?awardLabel , 'Teen Choice' , 'i'))
-}"
-who is win the favorite Bad Boys for Life of people choice awards win?,Will Smith,,,"SELECT ?awardLabel WHERE {
-  wd:Q29021224 wdt:P166 ?award .
-  ?award rdfs:label ?awardLabel .
-  FILTER(lang(?awardLabel) = 'en')
-  .
-  FILTER(CONTAINS(lcase(?awardLabel) , ""favorite action movie"") && CONTAINS(lcase(?awardLabel) , ""people's choice""))
-}"
-What country's national team does Alessandro Del Piero play for?,Italy,wd:Q38,"| country |
-| ------- |
-| wd:Q38  |","SELECT ?country WHERE {
-  wd:Q624 wdt:P27 ?country .
-}"
-What is the name of the actor cast opposite Rachel Weisz in the film Constantine?,Keanu Reeves,,,"SELECT ?actorLabel WHERE {
-  wd:Q78508 wdt:P31 wd:Q11424 ; wdt:P1476 ""Constantine"" @en .
-  wd:Q78508 p:P161 ?castStatement .
-  ?castStatement ps:P161 ?actor .
-  ?actor rdfs:label ?actorLabel .
-  FILTER(?actor != wd:Q3535)
-  .
-  FILTER(LANG(?actorLabel) = ""en"")
-  .
-}
-LIMIT 1"
-Who is the director of the film Encanto?,Jared Bush,,,"SELECT ?director ?directorLabel WHERE {
-  wd:Q110257534 wdt:P57 ?director .
-  ?director rdfs:label ?directorLabel .
-  FILTER(LANGMATCHES(LANG(?directorLabel) , 'en'))
-}"
-Who Created by Elite Tv Series?,"Carlos Montero, Darío Madrona",,,"SELECT ?creator ?creatorLabel WHERE {
-  wd:Q2045953 wdt:P170 ?creator .
-  OPTIONAL {
-    ?creator rdfs:label ?creatorLabel .
-    FILTER(LANG(?creatorLabel) = 'en')
-  }
-}"
-In which superhero film did Ludi Lin played a character named Murk?,Aquaman,,,"SELECT ?film ?filmLabel WHERE {
-  ?film wdt:P161 wd:Q4033224 ; p:P161 ?stmt ; wdt:P31 wd:Q11424 .
-  ?stmt pq:P2561 ""Murk"" @en .
-  SERVICE wikibase:label {
-    bd:serviceParam wikibase:language ""en""
-  }
-}"
-What movie is the sequel of Ocean's Eleven?,Ocean's Twelve,wd:Q504053|Ocean's Twelve (lang:en),"| sequel     | sequelLabel              |
-| ---------- | ------------------------ |
-| wd:Q504053 | Ocean's Twelve (lang:en) |","SELECT ?sequel ?sequelLabel WHERE {
-  ?sequel wdt:P155 wd:Q205447 .
-  ?sequel rdfs:label ?sequelLabel .
-  FILTER(LANG(?sequelLabel) = ""en"")
-}"
-What division does Paris Saint-Germain Féminine belong to?,Division 1 Féminine,,,"SELECT ?leagueLabel WHERE {
-  wd:Q3365295 wdt:P1388 ?league .
-  ?league rdfs:label ?leagueLabel .
-  FILTER(LANG(?leagueLabel) = 'fr')
-}"
-Origin of the band Avenged Sevenfold?,Huntington Beach,United States (lang:en),"| countryLabel            |
-| ----------------------- |
-| United States (lang:en) |","SELECT ?countryLabel WHERE {
-  wd:Q165193 wdt:P495 ?country .
-  ?country rdfs:label ?countryLabel .
-  FILTER(lang(?countryLabel) = 'en')
-}"
-Who is the director of the movie lord of the rings?,Peter Jackson,"Mike Ibeji (lang:en)
-Stanley Kubrick (lang:en)
-Stanley Kubrick (lang:en-ca)
-Stanley Kubrick (lang:en-gb)
-Peter Jackson (lang:en)
-...
-Peter Jackson (lang:en-ca)
-Peter Jackson (lang:en-gb)
-Peter Jackson (lang:en)
-Peter Jackson (lang:en-ca)
-Peter Jackson (lang:en-gb)","| directorLabel                |
-| ---------------------------- |
-| Mike Ibeji (lang:en)         |
-| Stanley Kubrick (lang:en)    |
-| Stanley Kubrick (lang:en-ca) |
-| Stanley Kubrick (lang:en-gb) |
-| Peter Jackson (lang:en)      |
-| ...                          |
-| Peter Jackson (lang:en-ca)   |
-| Peter Jackson (lang:en-gb)   |
-| Peter Jackson (lang:en)      |
-| Peter Jackson (lang:en-ca)   |
-| Peter Jackson (lang:en-gb)   |","SELECT ?directorLabel WHERE {
-  ?movie wdt:P31 wd:Q11424 ; rdfs:label ?movieTitle .
-  ?movie wdt:P57 ?director .
-  ?director rdfs:label ?directorLabel .
-  FILTER(regex(lcase(str(?movieTitle)) , 'lord of the rings'))
-  .
-  FILTER(langMatches(lang(?movieTitle) , 'en'))
-  FILTER(langMatches(lang(?directorLabel) , 'en'))
-}"
-What novel did Charles Dickens wrote that preceded Oliver Twist?,The Pickwick Papers,,,"SELECT ?work ?workLabel WHERE {
-  wd:Q745 wdt:P50 ?work .
-  ?work wdt:P31 wd:Q571 .
-  ?work wdt:P577 ?workDate .
-  wd:Q6446 wdt:P577 ?oliverDate .
-  FILTER(?workDate < ?oliverDate)
-  ?work rdfs:label ?workLabel .
-  FILTER(LANG(?workLabel) = 'en')
-}
-ORDER BY DESC(?workDate)
-LIMIT 1"
-What is the length of the Brutal song of Sour album?,2:23,,,"SELECT ?duration WHERE {
-  wd:Q115941183 wdt:P304 ?track .
-  ?track wdt:P1476 ""Brutal"" @en .
-  ?track wdt:P2142 ?duration .
-}"
-The film Everything Sucks belongs to which country?,United States,,,"SELECT ?countryLabel WHERE {
-  wd:Q5341316 wdt:P495 ?country .
+which country of origin of the Nineteen Eighty-Four  Book?,United Kingdom,United Kingdom|United Kingdom (lang:en),"| country                  | countryLabel             |
+| ------------------------ | ------------------------ |
+| United Kingdom (wd:Q145) | United Kingdom (lang:en) |","SELECT ?country ?countryLabel WHERE {
+  wd:Q208460 wdt:P495 ?country .
   ?country rdfs:label ?countryLabel .
   FILTER(LANG(?countryLabel) = 'en')
+}"
+What id the position of Brazil chart Blank Space song?,74,,,"SELECT ?position WHERE {
+  wd:Q18441355 p:P2127 ?statement .
+  ?statement ps:P2127 ?position .
+  ?statement pq:P2122 ?chart .
+  ?chart wdt:P17 wd:Q155 .
+}"
+What is the budget of Titanic?,$200 million,200000000.0,"| budget                    |
+| ------------------------- |
+| 200000000.0 (xsd:decimal) |","SELECT ?budget WHERE {
+  wd:Q44578 wdt:P2130 ?budget
+}"
+Who was the commander of that mission?,Yury Lonchakov,,,"SELECT ?commander WHERE {
+  ?commander wdt:P4791 wd:Q43653
+}"
+Did Nathan Fillion play in Buffy?,Yes,,,
+What was the name of English Singer who performed in Toosie Slide?,Drake,Drake,"| artist            |
+| ----------------- |
+| Drake (wd:Q33240) |","SELECT ?artist WHERE {
+  wd:Q89324673 wdt:P175 ?artist
+}"
+who directs the tv series Squid Game?,Hwang Dong-hyeok,Hwang Dong-hyeok|Hwang Dong-hyeok (lang:en),"| director                       | directorLabel              |
+| ------------------------------ | -------------------------- |
+| Hwang Dong-hyeok (wd:Q3143548) | Hwang Dong-hyeok (lang:en) |","SELECT ?director ?directorLabel WHERE {
+  wd:Q106582931 wdt:P57 ?director .
+  ?director rdfs:label ?directorLabel .
+  FILTER(LANG(?directorLabel) = 'en')
+}"
+Who was the kit manufacturer of the Columbus Crew Soccer Club?,Adidas,,,"SELECT ?kitSupplier ?kitSupplierLabel WHERE {
+  wd:Q457163 wdt:P5995 ?kitSupplier .
+  ?kitSupplier rdfs:label ?kitSupplierLabel .
+  FILTER(LANG(?kitSupplierLabel) = 'en')
+}"
+What album followed Red Medicine?,End Hits,,,"SELECT ?album ?albumLabel WHERE {
+  ?album wdt:P175 wd:Q111830 ; wdt:P577 ?date .
+  FILTER(?date > ""1995-01-01T00:00:00Z"" ^^ xsd:dateTime)
   .
-}"
-who is the  shirt sponsors sponsor of RB Leipzig  team?,Red Bull,,,"SELECT ?sponsorLabel WHERE {
-  wd:Q702455 wdt:P1086 ?sponsor .
-  ?sponsor rdfs:label ?sponsorLabel .
-  FILTER(LANG(?sponsorLabel) = 'en')
-}"
-Author of the book the Jane Eyre?,Charlotte Brontë,,,"SELECT ?author ?authorLabel WHERE {
-  wd:Q32692 wdt:P50 ?author .
-  OPTIONAL {
-    ?author rdfs:label ?authorLabel .
-    FILTER(LANG(?authorLabel) = 'en')
-  }
-}"
-Who is the head coach of Orlando City SC?,Óscar Pareja,,,"SELECT ?coachLabel WHERE {
-  wd:Q413918 wdt:P1208 ?team .
-  ?team rdfs:label ?teamLabel .
-  FILTER(LANG(?teamLabel) = 'en' && CONTAINS(LCASE(?teamLabel) , 'orlando city'))
-  ?coach rdfs:label ?coachLabel .
-  FILTER(LANG(?coachLabel) = 'en')
-}"
-Who is the youngest player playing for Germany National Football Team?,Kai Havertz,,,"SELECT ?player ?playerLabel WHERE {
-  ?player wdt:P1132 wd:Q1364 ; wdt:P569 ?birthDate .
-  ?player rdfs:label ?playerLabel .
-  FILTER(LANG(?playerLabel) = ""en"")
+  ?album rdfs:label ?albumLabel .
+  FILTER(LANG(?albumLabel) = 'en')
+  .
 }
-ORDER BY DESC(?birthDate)
+ORDER BY ?date
 LIMIT 1"
-What is the rating on Entertainment Weekly of the album Funeral?,B+,,,
-Actor Behind Joseph Cooper in Interstellar?,Matthew McConaughey,,,"SELECT ?actor ?actorLabel WHERE {
-  wd:Q13417189 p:P161 ?statement .
-  ?statement ps:P161 ?actor .
-  ?statement pq:P740 ?character .
-  ?character rdfs:label ""Joseph Cooper"" @en .
+What is Metacritic rating of Sour?,83/100,,,"SELECT ?rating WHERE {
+  wd:Q106316694 wdt:P1545 ?rating
+}"
+Did Sandra Bullock win an Academy Award for best actress for the movie Gravity?,No,,,"SELECT ?award WHERE {
+  wd:Q40791 wdt:P166 ?award .
+  ?award wdt:P180 wd:Q2579784 .
+  ?award wdt:P350 wd:Q63235 .
+}"
+What is the Mohamed Salah sport number?,11,"11
+15
+17
+22
+31
+74","| number |
+| ------ |
+| 11     |
+| 15     |
+| 17     |
+| 22     |
+| 31     |
+| 74     |","SELECT ?number WHERE {
+  wd:Q1354960 wdt:P1618 ?number
+}"
+What is the score of album Demi on Metacritic?,64/100,music/demi/demi-lovato,"| metacriticID           |
+| ---------------------- |
+| music/demi/demi-lovato |","SELECT ?metacriticID WHERE {
+  wd:Q9343810 wdt:P1712 ?metacriticID
+}"
+What is the name of the actor playing the character of Bill Compton in the TV series True Blood?,Stephen Moyer,Stephen Moyer|Stephen Moyer (lang:en),"| actor                      | actorLabel              |
+| -------------------------- | ----------------------- |
+| Stephen Moyer (wd:Q316622) | Stephen Moyer (lang:en) |","SELECT ?actor ?actorLabel WHERE {
+  wd:Q1771309 wdt:P175 ?actor .
   ?actor rdfs:label ?actorLabel .
   FILTER(LANG(?actorLabel) = 'en')
 }"
-What costume designer received an Oscar nomination for working on the film Airport?,Edith Head,,,"SELECT ?designerLabel WHERE {
-  wd:Q431525 wdt:P1396 ?nomination .
-  ?nomination wdt:P651 wd:Q431525 ; wdt:P1326 wd:Q1492589 ; wdt:P1345 ?designer .
-  ?designer rdfs:label ?designerLabel .
-  FILTER(langMatches(lang(?designerLabel) , 'en'))
+which award win the Best Supporting Actor role Birds of Prey movie?,Hollywood Critics Association Midseason Awards,,,"SELECT DISTINCT ?awardLabel WHERE {
+  wd:Q57177410 p:P161 ?castStatement .
+  ?castStatement ps:P161 ?actor .
+  ?actor wdt:P166 ?award .
+  ?award rdfs:label ?awardLabel .
+  FILTER(LANGMATCHES(LANG(?awardLabel) , ""en""))
+  FILTER(CONTAINS(LCASE(?awardLabel) , ""best supporting actor""))
 }"
-What is the rating of album Punisher on The A.V. Club?,A-,,,"SELECT ?rating WHERE {
-  ?review wdt:P2860 wd:Q55416595 ; wdt:P1433 wd:Q2211839 ; wdt:P1423 ?rating
+What is the award nominated for Best Actress?,César Award for Best Actress,Academy Award for Best Actress (lang:en),"| awardLabel                               |
+| ---------------------------------------- |
+| Academy Award for Best Actress (lang:en) |","SELECT ?awardLabel WHERE {
+  wd:Q103618 rdfs:label ?awardLabel .
+  FILTER(LANG(?awardLabel) = 'en')
 }"
-Name the actor playing the role of Ethan Burke in the TV series Wayward Pines?,Matt Dillon,,,"SELECT ?actor WHERE {
-  ?series wdt:P31 wd:Q54347 ; wdt:P1476 ""Wayward Pines"" @en .
-  ?character wdt:P31 wd:Q12501627 ; wdt:P1353 ?series ; rdfs:label ""Ethan Burke"" @en .
-  ?character wdt:P1334 ?actor .
+What is the current soccer team of kylian mbappé?,Paris Saint-Germain F.C.,"France men's national association football team|France men's national association football team (lang:en)
+Real Madrid Club de Fútbol|Real Madrid Club de Fútbol (lang:en)","| team                                                        | teamLabel                                                 |
+| ----------------------------------------------------------- | --------------------------------------------------------- |
+| France men's national association football team (wd:Q47774) | France men's national association football team (lang:en) |
+| Real Madrid Club de Fútbol (wd:Q8682)                       | Real Madrid Club de Fútbol (lang:en)                      |","SELECT ?team ?teamLabel WHERE {
+  wd:Q21621995 p:P54 ?statement .
+  ?statement ps:P54 ?team .
+  FILTER NOT EXISTS {
+    ?statement pq:P582 ?end
+  }
+  ?team rdfs:label ?teamLabel .
+  FILTER(LANG(?teamLabel) = 'en')
 }"
-"Who won the Best Film Music award in the 26th British Academy Film Awards for the movie ""The Godfather""?",Nino Rota,,,"SELECT ?winner WHERE {
-  wd:Q1139696 wdt:P166 ?award .
-  ?award wdt:P1630 ?category .
-  ?category rdfs:label 'Best Original Music' @en .
-  ?award wdt:P1545 ?winner .
-  ?award wdt:P166 ?event .
-  ?event wdt:P31 wd:Q2121247 .
-  ?event wdt:P1478 ""26""
+Did Josh Duhamel act in Las Vegas TV series?,Yes,,,
+What is the rating given by Entertainment Weekly to the album Confident?,B+,,,"SELECT ?rating WHERE {
+  wd:Q20886070 p:P444 ?statement .
+  ?statement ps:P444 ?rating .
+  ?statement pr:P248 wd:Q275033 .
 }"
-"Who won the best director award in Saturn award for""Jurassic Park""?",Steven Spielberg,,,"SELECT ?directorLabel WHERE {
-  wd:Q153385 wdt:P57 ?director .
+What is the budget of Rise of the Planet of the Apes movie?,$93 million,93000000.0,"| budget                   |
+| ------------------------ |
+| 93000000.0 (xsd:decimal) |","SELECT ?budget WHERE {
+  wd:Q243983 wdt:P2130 ?budget
+}"
+What is the rating given by Metacritic to the album Confident?,74/100,,,"SELECT ?rating WHERE {
+  wd:Q20886070 p:P1997 ?ratingStatement .
+  ?ratingStatement ps:P1997 ?rating .
+  ?ratingStatement pr:P2987 wd:Q150248
+}"
+which position of Brazil country chart Bad Blood  song?,60,,,"SELECT ?position WHERE {
+  wd:Q19892111 p:P2138 ?positionStatement .
+  ?positionStatement ps:P2138 ?position .
+  ?positionStatement pq:P2320 ?chart .
+  ?chart rdfs:label ?chartLabel .
+  FILTER(LANG(?chartLabel) = ""en"")
+  FILTER(CONTAINS(LCASE(?chartLabel) , ""brazil""))
+}"
+What is the name of the role played by actor Hugh Grant in the Bridget Jones series?,Daniel Cleaver,,,"SELECT ?role WHERE {
+  wd:Q752313 p:P161 ?statement .
+  ?statement ps:P161 wd:Q163286 .
+  ?statement pq:P1340 ?role .
+}"
+What award did Ellen DeGeneres receive for playing Dory with the category Favorite Animated Movie Voice?,People's Choice Award,"Annie Award for Voice Acting in a Feature Production|Annie Award for Voice Acting in a Feature Production (lang:en)
+Annie Award|Annie Award (lang:en)","| award                                                              | awardLabel                                                     |
+| ------------------------------------------------------------------ | -------------------------------------------------------------- |
+| Annie Award for Voice Acting in a Feature Production (wd:Q4769235) | Annie Award for Voice Acting in a Feature Production (lang:en) |
+| Annie Award (wd:Q566905)                                           | Annie Award (lang:en)                                          |","SELECT ?award ?awardLabel WHERE {
+  wd:Q483325 wdt:P166 ?award .
+  ?award rdfs:label ?awardLabel .
+  FILTER(LANG(?awardLabel) = 'en')
+  .
+  FILTER(CONTAINS(LCASE(?awardLabel) , 'annie'))
+}"
+who is win the favorite Bad Boys for Life of people choice awards win?,Will Smith,,,
+What country's national team does Alessandro Del Piero play for?,Italy,Italy,"| country        |
+| -------------- |
+| Italy (wd:Q38) |","SELECT ?country WHERE {
+  wd:Q624 wdt:P1532 ?country
+}"
+What is the name of the actor cast opposite Rachel Weisz in the film Constantine?,Keanu Reeves,,,"SELECT ?actorLabel WHERE {
+  wd:Q219150 wdt:P161 ?actor .
+  FILTER(?actor != wd:Q134077)
+  .
+  ?actor rdfs:label ?actorLabel .
+  FILTER(LANG(?actorLabel) = 'en')
+}"
+Who is the director of the film Encanto?,Jared Bush,"Byron Howard|Byron Howard (lang:en)
+Jared Bush|Jared Bush (lang:en)
+Charise Castro Smith|Charise Castro Smith (lang:en)","| director                            | directorLabel                  |
+| ----------------------------------- | ------------------------------ |
+| Byron Howard (wd:Q1018606)          | Byron Howard (lang:en)         |
+| Jared Bush (wd:Q20995253)           | Jared Bush (lang:en)           |
+| Charise Castro Smith (wd:Q29652833) | Charise Castro Smith (lang:en) |","SELECT ?director ?directorLabel WHERE {
+  wd:Q103372692 wdt:P57 ?director .
   ?director rdfs:label ?directorLabel .
   FILTER(lang(?directorLabel) = 'en')
 }"
-What is the rating of album Punisher on Metacritic?,90/100,,,"SELECT ?score WHERE {
-  wd:Q77031527 wdt:P1476 ?score
+Who Created by Elite Tv Series?,"Carlos Montero, Darío Madrona","Carlos Montero|Carlos Montero (lang:en)
+Darío Madrona|Darío Madrona (lang:en)","| creator                       | creatorLabel             |
+| ----------------------------- | ------------------------ |
+| Carlos Montero (wd:Q42908469) | Carlos Montero (lang:en) |
+| Darío Madrona (wd:Q64691960)  | Darío Madrona (lang:en)  |","SELECT ?creator ?creatorLabel WHERE {
+  wd:Q53000974 wdt:P170 ?creator .
+  ?creator rdfs:label ?creatorLabel .
+  FILTER(LANG(?creatorLabel) = 'en')
 }"
-Is Sirius Black a member of Prisoner of Azkaban in harry potter?,Yes,,,
-What member of the San Jose Earthquakes won the Landon Donovan MVP Award in 201?,Chris Wondolowski,,,"SELECT ?player WHERE {
-  ?player wdt:P57 wd:Q122162 ; p:P166 ?awardStatement .
-  ?awardStatement ps:P166 wd:Q5973444 ; pq:P585 ?year .
-  FILTER(YEAR(?year) IN(2010 , 2011 , 2012 , 2015))
+In which superhero film did Ludi Lin played a character named Murk?,Aquaman,,,"SELECT ?film WHERE {
+  ?film p:P161 ?roleStatement .
+  ?roleStatement ps:P161 wd:Q21290349 ; pq:P488 ""Murk"" .
 }"
-Who was the cinematographer on A Wrinkle in Time?,Tobias A. Schliessler,,,"SELECT ?cinematographerLabel WHERE {
-  wd:Q24301388 wdt:P1235 wd:Q5532723 .
-  wd:Q5532723 rdfs:label ?cinematographerLabel .
-  FILTER(LANG(?cinematographerLabel) = ""en"")
+What movie is the sequel of Ocean's Eleven?,Ocean's Twelve,Ocean's Twelve,"| sequel                      |
+| --------------------------- |
+| Ocean's Twelve (wd:Q504053) |","SELECT ?sequel WHERE {
+  wd:Q205447 wdt:P156 ?sequel .
 }"
-Who played Joseph Cooper in Interstellar?,Matthew McConaughey,,,"SELECT ?actor WHERE {
-  wd:Q13417189 p:P161 [ ps:P161 ?actor ; pq:P2966 ""Joseph Cooper"" @en ] .
+What division does Paris Saint-Germain Féminine belong to?,Division 1 Féminine,Première Ligue (lang:en),"| leagueLabel              |
+| ------------------------ |
+| Première Ligue (lang:en) |","SELECT ?leagueLabel WHERE {
+  wd:Q3365295 wdt:P118 ?league .
+  ?league rdfs:label ?leagueLabel .
+  FILTER(LANGMATCHES(LANG(?leagueLabel) , ""en""))
 }"
-Names of married partner madonna?,Guy Ritchie;Sean Penn,,,"SELECT ?spouse ?spouseLabel WHERE {
-  wd:Q11275 wdt:P26 ?spouse .
-  ?spouse rdfs:label ?spouseLabel .
-  FILTER(LANG(?spouseLabel) = 'en')
+Origin of the band Avenged Sevenfold?,Huntington Beach,United States (lang:en),"| placeLabel              |
+| ----------------------- |
+| United States (lang:en) |","SELECT ?placeLabel WHERE {
+  wd:Q165193 wdt:P495 ?place .
+  ?place rdfs:label ?placeLabel .
+  FILTER(LANG(?placeLabel) = 'en')
 }"
-What nation did Fabio Cannavaro represent in soccer?,Italy,,,"SELECT ?countryLabel WHERE {
-  wd:Q13880 wdt:P27 ?country .
-  ?country rdfs:label ?countryLabel .
-  FILTER(LANG(?countryLabel) = 'en')
+Who is the director of the movie lord of the rings?,Peter Jackson,Peter Jackson,"| director                 |
+| ------------------------ |
+| Peter Jackson (wd:Q4465) |","SELECT ?director WHERE {
+  wd:Q190214 wdt:P57 ?director
 }"
-which awards win Favorite Movie Actor	in Dolittle  movie?,Kids' Choice Awards,,,"SELECT ?award ?awardLabel WHERE {
-  wd:Q165219 wdt:P166 ?award .
-  ?award wdt:P508 wd:Q38689704 .
-  ?award rdfs:label ?awardLabel .
-  FILTER(LANG(?awardLabel) = 'en')
+What novel did Charles Dickens wrote that preceded Oliver Twist?,The Pickwick Papers,,,"SELECT ?work ?workLabel WHERE {
+  wd:Q5686 wdt:P50 ?work .
+  ?work wdt:P31 wd:Q571 .
+  ?work wdt:P577 ?pubDate .
+  ?work rdfs:label ?workLabel .
+  FILTER(SUBSTR(STR(?pubDate) , 1 , 4) < '1837')
+}
+ORDER BY ASC(?pubDate)
+LIMIT 1"
+What is the length of the Brutal song of Sour album?,2:23,143.0,"| duration            |
+| ------------------- |
+| 143.0 (xsd:decimal) |","SELECT ?duration WHERE {
+  wd:Q107123213 wdt:P2047 ?duration
 }"
-What is the duration of song Kyoto of the album Punisher?,3:04,,,"SELECT ?duration WHERE {
-  ?album rdfs:label ""The Punisher"" @en .
-  ?album wdt:P529 ?tracklist .
-  ?tracklist wdt:P1146 ?song .
-  ?song rdfs:label ""Kyoto"" @en .
-  ?song wdt:P2182 ?duration .
+The film Everything Sucks belongs to which country?,United States,,,"SELECT ?country WHERE {
+  wd:Q39070182 wdt:P17 ?country
 }"
-Who played role of Jayce Talis in Arcane?,Kevin Alejandro,,,"SELECT ?actor WHERE {
-  wd:Q631601 wdt:P161 ?statement ; pq:P1631 ""Jayce Talis"" ; ps:P161 ?actor
-}"
-Who played the character of Sevika in Arcane?,Amirah Vann,,,"SELECT ?actor WHERE {
-  wd:Q132127002 wdt:P161 ?actor
-}"
-Who is the director tv series Alice in Borderland?,Shinsuke Sato,,,"SELECT ?director ?directorLabel WHERE {
-  wd:Q7695201 wdt:P57 ?director .
-  ?director rdfs:label ?directorLabel .
-  FILTER(LANG(?directorLabel) = ""en"")
-}"
-Who was the head coach of the Charlotte Football Club?,Miguel Ángel Ramírez,,,"SELECT ?coach ?coachLabel WHERE {
-  ?club rdfs:label ""Charlotte FC"" @en ; wdt:P1540 ?coach .
-  ?coach rdfs:label ?coachLabel .
-  FILTER(LANG(?coachLabel) = ""en"")
-  .
-}"
-What is the current soccer team of Neymar?,Paris Saint-Germain F.C,Neymar (lang:en),"| clubLabel        |
-| ---------------- |
-| Neymar (lang:en) |","SELECT ?clubLabel WHERE {
-  wd:Q142794 wdt:P54 ?club ; rdfs:label ?clubLabel .
-  FILTER(LANG(?clubLabel) = 'en')
-}"
-Who played the character of Hannah Kahnwald as Adult in Dark?,Maja Schöne,,,"SELECT ?actor ?actorLabel WHERE {
-  ?character wdt:P31 wd:Q215705 ; wdt:P527 wd:Q13876852 ; rdfs:label ""Hannah Kahnwald (Adult)"" @en ; wdt:P913 ?actor .
+who is the  shirt sponsors sponsor of RB Leipzig  team?,Red Bull,,,"SELECT ?sponsorLabel WHERE {
+  wd:Q702455 wdt:P5995 ?sponsor .
   SERVICE wikibase:label {
     bd:serviceParam wikibase:language ""en"" .
   }
 }"
-No. of goals did Kevin De Bruyne scored for Belgium national football team?,23,,,"SELECT ?goals WHERE {
-  wd:Q114591 p:P2927 ?statement .
-  ?statement ps:P2927 ?goals .
-  ?statement pq:P120 wd:Q1300669 .
+Author of the book the Jane Eyre?,Charlotte Brontë,Charlotte Brontë,"| author                        |
+| ----------------------------- |
+| Charlotte Brontë (wd:Q127332) |","SELECT ?author WHERE {
+  wd:Q182961 wdt:P50 ?author
 }"
-Which RoboCop original trilogy movies featured Peter Weller as Robocop?,RoboCop;RoboCop 2,,,"SELECT ?film ?filmLabel WHERE {
-  wd:Q79065 p:P161 ?statement .
-  ?statement ps:P161 ?film .
-  ?statement pq:P5172 wd:Q163518 .
-  ?film wdt:P31 wd:Q11424 .
-  ?film rdfs:label ?filmLabel .
-  FILTER(LANG(?filmLabel) = 'en')
+Who is the head coach of Orlando City SC?,Óscar Pareja,Óscar Pareja,"| coach                      |
+| -------------------------- |
+| Óscar Pareja (wd:Q4025482) |","SELECT ?coach WHERE {
+  wd:Q15214308 wdt:P286 ?coach
+}"
+Who is the youngest player playing for Germany National Football Team?,Kai Havertz,Tom Bischof|Tom Bischof (lang:en)|2005-06-28T00:00:00Z,"| player                      | playerLabel           | birthDate                           |
+| --------------------------- | --------------------- | ----------------------------------- |
+| Tom Bischof (wd:Q111308591) | Tom Bischof (lang:en) | 2005-06-28T00:00:00Z (xsd:dateTime) |","SELECT ?player ?playerLabel ?birthDate WHERE {
+  ?player wdt:P54 wd:Q43310 .
+  ?player wdt:P569 ?birthDate .
+  OPTIONAL {
+    ?player rdfs:label ?playerLabel
+    FILTER(LANG(?playerLabel) = 'en')
+  }
+}
+ORDER BY DESC(?birthDate)
+LIMIT 1"
+What is the rating on Entertainment Weekly of the album Funeral?,B+,,,"SELECT ?rating WHERE {
+  wd:Q526196 p:P1545 ?statement ; pr:P248 wd:Q275033 .
+  ?statement ps:P1545 ?rating .
+}"
+Actor Behind Joseph Cooper in Interstellar?,Matthew McConaughey,,,"SELECT ?actor WHERE {
+  wd:Q13417189 p:P161 ?statement .
+  ?statement ps:P161 ?actor .
+  ?statement pq:P1649 ""Joseph Cooper"" @en .
+}"
+What costume designer received an Oscar nomination for working on the film Airport?,Edith Head,,,"SELECT ?designer ?designerLabel WHERE {
+  ?nomination wdt:P2830 wd:Q15914 ; wdt:P1334 wd:Q2253871 ; wdt:P1502 wd:Q409022 ; wdt:P1542 ?designer .
+  ?designer rdfs:label ?designerLabel .
+  FILTER(LANG(?designerLabel) = 'en')
+}"
+What is the rating of album Punisher on The A.V. Club?,A-,,,"SELECT ?rating WHERE {
+  wd:Q96419213 p:P1630 ?statement .
+  ?statement ps:P1630 ?rating .
+  ?statement pr:P854 ""https://avclub.com/""
+}"
+Name the actor playing the role of Ethan Burke in the TV series Wayward Pines?,Matt Dillon,,,"SELECT ?actorLabel WHERE {
+  wd:Q122918726 wdt:P161 ?actor .
+  ?actor rdfs:label ?actorLabel .
+  FILTER(LANG(?actorLabel) = 'en')
+}"
+"Who won the Best Film Music award in the 26th British Academy Film Awards for the movie ""The Godfather""?",Nino Rota,,,
+"Who won the best director award in Saturn award for""Jurassic Park""?",Steven Spielberg,,,"SELECT ?director WHERE {
+  ?award wdt:P31 wd:Q1265702 ; wdt:P1686 wd:Q167726 ; wdt:P1346 ?director .
+}"
+What is the rating of album Punisher on Metacritic?,90/100,,,"SELECT ?rating WHERE {
+  wd:Q96419213 p:P4271 ?statement .
+  ?statement ps:P4271 ?rating .
+  ?statement pr:P4271 wd:Q150248 .
+}"
+Is Sirius Black a member of Prisoner of Azkaban in harry potter?,Yes,,,
+What member of the San Jose Earthquakes won the Landon Donovan MVP Award in 201?,Chris Wondolowski,,,"SELECT ?player ?playerLabel WHERE {
+  ?player wdt:P309 wd:Q575370 .
+  ?player p:P166 ?awardStatement .
+  ?awardStatement ps:P166 wd:Q94494 .
+  ?awardStatement pq:P585 ?awardDate .
+  FILTER(year(?awardDate) = 2011)
   .
+  SERVICE wikibase:label {
+    bd:serviceParam wikibase:language ""en"" .
+  }
 }"
-Who Directs the TV series Hanna?,Sarah Adina Smith,wd:Q269796|Walter Lang (lang:en),"| director   | directorLabel         |
-| ---------- | --------------------- |
-| wd:Q269796 | Walter Lang (lang:en) |","SELECT ?director ?directorLabel WHERE {
-  wd:Q18708917 wdt:P57 ?director .
+Who was the cinematographer on A Wrinkle in Time?,Tobias A. Schliessler,Tobias A. Schliessler|Tobias A. Schliessler (lang:en),"| cinematographer                     | cinematographerLabel            |
+| ----------------------------------- | ------------------------------- |
+| Tobias A. Schliessler (wd:Q2437689) | Tobias A. Schliessler (lang:en) |","SELECT ?cinematographer ?cinematographerLabel WHERE {
+  wd:Q24301388 wdt:P344 ?cinematographer .
+  OPTIONAL {
+    ?cinematographer rdfs:label ?cinematographerLabel .
+    FILTER(LANG(?cinematographerLabel) = 'en')
+  }
+}"
+Who played Joseph Cooper in Interstellar?,Matthew McConaughey,,,"SELECT ?actor WHERE {
+  wd:Q13417189 p:P161 ?statement .
+  ?statement ps:P161 ?actor .
+  ?statement pq:P161 ?role .
+  FILTER(CONTAINS(STR(?role) , ""Cooper""))
+  FILTER(LANG(?role) = ""en"")
+}"
+Names of married partner madonna?,Guy Ritchie;Sean Penn,"Guy Ritchie|Guy Ritchie (lang:en)
+Sean Penn|Sean Penn (lang:en)","| spouse                   | spouseLabel           |
+| ------------------------ | --------------------- |
+| Guy Ritchie (wd:Q192990) | Guy Ritchie (lang:en) |
+| Sean Penn (wd:Q44221)    | Sean Penn (lang:en)   |","SELECT ?spouse ?spouseLabel WHERE {
+  wd:Q1744 wdt:P26 ?spouse .
+  ?spouse rdfs:label ?spouseLabel .
+  FILTER(LANG(?spouseLabel) = ""en"")
+}"
+What nation did Fabio Cannavaro represent in soccer?,Italy,Italy (lang:en),"| countryLabel    |
+| --------------- |
+| Italy (lang:en) |","SELECT ?countryLabel WHERE {
+  wd:Q102027 wdt:P27 ?country .
+  ?country rdfs:label ?countryLabel .
+  FILTER(LANG(?countryLabel) = 'en')
+}"
+which awards win Favorite Movie Actor	in Dolittle  movie?,Kids' Choice Awards,,,"SELECT ?awardLabel WHERE {
+  wd:Q23894563 wdt:P121 wd:Q165219 .
+  ?award wdt:P375 wd:Q38689704 .
+  OPTIONAL {
+    ?award rdfs:label ?awardLabel
+    FILTER(LANG(?awardLabel) = ""en"")
+  }
+}"
+What is the duration of song Kyoto of the album Punisher?,3:04,,,"SELECT ?duration WHERE {
+  wd:Q96419213 p:P3222 ?trackStatement ; ps:P3222 ?track .
+  ?track rdfs:label 'Kyoto' @en .
+  ?trackStatement pq:P2227 ?duration .
+}"
+Who played role of Jayce Talis in Arcane?,Kevin Alejandro,,,"SELECT ?actor ?actorLabel WHERE {
+  wd:Q85518571 p:P161 ?castStatement .
+  ?castStatement ps:P161 ?actor .
+  ?castStatement pq:P453 wd:Q100255006 .
+  ?actor rdfs:label ?actorLabel .
+  FILTER(LANG(?actorLabel) = 'en')
+}"
+Who played the character of Sevika in Arcane?,Amirah Vann,,,
+Who is the director tv series Alice in Borderland?,Shinsuke Sato,Shinsuke Sato,"| director                    |
+| --------------------------- |
+| Shinsuke Sato (wd:Q7497770) |","SELECT ?director WHERE {
+  wd:Q103967305 wdt:P57 ?director
+}"
+Who was the head coach of the Charlotte Football Club?,Miguel Ángel Ramírez,Dean Smith,"| coach                    |
+| ------------------------ |
+| Dean Smith (wd:Q5246473) |","SELECT ?coach WHERE {
+  wd:Q78944434 wdt:P286 ?coach
+}"
+What is the current soccer team of Neymar?,Paris Saint-Germain F.C,"Santos F.C.|Santos F.C. (lang:en)
+Brazil men's national football team|Brazil men's national football team (lang:en)","| team                                            | teamLabel                                     |
+| ----------------------------------------------- | --------------------------------------------- |
+| Santos F.C. (wd:Q80955)                         | Santos F.C. (lang:en)                         |
+| Brazil men's national football team (wd:Q83459) | Brazil men's national football team (lang:en) |","SELECT ?team ?teamLabel WHERE {
+  wd:Q142794 p:P54 ?statement .
+  ?statement ps:P54 ?team .
+  FILTER NOT EXISTS {
+    ?statement pq:P582 ?endDate
+  }
+  FILTER NOT EXISTS {
+    ?team wdt:P31 wd:Q2104121
+  }
+  OPTIONAL {
+    ?team rdfs:label ?teamLabel .
+    FILTER(LANG(?teamLabel) = 'en')
+  }
+}"
+Who played the character of Hannah Kahnwald as Adult in Dark?,Maja Schöne,"Maja Schöne
+Ella Lee","| performer                 |
+| ------------------------- |
+| Maja Schöne (wd:Q1262836) |
+| Ella Lee (wd:Q46005228)   |","SELECT ?performer WHERE {
+  wd:Q65921608 wdt:P175 ?performer
+}"
+No. of goals did Kevin De Bruyne scored for Belgium national football team?,23,,,"SELECT ?goals WHERE {
+  wd:Q357984 wdt:P925 ?goals .
+}"
+Which RoboCop original trilogy movies featured Peter Weller as Robocop?,RoboCop;RoboCop 2,"RoboCop
+RoboCop 2","| film                   |
+| ---------------------- |
+| RoboCop (wd:Q372514)   |
+| RoboCop 2 (wd:Q834021) |","SELECT ?film WHERE {
+  ?film p:P161 ?statement .
+  ?statement ps:P161 wd:Q360477 .
+  ?statement pq:P453 wd:Q1033152 .
+}"
+Who Directs the TV series Hanna?,Sarah Adina Smith,,,"SELECT ?directorLabel WHERE {
+  wd:Q20459411 wdt:P57 ?director ; rdfs:label ?seriesLabel .
   ?director rdfs:label ?directorLabel .
-  FILTER(LANG(?directorLabel) = 'en')
+  FILTER(LANG(?seriesLabel) = 'en' && STR(?seriesLabel) = 'Hanna' && LANG(?directorLabel) = 'en')
 }"
-who is the manager of Rayo Vallecano team?,Andoni Iraola,wd:Q2499750|Iñigo Pérez (lang:en),"| manager     | managerLabel          |
-| ----------- | --------------------- |
-| wd:Q2499750 | Iñigo Pérez (lang:en) |","SELECT ?manager ?managerLabel WHERE {
-  wd:Q10300 wdt:P286 ?manager .
-  ?manager rdfs:label ?managerLabel .
-  FILTER(LANG(?managerLabel) = 'en')
+who is the manager of Rayo Vallecano team?,Andoni Iraola,Iñigo Pérez,"| manager                   |
+| ------------------------- |
+| Iñigo Pérez (wd:Q2499750) |","SELECT ?manager WHERE {
+  wd:Q10300 wdt:P286 ?manager
 }"
-Who is the lead drummer of the band U2?,Larry Mullen Jr.,,,"SELECT ?drummer WHERE {
-  wd:Q5041 p:P355 ?memberStatement ; ps:P355 ?drummer .
-  ?memberStatement pq:P1358 ?role .
-  ?role rdfs:label ""drummer"" @en .
+Who is the lead drummer of the band U2?,Larry Mullen Jr.,,,"SELECT ?drummer ?drummerLabel WHERE {
+  wd:Q396 p:P1321 ?statement ; ps:P1321 ?drummer .
+  ?statement pq:P551 wd:Q386854 .
+  ?drummer rdfs:label ?drummerLabel .
+  FILTER(lang(?drummerLabel) = 'en')
 }"
-who is the singer of Starboy song?,The Weeknd,,,"SELECT ?singer WHERE {
-  wd:Q707748 wdt:P175 ?singer
+who is the singer of Starboy song?,The Weeknd,"Daft Punk
+The Weeknd","| artist                   |
+| ------------------------ |
+| Daft Punk (wd:Q185828)   |
+| The Weeknd (wd:Q2121062) |","SELECT ?artist WHERE {
+  wd:Q27000439 wdt:P175 ?artist .
 }"
-"Which actor portrayed Uncle Phil on the ""Fresh Prince of Bel-Air?""",James Avery,,,SELECT ?actor WHERE { wd:Q2682658 wdt:P948 wd:Q6074250; wd:Q6074250 wdt:P161 ?actor. }
-What movie fetched the actor Sean Connery an Academy Award?,The Untouchables,,,"SELECT ?movie WHERE {
-  wd:Q49104 wdt:P166 ?award .
-  ?award wdt:P1343 wd:Q3175225 .
-  ?award wdt:P1418 ?movie .
+"Which actor portrayed Uncle Phil on the ""Fresh Prince of Bel-Air?""",James Avery,,,"SELECT ?actor WHERE {
+  wd:Q6074250 wdt:P1567 ?actor .
+}"
+What movie fetched the actor Sean Connery an Academy Award?,The Untouchables,"The Untouchables
+The Name of the Rose
+Entrapment
+The Untouchables
+The Name of the Rose
+The Untouchables
+The Untouchables
+The Untouchables
+The Rock","| film                              |
+| --------------------------------- |
+| The Untouchables (wd:Q108525)     |
+| The Name of the Rose (wd:Q155018) |
+| Entrapment (wd:Q578873)           |
+| The Untouchables (wd:Q108525)     |
+| The Name of the Rose (wd:Q155018) |
+| The Untouchables (wd:Q108525)     |
+| The Untouchables (wd:Q108525)     |
+| The Untouchables (wd:Q108525)     |
+| The Rock (wd:Q216720)             |","SELECT ?film WHERE {
+  wd:Q4573 p:P166 ?awardStatement .
+  ?awardStatement ps:P166 ?award .
+  ?awardStatement pq:P1686 ?film .
 }"
 What is the birth place of Justin Bieber?,London,London (lang:en),"| birthplaceLabel  |
 | ---------------- |
 | London (lang:en) |","SELECT ?birthplaceLabel WHERE {
-  ?person rdfs:label ""Justin Bieber"" @en ; wdt:P19 ?birthplace .
+  wd:Q34086 wdt:P19 ?birthplace .
   ?birthplace rdfs:label ?birthplaceLabel .
-  FILTER(LANG(?birthplaceLabel) = 'en')
-}"
-which time period of using Adidas kits in Manchester united ?,2015;2021,,,"SELECT ?startDate ?endDate WHERE {
-  wd:Q37308 p:P552 ?statement .
-  ?statement ps:P552 wd:Q347 .
-  OPTIONAL {
-    ?statement pq:P580 ?startDateQualifier .
-    ?startDateQualifier pr:P580 ?startDate
-  }
+  FILTER(LANG(?birthplaceLabel) = ""en"")
   .
+}"
+which time period of using Adidas kits in Manchester united ?,2015;2021,,,"SELECT ?start ?end WHERE {
+  wd:Q18656 p:P5995 ?statement .
+  ?statement ps:P5995 wd:Q12358242 .
+  ?statement pq:P580 ?start .
+  ?statement pq:P582 ?end .
+}"
+Who Is the Creator of the Elite TV Series?,"Carlos Montero, Darío Madrona","Carlos Montero|Carlos Montero (lang:en)
+Darío Madrona|Darío Madrona (lang:en)","| creator                       | creatorLabel             |
+| ----------------------------- | ------------------------ |
+| Carlos Montero (wd:Q42908469) | Carlos Montero (lang:en) |
+| Darío Madrona (wd:Q64691960)  | Darío Madrona (lang:en)  |","SELECT ?creator ?creatorLabel WHERE {
+  wd:Q53000974 wdt:P170 ?creator .
   OPTIONAL {
-    ?statement pq:P582 ?endDateQualifier .
-    ?endDateQualifier pr:P582 ?endDate
+    ?creator rdfs:label ?creatorLabel .
+    FILTER(LANG(?creatorLabel) = ""en"")
   }
 }"
-Who Is the Creator of the Elite TV Series?,"Carlos Montero, Darío Madrona",,,"SELECT ?creatorLabel WHERE {
-  wd:Q5356244 wdt:P57 ?creator .
-  ?creator rdfs:label ?creatorLabel .
-  FILTER(LANG(?creatorLabel) = 'en')
+who is the director of FC Barcelona team?,Mateu Alemany,Deco|Deco (lang:en),"| manager           | managerLabel   |
+| ----------------- | -------------- |
+| Deco (wd:Q659634) | Deco (lang:en) |","SELECT ?manager ?managerLabel WHERE {
+  wd:Q7156 wdt:P1037 ?manager .
+  ?manager rdfs:label ?managerLabel
+  FILTER(LANG(?managerLabel) = 'en')
 }"
-who is the director of FC Barcelona team?,Mateu Alemany,,,"SELECT ?manager ?managerLabel WHERE {
-  wd:Q20811403 wdt:P119 ?manager .
-  ?manager rdfs:label ?managerLabel .
-  FILTER(LANGMATCHES(LANG(?managerLabel) , ""en""))
+Who writes the book the Jane Eyre?,Charlotte Brontë,Charlotte Brontë,"| author                        |
+| ----------------------------- |
+| Charlotte Brontë (wd:Q127332) |","SELECT ?author WHERE {
+  wd:Q182961 wdt:P50 ?author
 }"
-Who writes the book the Jane Eyre?,Charlotte Brontë,"Charlotte Brontë
-Charlotte Brontë
-Charlotte Brontë","| authorLabel      |
-| ---------------- |
-| Charlotte Brontë |
-| Charlotte Brontë |
-| Charlotte Brontë |","SELECT ?authorLabel WHERE {
-  ?author rdfs:label ""Charlotte Brontë"" @en .
-  BIND(""Charlotte Brontë"" AS ?authorLabel)
+What is the name of the role played by Michael C. Hall in the TV show Six Feet Under?,David Fisher,,,"SELECT ?characterLabel WHERE {
+  wd:Q216919 p:P161 ?statement .
+  ?statement ps:P161 wd:Q203268 .
+  ?statement pq:P453 ?character .
+  ?character rdfs:label ?characterLabel .
+  FILTER(LANG(?characterLabel) = 'en')
 }"
-What is the name of the role played by Michael C. Hall in the TV show Six Feet Under?,David Fisher,,,"SELECT ?roleLabel WHERE {
-  wd:Q218529 p:P161 ?statement .
-  ?statement ps:P161 wd:Q100807 .
-  ?statement pq:P3349 ?role .
-  ?role rdfs:label ?roleLabel .
-  FILTER(LANG(?roleLabel) = 'en')
-}"
-What is the country of origin of the Black Beauty book?,United States of America,"United Kingdom (lang:en)
-United Kingdom (lang:en)
-United Kingdom (lang:en)
-United Kingdom (lang:en)
-United Kingdom (lang:en)
-...
-United Kingdom (lang:en)
-United Kingdom (lang:en)
-United Kingdom (lang:en)
-United Kingdom (lang:en)
-United Kingdom (lang:en)","| countryLabel             |
-| ------------------------ |
-| United Kingdom (lang:en) |
-| United Kingdom (lang:en) |
-| United Kingdom (lang:en) |
-| United Kingdom (lang:en) |
-| United Kingdom (lang:en) |
-| ...                      |
-| United Kingdom (lang:en) |
-| United Kingdom (lang:en) |
-| United Kingdom (lang:en) |
-| United Kingdom (lang:en) |
-| United Kingdom (lang:en) |","SELECT ?countryLabel WHERE {
-  ?book wdt:P1476 ""Black Beauty"" @en ; wdt:P50 ?author .
-  ?author wdt:P27 ?country .
-  ?country rdfs:label ?countryLabel .
-  FILTER(LANG(?countryLabel) = 'en')
+What is the country of origin of the Black Beauty book?,United States of America,United Kingdom|United Kingdom (lang:en),"| country                  | countryLabel             |
+| ------------------------ | ------------------------ |
+| United Kingdom (wd:Q145) | United Kingdom (lang:en) |","SELECT ?country ?countryLabel WHERE {
+  wd:Q880092 wdt:P495 ?country .
+  OPTIONAL {
+    ?country rdfs:label ?countryLabel .
+    FILTER(LANG(?countryLabel) = ""en"")
+    .
+  }
 }"
 What is the genre of Homeland Elegies book?,Fiction,,,"SELECT ?genreLabel WHERE {
-  wd:Q3272508 wdt:P50 ?book .
-  ?book wdt:P1476 ""Homeland Elegies"" @en .
-  ?book wdt:P136 ?genre .
+  wd:Q105082070 wdt:P136 ?genre .
   ?genre rdfs:label ?genreLabel .
-  FILTER(LANG(?genreLabel) = ""en"")
 }"
-Who played the role of Jonas Kahnwald as teen in Dark?,Louis Hofmann,,,"SELECT ?actor ?actorLabel WHERE {
-  wd:Q4263505 wdt:P1076 ?role .
-  ?role wdt:P161 ?actor .
-  ?role pq:P5850 wd:Q2535417 .
-  ?role rdfs:label ?roleLabel .
-  ?actor rdfs:label ?actorLabel .
-  FILTER(LANG(?roleLabel) = 'en')
-  .
-  FILTER(LANG(?actorLabel) = 'en')
-  .
+Who played the role of Jonas Kahnwald as teen in Dark?,Louis Hofmann,,,"SELECT ?actor WHERE {
+  wd:Q28443710 p:P161 ?statement .
+  ?statement ps:P161 ?actor .
+  ?statement pq:P2253 wd:Q65921603 .
 }"
-Who was the kit supplier for the D.C. United soccer club?,Adidas,,,"SELECT ?kitSupplier ?label WHERE {
-  wd:Q238593 wdt:P1326 ?kitSupplier .
-  OPTIONAL {
-    ?kitSupplier rdfs:label ?label
-    FILTER(LANG(?label) = 'en')
-  }
+Who was the kit supplier for the D.C. United soccer club?,Adidas,Adidas AG,"| supplier             |
+| -------------------- |
+| Adidas AG (wd:Q3895) |","SELECT ?supplier WHERE {
+  wd:Q238593 wdt:P5995 ?supplier
 }"
-Which country does the soccer player Alessandro Del Piero represent?,Italy,wd:Q38|Italy (lang:en),"| country | countryLabel    |
-| ------- | --------------- |
-| wd:Q38  | Italy (lang:en) |","SELECT ?country ?countryLabel WHERE {
+Which country does the soccer player Alessandro Del Piero represent?,Italy,Italy (lang:en),"| countryLabel    |
+| --------------- |
+| Italy (lang:en) |","SELECT ?countryLabel WHERE {
   wd:Q624 wdt:P27 ?country .
   ?country rdfs:label ?countryLabel .
   FILTER(LANG(?countryLabel) = 'en')
 }"
-What award did The Turning Point get?,National Board of Review: Top Ten Films,,,"SELECT ?awardLabel WHERE {
-  wd:Q3280853 wdt:P166 ?award .
-  ?award rdfs:label ?awardLabel
-  FILTER(lang(?awardLabel) = 'en')
+What award did The Turning Point get?,National Board of Review: Top Ten Films,"Anexo:National Board of Review por Mejor Película (lang:es)
+Cena Národní rady amerických filmových kritiků za nejlepší film (lang:cs)
+En İyi Film National Board of Review Ödülü (lang:tr)
+Ən yaxşı filmə görə ABŞ Kinotənqidçiləri Milli Şurasının mükafatı (lang:az)
+Film Terbaik (National Board of Review Award) (lang:id)
+...
+ナショナル・ボード・オブ・レビュー賞 トップ10作品 (lang:ja)
+十大电影 (lang:zh-cn)
+十大电影 (lang:zh-hans)
+十大電影 (lang:zh-hant)
+國家評論協會獎：十大佳片 (lang:zh)","| awardLabel                                                                  |
+| --------------------------------------------------------------------------- |
+| Anexo:National Board of Review por Mejor Película (lang:es)                 |
+| Cena Národní rady amerických filmových kritiků za nejlepší film (lang:cs)   |
+| En İyi Film National Board of Review Ödülü (lang:tr)                        |
+| Ən yaxşı filmə görə ABŞ Kinotənqidçiləri Milli Şurasının mükafatı (lang:az) |
+| Film Terbaik (National Board of Review Award) (lang:id)                     |
+| ...                                                                         |
+| ナショナル・ボード・オブ・レビュー賞 トップ10作品 (lang:ja)                                        |
+| 十大电影 (lang:zh-cn)                                                           |
+| 十大电影 (lang:zh-hans)                                                         |
+| 十大電影 (lang:zh-hant)                                                         |
+| 國家評論協會獎：十大佳片 (lang:zh)                                                      |","SELECT ?awardLabel WHERE {
+  wd:Q451558 wdt:P166 ?award .
+  ?award rdfs:label ?awardLabel .
 }"
 What is the name of the character played by the actor Cillian Murphy in the series Peaky Blinders?,Tommy Shelby,,,"SELECT ?characterLabel WHERE {
-  wd:Q3331370 p:P161 ?roleStatement .
-  ?roleStatement ps:P161 wd:Q2743152 .
-  ?roleStatement pq:P1612 ?character .
+  wd:Q14944179 p:P161 ?statement .
+  ?statement ps:P161 wd:Q202589 .
+  ?statement pq:P1632 ?character .
   ?character rdfs:label ?characterLabel .
-  FILTER(lang(?characterLabel) = 'en')
+  FILTER(LANG(?characterLabel) = ""en"")
 }"
 What is the gating on Entertainment Weekly of the album Demi?,C+,,,"SELECT ?rating WHERE {
-  wd:Q7905249 p:P1201 ?ratingStatement .
-  ?ratingStatement ps:P1201 ?rating .
-  ?ratingStatement pr:P1433 wd:Q1681876 .
+  wd:Q9343810 p:P541 ?statement .
+  ?statement pr:P460 wd:Q275033 .
+  ?statement ps:P541 ?rating .
 }"
-Who is the composer of the movie Spide man part 1?,Danny Elfman,wd:Q193338,"| composer   |
-| ---------- |
-| wd:Q193338 |","SELECT ?composer WHERE {
-  ?movie wdt:P31 wd:Q11424 ; rdfs:label ""Spider-Man"" @en ; wdt:P86 ?composer .
+Who is the composer of the movie Spide man part 1?,Danny Elfman,Danny Elfman,"| composer                  |
+| ------------------------- |
+| Danny Elfman (wd:Q193338) |","SELECT ?composer WHERE {
+  wd:Q484442 wdt:P86 ?composer
 }"
-language of work of the Dream of the Red Chamber?,Chinese,"Beijing dialect (lang:en)
-Standard Chinese (lang:en)
-written vernacular Chinese (lang:en)","| languageLabel                        |
-| ------------------------------------ |
-| Beijing dialect (lang:en)            |
-| Standard Chinese (lang:en)           |
-| written vernacular Chinese (lang:en) |","SELECT ?languageLabel WHERE {
-  ?work rdfs:label ""红楼梦"" @zh .
-  ?work wdt:P407 ?language .
-  ?language rdfs:label ?languageLabel .
-  FILTER(LANG(?languageLabel) = 'en')
-  .
+language of work of the Dream of the Red Chamber?,Chinese,"Beijing dialect
+written vernacular Chinese","| language                                |
+| --------------------------------------- |
+| Beijing dialect (wd:Q1147606)           |
+| written vernacular Chinese (wd:Q783605) |","SELECT ?language WHERE {
+  wd:Q8265 wdt:P407 ?language
 }"
-Which country did Ronaldinho play for?,Brazil,,,"SELECT ?countryLabel WHERE {
-  wd:Q147366 wdt:P27 ?country .
-  ?country rdfs:label ?countryLabel .
-  FILTER(LANG(?countryLabel) = 'en')
+Which country did Ronaldinho play for?,Brazil,"Brazil
+Spain","| country          |
+| ---------------- |
+| Brazil (wd:Q155) |
+| Spain (wd:Q29)   |","SELECT ?country WHERE {
+  wd:Q39444 wdt:P27 ?country
 }"
 Who played the role of Sakshi Devi?,Nushrratt Bharuccha,,,"SELECT ?actor WHERE {
-  ?actor p:P161 ?statement ; pq:P1382 ""Sakshi Devi"" @en
+  ?work p:P161 ?statement ; ps:P161 ?actor .
+  ?statement pq:P453 ?character .
+  ?character rdfs:label ""Sakshi Devi"" @en .
 }"
-Dustin Hoffman's '79 Oscar was won for what?,Kramer vs. Kramer,,,"SELECT ?filmLabel WHERE {
-  wd:Q1449 wdt:P166 ?award .
-  ?award wdt:P585 ?date .
-  FILTER(SUBSTR(str(?date) , 1 , 4) = ""1979"")
-  ?award wdt:P1343 ?film .
+Dustin Hoffman's '79 Oscar was won for what?,Kramer vs. Kramer,,,"SELECT ?film ?filmLabel WHERE {
+  wd:Q42930 wdt:P166 ?award .
+  ?award wdt:P585 ?awardDate .
+  FILTER(year(?awardDate) = 1979)
+  .
+  ?award wdt:P1146 ?film .
   ?film rdfs:label ?filmLabel .
-  FILTER(LANG(?filmLabel) = 'en')
+  FILTER(lang(?filmLabel) = ""en"")
 }"
 What is the rating of Promises on Exclaim!?,7,,,"SELECT ?rating WHERE {
-  ?item wdt:P31 wd:Q7725633 ; rdfs:label ""Promises"" @en ; wdt:P1687 ?rating ; p:P1687 ?statement .
-  ?statement pr:P1687 ?reference .
-  ?reference prov:wasDerivedFrom wd:Q3531707 .
+  wd:Q3922912 p:P444 ?statement .
+  ?statement ps:P444 ?rating .
+  ?statement pr:P444 ?reference .
+  ?reference wdt:P859 wd:Q664232
 }"
-director of the film Encanto?,Jared Bush,,,"SELECT ?directorLabel WHERE {
-  wd:Q58161453 wdt:P57 ?director .
+director of the film Encanto?,Jared Bush,"Byron Howard|Byron Howard (lang:en)
+Jared Bush|Jared Bush (lang:en)
+Charise Castro Smith|Charise Castro Smith (lang:en)","| director                            | directorLabel                  |
+| ----------------------------------- | ------------------------------ |
+| Byron Howard (wd:Q1018606)          | Byron Howard (lang:en)         |
+| Jared Bush (wd:Q20995253)           | Jared Bush (lang:en)           |
+| Charise Castro Smith (wd:Q29652833) | Charise Castro Smith (lang:en) |","SELECT ?director ?directorLabel WHERE {
+  wd:Q103372692 wdt:P57 ?director .
   ?director rdfs:label ?directorLabel .
   FILTER(LANG(?directorLabel) = 'en')
 }"
 What team did he manage prior to this one?,Vålerenga Fotball,,,
-"Who played Uncle Phil on the ""Fresh Prince of Bel-Air?""",James Avery,,,"SELECT ?actor ?actorLabel WHERE {
-  ?character rdfs:label ""Philip Banks"" @en ; skos:altLabel ""Uncle Phil"" @en ; wdt:P161 ?actor .
-  ?actor rdfs:label ?actorLabel .
-  FILTER(LANG(?actorLabel) = ""en"")
+"Who played Uncle Phil on the ""Fresh Prince of Bel-Air?""",James Avery,James Avery,"| actor                    |
+| ------------------------ |
+| James Avery (wd:Q493077) |","SELECT ?actor WHERE {
+  wd:Q309063 p:P161 ?statement .
+  ?statement ps:P161 ?actor .
+  ?statement pq:P453 wd:Q6074250 .
 }"
-What is the name of the father character in the TV series Family Guy?,Peter Griffin,,,"SELECT ?characterLabel WHERE {
-  wd:Q223538 wdt:P3373 ?character .
-  ?character rdfs:label ?characterLabel .
-  FILTER(lang(?characterLabel) = ""en"")
+What is the name of the father character in the TV series Family Guy?,Peter Griffin,Peter Griffin (lang:en),"| label                   |
+| ----------------------- |
+| Peter Griffin (lang:en) |","SELECT ?label WHERE {
+  wd:Q28465 rdfs:label ?label .
+  FILTER(LANG(?label) = 'en')
 }"
-Neymar is from?,Portuguese,Mogi das Cruzes (lang:en),"| birthplaceLabel           |
-| ------------------------- |
-| Mogi das Cruzes (lang:en) |","SELECT ?birthplaceLabel WHERE {
-  wd:Q142794 wdt:P19 ?birthplace .
-  ?birthplace rdfs:label ?birthplaceLabel .
-  FILTER(langMatches(lang(?birthplaceLabel) , 'en'))
+Neymar is from?,Portuguese,Mogi das Cruzes,"| birthplace                   |
+| ---------------------------- |
+| Mogi das Cruzes (wd:Q194332) |","SELECT ?birthplace WHERE {
+  wd:Q142794 wdt:P19 ?birthplace
 }"
-What was the name of the character played by Brad Pitt in the movie Fight Club?,Tyler Durden,,,"SELECT ?characterLabel WHERE {
-  wd:Q166806 p:P161 ?statement .
-  ?statement ps:P161 wd:Q10080 ; pq:P1480 ?character .
-  ?character rdfs:label ?characterLabel .
-  FILTER(LANG(?characterLabel) = 'en')
+What was the name of the character played by Brad Pitt in the movie Fight Club?,Tyler Durden,Tyler Durden,"| character                  |
+| -------------------------- |
+| Tyler Durden (wd:Q4001141) |","SELECT ?character WHERE {
+  wd:Q190050 p:P161 ?statement .
+  ?statement ps:P161 wd:Q35332 .
+  ?statement pq:P453 ?character .
 }"
-Where the original RoboCop trilogy movies all direct by Paul Verhoeven?,No,"wd:Q24577596|RoboDoc: The Creation of Robocop (lang:en)|wd:Q24578896
-wd:Q372514|RoboCop (lang:en)|wd:Q129079
-wd:Q834021|RoboCop 2 (lang:en)|wd:Q119348
-wd:Q841233|RoboCop 3 (lang:en)|wd:Q1452257
-wd:Q864518|RoboCop (lang:en)|wd:Q1332810","| movie        | title                                      | director     |
-| ------------ | ------------------------------------------ | ------------ |
-| wd:Q24577596 | RoboDoc: The Creation of Robocop (lang:en) | wd:Q24578896 |
-| wd:Q372514   | RoboCop (lang:en)                          | wd:Q129079   |
-| wd:Q834021   | RoboCop 2 (lang:en)                        | wd:Q119348   |
-| wd:Q841233   | RoboCop 3 (lang:en)                        | wd:Q1452257  |
-| wd:Q864518   | RoboCop (lang:en)                          | wd:Q1332810  |","SELECT ?movie ?title ?director WHERE {
-  ?movie rdfs:label ?title ; wdt:P31 wd:Q11424 ; wdt:P57 ?director .
-  FILTER(LANG(?title) = 'en')
-  FILTER(regex(?title , 'RoboCop' , 'i'))
-}"
-Batman v Superman: Dawn of Justice Movie was directed by which film director?,Zack Snyder,"Zack Snyder (lang:ast)
-Zack Snyder (lang:br)
-Zack Snyder (lang:ca)
-Zack Snyder (lang:cs)
-Zack Snyder (lang:cy)
-...
-查克·史奈德 (lang:zh-hant)
-查克·史奈德 (lang:zh-my)
-查克·史奈德 (lang:zh-sg)
-薩克薛達 (lang:yue)
-錫·史拉達 (lang:zh-hk)","| directorLabel          |
-| ---------------------- |
-| Zack Snyder (lang:ast) |
-| Zack Snyder (lang:br)  |
-| Zack Snyder (lang:ca)  |
-| Zack Snyder (lang:cs)  |
-| Zack Snyder (lang:cy)  |
-| ...                    |
-| 查克·史奈德 (lang:zh-hant)  |
-| 查克·史奈德 (lang:zh-my)    |
-| 查克·史奈德 (lang:zh-sg)    |
-| 薩克薛達 (lang:yue)        |
-| 錫·史拉達 (lang:zh-hk)     |","SELECT ?directorLabel WHERE {
-  ?movie rdfs:label ""Batman v Superman: Dawn of Justice"" @en .
+Where the original RoboCop trilogy movies all direct by Paul Verhoeven?,No,"RoboCop 2|Irvin Kershner|Irvin Kershner (lang:en)
+RoboCop|Paul Verhoeven|Paul Verhoeven (lang:en)
+RoboCop 3|Fred Dekker|Fred Dekker (lang:en)","| movie                  | director                    | directorLabel            |
+| ---------------------- | --------------------------- | ------------------------ |
+| RoboCop 2 (wd:Q834021) | Irvin Kershner (wd:Q119348) | Irvin Kershner (lang:en) |
+| RoboCop (wd:Q372514)   | Paul Verhoeven (wd:Q129079) | Paul Verhoeven (lang:en) |
+| RoboCop 3 (wd:Q841233) | Fred Dekker (wd:Q1452257)   | Fred Dekker (lang:en)    |","SELECT ?movie ?director ?directorLabel WHERE {
+  VALUES ?movie {
+    wd:Q372514 wd:Q834021 wd:Q841233
+  }
   ?movie wdt:P57 ?director .
   ?director rdfs:label ?directorLabel .
+  FILTER(LANG(?directorLabel) = 'en')
 }"
-Who played the character of Miyan Maqbool?,Irrfan Khan,,,"SELECT ?actor WHERE {
-  ?character rdfs:label ""Miyan Maqbool"" @en ; wdt:P31 wd:Q1118574 .
-  ?actor wdt:P161 ?character .
+Batman v Superman: Dawn of Justice Movie was directed by which film director?,Zack Snyder,Zack Snyder (lang:en),"| directorLabel         |
+| --------------------- |
+| Zack Snyder (lang:en) |","SELECT ?directorLabel WHERE {
+  wd:Q14772351 wdt:P57 ?director .
+  ?director rdfs:label ?directorLabel .
+  FILTER(LANG(?directorLabel) = ""en"")
 }"
-On what show did she play Heather McCoy?,Married... with Children,|Kaja Rogulj (lang:en),"| show | showLabel             |
-| ---- | --------------------- |
-|      | Kaja Rogulj (lang:en) |","SELECT ?show ?showLabel WHERE {
-  wd:Q1576801 rdfs:label ?showLabel .
-  FILTER(LANG(?showLabel) = ""en"")
-  .
+Who played the character of Miyan Maqbool?,Irrfan Khan,"Tabu|Tabu (lang:en)
+Dibyendu Bhattacharya|Dibyendu Bhattacharya (lang:en)
+Masumeh Makhija|Masumeh Makhija (lang:en)
+Abbas Tyrewala|Abbas Tyrewala (lang:en)
+Pankaj Kapur|Pankaj Kapur (lang:en)
+...|...
+Ankur Vikal|Ankur Vikal (lang:en)
+Daya Shankar Pandey|Daya Shankar Pandey (lang:en)
+Murali Sharma|Murali Sharma (lang:en)
+Shammi Narang|Shammi Narang (lang:en)
+Om Puri|Om Puri (lang:en)","| actor                                | actorLabel                      |
+| ------------------------------------ | ------------------------------- |
+| Tabu (wd:Q158233)                    | Tabu (lang:en)                  |
+| Dibyendu Bhattacharya (wd:Q16200302) | Dibyendu Bhattacharya (lang:en) |
+| Masumeh Makhija (wd:Q1747340)        | Masumeh Makhija (lang:en)       |
+| Abbas Tyrewala (wd:Q2820242)         | Abbas Tyrewala (lang:en)        |
+| Pankaj Kapur (wd:Q3499101)           | Pankaj Kapur (lang:en)          |
+| ...                                  | ...                             |
+| Ankur Vikal (wd:Q4766110)            | Ankur Vikal (lang:en)           |
+| Daya Shankar Pandey (wd:Q5243005)    | Daya Shankar Pandey (lang:en)   |
+| Murali Sharma (wd:Q6937290)          | Murali Sharma (lang:en)         |
+| Shammi Narang (wd:Q7487602)          | Shammi Narang (lang:en)         |
+| Om Puri (wd:Q80309)                  | Om Puri (lang:en)               |","SELECT ?actor ?actorLabel WHERE {
+  wd:Q542866 wdt:P161 ?actor .
+  ?actor rdfs:label ?actorLabel .
+  FILTER(LANG(?actorLabel) = 'en')
 }"
-Initial book of the novel series Little House on the Prairie?,Little House in the Big Woods,wd:Q131432705|,"| book          | bookLabel |
-| ------------- | --------- |
-| wd:Q131432705 |           |","SELECT ?book ?bookLabel WHERE {
-  ?book rdfs:label ""Little House in the Big Woods"" @en
-}
-LIMIT 1"
-Which Oscar did The Girl with the Dragon Tattoo win?,Best Film Editing,"wd:Q1966965|National Board of Review: Top Ten Films (lang:en)
-wd:Q281939|Academy Award for Best Film Editing (lang:en)","| award       | awardLabel                                        |
-| ----------- | ------------------------------------------------- |
-| wd:Q1966965 | National Board of Review: Top Ten Films (lang:en) |
-| wd:Q281939  | Academy Award for Best Film Editing (lang:en)     |","SELECT ?award ?awardLabel WHERE {
+On what show did she play Heather McCoy?,Married... with Children,,,"SELECT ?show WHERE {
+  ?show wdt:P1343 ?character .
+  ?character rdfs:label ""Heather McCoy"" @en .
+}"
+Initial book of the novel series Little House on the Prairie?,Little House in the Big Woods,Little House in the Big Woods (lang:en),"| itemLabel                               |
+| --------------------------------------- |
+| Little House in the Big Woods (lang:en) |","SELECT ?itemLabel WHERE {
+  wd:Q7173181 rdfs:label ?itemLabel .
+  FILTER(lang(?itemLabel) = 'en')
+}"
+Which Oscar did The Girl with the Dragon Tattoo win?,Best Film Editing,"National Board of Review: Top Ten Films|National Board of Review: Top Ten Films (lang:en)
+Academy Award for Best Film Editing|Academy Award for Best Film Editing (lang:en)","| award                                                 | awardLabel                                        |
+| ----------------------------------------------------- | ------------------------------------------------- |
+| National Board of Review: Top Ten Films (wd:Q1966965) | National Board of Review: Top Ten Films (lang:en) |
+| Academy Award for Best Film Editing (wd:Q281939)      | Academy Award for Best Film Editing (lang:en)     |","SELECT ?award ?awardLabel WHERE {
   wd:Q474093 wdt:P166 ?award .
   ?award rdfs:label ?awardLabel .
-  FILTER(LANG(?awardLabel) = 'en')
+  FILTER(LANG(?awardLabel) = ""en"")
 }"
-Who is Neymar's current soccer team?,Paris Saint-Germain F.C,,,"SELECT ?team ?teamLabel WHERE {
-  wd:Q8205 wdt:P2589 ?team .
-  ?team rdfs:label ?teamLabel .
-  FILTER(LANG(?teamLabel) = 'en')
-  .
-}"
-Who played character of Roohi in the movie Roohi?,Janhvi Kapoor,,,"SELECT ?movie WHERE {
-  ?movie wdt:P31 wd:Q11424 ; wdt:P1476 ""Roohi"" ; wdt:P577 ?releaseDate .
-  FILTER(YEAR(?releaseDate) = 2022)
-}"
-Selena Gomez held which position?,UNICEF Goodwill Ambassador,"filmmaker (lang:en)
-singer (lang:en)
-record producer (lang:en)
-voice actor (lang:en)
-actor (lang:en)
-fashion designer (lang:en)
-businessperson (lang:en)
-model (lang:en)
-singer-songwriter (lang:en)
-child actor (lang:en)","| positionLabel               |
-| --------------------------- |
-| filmmaker (lang:en)         |
-| singer (lang:en)            |
-| record producer (lang:en)   |
-| voice actor (lang:en)       |
-| actor (lang:en)             |
-| fashion designer (lang:en)  |
-| businessperson (lang:en)    |
-| model (lang:en)             |
-| singer-songwriter (lang:en) |
-| child actor (lang:en)       |","SELECT ?positionLabel WHERE {
-  wd:Q83287 wdt:P106 ?position .
-  ?position rdfs:label ?positionLabel .
-  FILTER(LANG(?positionLabel) = 'en')
-}"
-Did Hulu release all the Catch-22 miniseries episodes on the same day?,Yes,,,"SELECT ?item WHERE {
-  ?item rdfs:label ?label .
-  FILTER(CONTAINS(LCASE(STR(?label)) , 'catch-22') && LANG(?label) = 'en')
-  .
-  ?item wdt:P31 wd:Q41323 .
-}
-LIMIT 1"
-Who is the author of the The Invisible Man ?,Ralph Ellison,"wd:Q183167|G. K. Chesterton (lang:en)
-wd:Q183167|G. K. Chesterton (lang:en)
-wd:Q42511|H. G. Wells (lang:en)
-wd:Q42511|H. G. Wells (lang:en)
-wd:Q42511|H. G. Wells (lang:en)
-wd:Q42511|H. G. Wells (lang:en)
-wd:Q42511|H. G. Wells (lang:en)
-wd:Q42511|H. G. Wells (lang:en)","| author     | authorLabel                |
-| ---------- | -------------------------- |
-| wd:Q183167 | G. K. Chesterton (lang:en) |
-| wd:Q183167 | G. K. Chesterton (lang:en) |
-| wd:Q42511  | H. G. Wells (lang:en)      |
-| wd:Q42511  | H. G. Wells (lang:en)      |
-| wd:Q42511  | H. G. Wells (lang:en)      |
-| wd:Q42511  | H. G. Wells (lang:en)      |
-| wd:Q42511  | H. G. Wells (lang:en)      |
-| wd:Q42511  | H. G. Wells (lang:en)      |","SELECT ?author ?authorLabel WHERE {
-  ?work rdfs:label ""The Invisible Man"" @en ; wdt:P50 ?author .
-  ?author rdfs:label ?authorLabel .
-  FILTER(LANG(?authorLabel) = ""en"")
-}"
-Who directs the TV Series The Wheel of Time?,Uta Briesewitz,,,"SELECT ?director ?directorLabel WHERE {
-  wd:Q4227831 wdt:P57 ?director .
-  OPTIONAL {
-    ?director rdfs:label ?directorLabel .
+Who is Neymar's current soccer team?,Paris Saint-Germain F.C,,,"SELECT ?team WHERE {
+  wd:Q142794 p:P54 ?statement ; ps:P54 ?team .
+  ?team wdt:P31 wd:Q131216 .
+  FILTER NOT EXISTS {
+    ?statement pq:P582 ?end
   }
 }"
-Which national soccer team did Fabio Cannavaro play for?,Italy,"Juventus FC (lang:en)
-SSC Napoli (lang:en)
-Parma Calcio 1913 (lang:en)
-Shabab AlAhli Dubai Club (lang:en)
-Inter Milan (lang:en)
-Italy men's national association football team (lang:en)
-Real Madrid Club de Fútbol (lang:en)
-Italy national under-21 football team (lang:en)","| teamLabel                                                |
-| -------------------------------------------------------- |
-| Juventus FC (lang:en)                                    |
-| SSC Napoli (lang:en)                                     |
-| Parma Calcio 1913 (lang:en)                              |
-| Shabab AlAhli Dubai Club (lang:en)                       |
-| Inter Milan (lang:en)                                    |
-| Italy men's national association football team (lang:en) |
-| Real Madrid Club de Fútbol (lang:en)                     |
-| Italy national under-21 football team (lang:en)          |","SELECT ?teamLabel WHERE {
+Who played character of Roohi in the movie Roohi?,Janhvi Kapoor,,,"SELECT ?actor WHERE {
+  wd:Q64768529 p:P161 ?statement .
+  ?statement ps:P161 ?actor .
+  ?statement pq:P179 ?role .
+  FILTER(CONTAINS(LCASE(STR(?role)) , 'roohi'))
+}"
+Selena Gomez held which position?,UNICEF Goodwill Ambassador,"filmmaker|filmmaker (lang:en)
+singer|singer (lang:en)
+record producer|record producer (lang:en)
+voice actor|voice actor (lang:en)
+actor|actor (lang:en)
+fashion designer|fashion designer (lang:en)
+businessperson|businessperson (lang:en)
+model|model (lang:en)
+singer-songwriter|singer-songwriter (lang:en)
+child actor|child actor (lang:en)","| occupation                     | occupationLabel             |
+| ------------------------------ | --------------------------- |
+| filmmaker (wd:Q1414443)        | filmmaker (lang:en)         |
+| singer (wd:Q177220)            | singer (lang:en)            |
+| record producer (wd:Q183945)   | record producer (lang:en)   |
+| voice actor (wd:Q2405480)      | voice actor (lang:en)       |
+| actor (wd:Q33999)              | actor (lang:en)             |
+| fashion designer (wd:Q3501317) | fashion designer (lang:en)  |
+| businessperson (wd:Q43845)     | businessperson (lang:en)    |
+| model (wd:Q4610556)            | model (lang:en)             |
+| singer-songwriter (wd:Q488205) | singer-songwriter (lang:en) |
+| child actor (wd:Q970153)       | child actor (lang:en)       |","SELECT ?occupation ?occupationLabel WHERE {
+  wd:Q83287 wdt:P106 ?occupation .
+  ?occupation rdfs:label ?occupationLabel .
+  FILTER(LANG(?occupationLabel) = 'en')
+}"
+Did Hulu release all the Catch-22 miniseries episodes on the same day?,Yes,2019-05-17T00:00:00Z,"| date                                |
+| ----------------------------------- |
+| 2019-05-17T00:00:00Z (xsd:dateTime) |","SELECT ?date WHERE {
+  wd:Q48743233 wdt:P580 ?date .
+}"
+Who is the author of the The Invisible Man ?,Ralph Ellison,H. G. Wells,"| author                  |
+| ----------------------- |
+| H. G. Wells (wd:Q42511) |","SELECT ?author WHERE {
+  wd:Q1539509 wdt:P50 ?author
+}"
+Who directs the TV Series The Wheel of Time?,Uta Briesewitz,Uta Briesewitz|Uta Briesewitz (lang:en),"| director                    | directorLabel            |
+| --------------------------- | ------------------------ |
+| Uta Briesewitz (wd:Q109355) | Uta Briesewitz (lang:en) |","SELECT ?director ?directorLabel WHERE {
+  wd:Q60746841 wdt:P57 ?director .
+  ?director rdfs:label ?directorLabel .
+  FILTER(LANG(?directorLabel) = 'en')
+}"
+Which national soccer team did Fabio Cannavaro play for?,Italy,"Juventus FC|Juventus FC (lang:en)
+SSC Napoli|SSC Napoli (lang:en)
+Parma Calcio 1913|Parma Calcio 1913 (lang:en)
+Shabab AlAhli Dubai Club|Shabab AlAhli Dubai Club (lang:en)
+Inter Milan|Inter Milan (lang:en)
+Italy men's national association football team|Italy men's national association football team (lang:en)
+Real Madrid Club de Fútbol|Real Madrid Club de Fútbol (lang:en)
+Italy national under-21 football team|Italy national under-21 football team (lang:en)","| team                                                        | teamLabel                                                |
+| ----------------------------------------------------------- | -------------------------------------------------------- |
+| Juventus FC (wd:Q1422)                                      | Juventus FC (lang:en)                                    |
+| SSC Napoli (wd:Q2641)                                       | SSC Napoli (lang:en)                                     |
+| Parma Calcio 1913 (wd:Q2693)                                | Parma Calcio 1913 (lang:en)                              |
+| Shabab AlAhli Dubai Club (wd:Q424943)                       | Shabab AlAhli Dubai Club (lang:en)                       |
+| Inter Milan (wd:Q631)                                       | Inter Milan (lang:en)                                    |
+| Italy men's national association football team (wd:Q676899) | Italy men's national association football team (lang:en) |
+| Real Madrid Club de Fútbol (wd:Q8682)                       | Real Madrid Club de Fútbol (lang:en)                     |
+| Italy national under-21 football team (wd:Q922698)          | Italy national under-21 football team (lang:en)          |","SELECT ?team ?teamLabel WHERE {
   wd:Q102027 wdt:P54 ?team .
   ?team rdfs:label ?teamLabel .
   FILTER(LANG(?teamLabel) = 'en')
 }"
-Money Heist Part Of Tokyo (Silene Oliveira) Character?,Tokyo (Silene Oliveira),,,"SELECT ?characterLabel WHERE {
-  wd:Q16253871 p:P161 [ps:P161 ?actor; pq:P154 ?character].
-  ?character rdfs:label ?characterLabel.
-  FILTER(LANG(?characterLabel) = ""en"")
-  FILTER(CONTAINS(LOWER(STR(?characterLabel)), ""silene""))
+Money Heist Part Of Tokyo (Silene Oliveira) Character?,Tokyo (Silene Oliveira),Spanish,"| series             |
+| ------------------ |
+| Spanish (wd:Q1321) |","SELECT ?series WHERE {
+  wd:Q66560058 wdt:P1412 ?series .
 }"
-What is the name of the team he initially played on?,Sporting de Gijón B,,,"SELECT ?teamLabel WHERE {
-  wd:Q39184 p:P1548 ?statement .
-  ?statement ps:P1548 ?team .
-  ?statement pq:P580 ?startDate .
-  ?team rdfs:label ?teamLabel .
-  FILTER(LANG(?teamLabel) = 'en')
+What is the name of the team he initially played on?,Sporting de Gijón B,Newell's Old Boys|Newell's Old Boys (lang:en),"| club                           | clubLabel                   |
+| ------------------------------ | --------------------------- |
+| Newell's Old Boys (wd:Q221882) | Newell's Old Boys (lang:en) |","SELECT ?club ?clubLabel WHERE {
+  wd:Q615 p:P54 ?statement .
+  ?statement ps:P54 ?club ; pq:P580 ?startDate .
+  ?club rdfs:label ?clubLabel .
+  FILTER(LANG(?clubLabel) = ""en"")
 }
 ORDER BY ASC(?startDate)
 LIMIT 1"
-What is Luis Suárez National Team?,"Uruguay Olympic football team, Uruguay national football team",,,"SELECT ?nationalTeam WHERE {
-  wd:Q26517 wdt:P3349 ?nationalTeam .
+What is Luis Suárez National Team?,"Uruguay Olympic football team, Uruguay national football team",Uruguay (lang:en),"| nationalTeamLabel |
+| ----------------- |
+| Uruguay (lang:en) |","SELECT ?nationalTeamLabel WHERE {
+  wd:Q26517 wdt:P27 ?nationalTeam .
+  ?nationalTeam rdfs:label ?nationalTeamLabel .
+  FILTER(LANG(?nationalTeamLabel) = 'en')
 }"
-Jane Eyre novel was written by?,Charlotte Bronte,"wd:Q127332|Charlotte Brontë (lang:en)
-wd:Q127332|Charlotte Brontë (lang:en)
-wd:Q127332|Charlotte Brontë (lang:en)","| author     | authorLabel                |
-| ---------- | -------------------------- |
-| wd:Q127332 | Charlotte Brontë (lang:en) |
-| wd:Q127332 | Charlotte Brontë (lang:en) |
-| wd:Q127332 | Charlotte Brontë (lang:en) |","SELECT ?author ?authorLabel WHERE {
-  ?work rdfs:label 'Jane Eyre' @en ; wdt:P50 ?author .
-  ?author rdfs:label ?authorLabel .
-  FILTER(LANG(?authorLabel) = 'en')
+Jane Eyre novel was written by?,Charlotte Bronte,Charlotte Brontë,"| author                        |
+| ----------------------------- |
+| Charlotte Brontë (wd:Q127332) |","SELECT ?author WHERE {
+  wd:Q182961 wdt:P50 ?author
 }"
-did David Callaham write the screenplay for the sequel The Expendables 2?,No,,,
-Robert Lewandowski is the captain of which national team?,Poland,wd:Q7156,"| team     |
-| -------- |
-| wd:Q7156 |","SELECT ?team WHERE {
-  wd:Q151269 wdt:P54 ?team
+did David Callaham write the screenplay for the sequel The Expendables 2?,No,,,"SELECT ?film WHERE {
+  wd:Q210812 wdt:P58 wd:Q963032 .
 }"
-What is the length of the Haiti track?,4:07,,,"SELECT ?railway ?label ?length WHERE {
-  ?railway wdt:P31 wd:Q188482 ; wdt:P131 wd:Q30 ; rdfs:label ?label ; wdt:P2043 ?length .
-  FILTER(LANG(?label) = 'en' && CONTAINS(LCASE(?label) , 'haiti'))
+Robert Lewandowski is the captain of which national team?,Poland,Futbol Club Barcelona (lang:en),"| nationalTeamLabel               |
+| ------------------------------- |
+| Futbol Club Barcelona (lang:en) |","SELECT ?nationalTeamLabel WHERE {
+  wd:Q151269 wdt:P54 ?nationalTeam .
+  ?nationalTeam rdfs:label ?nationalTeamLabel .
+  FILTER(LANG(?nationalTeamLabel) = 'en')
+}"
+What is the length of the Haiti track?,4:07,,,"SELECT ?duration WHERE {
+  ?song wdt:P1476 ""Haiti"" ; wdt:P2047 ?duration ; wdt:P31 wd:Q571 .
 }"
 What is the name of Percy Jackson's mother?,Sally Jackson,Sally Jackson (lang:en),"| motherLabel             |
 | ----------------------- |
 | Sally Jackson (lang:en) |","SELECT ?motherLabel WHERE {
-  ?character rdfs:label 'Percy Jackson' @en ; wdt:P25 ?mother .
+  wd:Q3899725 wdt:P25 ?mother .
   ?mother rdfs:label ?motherLabel .
   FILTER(LANG(?motherLabel) = 'en')
 }"
-Who original broadcaster Elite Tv  Series?,Netflix,,,"SELECT ?broadcasterLabel WHERE {
-  wd:Q3752000 wdt:P2043 ?broadcaster .
+Who original broadcaster Elite Tv  Series?,Netflix,Netflix (lang:en),"| broadcasterLabel  |
+| ----------------- |
+| Netflix (lang:en) |","SELECT ?broadcasterLabel WHERE {
+  wd:Q53000974 wdt:P449 ?broadcaster .
   ?broadcaster rdfs:label ?broadcasterLabel .
-  FILTER(LANG(?broadcasterLabel) = ""en"")
-}"
-Who cast member main character Peaky Blinders Tv Series?,Cillian Murphy,,,"SELECT ?actor WHERE {
-  wd:Q22771 wdt:P1892 ?character .
-  ?character wdt:P1473 ?actor .
-}"
-Has Kevin Alejandro played a role in the web series Gemini Division?,Yes,,,
-Who was the lyricist of title song Maa Tujhe Salaam of Vande Mataram?,Mehboob Kotwal,,,"SELECT ?lyricist WHERE {
-  wd:Q56278659 wdt:P168 ?lyricist .
-}"
-Another name of Chelsea F.C. was?,The Blues,,,"SELECT ?nickname WHERE {
-  wd:Q27431 wdt:P1708 ?nickname
-}"
-What is the original title of the novel The Alchemist?,O Alquimista,Ashiaman (lang:pt),"| originalTitle      |
-| ------------------ |
-| Ashiaman (lang:pt) |","SELECT ?originalTitle WHERE {
-  wd:Q724730 rdfs:label ?originalTitle .
-  FILTER(LANG(?originalTitle) = 'pt')
-}"
-How high did Waiting for a Star to Fall get on the US Hot 100 chart?,5,,,"SELECT ?position WHERE {
-  wd:Q679545 p:P2096 ?statement .
-  ?statement ps:P2096 ?position .
-  ?statement pq:P2165 wd:Q655010
-}"
-Who played the part of the character Aragorn in The Lord of the Rings?,Viggo Mortensen,,,"SELECT ?actor ?actorLabel WHERE {
-  wd:Q1772679 p:P161 ?statement .
-  ?statement ps:P161 ?actor .
-  ?statement pq:P2560 wd:Q32184 .
-  ?actor rdfs:label ?actorLabel .
-  FILTER(LANG(?actorLabel) = ""en"")
-}"
-What is record label of Pink Floyd?,Tower Records,,,"SELECT ?label WHERE {
-  wd:Q45816 wdt:P2508 ?recordLabel .
-  ?recordLabel rdfs:label ?label .
-  FILTER(LANG(?label) = 'en')
-}"
-Which country did Gabriel Batistuta play football for?,Argentina,"Italy (lang:en)
-Argentina (lang:en)","| countryLabel        |
-| ------------------- |
-| Italy (lang:en)     |
-| Argentina (lang:en) |","SELECT ?countryLabel WHERE {
-  wd:Q170376 wdt:P27 ?country .
-  ?country rdfs:label ?countryLabel .
-  FILTER(LANG(?countryLabel) = 'en')
-}"
-Who played the character of Frodo Baggins in The Lord of the Rings?,Elijah Wood,,,"SELECT ?actor WHERE {
-  wd:Q177329 wdt:P161 ?actor .
-}"
-Who wrote the standalone novel series ?,George Orwell,"http://www.wikidata.org/.well-known/genid/015ffed2fa0d8bf3620782e0e5a9ee54|
-http://www.wikidata.org/.well-known/genid/01edd03d0a394a94d5a010ce53b3ee85|
-http://www.wikidata.org/.well-known/genid/028171209f92e6d46eaae77f2fcc38dc|
-http://www.wikidata.org/.well-known/genid/030de326d10a6b7dd1676fd5ab85bf0e|
-http://www.wikidata.org/.well-known/genid/03320b4d98aa5a0caaa34187e37a8a51|
-...|...
-http://www.wikidata.org/.well-known/genid/3c32c1c7a9aa72b8a3bc6413937976d7|
-http://www.wikidata.org/.well-known/genid/3c4885d74771cfebb165114d9bcd6a97|
-http://www.wikidata.org/.well-known/genid/3d3402ab4d4228de8d8188b565eb470c|
-http://www.wikidata.org/.well-known/genid/3f4dc4ea41ef6ae98fd6ce8d01f7c87f|
-http://www.wikidata.org/.well-known/genid/3fb4e7b8e8eef10ccacd69caf0f24b42|","| author                                                                     | authorLabel |
-| -------------------------------------------------------------------------- | ----------- |
-| http://www.wikidata.org/.well-known/genid/015ffed2fa0d8bf3620782e0e5a9ee54 |             |
-| http://www.wikidata.org/.well-known/genid/01edd03d0a394a94d5a010ce53b3ee85 |             |
-| http://www.wikidata.org/.well-known/genid/028171209f92e6d46eaae77f2fcc38dc |             |
-| http://www.wikidata.org/.well-known/genid/030de326d10a6b7dd1676fd5ab85bf0e |             |
-| http://www.wikidata.org/.well-known/genid/03320b4d98aa5a0caaa34187e37a8a51 |             |
-| ...                                                                        | ...         |
-| http://www.wikidata.org/.well-known/genid/3c32c1c7a9aa72b8a3bc6413937976d7 |             |
-| http://www.wikidata.org/.well-known/genid/3c4885d74771cfebb165114d9bcd6a97 |             |
-| http://www.wikidata.org/.well-known/genid/3d3402ab4d4228de8d8188b565eb470c |             |
-| http://www.wikidata.org/.well-known/genid/3f4dc4ea41ef6ae98fd6ce8d01f7c87f |             |
-| http://www.wikidata.org/.well-known/genid/3fb4e7b8e8eef10ccacd69caf0f24b42 |             |","SELECT ?author ?authorLabel WHERE {
-  ?novel wdt:P31 wd:Q13442814 .
-  FILTER NOT EXISTS {
-    ?novel wdt:P179 ?series
-  }
-  .
-  ?novel wdt:P50 ?author .
-  OPTIONAL {
-    ?author rdfs:label ?authorLabel .
-    FILTER(LANG(?authorLabel) = 'en')
-  }
-}
-LIMIT 100"
-Which country does Johan Cruyff play football for?,Netherlands,Kingdom of the Netherlands (lang:en),"| countryLabel                         |
-| ------------------------------------ |
-| Kingdom of the Netherlands (lang:en) |","SELECT ?countryLabel WHERE {
-  wd:Q17163 wdt:P27 ?country .
-  ?country rdfs:label ?countryLabel .
-  FILTER(LANG(?countryLabel) = 'en')
-}"
-Is Seth MacFarlane thhe voice of Steve Smith in American Dad!?,No,,,
-Which actress plays Veronica Vaughn in Billy Madison?,Bridgette Wilson,,,"SELECT ?actress ?actressLabel WHERE {
-  wd:Q372299 wdt:P161 ?role .
-  ?role ps:P161 ?actress .
-  ?role pq:P168 ""Veronica Vaughn"" .
-  OPTIONAL {
-    ?actress rdfs:label ?actressLabel .
-    FILTER(LANG(?actressLabel) = ""en"")
-  }
-}"
-Who wrote the To the Ends of the Earth Book series?,William Golding,,,"SELECT ?author ?authorLabel WHERE {
-  ?series wdt:P31 wd:Q772563 ; rdfs:label ?name .
-  FILTER(LANG(?name) = 'en')
-  .
-  FILTER(CONTAINS(STR(?name) , 'Ends of the Earth'))
-  .
-  ?series wdt:P50 ?author .
-  ?author rdfs:label ?authorLabel .
-  FILTER(LANG(?authorLabel) = 'en')
-  .
-}"
-name of the movie that won the 93rd Oscar Award for the Best Picture?,Nomadland,,,"SELECT ?film WHERE {
-  wd:Q53300627 p:P1346 ?statement .
-  ?statement ps:P1346 ?film .
-  ?statement pq:P1329 wd:Q231752 .
-}"
-What was the final album the Beatles produced?,Let it Be,,,"SELECT ?album ?albumLabel WHERE {
-  ?album wdt:P31 wd:Q386724 ; wdt:P175 wd:Q16203 ; wdt:P577 ?releaseDate .
-  ?album rdfs:label ?albumLabel .
-  FILTER(lang(?albumLabel) = ""en"")
-}
-ORDER BY DESC(?releaseDate)
-LIMIT 1"
-What is the ranking of Kid A on Fact?,7,,,"SELECT DISTINCT ?rank WHERE {
-  wd:Q521783 p:P1116 ?statement .
-  ?statement ps:P1116 ?rank .
-  ?statement pr:P1659 wd:Q4529971 .
-}
-ORDER BY ?rank"
-Who is the original broadcaster of the tv series ER?,NBC,,,"SELECT ?broadcasterLabel WHERE {
-  wd:Q207375 wdt:P148 ?broadcaster .
-  ?broadcaster rdfs:label ?broadcasterLabel
   FILTER(LANG(?broadcasterLabel) = 'en')
 }"
-Who does the voice of Stan Smith in American Dad!?,Seth MacFarlane,,,"SELECT ?actor WHERE {
-  ?character rdfs:label ""Stan Smith"" @en ; wdt:P179 wd:Q1641597 ; wdt:P148 ?actor .
+Who cast member main character Peaky Blinders Tv Series?,Cillian Murphy,"Adrien Brody
+Charlie Creed-Miles
+Peter Campion
+Simon Wan
+Cosmo Jarvis
+...
+Pauline Turner
+Bríd Brennan
+Samuel Edward-Cook
+Elliot Cowan
+Harry Kirton","| actor                             |
+| --------------------------------- |
+| Adrien Brody (wd:Q104514)         |
+| Charlie Creed-Miles (wd:Q1066875) |
+| Peter Campion (wd:Q107656298)     |
+| Simon Wan (wd:Q111630654)         |
+| Cosmo Jarvis (wd:Q1136149)        |
+| ...                               |
+| Pauline Turner (wd:Q91352107)     |
+| Bríd Brennan (wd:Q913526)         |
+| Samuel Edward-Cook (wd:Q93302910) |
+| Elliot Cowan (wd:Q966282)         |
+| Harry Kirton (wd:Q97208214)       |","SELECT ?actor WHERE {
+  wd:Q14944179 wdt:P161 ?actor
 }"
-Who major event Shakira?,"The Sun Comes Out World Tour, Tour of the Mongoose, Tour Anfibio",,,"SELECT ?eventLabel WHERE {
-  wd:Q24488 wdt:P2892 ?event .
-  ?event rdfs:label ?eventLabel .
-  FILTER(LANG(?eventLabel) = ""en"")
+Has Kevin Alejandro played a role in the web series Gemini Division?,Yes,,,
+Who was the lyricist of title song Maa Tujhe Salaam of Vande Mataram?,Mehboob Kotwal,,,"SELECT ?lyricist ?lyricistLabel WHERE {
+  wd:Q56278659 wdt:P154 ?soundtrack .
+  ?soundtrack wdt:P135 ?track .
+  ?track rdfs:label ""Maa Tujhe Salaam"" @en .
+  ?track wdt:P140 ?lyricist .
+  ?lyricist rdfs:label ?lyricistLabel .
 }"
-What is the name of Paul's father in the novel Dune?,Leto I Atreides,,,"SELECT ?fatherLabel WHERE {
-  wd:Q743331 wdt:P22 ?father .
-  ?father rdfs:label ?fatherLabel .
-  FILTER(LANG(?fatherLabel) = 'en')
+Another name of Chelsea F.C. was?,The Blues,"The Blues (lang:en)
+The Pensioners (lang:en)","| nickname                 |
+| ------------------------ |
+| The Blues (lang:en)      |
+| The Pensioners (lang:en) |","SELECT ?nickname WHERE {
+  wd:Q9616 wdt:P1449 ?nickname
 }"
-What is the country of origin of the The Little Prince?,United States of America,,,"SELECT ?countryLabel WHERE {
-  wd:Q100246318 wdt:P50 ?author .
-  ?author wdt:P27 ?country .
-  ?country rdfs:label ?countryLabel .
-  FILTER(LANG(?countryLabel) = 'en')
+What is the original title of the novel The Alchemist?,O Alquimista,"O Alquimista (lang:pt)
+The Alchemist (lang:en)","| originalTitle           |
+| ----------------------- |
+| O Alquimista (lang:pt)  |
+| The Alchemist (lang:en) |","SELECT ?originalTitle WHERE {
+  wd:Q179021 wdt:P1476 ?originalTitle .
 }"
-Who played the role of Ramesh in Balak-Palak?,Dhanashree Parab,,,"SELECT ?actor WHERE {
-  wd:Q12562251 p:P161 ?statement .
-  ?statement ps:P161 ?actor .
-  ?statement pq:P1546 ""Ramesh""
+How high did Waiting for a Star to Fall get on the US Hot 100 chart?,5,,,"SELECT ?position WHERE {
+  wd:Q134987343 p:P1545 ?positionStatement .
+  ?positionStatement ps:P1545 ?position .
+  ?positionStatement pq:P2007 wd:Q180072
 }"
-What is the prequel to the movie Mad Max Beyond Thunderdome?,Mad Max 2,Mad Max 2 (lang:en),"| label               |
-| ------------------- |
-| Mad Max 2 (lang:en) |","SELECT ?label WHERE {
-  wd:Q1125262 rdfs:label ?label .
+Who played the part of the character Aragorn in The Lord of the Rings?,Viggo Mortensen,,,
+What is record label of Pink Floyd?,Tower Records,"Columbia Graphophone Co. Ltd. (lang:en)
+Harvest (lang:en)
+Columbia Records (lang:en)
+EMI (lang:en)
+Capitol Records (lang:en)
+Parlophone (lang:en)
+Warner Music Group (lang:en)
+Tower Records (lang:en)
+Sony Music (lang:en)","| label                                   |
+| --------------------------------------- |
+| Columbia Graphophone Co. Ltd. (lang:en) |
+| Harvest (lang:en)                       |
+| Columbia Records (lang:en)              |
+| EMI (lang:en)                           |
+| Capitol Records (lang:en)               |
+| Parlophone (lang:en)                    |
+| Warner Music Group (lang:en)            |
+| Tower Records (lang:en)                 |
+| Sony Music (lang:en)                    |","SELECT ?label WHERE {
+  wd:Q2306 wdt:P264 ?recLabel .
+  ?recLabel rdfs:label ?label .
   FILTER(LANG(?label) = 'en')
 }"
-What is the name of the main character in the tv series Kakegurui?,Yumeko Jabami,,,"SELECT ?mainCharLabel WHERE {
-  wd:Q27992967 wdt:P1708 ?mainChar .
-  ?mainChar rdfs:label ?mainCharLabel .
-  FILTER(LANG(?mainCharLabel) = 'en')
+Which country did Gabriel Batistuta play football for?,Argentina,"Italy
+Argentina","| country             |
+| ------------------- |
+| Italy (wd:Q38)      |
+| Argentina (wd:Q414) |","SELECT ?country WHERE {
+  wd:Q170376 wdt:P27 ?country
 }"
-Which actor plays Robby Keene in Cobra Kai?,Tanner Buchanan,,,"SELECT ?actor WHERE {
-  wd:Q48326845 p:P161 ?roleStatement .
-  ?roleStatement pq:P3349 ""Robby Keene"" @en .
-  ?roleStatement ps:P161 ?actor .
+Who played the character of Frodo Baggins in The Lord of the Rings?,Elijah Wood,Elijah Wood,"| actor                    |
+| ------------------------ |
+| Elijah Wood (wd:Q483771) |","SELECT ?actor WHERE {
+  wd:Q190214 p:P161 ?statement .
+  ?statement ps:P161 ?actor .
+  ?statement pq:P453 wd:Q177329 .
 }"
-What is the rating on Pitchfork?,10/10,,,"SELECT ?rating WHERE {
-  wd:Q4263505 wdt:P1340 ?rating
-}"
-Did the album The Smiths include the song Hand in Glove?,Yes,,,
-Who are the producers of the Coloratura song from the album Music of the Spheres?,"M. Martin, Holter, Rahko",,"| producer |
-| -------- |","SELECT ?producer WHERE {
-}"
-Which Beethoven symphony was part of the soundtrack for The King's Speech?,Symphony No. 7,,,"SELECT ?symphony ?symphonyLabel WHERE {
-  wd:Q413163 wdt:P941 ?album ; wdt:P154 ?soundtrack .
-  ?album wdt:P629 ?track .
-  ?track wdt:P1476 ?trackTitle .
-  ?symphony wdt:P31 wd:Q11424 ; wdt:P1476 ?symphonyTitle ; wdt:P175 wd:Q1390 .
-  FILTER(regex(?trackTitle , ""Symphony No. 7"" , ""i""))
-  FILTER(regex(?symphonyTitle , ""Symphony No. 7"" , ""i""))
-  SERVICE wikibase:label {
-    bd:serviceParam wikibase:language ""en"" .
+Who wrote the standalone novel series ?,George Orwell,"http://www.wikidata.org/.well-known/genid/00f9e7886f869e4969e239789728e0c0|
+http://www.wikidata.org/.well-known/genid/88ddd6640307d4aae1c6ddd4d8b48f01|
+http://www.wikidata.org/.well-known/genid/8f73426bc927a8e6340adfc101c6e5e3|
+http://www.wikidata.org/.well-known/genid/9190a82815c64e9f94873a23f711b292|
+http://www.wikidata.org/.well-known/genid/a57725bfe8b3527eeeaf683c1bd94d24|
+http://www.wikidata.org/.well-known/genid/e375350a010de84f4443e9470ea33cd4|
+Nadia Al Najjar|Nadia Al Najjar (lang:en)
+Ricardo Mateos Sáinz de Medrano|Ricardo Mateos Sáinz de Medrano (lang:en)
+Ricardo Mateos Sáinz de Medrano|Ricardo Mateos Sáinz de Medrano (lang:en)
+Ricardo Mateos Sáinz de Medrano|Ricardo Mateos Sáinz de Medrano (lang:en)","| author                                                                     | authorLabel                               |
+| -------------------------------------------------------------------------- | ----------------------------------------- |
+| http://www.wikidata.org/.well-known/genid/00f9e7886f869e4969e239789728e0c0 |                                           |
+| http://www.wikidata.org/.well-known/genid/88ddd6640307d4aae1c6ddd4d8b48f01 |                                           |
+| http://www.wikidata.org/.well-known/genid/8f73426bc927a8e6340adfc101c6e5e3 |                                           |
+| http://www.wikidata.org/.well-known/genid/9190a82815c64e9f94873a23f711b292 |                                           |
+| http://www.wikidata.org/.well-known/genid/a57725bfe8b3527eeeaf683c1bd94d24 |                                           |
+| http://www.wikidata.org/.well-known/genid/e375350a010de84f4443e9470ea33cd4 |                                           |
+| Nadia Al Najjar (wd:Q100138180)                                            | Nadia Al Najjar (lang:en)                 |
+| Ricardo Mateos Sáinz de Medrano (wd:Q100158635)                            | Ricardo Mateos Sáinz de Medrano (lang:en) |
+| Ricardo Mateos Sáinz de Medrano (wd:Q100158635)                            | Ricardo Mateos Sáinz de Medrano (lang:en) |
+| Ricardo Mateos Sáinz de Medrano (wd:Q100158635)                            | Ricardo Mateos Sáinz de Medrano (lang:en) |","SELECT ?author ?authorLabel WHERE {
+  ?work wdt:P31 wd:Q571 .
+  FILTER NOT EXISTS {
+    ?work wdt:P1545 ?series
   }
+  ?work wdt:P50 ?author .
+  OPTIONAL {
+    ?author rdfs:label ?authorLabel .
+    FILTER(lang(?authorLabel) = ""en"")
+  }
+}
+LIMIT 10"
+Which country does Johan Cruyff play football for?,Netherlands,Kingdom of the Netherlands,"| country                                |
+| -------------------------------------- |
+| Kingdom of the Netherlands (wd:Q29999) |","SELECT ?country WHERE {
+  wd:Q17163 wdt:P27 ?country
 }"
-who is the president of Paris Saint-Germain F.C team?,Nasser Al-Khelaifi,,,"SELECT ?president ?presidentLabel WHERE {
-  wd:Q3365289 wdt:P1125 ?president .
-  ?president rdfs:label ?presidentLabel .
-  FILTER(LANG(?presidentLabel) = 'en')
-}"
-Who voices Stan Smith in American Dad!?,Seth MacFarlane,Kincaid (lang:en),"| actorLabel        |
-| ----------------- |
-| Kincaid (lang:en) |","SELECT ?actorLabel WHERE {
-  wd:Q401278 rdfs:label ?actorLabel .
+Is Seth MacFarlane thhe voice of Steve Smith in American Dad!?,No,,,
+Which actress plays Veronica Vaughn in Billy Madison?,Bridgette Wilson,,,"SELECT ?actor ?actorLabel WHERE {
+  wd:Q372299 p:P161 ?statement .
+  ?statement ps:P161 ?actor .
+  ?statement pq:P1331 ?character .
+  FILTER(?character = 'Veronica Vaughn' @en)
+  .
+  ?actor rdfs:label ?actorLabel .
   FILTER(LANG(?actorLabel) = 'en')
 }"
-What is the Metacritic rating of the album Here We Go Again?,65/100,,,"SELECT ?album ?title WHERE {
-  ?album wdt:P31 wd:Q386724 ; rdfs:label ?title .
-  FILTER(LANG(?title) = 'en' && LCASE(?title) = 'here we go again')
+Who wrote the To the Ends of the Earth Book series?,William Golding,William Golding,"| author                      |
+| --------------------------- |
+| William Golding (wd:Q44183) |","SELECT ?author WHERE {
+  wd:Q4394863 wdt:P50 ?author
+}"
+name of the movie that won the 93rd Oscar Award for the Best Picture?,Nomadland,,,"SELECT ?movie WHERE {
+  wd:Q57246152 p:P166 ?awardStatement ; ps:P166 ?movie ; pq:P2549 wd:Q102427 .
+}"
+What was the final album the Beatles produced?,Let it Be,,,"SELECT ?album ?albumLabel WHERE {
+  ?album wdt:P31 wd:Q386724 ; wdt:P170 wd:Q1299 ; wdt:P577 ?date ; rdfs:label ?albumLabel .
+  FILTER(LANG(?albumLabel) = 'en')
+}
+ORDER BY DESC(?date)
+LIMIT 1"
+What is the ranking of Kid A on Fact?,7,,,"SELECT ?rank WHERE {
+  wd:Q220726 wdt:P1125 ?rank .
+  wd:Q220726 p:P1125 ?statement .
+  ?statement pr:P248 wd:Q5428665 .
+}"
+Who is the original broadcaster of the tv series ER?,NBC,NBC,"| broadcaster     |
+| --------------- |
+| NBC (wd:Q13974) |","SELECT ?broadcaster WHERE {
+  wd:Q207375 wdt:P449 ?broadcaster
+}"
+Who does the voice of Stan Smith in American Dad!?,Seth MacFarlane,,,"SELECT ?voiceActorLabel WHERE {
+  wd:Q496280 p:P725 ?statement .
+  ?statement ps:P725 ?voiceActor .
+  ?voiceActor rdfs:label ?voiceActorLabel .
+  FILTER(LANG(?voiceActorLabel) = 'en')
+}"
+Who major event Shakira?,"The Sun Comes Out World Tour, Tour of the Mongoose, Tour Anfibio","The Sun Comes Out World Tour|The Sun Comes Out World Tour (lang:en)
+Tour Anfibio|Tour Anfibio (lang:en)
+Oral Fixation Tour|Oral Fixation Tour (lang:en)
+Tour Pies Descalzos|Tour Pies Descalzos (lang:en)
+parturition|childbirth (lang:en)
+Tour of the Mongoose|Tour of the Mongoose (lang:en)","| event                                      | eventLabel                             |
+| ------------------------------------------ | -------------------------------------- |
+| The Sun Comes Out World Tour (wd:Q1319832) | The Sun Comes Out World Tour (lang:en) |
+| Tour Anfibio (wd:Q2697023)                 | Tour Anfibio (lang:en)                 |
+| Oral Fixation Tour (wd:Q3279085)           | Oral Fixation Tour (lang:en)           |
+| Tour Pies Descalzos (wd:Q3311420)          | Tour Pies Descalzos (lang:en)          |
+| parturition (wd:Q34581)                    | childbirth (lang:en)                   |
+| Tour of the Mongoose (wd:Q612233)          | Tour of the Mongoose (lang:en)         |","SELECT ?event ?eventLabel WHERE {
+  wd:Q34424 wdt:P793 ?event .
+  ?event rdfs:label ?eventLabel .
+  FILTER(LANG(?eventLabel) = 'en')
+}"
+What is the name of Paul's father in the novel Dune?,Leto I Atreides,Leto I Atreides (lang:en),"| fatherLabel               |
+| ------------------------- |
+| Leto I Atreides (lang:en) |","SELECT ?fatherLabel WHERE {
+  wd:Q939956 wdt:P22 ?father .
+  ?father rdfs:label ?fatherLabel .
+  FILTER(LANG(?fatherLabel) = ""en"")
   .
 }"
-Who was the shirt sponsor for FC Cincinnati soccer club?,Mercy Health,,,"SELECT ?sponsor WHERE {
-  wd:Q20855983 wdt:P1346 ?sponsor
+What is the country of origin of the The Little Prince?,United States of America,"France|France (lang:en)
+France|France (lang:en-ca)
+France|France (lang:en-gb)
+France|France (lang:en-us)
+United States|United States (lang:en)
+United States|United States (lang:en-us)","| country                | countryLabel               |
+| ---------------------- | -------------------------- |
+| France (wd:Q142)       | France (lang:en)           |
+| France (wd:Q142)       | France (lang:en-ca)        |
+| France (wd:Q142)       | France (lang:en-gb)        |
+| France (wd:Q142)       | France (lang:en-us)        |
+| United States (wd:Q30) | United States (lang:en)    |
+| United States (wd:Q30) | United States (lang:en-us) |","SELECT ?country ?countryLabel WHERE {
+  wd:Q25338 wdt:P495 ?country .
+  ?country rdfs:label ?countryLabel .
+  FILTER(LANGMATCHES(LANG(?countryLabel) , 'en'))
 }"
-what was the language of the  Emma book?,English,,,"SELECT ?language WHERE {
-  wd:Q534296 wdt:P407 ?language
-}"
-Who was the head coach of the Inter Miami soccer club?,Phil Neville,,,"SELECT ?coachLabel WHERE {
-  wd:Q110150225 wdt:P3790 ?coach .
-  ?coach rdfs:label ?coachLabel .
-  FILTER(LANG(?coachLabel) = ""en"")
-}"
-Was the Quiet song in the album Here We Go Again?,Yes,,,
-Does Frederik Wiedmann the music of the film Beneath?,Yes,,,
-"Shakira, what do you do for a living?","singer, actor, choreographer, painter","philanthropist (lang:en)
-manufacturer (lang:en)
-singer (lang:en)
-superhero (lang:en)
-voice actor (lang:en)
-choreographer (lang:en)
-actor (lang:en)
-composer (lang:en)
-guitarist (lang:en)","| occupationLabel          |
-| ------------------------ |
-| philanthropist (lang:en) |
-| manufacturer (lang:en)   |
-| singer (lang:en)         |
-| superhero (lang:en)      |
-| voice actor (lang:en)    |
-| choreographer (lang:en)  |
-| actor (lang:en)          |
-| composer (lang:en)       |
-| guitarist (lang:en)      |","SELECT ?occupationLabel WHERE {
-  ?item rdfs:label ""Shakira"" @en ; wdt:P106 ?occupation .
-  ?occupation rdfs:label ?occupationLabel .
-  FILTER(lang(?occupationLabel) = ""en"")
-}"
-Who is the top goal scorer of the football club Borussia Dortmund?,Alfred Preissler,,,"SELECT ?player ?playerLabel ?goals WHERE {
-  ?player p:P121 [ ps:P121 wd:Q22045 ; pq:P1828 ?goals ] .
+Who played the role of Ramesh in Balak-Palak?,Dhanashree Parab,,,"SELECT ?actor ?actorLabel WHERE {
+  wd:Q12562251 p:P161 ?statement .
+  ?statement ps:P161 ?actor .
+  ?statement pq:P3349 ""Ramesh"" .
   OPTIONAL {
-    ?player rdfs:label ?playerLabel .
-    FILTER(lang(?playerLabel) = 'en')
+    ?actor rdfs:label ?actorLabel
+    FILTER(LANG(?actorLabel) = ""en"")
   }
+}"
+What is the prequel to the movie Mad Max Beyond Thunderdome?,Mad Max 2,Mad Max: Fury Road (lang:en),"| prequelLabel                 |
+| ---------------------------- |
+| Mad Max: Fury Road (lang:en) |","SELECT ?prequelLabel WHERE {
+  wd:Q426663 wdt:P156 ?prequel .
+  ?prequel rdfs:label ?prequelLabel .
+  FILTER(LANG(?prequelLabel) = 'en')
+}"
+What is the name of the main character in the tv series Kakegurui?,Yumeko Jabami,,,"SELECT ?characterLabel WHERE {
+  wd:Q35085291 wdt:P3373 ?character .
+  ?character rdfs:label ?characterLabel .
+  FILTER(LANG(?characterLabel) = 'en')
+}"
+Which actor plays Robby Keene in Cobra Kai?,Tanner Buchanan,Tanner Buchanan|Tanner Buchanan (lang:en),"| actor                          | actorLabel                |
+| ------------------------------ | ------------------------- |
+| Tanner Buchanan (wd:Q16745199) | Tanner Buchanan (lang:en) |","SELECT ?actor ?actorLabel WHERE {
+  wd:Q65239075 wdt:P175 ?actor .
+  ?actor rdfs:label ?actorLabel .
+  FILTER(LANG(?actorLabel) = 'en')
+}"
+What is the rating on Pitchfork?,10/10,,,"SELECT ?rating WHERE {
+  wd:Q721140 wdt:P444 ?rating
+}"
+Did the album The Smiths include the song Hand in Glove?,Yes,,,
+Who are the producers of the Coloratura song from the album Music of the Spheres?,"M. Martin, Holter, Rahko","Max Martin|Max Martin (lang:an)
+Max Martin|Max Martin (lang:ast)
+Max Martin|Max Martin (lang:br)
+Max Martin|Max Martin (lang:ca)
+Max Martin|Max Martin (lang:co)
+...|...
+Max Martin|マックス・マーティン (lang:ja)
+Max Martin|馬克斯·馬丁 (lang:zh)
+Max Martin|馬克斯·馬汀 (lang:zh-hant)
+Max Martin|马克斯·马丁 (lang:zh-cn)
+Max Martin|麦克斯·马丁 (lang:zh-hans)","| producer                | producerLabel         |
+| ----------------------- | --------------------- |
+| Max Martin (wd:Q318223) | Max Martin (lang:an)  |
+| Max Martin (wd:Q318223) | Max Martin (lang:ast) |
+| Max Martin (wd:Q318223) | Max Martin (lang:br)  |
+| Max Martin (wd:Q318223) | Max Martin (lang:ca)  |
+| Max Martin (wd:Q318223) | Max Martin (lang:co)  |
+| ...                     | ...                   |
+| Max Martin (wd:Q318223) | マックス・マーティン (lang:ja)  |
+| Max Martin (wd:Q318223) | 馬克斯·馬丁 (lang:zh)      |
+| Max Martin (wd:Q318223) | 馬克斯·馬汀 (lang:zh-hant) |
+| Max Martin (wd:Q318223) | 马克斯·马丁 (lang:zh-cn)   |
+| Max Martin (wd:Q318223) | 麦克斯·马丁 (lang:zh-hans) |","SELECT ?producer ?producerLabel WHERE {
+  wd:Q107597380 wdt:P162 ?producer .
+  OPTIONAL {
+    ?producer rdfs:label ?producerLabel
+  }
+}"
+Which Beethoven symphony was part of the soundtrack for The King's Speech?,Symphony No. 7,,,"SELECT ?trackLabel WHERE {
+  wd:Q3987817 wdt:P527 ?track .
+  ?track wdt:P31 wd:Q4829991 .
+  ?track rdfs:label ?trackLabel .
+  FILTER(LANG(?trackLabel) = 'en')
+  .
+  FILTER(CONTAINS(LCASE(?trackLabel) , 'beethoven'))
+}"
+who is the president of Paris Saint-Germain F.C team?,Nasser Al-Khelaifi,Nasser Al-Khelaifi,"| president                       |
+| ------------------------------- |
+| Nasser Al-Khelaifi (wd:Q776008) |","SELECT ?president WHERE {
+  wd:Q483020 wdt:P488 ?president
+}"
+Who voices Stan Smith in American Dad!?,Seth MacFarlane,,,"SELECT ?voiceActor WHERE {
+  wd:Q496280 wdt:P725 ?voiceActor .
+}"
+What is the Metacritic rating of the album Here We Go Again?,65/100,,,"SELECT ?metacriticRating WHERE {
+  wd:Q940194 wdt:P1712 ?metacriticID ; wdt:P1204 ?metacriticRating
+}"
+Who was the shirt sponsor for FC Cincinnati soccer club?,Mercy Health,"Mercy Health
+Toyota","| sponsor                    |
+| -------------------------- |
+| Mercy Health (wd:Q5053169) |
+| Toyota (wd:Q53268)         |","SELECT ?sponsor WHERE {
+  wd:Q20855983 wdt:P859 ?sponsor
+}"
+what was the language of the  Emma book?,English,English (lang:en),"| languageLabel     |
+| ----------------- |
+| English (lang:en) |","SELECT ?languageLabel WHERE {
+  wd:Q223880 wdt:P407 ?language .
+  ?language rdfs:label ?languageLabel .
+  FILTER(LANG(?languageLabel) = ""en"")
+}"
+Who was the head coach of the Inter Miami soccer club?,Phil Neville,Guillermo Ángel Hoyos|Guillermo Hoyos (lang:en),"| coach                                | coachLabel                |
+| ------------------------------------ | ------------------------- |
+| Guillermo Ángel Hoyos (wd:Q12155812) | Guillermo Hoyos (lang:en) |","SELECT ?coach ?coachLabel WHERE {
+  wd:Q16844931 wdt:P286 ?coach .
+  OPTIONAL {
+    ?coach rdfs:label ?coachLabel .
+    FILTER(lang(?coachLabel) = ""en"")
+  }
+}"
+Was the Quiet song in the album Here We Go Again?,Yes,,,"SELECT ?track WHERE {
+  wd:Q940194 wdt:P1656 ?track .
+  ?track rdfs:label ?label .
+  FILTER(LANG(?label) = 'en')
+  .
+  FILTER CONTAINS(LCASE(?label) , 'quiet')
+}"
+Does Frederik Wiedmann the music of the film Beneath?,Yes,,,
+"Shakira, what do you do for a living?","singer, actor, choreographer, painter","philanthropist|philanthropist (lang:en)
+manufacturer|manufacturer (lang:en)
+singer|singer (lang:en)
+voice actor|voice actor (lang:en)
+choreographer|choreographer (lang:en)
+actor|actor (lang:en)
+composer|composer (lang:en)
+guitarist|guitarist (lang:en)","| occupation                    | occupationLabel          |
+| ----------------------------- | ------------------------ |
+| philanthropist (wd:Q12362622) | philanthropist (lang:en) |
+| manufacturer (wd:Q13235160)   | manufacturer (lang:en)   |
+| singer (wd:Q177220)           | singer (lang:en)         |
+| voice actor (wd:Q2405480)     | voice actor (lang:en)    |
+| choreographer (wd:Q2490358)   | choreographer (lang:en)  |
+| actor (wd:Q33999)             | actor (lang:en)          |
+| composer (wd:Q36834)          | composer (lang:en)       |
+| guitarist (wd:Q855091)        | guitarist (lang:en)      |","SELECT ?occupation ?occupationLabel WHERE {
+  wd:Q34424 wdt:P106 ?occupation .
+  ?occupation rdfs:label ?occupationLabel .
+  FILTER(LANG(?occupationLabel) = 'en')
+}"
+Who is the top goal scorer of the football club Borussia Dortmund?,Alfred Preissler,,,"SELECT ?player WHERE {
+  ?player p:P1363 ?statement .
+  ?statement ps:P1363 ?goals .
+  ?statement pq:P127 wd:Q41420 .
 }
 ORDER BY DESC(?goals)
 LIMIT 1"
-"Who won the best cinematography award in British Academy Film Awards for""Blade Runner""?",Jordan Cronenweth,,,"SELECT ?cinematographerLabel WHERE {
-  ?award wdt:P1357 wd:Q21659 ; wdt:P453 wd:Q32184 ; wdt:P937 wd:Q4387227 ; wdt:P139 ?cinematographer .
-  ?cinematographer rdfs:label ?cinematographerLabel .
-  FILTER(LANG(?cinematographerLabel) = 'en')
+"Who won the best cinematography award in British Academy Film Awards for""Blade Runner""?",Jordan Cronenweth,,,"SELECT ?winner ?winnerLabel WHERE {
+  wd:Q184843 wdt:P166 ?award .
+  ?award wdt:P2034 wd:Q1293715 .
+  ?award rdfs:label ?awardLabel .
+  FILTER(LANG(?awardLabel) = 'en' && CONTAINS(STR(?awardLabel) , 'Best Cinematography'))
+  .
+  ?award wdt:P184 ?winner .
+  ?winner rdfs:label ?winnerLabel .
+  FILTER(LANG(?winnerLabel) = 'en')
+  .
 }"
 What is length of the song Dilruba from the album Kailasa?,4:00,,,"SELECT ?duration WHERE {
-  ?album wdt:P31 wd:Q1541326 ; rdfs:label ""Kailasa"" @en .
-  ?song wdt:P31 wd:Q1313927 ; rdfs:label ""Dilruba"" @en ; wdt:P243 ?album .
-  ?song wdt:P2047 ?duration .
+  wd:Q6347879 wdt:P658 ?track .
+  ?track wdt:P1476 ""Dilruba"" .
+  ?track wdt:P2047 ?duration
 }"
 What was the 10th song on the album Piano Man?,Captain Jack,,,"SELECT ?trackLabel WHERE {
-  ?album wdt:P31 wd:Q43676 ; wdt:P1476 ""Piano Man"" @en .
-  ?album wdt:P679 ?track .
-  ?track wdt:P753 10 .
+  wd:Q1646081 p:P1519 ?trackStatement .
+  ?trackStatement ps:P1519 ?track .
+  ?trackStatement pq:P1566 ?trackNumber .
   ?track rdfs:label ?trackLabel .
+  FILTER(LANG(?trackLabel) = 'en')
+}
+ORDER BY(xsd:int(?trackNumber))
+LIMIT 1
+OFFSET 9"
+Who is a part of Sergio Busquets sports team?,"Spain national association football team, Catalonia national football team","FC Barcelona Atlètic|FC Barcelona Atlètic (lang:en)
+UFB Jàbac i Terrassa|UFB Jàbac i Terrassa (lang:en)
+Spain national under-21 association football team|Spain national under-21 association football team (lang:en)
+Inter Miami CF|Inter Miami CF (lang:en)
+Catalonia national football team|Catalonia national football team (lang:en)
+FC Barcelona C|FC Barcelona C (lang:en)
+Spain men's national football team|Spain men's national football team (lang:en)
+Futbol Club Barcelona|Futbol Club Barcelona (lang:en)
+UE Lleida|UE Lleida (lang:en)","| team                                                            | teamLabel                                                   |
+| --------------------------------------------------------------- | ----------------------------------------------------------- |
+| FC Barcelona Atlètic (wd:Q10467)                                | FC Barcelona Atlètic (lang:en)                              |
+| UFB Jàbac i Terrassa (wd:Q112840839)                            | UFB Jàbac i Terrassa (lang:en)                              |
+| Spain national under-21 association football team (wd:Q1129595) | Spain national under-21 association football team (lang:en) |
+| Inter Miami CF (wd:Q16844931)                                   | Inter Miami CF (lang:en)                                    |
+| Catalonia national football team (wd:Q17228)                    | Catalonia national football team (lang:en)                  |
+| FC Barcelona C (wd:Q2346842)                                    | FC Barcelona C (lang:en)                                    |
+| Spain men's national football team (wd:Q42267)                  | Spain men's national football team (lang:en)                |
+| Futbol Club Barcelona (wd:Q7156)                                | Futbol Club Barcelona (lang:en)                             |
+| UE Lleida (wd:Q837218)                                          | UE Lleida (lang:en)                                         |","SELECT ?team ?teamLabel WHERE {
+  wd:Q49704 wdt:P54 ?team .
+  ?team rdfs:label ?teamLabel .
+  FILTER(LANG(?teamLabel) = 'en')
 }"
-Who is a part of Sergio Busquets sports team?,"Spain national association football team, Catalonia national football team",,,"SELECT ?player ?playerLabel WHERE {
-  wd:Q49704 wdt:P463 ?team .
-  ?player wdt:P463 ?team .
-  ?player rdfs:label ?playerLabel .
-  FILTER(LANG(?playerLabel) = 'en')
-  .
-  FILTER(?player != wd:Q49704)
+Who is the creator of the book series Diary of a Wimpy Kid?,Jeff Kinney,,,"SELECT ?authorLabel WHERE {
+  wd:Q1339580 wdt:P50 ?author .
+  ?author rdfs:label ?authorLabel .
+  FILTER(LANG(?authorLabel) = 'en')
 }"
-Who is the creator of the book series Diary of a Wimpy Kid?,Jeff Kinney,"wd:Q311704
-wd:Q311704","| author     |
-| ---------- |
-| wd:Q311704 |
-| wd:Q311704 |","SELECT ?author WHERE {
-  ?book wdt:P1476 ""Diary of a Wimpy Kid"" @en ; wdt:P50 ?author .
-}"
-What's the 6th song on the album Piano Man?,Worse Comes to Worst,,,"SELECT ?trackLabel WHERE {
-  wd:Q107383 wdt:P170 ?album .
-  ?album wdt:P195 ?track .
-  ?track wdt:P175 ?trackNumber .
+What's the 6th song on the album Piano Man?,Worse Comes to Worst,,,"SELECT ?track ?trackLabel ?trackNumber WHERE {
+  wd:Q1646081 wdt:P527 ?tracklist .
+  ?tracklist p:P150 ?trackStatement .
+  ?trackStatement ps:P150 ?track .
+  ?trackStatement pq:P1334 ?trackNumber .
   ?track rdfs:label ?trackLabel .
   FILTER(LANG(?trackLabel) = 'en')
 }
 ORDER BY ?trackNumber
-OFFSET 5
-LIMIT 1"
-Who played the role of Srikant Tiwari in The Family Man?,Manoj Bajpayee,,,"SELECT ?actor WHERE {
-  wd:Q26522245 p:P161 ?role .
-  ?role ps:P161 ?actor ; pq:P541 ""Srikant Tiwari"" .
+LIMIT 1
+OFFSET 5"
+Who played the role of Srikant Tiwari in The Family Man?,Manoj Bajpayee,"Priyamani
+Ashlesha Thakur
+Sharad Kelkar
+Shreya Dhanwanthary
+Pawan Chopra
+Sharib Hashmi
+Ashish Warang
+Zarin Shihab
+Neeraj Madhav
+Manoj Bajpai","| actor                              |
+| ---------------------------------- |
+| Priyamani (wd:Q3519936)            |
+| Ashlesha Thakur (wd:Q114956944)    |
+| Sharad Kelkar (wd:Q7489359)        |
+| Shreya Dhanwanthary (wd:Q56240001) |
+| Pawan Chopra (wd:Q25999506)        |
+| Sharib Hashmi (wd:Q16935018)       |
+| Ashish Warang (wd:Q102381006)      |
+| Zarin Shihab (wd:Q124857455)       |
+| Neeraj Madhav (wd:Q17306220)       |
+| Manoj Bajpai (wd:Q158533)          |","SELECT ?actor WHERE {
+  wd:Q85807149 p:P161 ?statement .
+  ?statement ps:P161 ?actor .
 }"
 Was Scott Grimes in ER?,Yes,,,
-What country does the soccer player Johan Cruyff represent?,Netherlands,Kingdom of the Netherlands (lang:en),"| countryLabel                         |
-| ------------------------------------ |
-| Kingdom of the Netherlands (lang:en) |","SELECT ?countryLabel WHERE {
+What country does the soccer player Johan Cruyff represent?,Netherlands,,,"SELECT ?countryLabel WHERE {
   wd:Q17163 wdt:P27 ?country .
-  ?country rdfs:label ?countryLabel .
-  FILTER(LANG(?countryLabel) = 'en')
-}"
-Who Composes the music in the tv series The Tunnel?,Adrian Johnston,,,"SELECT ?composer ?composerLabel WHERE {
-  wd:Q27532865 wdt:P86 ?composer .
-  ?composer rdfs:label ?composerLabel .
-  FILTER(LANG(?composerLabel) = 'en')
-}"
-which place of publication The Grapes of Wrath book?,New York City,,,"SELECT ?placeLabel WHERE {
-  wd:Q26432 wdt:P1433 ?place .
-  ?place rdfs:label ?placeLabel .
-  FILTER(lang(?placeLabel) = 'en')
-}"
-Who sang the song Asli Hip Hop from the album Gully Boy?,Ranveer Singh,,,"SELECT ?performerLabel WHERE {
-  ?track rdfs:label ""Asli Hip Hop"" @hi .
-  ?track wdt:P175 ?performer .
-  ?performer rdfs:label ?performerLabel .
-  FILTER(LANG(?performerLabel) = 'en')
-}"
-What is the length of the Catch Me song?,3:10,,,"SELECT ?duration WHERE {
-  ?song wdt:P31 wd:Q5707587 ; wdt:P1476 ?title ; wdt:P2047 ?duration .
-  FILTER(regex(STR(?title) , ""catch me"" , ""i""))
-}"
-What was the fee of Luís Figo's transfer from Barcelona to Real Madrid?,€62 million,,,"SELECT ?fee WHERE {
-  wd:Q1597 wdt:P518 wd:Q11839 .
-  wd:Q1597 p:P517 [ ps:P517 wd:Q15655 ; pq:P787 ?fee ] .
-}"
-Who is the spouse of Rudyard Kipling?,Caroline Starr Balestier Kipling,,,"SELECT ?spouse ?spouseLabel WHERE {
-  wd:Q15655 wdt:P26 ?spouse .
-  ?spouse rdfs:label ?spouseLabel .
-  FILTER(LANG(?spouseLabel) = 'en')
-}"
-Which movie won the Best Picture 93rd Academy Award?,Nomadland,,,"SELECT ?film WHERE {
-  wd:Q11275328 wdt:P31 wd:Q11424 .
-}"
-Michael B. Jordan played a character name Wallace in which HBO crime-drama series?,The Wire,,,"SELECT ?series ?seriesLabel WHERE {
-  wd:Q3308007 p:P161 ?roleStatement .
-  ?roleStatement ps:P161 ?series .
-  ?roleStatement pq:P351 ""Wallace"" @en .
-  ?series wdt:P123 wd:Q651742 .
-  ?series rdfs:label ?seriesLabel .
-  FILTER(LANG(?seriesLabel) = ""en"")
-}"
-Who awarded Ray Bradbury a special citation for his distinguished career?,Pulitzer Prize,,,"SELECT ?awardingBodyLabel WHERE {
-  wd:Q20388 wdt:P166 ?award .
-  ?award wdt:P1435 wd:Q1351182 .
-  wd:Q1351182 rdfs:label ?awardingBodyLabel .
-  FILTER(LANG(?awardingBodyLabel) = ""en"")
-}"
-what is the Titanic movie rank of AFI 100?,83,,,"SELECT ?position WHERE {
-  wd:Q14109853 wdt:P135 wd:Q153407 .
-  wd:Q153407 p:P135 ?statement .
-  ?statement pq:P1545 ?position .
-}"
-name of the football player who captains Borussia Dortmund currently?,Marco Reus,,,"SELECT ?player ?playerLabel WHERE {
-  wd:Q41420 p:P54 ?statement .
-  ?statement ps:P54 ?player .
-  FILTER NOT EXISTS {
-    ?statement pq:P582 ?endDate
-  }
-  OPTIONAL {
-    ?player rdfs:label ?playerLabel
-  }
-}"
-Who gave the music of the film 211?,Frederik Wiedmann,"Roque Baños (lang:en)
-Frederik Wiedmann (lang:en)","| composerLabel               |
-| --------------------------- |
-| Roque Baños (lang:en)       |
-| Frederik Wiedmann (lang:en) |","SELECT ?composerLabel WHERE {
-  ?film wdt:P31 wd:Q11424 ; wdt:P1476 ?title ; wdt:P86 ?composer .
-  FILTER(CONTAINS(LCASE(STR(?title)) , ""211""))
-  .
-  ?composer rdfs:label ?composerLabel .
-  FILTER(LANG(?composerLabel) = ""en"")
-}"
-What is the indigenous title of the novel The Alchemist?,O Alquimista,,,"SELECT ?title WHERE {
-  wd:Q102212567 rdfs:label ?title .
-  FILTER(lang(?title) = 'pt')
-}"
-"Who won the best actor award in Empire Awards for the movie ""American Sniper""?",Bradley Cooper,,,"SELECT ?actorLabel WHERE {
-  wd:Q1341450 wdt:P166 ?award .
-  ?award wdt:P1647 wd:Q634053 .
-  ?award wdt:P175 ?actor .
-  ?actor rdfs:label ?actorLabel .
-  FILTER(LANG(?actorLabel) = 'en')
-}"
-which period is Nike kit manufacturer sponsors Liverpool F.C.?,2020,,,"SELECT ?startDate ?endDate WHERE {
-  wd:Q27872 p:P2038 ?statement .
-  ?statement ps:P2038 wd:Q35077 .
-  ?statement pq:P580 ?startDate .
-  OPTIONAL {
-    ?statement pq:P582 ?endDate .
-  }
-}"
-Were you aware that All of Us Are Dead distributed this album?,Netflix,,,
-Who received the award golden globe in the tv series Big Little Lies ?,Nicole Kidman,,,"SELECT ?person ?personLabel WHERE {
-  wd:Q19126203 wdt:P161 ?person .
-  ?person wdt:P166 ?award .
-  ?award wdt:P31 wd:Q16086491 .
-  ?person rdfs:label ?personLabel .
-  FILTER(LANG(?personLabel) = ""en"")
-}"
-Who directs the tv series Barbarians?,Barbara Eder,Barbara Eder (lang:en),"| directorLabel          |
-| ---------------------- |
-| Barbara Eder (lang:en) |","SELECT ?directorLabel WHERE {
-  ?series rdfs:label ""Barbarians"" @en ; wdt:P31 wd:Q5398426 ; wdt:P57 ?director .
-  ?director rdfs:label ?directorLabel .
-  FILTER(LANG(?directorLabel) = ""en"")
-}"
-Who won the Oscar for Best Actor for the film The King's Speech?,Colin Firth,,,"SELECT ?award WHERE {
-  wd:Q113499677 wdt:P166 ?award .
-}"
-Which country did Francesco Totti represent?,Italy,wd:Q38,"| country |
-| ------- |
-| wd:Q38  |","SELECT ?country WHERE {
-  wd:Q20110 wdt:P27 ?country
-}"
-Did Rob Lowe win a Golden Raspberry Awards?,Yes,,,
-What actress played Rose in Titanic?,Kate Winslet,,,
-Did the film The Godfather win any Academy Award?,Yes,7,"| count       |
-| ----------- |
-| 7 (xsd:int) |","SELECT(COUNT(?award) AS ?count) WHERE {
-  wd:Q47703 wdt:P166 ?award .
-}"
-Who was interested in the novel Emma?,Northanger Abbey,,,"SELECT ?authorLabel WHERE {
-  wd:Q34550 wdt:P50 ?author .
-  ?author rdfs:label ?authorLabel .
-  FILTER(LANG(?authorLabel) = 'en')
-}"
-In which division did Daniel Farke manage Borussia Dortmund II?,Regionalliga West,,,
-What is the One Hundred Years of Solitude book's country of origin?,Argentina,,,"SELECT ?countryLabel WHERE {
-  wd:Q825 wdt:P50 ?author .
-  ?author wdt:P27 ?country .
-  ?country rdfs:label ?countryLabel .
-  FILTER(lang(?countryLabel) = ""en"")
-}"
-What was the cost to make Titanic?,$200 million,,,"SELECT ?budget WHERE {
-  wd:Q24151 wdt:P1098 ?budget
-}"
-what was author the book Brave New World?,Aldous Huxley,Aldous Huxley (lang:en),"| authorLabel             |
-| ----------------------- |
-| Aldous Huxley (lang:en) |","SELECT ?authorLabel WHERE {
-  ?book wdt:P1476 ""Brave New World"" @en ; wdt:P50 ?author .
-  ?author rdfs:label ?authorLabel .
-  FILTER(LANG(?authorLabel) = ""en"")
-}"
-What is Entertainment Weekly rating of the album 30?,A–,,,"SELECT ?rating WHERE {
-  ?album wdt:P31 wd:Q386724 ; wdt:P1476 ""30"" ; p:P237 ?statement_artist .
-  ?statement_artist ps:P237 wd:Q45110 .
-  ?album p:P1622 ?statement_rating .
-  ?statement_rating pr:P1433 wd:Q28159 .
-  ?statement_rating ps:P1622 ?rating .
-}"
-What is the box office collection of Boyhood movie?,57.3 million USD,,,"SELECT ?boxOffice WHERE {
-  wd:Q1772679 wdt:P2041 ?boxOffice
-}"
-"Who played Fiona ""Fi"" Phillips in So Weird?",Cara DeLizia,,,"SELECT ?actor ?actorLabel WHERE {
-  ?show wdt:P31 wd:Q482916 ; rdfs:label ""So Weird"" @en .
-  ?character wdt:P156 ?show ; rdfs:label ""Fiona 'Fi' Phillips"" @en .
-  ?actor wdt:P1640 ?character ; rdfs:label ?actorLabel .
-  FILTER(LANG(?actorLabel) = ""en"")
-}"
-Was Cara DeLizia in Boston Public?,Yes,,,"SELECT ?show WHERE {
-  ?show wdt:P161 wd:Q3647300 ; rdfs:label ""Boston Public"" @en .
-}"
-What is Game of Thrones based on?,A Song of Ice and Fire,A Song of Ice and Fire (lang:en),"| bookSeriesLabel                  |
-| -------------------------------- |
-| A Song of Ice and Fire (lang:en) |","SELECT ?bookSeriesLabel WHERE {
-  wd:Q23572 wdt:P144 ?bookSeries .
-  ?bookSeries rdfs:label ?bookSeriesLabel .
-  FILTER(LANG(?bookSeriesLabel) = 'en')
-}"
-Did The Godfather movie win the Academy Award for best picture?,yes,,,
-What is Paolo Maldini's surname?,Maldini,Maldini (lang:en),"| surnameLabel      |
-| ----------------- |
-| Maldini (lang:en) |","SELECT ?surnameLabel WHERE {
-  wd:Q483027 wdt:P734 ?surname .
-  ?surname rdfs:label ?surnameLabel .
-  FILTER(LANG(?surnameLabel) = 'en')
-}"
-What is Stadio Artemio Franchi's home team?,ACF Fiorentina,,,"SELECT ?team WHERE {
-  ?team wdt:P1127 wd:Q778098 .
-}"
-did James Camero direct Avatar?,yes,,,
-Has the movie The Godfather won any Academy Award?,Yes,,,
-Is 365 days nominated for worst picture in Golden Raspberry Awards?,Yes,,,"SELECT ?film WHERE {
-  wd:Q1780634 wdt:P1343 ?film .
-  ?film rdfs:label ""365 Days"" @en .
-}"
-Which club was Neymar transferred to from the football club Barcelona?,Paris Saint-Germain F.C.,,,"SELECT ?club ?clubLabel WHERE {
-  wd:Q973674 p:P463 ?barcaStat ; p:P463 ?nextStat .
-  ?barcaStat ps:P463 wd:Q8161 ; pq:P582 ?endBarca .
-  ?nextStat ps:P463 ?club ; pq:P580 ?startClub .
-  FILTER(?startClub > ?endBarca)
-  .
-  ?club rdfs:label ?clubLabel .
-  FILTER(LANG(?clubLabel) = 'en')
-  .
-}"
-Who played Steven Harper in Boston Public?,Chi McBride,,,"SELECT ?actor WHERE {
-  wd:Q175475 wdt:P161 ?actor .
-  ?actor p:P161 ?statement .
-  ?statement pq:P540 ?character .
-  ?character rdfs:label ""Steven Harper"" @en .
-}"
-What is the length of Karma Police song in Ok Computer?,4:25,,,"SELECT ?duration WHERE {
-  wd:Q4498214 wdt:P559 ?track ; rdfs:label 'Karma Police' @en ; wdt:P2142 ?duration .
-}"
-Who played the character of Arya Iyer in Decoupled?,R. Madhavan,,,"SELECT ?actor WHERE {
-  wd:Q110323803 p:P161 ?statement .
-  ?statement ps:P161 ?actor .
-  ?statement pq:P2443 ""Arya Iyer"" @en
-}"
-Who played the Character of Barney Ross in the The Expendables series?,Sylvester Stallone,,,
-Was Do You Wanna Ride? on Billboard's US Top R&B/Hip-Hop Album chart?,Yes,,,"SELECT ?album WHERE {
-  ?album wdt:P31 wd:Q571302 .
-  ?album rdfs:label ?label .
-  FILTER(regex(STR(?label) , ""Do You Wanna Ride"" , ""i""))
-}"
-In which city is Millennium Stadium located?,Cardiff,Cardiff (lang:en),"| cityLabel         |
-| ----------------- |
-| Cardiff (lang:en) |","SELECT ?cityLabel WHERE {
-  wd:Q10690 rdfs:label ?cityLabel .
-  FILTER(LANG(?cityLabel) = 'en')
-}"
-Did J. Michael Tatum play Kuroko in Kuroko's Basketball?,No,,,
-Which Tears for Fears member wrote the songs on The Hurting?,Roland Orzabal,,,"SELECT ?composer ?composerLabel WHERE {
-  wd:Q114547090 wdt:P140 ?track .
-  ?track wdt:P86 wd:Q204204 .
   SERVICE wikibase:label {
     bd:serviceParam wikibase:language ""en"" .
   }
 }"
-Who played the part Carmen in the movie Spy Kids?,Alexa Vega,,,"SELECT ?actor WHERE {
-  wd:Q550581 wdt:P161 ?actorStatement .
-  ?actorStatement ps:P161 ?actor .
-  ?actorStatement pq:P1618 ""Carmen"" .
+Who Composes the music in the tv series The Tunnel?,Adrian Johnston,Adrian Johnston,"| composer                     |
+| ---------------------------- |
+| Adrian Johnston (wd:Q373231) |","SELECT ?composer WHERE {
+  wd:Q15104549 wdt:P86 ?composer
 }"
-"What actress played Fiona ""Fi"" Phillips in So Weird?",Cara DeLizia,,,"SELECT ?actress WHERE {
-  wd:Q7692201 wdt:P31 wd:Q12524 ; rdfs:label ""So Weird"" @en .
-  wd:Q7692201 p:P161 ?statement .
-  ?statement ps:P161 ?actress .
-  ?statement pq:P2703 ""Fiona Phillips"" @en .
+which place of publication The Grapes of Wrath book?,New York City,New York City (lang:en),"| placeLabel              |
+| ----------------------- |
+| New York City (lang:en) |","SELECT ?placeLabel WHERE {
+  wd:Q215983 wdt:P291 ?place .
+  ?place rdfs:label ?placeLabel
+  FILTER(LANG(?placeLabel) = 'en')
 }"
-"Which country awarded the author Najib Mahfouz by ""Grand Cordon of the Order of the Nile""?",Egypt,"wd:Q124943|Brenhiniaeth yr Aifft (lang:cy)
-wd:Q124943|Egipta Reĝlando (lang:eo)
-wd:Q124943|Egiptoko Erresuma (lang:eu)
-wd:Q124943|Egiptuse kuningriik (lang:et)
-wd:Q124943|Egyiptomi Királyság (lang:hu)
-...|...
-wd:Q79|埃及 (lang:zh-hk)
-wd:Q79|埃及 (lang:zh-mo)
-wd:Q79|埃及 (lang:zh-my)
-wd:Q79|埃及 (lang:zh-sg)
-wd:Q79|埃及 (lang:zh-tw)","| country    | countryLabel                    |
-| ---------- | ------------------------------- |
-| wd:Q124943 | Brenhiniaeth yr Aifft (lang:cy) |
-| wd:Q124943 | Egipta Reĝlando (lang:eo)       |
-| wd:Q124943 | Egiptoko Erresuma (lang:eu)     |
-| wd:Q124943 | Egiptuse kuningriik (lang:et)   |
-| wd:Q124943 | Egyiptomi Királyság (lang:hu)   |
-| ...        | ...                             |
-| wd:Q79     | 埃及 (lang:zh-hk)                 |
-| wd:Q79     | 埃及 (lang:zh-mo)                 |
-| wd:Q79     | 埃及 (lang:zh-my)                 |
-| wd:Q79     | 埃及 (lang:zh-sg)                 |
-| wd:Q79     | 埃及 (lang:zh-tw)                 |","SELECT ?country ?countryLabel WHERE {
-  wd:Q72972272 wdt:P17 ?country .
-  ?country rdfs:label ?countryLabel .
+Who sang the song Asli Hip Hop from the album Gully Boy?,Ranveer Singh,,,"SELECT DISTINCT ?singer ?singerLabel WHERE {
+  wd:Q107463522 wdt:P524 ?track .
+  ?track wdt:P1476 ""Asli Hip Hop"" .
+  ?track wdt:P725 ?singer .
+  ?singer rdfs:label ?singerLabel .
+  FILTER(LANG(?singerLabel) = 'en')
 }"
-Francesco Totti played for which country?,Italy,wd:Q38,"| country |
-| ------- |
-| wd:Q38  |","SELECT ?country WHERE {
-  ?person rdfs:label ""Francesco Totti"" @en ; wdt:P27 ?country .
+What is the length of the Catch Me song?,3:10,,,"SELECT ?duration WHERE {
+  wd:Q108660552 wdt:P2047 ?duration
 }"
-What is the budget of Boyhood movie?,4 million USD,,,"SELECT ?budget WHERE {
-  wd:Q4103201 wdt:P291 ?budget
+What was the fee of Luís Figo's transfer from Barcelona to Real Madrid?,€62 million,,,"SELECT ?fee WHERE {
+  wd:Q483145 p:P584 ?transfer .
+  ?transfer ps:P584 wd:Q595 .
+  ?transfer ps:P583 wd:Q16507 .
+  ?transfer pq:P3879 ?fee .
 }"
-Which series had Hugh Bonneville as the The Earl of Grantham?,Downton Abbey,,,"SELECT ?series ?seriesLabel WHERE {
-  ?series p:P161 ?st .
-  ?st ps:P161 wd:Q155775 .
-  ?st pq:P1231 wd:Q5326282 .
-  ?series rdfs:label ?seriesLabel .
-  FILTER(LANG(?seriesLabel) = 'en')
+Who is the spouse of Rudyard Kipling?,Caroline Starr Balestier Kipling,Caroline Starr Balestier,"| spouse                                  |
+| --------------------------------------- |
+| Caroline Starr Balestier (wd:Q22247776) |","SELECT ?spouse WHERE {
+  wd:Q34743 wdt:P26 ?spouse
 }"
-What movie did Rob Lowe win a Golden Raspberry Awards for?,St. Elmo's Fire,,,"SELECT ?movieLabel WHERE {
-  wd:Q296505 wdt:P166 ?award .
-  ?award wdt:P31 wd:Q371189 .
-  ?award wdt:P1580 ?movie .
+Which movie won the Best Picture 93rd Academy Award?,Nomadland,,,"SELECT ?movie ?movieLabel WHERE {
+  wd:Q57246152 wdt:P3473 ?award .
+  ?award rdfs:label 'Best Picture' @en .
+  ?award wdt:P331 ?movie .
   ?movie rdfs:label ?movieLabel .
   FILTER(LANG(?movieLabel) = 'en')
 }"
-Who played the role of the former boxer in the movie Real Steel?,Hugh Jackman,,,"SELECT ?actorLabel WHERE {
-  wd:Q261759 p:P161 ?statement .
-  ?statement ps:P161 ?actor .
-  ?statement pq:P2043 ?role .
-  ?role rdfs:label ?roleLabel .
-  FILTER(lang(?roleLabel) = 'en')
-  FILTER(LCASE(?roleLabel) = 'charlie kenton')
+Michael B. Jordan played a character name Wallace in which HBO crime-drama series?,The Wire,,,"SELECT ?series ?seriesLabel WHERE {
+  wd:Q3308007 p:P161 ?statement .
+  ?statement ps:P161 ?series .
+  ?series wdt:P31 wd:Q2028360 .
+  ?series wdt:P3144 wd:Q287 .
+  ?series rdfs:label ?seriesLabel .
+  FILTER(LANG(?seriesLabel) = 'en')
   .
+  ?statement pq:P1523 'Wallace' .
+}"
+Who awarded Ray Bradbury a special citation for his distinguished career?,Pulitzer Prize,,,"SELECT ?awardingBodyLabel WHERE {
+  wd:Q40640 wdt:P166 wd:Q7259350 .
+  wd:Q7259350 wdt:P1433 ?awardingBody .
+  ?awardingBody rdfs:label ?awardingBodyLabel .
+  FILTER(LANG(?awardingBodyLabel) = ""en"")
+}"
+what is the Titanic movie rank of AFI 100?,83,,,"SELECT ?rank WHERE {
+  wd:Q44578 p:P361 ?statement .
+  ?statement ps:P361 wd:Q1984614 .
+  ?statement pq:P1175 ?rank .
+}"
+name of the football player who captains Borussia Dortmund currently?,Marco Reus,,,"SELECT ?captain ?captainLabel WHERE {
+  wd:Q41420 p:P634 ?statement .
+  ?statement ps:P634 ?captain .
+  ?statement pq:P580 ?startDate .
+  FILTER NOT EXISTS {
+    ?statement pq:P585 ?endDate
+  }
+  .
+  ?captain rdfs:label ?captainLabel .
+  FILTER(LANG(?captainLabel) = 'en')
+}"
+Who gave the music of the film 211?,Frederik Wiedmann,Frederik Wiedmann,"| composer                      |
+| ----------------------------- |
+| Frederik Wiedmann (wd:Q97308) |","SELECT ?composer WHERE {
+  wd:Q54924330 wdt:P86 ?composer
+}"
+What is the indigenous title of the novel The Alchemist?,O Alquimista,"O Alquimista (lang:pt)
+The Alchemist (lang:en)","| originalTitle           |
+| ----------------------- |
+| O Alquimista (lang:pt)  |
+| The Alchemist (lang:en) |","SELECT ?originalTitle WHERE {
+  wd:Q179021 wdt:P1476 ?originalTitle
+}"
+"Who won the best actor award in Empire Awards for the movie ""American Sniper""?",Bradley Cooper,,,"SELECT ?winner ?winnerLabel WHERE {
+  ?award wdt:P31 wd:Q1773951 ; wdt:P1343 wd:Q16970789 ; wdt:P3455 ?winner .
+  ?winner rdfs:label ?winnerLabel .
+  FILTER(LANG(?winnerLabel) = 'en')
+  .
+}"
+which period is Nike kit manufacturer sponsors Liverpool F.C.?,2020,Adidas AG||,"| supplier             | start | end |
+| -------------------- | ----- | --- |
+| Adidas AG (wd:Q3895) |       |     |","SELECT ?supplier ?start ?end WHERE {
+  wd:Q1130849 p:P5995 ?statement .
+  ?statement ps:P5995 ?supplier .
+  OPTIONAL {
+    ?statement pq:P580 ?start .
+  }
+  OPTIONAL {
+    ?statement pq:P582 ?end .
+  }
+}"
+Were you aware that All of Us Are Dead distributed this album?,Netflix,,,
+Who received the award golden globe in the tv series Big Little Lies ?,Nicole Kidman,"Laura Dern|Laura Dern (lang:en)
+Alexander Skarsgård|Alexander Skarsgård (lang:en)
+Nicole Kidman|Nicole Kidman (lang:en)
+Reese Witherspoon|Reese Witherspoon (lang:en)
+Meryl Streep|Meryl Streep (lang:en)","| actor                            | actorLabel                    |
+| -------------------------------- | ----------------------------- |
+| Laura Dern (wd:Q220901)          | Laura Dern (lang:en)          |
+| Alexander Skarsgård (wd:Q310637) | Alexander Skarsgård (lang:en) |
+| Nicole Kidman (wd:Q37459)        | Nicole Kidman (lang:en)       |
+| Reese Witherspoon (wd:Q44063)    | Reese Witherspoon (lang:en)   |
+| Meryl Streep (wd:Q873)           | Meryl Streep (lang:en)        |","SELECT DISTINCT ?actor ?actorLabel WHERE {
+  wd:Q19873404 wdt:P161 ?actor .
+  ?actor wdt:P166 ?award .
+  ?award rdfs:label ?awardLabel .
+  FILTER(CONTAINS(LCASE(?awardLabel) , ""golden globe""))
+  FILTER(lang(?awardLabel) = 'en')
   ?actor rdfs:label ?actorLabel .
   FILTER(lang(?actorLabel) = 'en')
+}"
+Who directs the tv series Barbarians?,Barbara Eder,Barbara Eder|Barbara Eder (lang:en),"| director                    | directorLabel          |
+| --------------------------- | ---------------------- |
+| Barbara Eder (wd:Q27690237) | Barbara Eder (lang:en) |","SELECT ?director ?directorLabel WHERE {
+  wd:Q99591764 wdt:P57 ?director .
+  OPTIONAL {
+    ?director rdfs:label ?directorLabel
+    FILTER(LANG(?directorLabel) = 'en')
+  }
+}"
+Who won the Oscar for Best Actor for the film The King's Speech?,Colin Firth,,,"SELECT ?actor WHERE {
+  ?actor wdt:P166 ?award .
+  ?award wdt:P1048 wd:Q103916 .
+  ?award wdt:P2048 wd:Q160060 .
+}"
+Which country did Francesco Totti represent?,Italy,Italy (lang:en),"| countryLabel    |
+| --------------- |
+| Italy (lang:en) |","SELECT ?countryLabel WHERE {
+  wd:Q20110 wdt:P27 ?country .
+  ?country rdfs:label ?countryLabel .
+  FILTER(LANG(?countryLabel) = 'en')
+}"
+Did Rob Lowe win a Golden Raspberry Awards?,Yes,,,
+What actress played Rose in Titanic?,Kate Winslet,English,"| actress            |
+| ------------------ |
+| English (wd:Q1860) |","SELECT ?actress WHERE {
+  wd:Q4892194 wdt:P1412 ?actress
+}"
+Did the film The Godfather win any Academy Award?,Yes,,,
+Who was interested in the novel Emma?,Northanger Abbey,Jane Austen,"| author                  |
+| ----------------------- |
+| Jane Austen (wd:Q36322) |","SELECT ?author WHERE {
+  wd:Q223880 wdt:P50 ?author
+}"
+In which division did Daniel Farke manage Borussia Dortmund II?,Regionalliga West,Regionalliga West (lang:en),"| divisionLabel               |
+| --------------------------- |
+| Regionalliga West (lang:en) |","SELECT ?divisionLabel WHERE {
+  wd:Q865720 wdt:P118 ?division .
+  ?division rdfs:label ?divisionLabel .
+  FILTER(LANG(?divisionLabel) = 'en')
+  .
+}"
+What is the One Hundred Years of Solitude book's country of origin?,Argentina,Argentina,"| country             |
+| ------------------- |
+| Argentina (wd:Q414) |","SELECT ?country WHERE {
+  wd:Q178869 wdt:P495 ?country .
+}"
+What was the cost to make Titanic?,$200 million,200000000.0,"| budget                    |
+| ------------------------- |
+| 200000000.0 (xsd:decimal) |","SELECT ?budget WHERE {
+  wd:Q44578 wdt:P2130 ?budget
+}"
+what was author the book Brave New World?,Aldous Huxley,Aldous Huxley,"| author                    |
+| ------------------------- |
+| Aldous Huxley (wd:Q81447) |","SELECT ?author WHERE {
+  wd:Q191949 wdt:P50 ?author
+}"
+What is Entertainment Weekly rating of the album 30?,A–,,,"SELECT ?rating WHERE {
+  wd:Q108773286 p:P444 ?ratingStatement .
+  ?ratingStatement ps:P444 ?rating .
+  ?ratingStatement pr:P248 wd:Q275033 .
+}"
+What is the box office collection of Boyhood movie?,57.3 million USD,"25379975.0
+57200000.0
+57273049.0","| boxOffice                |
+| ------------------------ |
+| 25379975.0 (xsd:decimal) |
+| 57200000.0 (xsd:decimal) |
+| 57273049.0 (xsd:decimal) |","SELECT ?boxOffice WHERE {
+  wd:Q4103201 wdt:P2142 ?boxOffice
+}"
+"Who played Fiona ""Fi"" Phillips in So Weird?",Cara DeLizia,,,"SELECT ?actorLabel WHERE {
+  wd:Q1418559 p:P161 ?statement .
+  ?statement ps:P161 ?actor .
+  ?statement pq:P445 ?character .
+  FILTER(STR(?character) = ""Fiona 'Fi' Phillips"")
+  ?actor rdfs:label ?actorLabel .
+  FILTER(LANG(?actorLabel) = ""en"")
+}"
+Was Cara DeLizia in Boston Public?,Yes,,,
+What is Game of Thrones based on?,A Song of Ice and Fire,A Song of Ice and Fire,"| basedOn                            |
+| ---------------------------------- |
+| A Song of Ice and Fire (wd:Q45875) |","SELECT ?basedOn WHERE {
+  wd:Q23572 wdt:P144 ?basedOn
+}"
+Did The Godfather movie win the Academy Award for best picture?,yes,,,
+What is Paolo Maldini's surname?,Maldini,,,
+What is Stadio Artemio Franchi's home team?,ACF Fiorentina,"Monselice Calcio 1926
+1968 UEFA European Championship
+ACF Fiorentina
+wd:Q4005296","| team                                         |
+| -------------------------------------------- |
+| Monselice Calcio 1926 (wd:Q1648612)          |
+| 1968 UEFA European Championship (wd:Q182201) |
+| ACF Fiorentina (wd:Q2052)                    |
+| wd:Q4005296                                  |","SELECT ?team WHERE {
+  ?team wdt:P115 wd:Q270474
+}"
+did James Camero direct Avatar?,yes,,,
+Has the movie The Godfather won any Academy Award?,Yes,,,
+Is 365 days nominated for worst picture in Golden Raspberry Awards?,Yes,,,
+Which club was Neymar transferred to from the football club Barcelona?,Paris Saint-Germain F.C.,,,"SELECT ?club WHERE {
+  wd:Q142794 wdt:P12694 ?club .
+}"
+Who played Steven Harper in Boston Public?,Chi McBride,,,"SELECT ?actor WHERE {
+  wd:Q894582 p:P161 ?role .
+  ?role ps:P161 ?actor ; pq:P276 ?character .
+  ?character rdfs:label ""Steven Harper"" @en
+}"
+What is the length of Karma Police song in Ok Computer?,4:25,,,"SELECT ?duration WHERE {
+  wd:Q1750699 wdt:P495 ?duration .
+}"
+Who played the character of Arya Iyer in Decoupled?,R. Madhavan,,,"SELECT ?actor WHERE {
+  wd:Q110323803 p:P161 ?statement ; ps:P161 ?actor ; pq:P4633 ""Arya Iyer"" .
+}"
+Who played the Character of Barney Ross in the The Expendables series?,Sylvester Stallone,,,"SELECT ?actor WHERE {
+  wd:Q206374 p:P161 ?statement ; ps:P161 ?actor .
+  ?statement pq:P1231 ""Barney Ross"" @en .
+}"
+Was Do You Wanna Ride? on Billboard's US Top R&B/Hip-Hop Album chart?,Yes,,,"SELECT ?position WHERE {
+  wd:Q5286394 p:P1152 ?positionStatement .
+  ?positionStatement pq:P139 wd:Q2001897 .
+  ?positionStatement ps:P1152 ?position
+}"
+In which city is Millennium Stadium located?,Cardiff,Cardiff (lang:en),"| cityLabel         |
+| ----------------- |
+| Cardiff (lang:en) |","SELECT ?cityLabel WHERE {
+  wd:Q204496 wdt:P131 ?city .
+  ?city rdfs:label ?cityLabel .
+  FILTER(LANG(?cityLabel) = 'en')
+}"
+Did J. Michael Tatum play Kuroko in Kuroko's Basketball?,No,,,
+Which Tears for Fears member wrote the songs on The Hurting?,Roland Orzabal,,,"SELECT DISTINCT ?member ?memberLabel WHERE {
+  wd:Q269091 wdt:P527 ?member .
+  SERVICE wikibase:label {
+    bd:serviceParam wikibase:language ""en"" .
+  }
+}"
+Who played the part Carmen in the movie Spy Kids?,Alexa Vega,,,"SELECT ?actor ?actorLabel WHERE {
+  wd:Q550581 p:P161 ?statement .
+  ?statement ps:P161 ?actor .
+  ?statement pq:P527 ?role .
+  ?role rdfs:label ?roleLabel .
+  FILTER(LANG(?roleLabel) = ""en"")
+  FILTER regex(STR(?roleLabel) , ""carmen"" , ""i"")
+  OPTIONAL {
+    ?actor rdfs:label ?actorLabel .
+    FILTER(LANG(?actorLabel) = ""en"")
+  }
+}"
+"What actress played Fiona ""Fi"" Phillips in So Weird?",Cara DeLizia,,,"SELECT ?actress WHERE {
+  wd:Q1418559 wdt:P161 ?actress .
+  ?actress wdt:P453 ""Fiona 'Fi' Phillips"" .
+}"
+"Which country awarded the author Najib Mahfouz by ""Grand Cordon of the Order of the Nile""?",Egypt,,,"SELECT ?country WHERE {
+  wd:Q7176 wdt:P166 ?award .
+  ?award wdt:P17 ?country .
+  FILTER EXISTS {
+    ?award rdfs:label ""Grand Cordon of the Order of the Nile"" @en
+  }
+}"
+Francesco Totti played for which country?,Italy,Italy,"| country        |
+| -------------- |
+| Italy (wd:Q38) |","SELECT ?country WHERE {
+  wd:Q20110 wdt:P27 ?country
+}"
+What is the budget of Boyhood movie?,4 million USD,4000000.0,"| budget                  |
+| ----------------------- |
+| 4000000.0 (xsd:decimal) |","SELECT ?budget WHERE {
+  wd:Q4103201 wdt:P2130 ?budget
+}"
+Which series had Hugh Bonneville as the The Earl of Grantham?,Downton Abbey,,,"SELECT ?series WHERE {
+  wd:Q155775 wdt:P161 ?role .
+  ?role wdt:P31 wd:Q177220 ; rdfs:label ?roleLabel .
+  FILTER(LANG(?roleLabel) = 'en')
+  .
+  ?role wdt:P1472 ?roleName .
+  FILTER(CONTAINS(STR(?roleName) , 'Earl of Grantham'))
+  .
+  ?series wdt:P161 ?role
+}"
+What movie did Rob Lowe win a Golden Raspberry Awards for?,St. Elmo's Fire,,,"SELECT ?movie ?movieLabel WHERE {
+  wd:Q296505 wdt:P166 ?award .
+  ?award rdfs:label ?awardLabel .
+  FILTER(CONTAINS(LCASE(?awardLabel) , 'golden raspberry') || CONTAINS(LCASE(?awardLabel) , 'razzie'))
+  .
+  ?award wdt:P180 ?movie .
+  ?movie rdfs:label ?movieLabel .
+  FILTER(LANG(?movieLabel) = 'en')
+  .
+}"
+Who played the role of the former boxer in the movie Real Steel?,Hugh Jackman,,,"SELECT ?actorLabel WHERE {
+  wd:Q261759 p:P161 ?castStatement .
+  ?castStatement ps:P161 ?actor .
+  ?castStatement pq:P1698 ""Charlie Kenton"" @en .
+  ?actor rdfs:label ?actorLabel .
+  FILTER(LANG(?actorLabel) = ""en"")
 }"
 what is genre of the series the Sopranos?,crime serial,"drama television series (lang:en)
 crime television series (lang:en)","| genreLabel                        |
@@ -1853,186 +2017,295 @@ crime television series (lang:en)","| genreLabel                        |
 | crime television series (lang:en) |","SELECT ?genreLabel WHERE {
   wd:Q23628 wdt:P136 ?genre .
   ?genre rdfs:label ?genreLabel .
-  FILTER(LANG(?genreLabel) = ""en"")
-}"
-What is the name of the author who wrote A Tale of Two Cities?,Charles Dickens,"wd:Q5686|Charles Dickens (lang:en)
-wd:Q5686|Charles Dickens (lang:en)
-wd:Q5686|Charles Dickens (lang:en)
-wd:Q5686|Charles Dickens (lang:en)
-wd:Q86529825|Kwabena Adjei (lang:en)","| author       | authorLabel               |
-| ------------ | ------------------------- |
-| wd:Q5686     | Charles Dickens (lang:en) |
-| wd:Q5686     | Charles Dickens (lang:en) |
-| wd:Q5686     | Charles Dickens (lang:en) |
-| wd:Q5686     | Charles Dickens (lang:en) |
-| wd:Q86529825 | Kwabena Adjei (lang:en)   |","SELECT ?author ?authorLabel WHERE {
-  ?work wdt:P1476 ""A Tale of Two Cities"" @en ; wdt:P50 ?author .
-  ?author rdfs:label ?authorLabel .
-  FILTER(LANG(?authorLabel) = ""en"")
-}"
-What is Billie Eilish's medical condition?,"Tourette syndrome, synesthesia",,,"SELECT ?subject WHERE {
-  wd:Q29564107 wdt:P1075 ?condition ; wdt:P2865 ?condition
-}"
-Who is their current manufacturer of of their uniform kits?,Adidas,,,"SELECT ?manufacturer WHERE {
-  wd:Q2753 wdt:P1473 ?manufacturer
-}"
-What is the Metacritic rating of the music album 30?,88/100,,,"SELECT ?rating WHERE {
-  ?album wdt:P31 wd:Q386724 ; wdt:P1476 ""30"" ; wdt:P1328 ?rating .
-}"
-Was J. Michael Tatum a VA in Kuroko's Basketball?,Yes,,,
-Who is the film composer for Troy?,James Horner,,,"SELECT ?composerLabel WHERE {
-  ?movie wdt:P1476 ""Troy"" @en ; wdt:P31 wd:Q11424 ; wdt:P158 ?composer .
-  ?composer rdfs:label ?composerLabel .
-  FILTER(LANG(?composerLabel) = ""en"")
-}"
-Where did Kylie Minogue's Fever album peak on the US chart?,3,,,"SELECT ?position WHERE {
-  ?album wdt:P31 wd:Q386724 ; rdfs:label ""Fever"" @en ; wdt:P50 wd:Q20832 .
-  ?album p:P453 ?chartEntry .
-  ?chartEntry ps:P453 ?position .
-  ?chartEntry pr:P245 wd:Q232551 .
-}"
-What is the name of the actor who won the Academy Award for Best Actor for his performance in The King's Speech?,Colin Firth,,,"SELECT ?actor ?actorLabel WHERE {
-  wd:Q4813191 wdt:P166 ?award .
-  ?award wdt:P1600 ?actor .
-  ?actor rdfs:label ?actorLabel .
-  FILTER(LANG(?actorLabel) = 'en')
-  .
-}"
-Who wrote A Tale of Two Cities?,Charles Dickens,,,"SELECT ?author WHERE {
-  ?book wdt:P1476 ""A Tale of Two Cities"" ; wdt:P50 ?author .
-}"
-What is the length of Airbag song?,4:44,,,"SELECT ?duration WHERE {
-  wd:Q5179669 wdt:P493 ?duration .
-}"
-"What actor played Robert Crawley, 7th Earl of Grantham in the TV series Downton Abbey?",Hugh Bonneville,,,"SELECT ?actor WHERE {
-  wd:Q148153 wdt:P161 ?actor .
-  ?actor wdt:P1314 ?character .
-  ?character rdfs:label ""Robert Crawley, 7th Earl of Grantham"" @en
-}"
-Which shows besides The 100 won the Saturn Award for Best Youth-Oriented Television Series?,Teen Wolf,,,"SELECT ?show WHERE {
-  wd:Q15970395 wdt:P166 ?award ; wdt:P31 wd:Q482901 .
-  ?show wdt:P166 ?award ; wdt:P31 wd:Q482901 .
-  FILTER(?show != wd:Q15970395)
-}"
-"What book is the basis for the series, Game of Thrones?",A Song of Ice and Fire,,,"SELECT ?seriesLabel WHERE {
-  wd:Q515543 wdt:P356 ?series .
-  ?series rdfs:label ?seriesLabel .
-  FILTER(LANGMATCHES(LANG(?seriesLabel) , ""en""))
-}"
-What album was the Blue Oyster Cult song Godzilla on?,Spectres,,,"SELECT ?albumLabel WHERE {
-  ?song wdt:P175 wd:Q295548 ; wdt:P1476 ""Godzilla"" .
-  ?song wdt:P623 ?album .
-  ?album rdfs:label ?albumLabel .
-  FILTER(LANG(?albumLabel) = 'en')
-}"
-what is main subject of the book Great Expectations?,orphan,,,"SELECT ?subjectLabel WHERE {
-  ?book wdt:P31 wd:Q571 ; rdfs:label ""Great Expectations"" @en ; wdt:P921 ?subject .
-  ?subject rdfs:label ?subjectLabel .
-  FILTER(LANG(?subjectLabel) = 'en')
-}"
-Was Joel Schumacher the director of The Phantom of the Opera??,Yes,,,
-What is the basis for the book unexpected journey?,The Hobbit,,,"SELECT ?book WHERE {
-  wd:Q189227 wdt:P144 ?book .
-}"
-Who played bass guitar for the band Graduate?,Curt Smith,,,"SELECT ?person WHERE {
-  ?band wdt:P31 wd:Q386358 ; rdfs:label ""Graduate"" @en .
-  ?band wdt:P355 ?person .
-  ?person wdt:P106 wd:Q8508 .
-}"
-Who is filming the Troy movie in which location?,Mexico. Malta,,,"SELECT ?directorLabel ?locationLabel WHERE {
-  wd:Q122722 wdt:P161 ?director ; wdt:P2882 ?location .
-  ?director rdfs:label ?directorLabel .
-  ?location rdfs:label ?locationLabel .
-  FILTER(LANG(?directorLabel) = 'en')
-  .
-  FILTER(LANG(?locationLabel) = 'en')
-  .
-}"
-Where was Hawaii Five-O filmed?,"Oahu, Hawaii",,,"SELECT ?locationLabel WHERE {
-  wd:Q261372 wdt:P1503 ?location .
-  ?location rdfs:label ?locationLabel .
-  FILTER(LANG(?locationLabel) = 'en')
-}"
-What actor played Michael Corleone in The Godfather series?,Al Pacino,,,"SELECT ?actor WHERE {
-  wd:Q141914 p:P161 ?statement .
-  ?statement ps:P161 ?actor .
-  ?statement pq:P358 wd:Q1282444 .
-}"
-What is the name of the Belgian club where Włodzimierz Lubański was a member?,K.S.C. Lokeren Oost-Vlaanderen,,,"SELECT DISTINCT ?clubName WHERE {
-  wd:Q198214 wdt:P2013 ?club .
-  ?club wdt:P17 wd:Q31 .
-  ?club rdfs:label ?clubName .
-  FILTER(LANG(?clubName) = 'en')
-}"
-what was the genre of the series The Sopranos?,crime serial,,,"SELECT ?genreLabel WHERE {
-  wd:Q453300 wdt:P31 wd:Q14602565 ; wdt:P136 ?genre .
-  ?genre rdfs:label ?genreLabel .
   FILTER(LANG(?genreLabel) = 'en')
 }"
-Who played the part Juni Cortez in the movie Spy Kids?,Daryl Sabara,,,"SELECT ?actor ?actorLabel WHERE {
-  wd:Q192967 p:P161 ?cast ; ps:P161 ?actor ; pq:P2180 ""Juni Cortez"" .
+What is the name of the author who wrote A Tale of Two Cities?,Charles Dickens,"Charles Dickens (lang:en)
+Charles Dickens (lang:en-ca)
+Charles Dickens (lang:en-gb)","| authorLabel                  |
+| ---------------------------- |
+| Charles Dickens (lang:en)    |
+| Charles Dickens (lang:en-ca) |
+| Charles Dickens (lang:en-gb) |","SELECT ?authorLabel WHERE {
+  wd:Q308918 wdt:P50 ?author .
+  ?author rdfs:label ?authorLabel .
+  FILTER(langMatches(lang(?authorLabel) , 'en'))
+}"
+What is Billie Eilish's medical condition?,"Tourette syndrome, synesthesia","synesthesia
+Tourette syndrome
+depression","| condition                      |
+| ------------------------------ |
+| synesthesia (wd:Q13258)        |
+| Tourette syndrome (wd:Q191779) |
+| depression (wd:Q4340209)       |","SELECT ?condition WHERE {
+  wd:Q29564107 wdt:P1050 ?condition
+}"
+Who is their current manufacturer of of their uniform kits?,Adidas,Nike (lang:en),"| manufacturerLabel |
+| ----------------- |
+| Nike (lang:en)    |","SELECT ?manufacturerLabel WHERE {
+  wd:Q7156 wdt:P5995 ?manufacturer .
+  ?manufacturer rdfs:label ?manufacturerLabel .
+  FILTER(LANG(?manufacturerLabel) = 'en')
+}"
+What is the Metacritic rating of the music album 30?,88/100,,,"SELECT ?score WHERE {
+  wd:Q108773286 p:P2643 ?statement .
+  ?statement ps:P2643 ?score .
+  ?statement pr:P248 wd:Q825579 .
+}"
+Was J. Michael Tatum a VA in Kuroko's Basketball?,Yes,,,
+Who is the film composer for Troy?,James Horner,James Horner|James Horner (lang:en),"| composer                  | composerLabel          |
+| ------------------------- | ---------------------- |
+| James Horner (wd:Q106221) | James Horner (lang:en) |","SELECT ?composer ?composerLabel WHERE {
+  wd:Q186587 wdt:P86 ?composer .
+  ?composer rdfs:label ?composerLabel .
+  FILTER(LANG(?composerLabel) = 'en')
+}"
+Where did Kylie Minogue's Fever album peak on the US chart?,3,,,"SELECT ?position WHERE {
+  wd:Q156710 p:P538 ?statement .
+  ?statement pq:P1034 wd:Q188819 .
+  ?statement ps:P538 ?position .
+}"
+What is the name of the actor who won the Academy Award for Best Actor for his performance in The King's Speech?,Colin Firth,"Tariq Anwar|Tariq Anwar (lang:en)
+Gareth Unwin|Gareth Unwin (lang:en)
+Emile Sherman|Emile Sherman (lang:en)
+Colin Firth|Colin Firth (lang:en)
+Colin Firth|Colin Firth (lang:en)
+Iain Canning|Iain Canning (lang:en)
+Tom Hooper|Tom Hooper (lang:en)
+Tom Hooper|Tom Hooper (lang:en)
+Tom Hooper|Tom Hooper (lang:en)
+David Seidler|David Seidler (lang:en)","| actor                        | actorLabel              |
+| ---------------------------- | ----------------------- |
+| Tariq Anwar (wd:Q1358042)    | Tariq Anwar (lang:en)   |
+| Gareth Unwin (wd:Q1494198)   | Gareth Unwin (lang:en)  |
+| Emile Sherman (wd:Q15808023) | Emile Sherman (lang:en) |
+| Colin Firth (wd:Q162492)     | Colin Firth (lang:en)   |
+| Colin Firth (wd:Q162492)     | Colin Firth (lang:en)   |
+| Iain Canning (wd:Q2514268)   | Iain Canning (lang:en)  |
+| Tom Hooper (wd:Q295912)      | Tom Hooper (lang:en)    |
+| Tom Hooper (wd:Q295912)      | Tom Hooper (lang:en)    |
+| Tom Hooper (wd:Q295912)      | Tom Hooper (lang:en)    |
+| David Seidler (wd:Q972585)   | David Seidler (lang:en) |","SELECT ?actor ?actorLabel WHERE {
+  wd:Q160060 p:P166 ?award_statement .
+  ?award_statement ps:P166 ?award .
+  ?award_statement pq:P1346 ?actor .
   OPTIONAL {
     ?actor rdfs:label ?actorLabel .
-    FILTER(LANG(?actorLabel) = 'en')
-    .
+    FILTER(lang(?actorLabel) = ""en"")
   }
 }"
-What was the subtitle of the book Jane Eyre?,An Autobiography,,,"SELECT ?subtitle WHERE {
-  wd:Q16315 wdt:P1815 ?subtitle .
+Who wrote A Tale of Two Cities?,Charles Dickens,Charles Dickens,"| author                     |
+| -------------------------- |
+| Charles Dickens (wd:Q5686) |","SELECT ?author WHERE {
+  wd:Q308918 wdt:P50 ?author
 }"
-Which grammy award did Diano Ross get?,Grammy Lifetime Achievement Award,,,"SELECT ?awardLabel WHERE {
-  wd:Q15913 wdt:P166 ?award .
+What is the length of Airbag song?,4:44,,,"SELECT ?duration WHERE {
+  wd:Q4385414 wdt:P2047 ?duration
+}"
+"What actor played Robert Crawley, 7th Earl of Grantham in the TV series Downton Abbey?",Hugh Bonneville,,,"SELECT ?actor WHERE {
+  wd:Q155775 wdt:P161 wd:Q83071
+}"
+Which shows besides The 100 won the Saturn Award for Best Youth-Oriented Television Series?,Teen Wolf,,,"SELECT DISTINCT ?show ?showLabel WHERE {
+  ?award wdt:P1641 wd:Q15844072 .
+  ?award wdt:P1652 ?show .
+  ?show wdt:P31 wd:Q13499850 .
+  FILTER(?show != wd:Q13098946)
+  SERVICE wikibase:label {
+    bd:serviceParam wikibase:language ""en""
+  }
+}"
+"What book is the basis for the series, Game of Thrones?",A Song of Ice and Fire,,,"SELECT ?basisLabel WHERE {
+  wd:Q23572 wdt:P1467 ?basis .
+  ?basis rdfs:label ?basisLabel
+  FILTER(langMatches(lang(?basisLabel) , ""en""))
+}"
+What album was the Blue Oyster Cult song Godzilla on?,Spectres,,,"SELECT ?album WHERE {
+  ?song wdt:P170 wd:Q331016 ; rdfs:label 'Godzilla' @en ; wdt:P528 ?album .
+  ?album wdt:P31 wd:Q386724 .
+}"
+what is main subject of the book Great Expectations?,orphan,orphan,"| subject             |
+| ------------------- |
+| orphan (wd:Q193279) |","SELECT ?subject WHERE {
+  wd:Q219552 wdt:P921 ?subject .
+}"
+Was Joel Schumacher the director of The Phantom of the Opera??,Yes,,,
+What is the basis for the book unexpected journey?,The Hobbit,J. H. Pearce (lang:en),"| authorLabel            |
+| ---------------------- |
+| J. H. Pearce (lang:en) |","SELECT ?authorLabel WHERE {
+  wd:Q137530406 wdt:P50 ?author .
+  ?author rdfs:label ?authorLabel .
+  FILTER(LANG(?authorLabel) = 'en')
+}"
+Who played bass guitar for the band Graduate?,Curt Smith,"Roland Orzabal||singer (lang:en)
+Roland Orzabal||singer-songwriter (lang:en)
+Roland Orzabal||musician (lang:en)
+Roland Orzabal||guitarist (lang:en)","| member                      | memberLabel | roleLabel                   |
+| --------------------------- | ----------- | --------------------------- |
+| Roland Orzabal (wd:Q554025) |             | singer (lang:en)            |
+| Roland Orzabal (wd:Q554025) |             | singer-songwriter (lang:en) |
+| Roland Orzabal (wd:Q554025) |             | musician (lang:en)          |
+| Roland Orzabal (wd:Q554025) |             | guitarist (lang:en)         |","SELECT ?member ?memberLabel ?roleLabel WHERE {
+  wd:Q3774163 wdt:P527 ?member .
+  ?member wdt:P106 ?role .
+  ?role rdfs:label ?roleLabel .
+  FILTER(LANG(?roleLabel) = 'en')
+}"
+Who is filming the Troy movie in which location?,Mexico. Malta,,,"SELECT ?directorLabel ?locationLabel WHERE {
+  wd:Q186587 wdt:P57 ?director ; wdt:P2520 ?location .
+  OPTIONAL {
+    ?director rdfs:label ?directorLabel .
+    FILTER(LANG(?directorLabel) = ""en"")
+  }
+  OPTIONAL {
+    ?location rdfs:label ?locationLabel .
+    FILTER(LANG(?locationLabel) = ""en"")
+  }
+}"
+Where was Hawaii Five-O filmed?,"Oahu, Hawaii",Oahu|Oahu (lang:en),"| location          | locationLabel  |
+| ----------------- | -------------- |
+| Oahu (wd:Q131347) | Oahu (lang:en) |","SELECT ?location ?locationLabel WHERE {
+  wd:Q728443 wdt:P915 ?location .
+  ?location rdfs:label ?locationLabel .
+  FILTER(LANG(?locationLabel) = 'en')
+}"
+What actor played Michael Corleone in The Godfather series?,Al Pacino,Al Pacino,"| actor                 |
+| --------------------- |
+| Al Pacino (wd:Q41163) |","SELECT ?actor WHERE {
+  wd:Q835154 wdt:P175 ?actor
+}"
+What is the name of the Belgian club where Włodzimierz Lubański was a member?,K.S.C. Lokeren Oost-Vlaanderen,,,"SELECT ?club ?clubLabel WHERE {
+  wd:Q313446 wdt:P54 ?club .
+  SERVICE wikibase:label {
+    bd:serviceParam wikibase:language ""[AUTO_LANGUAGE],en"" .
+    ?club rdfs:label ?clubLabel
+  }
+}"
+what was the genre of the series The Sopranos?,crime serial,"drama television series (lang:en)
+crime television series (lang:en)","| genreLabel                        |
+| --------------------------------- |
+| drama television series (lang:en) |
+| crime television series (lang:en) |","SELECT ?genreLabel WHERE {
+  wd:Q23628 wdt:P136 ?genre .
+  ?genre rdfs:label ?genreLabel .
+  FILTER(LANG(?genreLabel) = ""en"")
+}"
+Who played the part Juni Cortez in the movie Spy Kids?,Daryl Sabara,,,"SELECT ?actor ?actorLabel WHERE {
+  wd:Q550581 p:P161 ?castingStatement .
+  ?castingStatement ps:P161 ?actor .
+  ?castingStatement pq:P378 ""Juni"" .
+  OPTIONAL {
+    ?actor rdfs:label ?actorLabel .
+    FILTER(lang(?actorLabel) = ""en"")
+  }
+}"
+What was the subtitle of the book Jane Eyre?,An Autobiography,An Autobiography (lang:en),"| subtitle                   |
+| -------------------------- |
+| An Autobiography (lang:en) |","SELECT ?subtitle WHERE {
+  wd:Q182961 wdt:P1680 ?subtitle
+}"
+Which grammy award did Diano Ross get?,Grammy Lifetime Achievement Award,"Commandeur des Arts et des Lettres|Commandeur des Arts et des Lettres (lang:en)
+Presidential Medal of Freedom|Presidential Medal of Freedom (lang:en)
+Kennedy Center Honors|Kennedy Center Honors (lang:en)
+star on Hollywood Walk of Fame|star on Hollywood Walk of Fame (lang:en)
+Michigan Women's Hall of Fame|Michigan Women's Hall of Fame (lang:en)
+Honorary César|Honorary César (lang:en)
+Grammy Lifetime Achievement Award|Grammy Lifetime Achievement Award (lang:en)","| award                                             | awardLabel                                   |
+| ------------------------------------------------- | -------------------------------------------- |
+| Commandeur des Arts et des Lettres (wd:Q13452531) | Commandeur des Arts et des Lettres (lang:en) |
+| Presidential Medal of Freedom (wd:Q17144)         | Presidential Medal of Freedom (lang:en)      |
+| Kennedy Center Honors (wd:Q1738793)               | Kennedy Center Honors (lang:en)              |
+| star on Hollywood Walk of Fame (wd:Q17985761)     | star on Hollywood Walk of Fame (lang:en)     |
+| Michigan Women's Hall of Fame (wd:Q6837811)       | Michigan Women's Hall of Fame (lang:en)      |
+| Honorary César (wd:Q727282)                       | Honorary César (lang:en)                     |
+| Grammy Lifetime Achievement Award (wd:Q935843)    | Grammy Lifetime Achievement Award (lang:en)  |","SELECT ?award ?awardLabel WHERE {
+  wd:Q36290 wdt:P166 ?award .
   ?award rdfs:label ?awardLabel .
-  FILTER(LANG(?awardLabel) = ""en"")
+  FILTER(LANG(?awardLabel) = 'en')
 }"
 Ho many international game did Beckham played for England?,14,,,"SELECT ?caps WHERE {
-  wd:Q44012 wdt:P1627 ?caps
+  wd:Q10520 wdt:P1129 ?caps
 }"
-Who played the role of the former boxer Charlie's son in the movie Real steel?,Dakota Goyo,,,"SELECT ?actor WHERE {
-  wd:Q377644 p:P161 ?statement .
+Who played the role of the former boxer Charlie's son in the movie Real steel?,Dakota Goyo,Dakota Goyo,"| actor                    |
+| ------------------------ |
+| Dakota Goyo (wd:Q241497) |","SELECT ?actor WHERE {
+  wd:Q261759 p:P161 ?statement .
   ?statement ps:P161 ?actor .
-  ?statement pq:P1369 ""Max Kenton"" .
+  ?actor rdfs:label 'Dakota Goyo' @en
 }"
-Which is the final movie of the The Terminator series?,Terminator: Dark Fate,,,"SELECT ?movie ?movieLabel WHERE {
-  ?movie wdt:P361 wd:Q21504989 .
-  ?movie wdt:P577 ?releaseDate .
-  ?movie rdfs:label ?movieLabel .
-  FILTER(LANG(?movieLabel) = 'en')
-}
-ORDER BY DESC(?releaseDate)
-LIMIT 1"
+Which is the final movie of the The Terminator series?,Terminator: Dark Fate,"Terminator: Dark Fate
+Terminator: Dark Fate
+wd:Q137941088
+Terminator: Dark Fate
+Terminator: Dark Fate","| film                                  |
+| ------------------------------------- |
+| Terminator: Dark Fate (wd:Q124714619) |
+| Terminator: Dark Fate (wd:Q124714629) |
+| wd:Q137941088                         |
+| Terminator: Dark Fate (wd:Q39072454)  |
+| Terminator: Dark Fate (wd:Q86877619)  |","SELECT ?film WHERE {
+  ?film rdfs:label ""Terminator: Dark Fate"" @en .
+}"
 What actor plays Lady Mary in the TV series Downton Actor?,Michelle Dockery,,,"SELECT ?actor WHERE {
-  wd:Q5330062 p:P161 ?statement .
+  wd:Q83071 p:P161 ?statement .
   ?statement ps:P161 ?actor .
-  ?statement pq:P136 ?role .
-  ?role rdfs:label ""Lady Mary"" @en .
+  ?statement pq:P570 ?role .
+  ?role rdfs:label ""Lady Mary"" @en
 }"
-What book was the final one in the Little Women series?,Jo's Boys,,,"SELECT ?book ?bookLabel WHERE { wd:Q566088 wdt:P179 ?series . ?book wdt:P179 ?series . ?book rdfs:label ?bookLabel . FILTER (LANG(?bookLabel) = 'en') . FILTER (CONTAINS(STR(?bookLabel), 'Jo's Boys')) }"
+What book was the final one in the Little Women series?,Jo's Boys,Jo's Boys|Jo's Boys (lang:en),"| finalBook               | finalBookLabel      |
+| ----------------------- | ------------------- |
+| Jo's Boys (wd:Q1436824) | Jo's Boys (lang:en) |","SELECT ?finalBook ?finalBookLabel WHERE {
+  wd:Q523076 wdt:P156 ?sequel1 .
+  ?sequel1 wdt:P156 ?finalBook .
+  OPTIONAL {
+    ?finalBook rdfs:label ?finalBookLabel .
+    FILTER(lang(?finalBookLabel) = ""en"")
+  }
+}"
 "Which actress played the lead role in the TV series, Buffy the Vampire Slayer?",Sarah Michelle Gellar,,,"SELECT ?actress WHERE {
-  wd:Q9519 wdt:P170 ?actress
+  wd:Q1799459 wdt:P1552 ?actress
 }"
-what is tittle of the book The Brothers Karamazov?,Братья Карамазовы,,,"SELECT ?title WHERE {
-  wd:Q546641 rdfs:label ?title .
+what is tittle of the book The Brothers Karamazov?,Братья Карамазовы,The Brothers Karamazov (lang:en),"| title                            |
+| -------------------------------- |
+| The Brothers Karamazov (lang:en) |","SELECT ?title WHERE {
+  wd:Q183157 rdfs:label ?title .
   FILTER(LANG(?title) = 'en')
 }"
-Hugh Bonneville appeared as the The Earl of Grantham in what TV show?,Downton Abbey,,,"SELECT ?show WHERE {
-  ?show wdt:P161 wd:Q151707 .
-  ?show p:P161 ?statement .
-  ?statement pq:P1613 ""Earl of Grantham"" .
+Hugh Bonneville appeared as the The Earl of Grantham in what TV show?,Downton Abbey,,,"SELECT DISTINCT ?show ?showLabel WHERE {
+  wd:Q155775 p:P161 ?roleStatement .
+  ?roleStatement pq:P1615 ""Robert Crawley"" @en .
+  ?roleStatement ps:P161 ?character .
+  ?character wdt:P178 ?show .
+  ?show wdt:P31 wd:Q12058062 .
+  ?show rdfs:label ?showLabel .
+  FILTER(LANG(?showLabel) = ""en"")
 }"
-"Does the star of Mission: Impossible III, Tom Cruise, have any television work experience?",Yes,,,
-What was the name of Cara Gee's character on The Expanse?,Camina Drummer,,,"SELECT ?characterName WHERE {
-  wd:Q3137019 p:P161 [ ps:P161 wd:Q6838768 ; pq:P4499 ?characterName ] .
-  FILTER(LANG(?characterName) = 'en')
+"Does the star of Mission: Impossible III, Tom Cruise, have any television work experience?",Yes,,,"SELECT ?work WHERE {
+  ?work wdt:P31 wd:Q3397247 , wd:Q183484 , wd:Q735288 .
+  ?work wdt:P161 wd:Q37079 .
+  SERVICE wikibase:label {
+    bd:serviceParam wikibase:language ""en""
+  }
 }"
-Who owns the club Paris Saint-Germain F.C.?,Tamim bin Hamad Al Thani,,,"SELECT ?owner WHERE {
-  wd:Q449720 wdt:P170 ?owner
+What was the name of Cara Gee's character on The Expanse?,Camina Drummer,,,"SELECT ?characterLabel WHERE {
+  wd:Q18389644 wdt:P161 ?actor .
+  ?actor rdfs:label ?actorLabel .
+  FILTER(LANGMATCHES(LANG(?actorLabel) , 'en'))
+  FILTER(CONTAINS(LCASE(?actorLabel) , 'cara'))
+  FILTER(CONTAINS(LCASE(?actorLabel) , 'gee'))
+  ?actor wdt:P453 ?character .
+  ?character rdfs:label ?characterLabel .
+  FILTER(LANGMATCHES(LANG(?characterLabel) , 'en'))
 }"
-What is the length of the burnout song of the album Dookie?,2:07,,,"SELECT ?duration WHERE {
-  wd:Q670696 wdt:P1476 ?track .
-  ?track rdfs:label 'Burnout' @en .
-  ?track wdt:P2131 ?duration .
+Who owns the club Paris Saint-Germain F.C.?,Tamim bin Hamad Al Thani,Qatar Sports Investments,"| owner                                   |
+| --------------------------------------- |
+| Qatar Sports Investments (wd:Q28221762) |","SELECT ?owner WHERE {
+  wd:Q483020 wdt:P127 ?owner
+}"
+What is the length of the burnout song of the album Dookie?,2:07,,,"SELECT ?track ?trackLabel WHERE {
+  wd:Q211292 p:P1702 ?trackList .
+  ?trackList ps:P1702 ?track .
+  ?track rdfs:label ?trackLabel .
+  FILTER(lang(?trackLabel) = 'en')
 }"
 What is the pitchfork rating of album Dookie?,8.7/10,,,"SELECT ?rating WHERE {
-  ?album rdfs:label ""Dookie"" @en ; wdt:P31 wd:Q4830453 ; wdt:P2245 ?rating .
+  wd:Q211292 p:P4271 ?statement ; ps:P4271 ?rating ; pr:P856 wd:Q2718884 .
 }"

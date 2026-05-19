@@ -661,16 +661,16 @@ def assign_taxonomy_label(metrics: Dict[str, float], gold_answer: Any, pred_answ
                 return "same"
             if gold_date.year == pred_date.year and pred_date.precision != gold_date.precision:
                 if pred_date.precision == "day" and gold_date.precision in {"year", "month"}:
-                    return "Higher accuracy in Wikidata than in Table"
+                    return "Higher accuracy in KG than in Table"
                 if gold_date.precision == "day" and pred_date.precision in {"year", "month"}:
-                    return "Higher accuracy in Table than in Wikidata"
+                    return "Higher accuracy in Table than in KG"
 
     if f1_score >= SAME_THRESHOLD:
         return "same"
     if recall >= PERFECT_MATCH_THRESHOLD and precision < PERFECT_MATCH_THRESHOLD and pred_size > gold_size:
-        return "Higher accuracy in Wikidata than in Table"
+        return "Higher accuracy in KG than in Table"
     if precision >= PERFECT_MATCH_THRESHOLD and recall < PERFECT_MATCH_THRESHOLD and gold_size > pred_size:
-        return "Higher accuracy in Table than in Wikidata"
+        return "Higher accuracy in Table than in KG"
     if (
         gold_size == pred_size
         and recall <= LOW_SCORE_THRESHOLD

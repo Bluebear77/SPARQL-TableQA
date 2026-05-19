@@ -84,8 +84,8 @@ SOURCE_ROW_ID_COL = "source_row_id"
 
 VALID_LABELS = [
     "Same",
-    "Higher accuracy in Wikidata than in Table",
-    "Higher accuracy in Table than in Wikidata",
+    "Higher accuracy in KG than in Table",
+    "Higher accuracy in Table than in KG",
     "Different answer",
     "Temporal changes",
 ]
@@ -148,7 +148,7 @@ Examples:
 - [What country does the soccer player Johan Cruyff represent?; Netherlands; Kingdom of the Netherlands]
 - [What is the current population of Bora Bora?; 10,605; 10605]
 
-2. Higher accuracy in Wikidata than in Table
+2. Higher accuracy in KG than in Table
 Definition:
 The KG answer fully covers the Gold answer and provides additional correct detail, higher precision, or greater completeness. The Gold answer is a subset of the KG answer.
 Alternatively, the Gold answer refers to the same fact but with less precision.
@@ -161,7 +161,7 @@ Examples:
 - [What is the genre of the series The Sopranos?; crime serial; drama television series, crime television series]
   Explanation: The KG answer includes the Gold answer and extends it to a broader and more complete set of genres.
 
-3. Higher accuracy in Table than in Wikidata
+3. Higher accuracy in Table than in KG
 Definition:
 The Gold answer fully covers the KG answer and provides additional correct detail, higher precision, or greater completeness. The KG answer is a subset of the Gold answer.
 Alternatively, the KG answer refers to the same fact but with less precision.

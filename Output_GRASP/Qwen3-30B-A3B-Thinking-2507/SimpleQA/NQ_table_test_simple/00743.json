@@ -2,21 +2,21 @@
   "type": "output",
   "task": "sparql-qa",
   "output": {
-    "sparql": "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX wdt: <http://www.wikidata.org/prop/direct/>\nSELECT ?singer WHERE {\n  ?song rdfs:label \"You've Got a Friend in Me\" @en ; wdt:P86 ?singer .\n}",
+    "sparql": "PREFIX wd: <http://www.wikidata.org/entity/>\nPREFIX wdt: <http://www.wikidata.org/prop/direct/>\nSELECT ?singer WHERE {\n  wd:Q3302365 wdt:P175 ?singer .\n}",
     "kg": "wikidata",
-    "selections": "",
-    "result": "Got 1 row and 1 column:\n| singer     |\n| ---------- |\n| wd:Q318475 |",
+    "selections": "Using entities:\n- You've Got a Friend in Me (wd:Q3302365), also known as \"Toy Story theme song\":\n  - 1995 single by Randy Newman and Lyle Lovett\n  - is instance of single\n\nUsing properties:\n- performer (wd:P175 as wdt), also known as \"actor\", \"actress\", \"artist\", \"dancer\", \"musical artist\", etc.:\n  - actor, musician, band or other performer associated with this role or musical work",
+    "result": "Got 2 rows and 1 column:\n| singer                    |\n| ------------------------- |\n| Randy Newman (wd:Q318475) |\n| Lyle Lovett (wd:Q543637)  |",
     "endpoint": "https://qlever.dev/api/wikidata",
     "type": "answer",
-    "answer": "Randy Newman",
-    "formatted": "Randy Newman\n\nSPARQL query over wikidata:\n```sparql\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\nPREFIX wdt: <http://www.wikidata.org/prop/direct/>\nSELECT ?singer WHERE {\n  ?song rdfs:label \"You've Got a Friend in Me\" @en ; wdt:P86 ?singer .\n}\n```\n\nExecution result:\nGot 1 row and 1 column:\n| singer     |\n| ---------- |\n| wd:Q318475 |"
+    "answer": "Randy Newman and Lyle Lovett",
+    "formatted": "Randy Newman and Lyle Lovett\n\nSPARQL query over wikidata:\n```sparql\nPREFIX wd: <http://www.wikidata.org/entity/>\nPREFIX wdt: <http://www.wikidata.org/prop/direct/>\nSELECT ?singer WHERE {\n  wd:Q3302365 wdt:P175 ?singer .\n}\n```\n\nUsing entities:\n- You've Got a Friend in Me (wd:Q3302365), also known as \"Toy Story theme song\":\n  - 1995 single by Randy Newman and Lyle Lovett\n  - is instance of single\n\nUsing properties:\n- performer (wd:P175 as wdt), also known as \"actor\", \"actress\", \"artist\", \"dancer\", \"musical artist\", etc.:\n  - actor, musician, band or other performer associated with this role or musical work\n\nExecution result:\nGot 2 rows and 1 column:\n| singer                    |\n| ------------------------- |\n| Randy Newman (wd:Q318475) |\n| Lyle Lovett (wd:Q543637)  |"
   },
-  "elapsed": 33.924642,
+  "elapsed": 38.293745,
   "error": null,
   "messages": [
     {
       "role": "system",
-      "content": "You are a question answering assistant. Your job is to generate a SPARQL query to answer a given user question.\n\nYou should follow a step-by-step approach to generate the SPARQL query:\n1. Determine possible entities and properties implied by the user question.\n2. Search for the entities and properties in the knowledge graphs. Where applicable, constrain the searches with already identified entities and properties.\n3. Gradually build up the SPARQL query using the identified entities and properties. Start with simple queries and add more complexity as needed. Execute intermediate queries to get feedback and to verify your assumptions. You may need to refine or rethink your current plan based on the query results and go back to step 2 if needed, possibly multiple times.\n4. Use the answer or cancel function to finalize your answer and stop the generation process.\n\nAvailable knowledge graphs:\n- \"wikidata\" at https://qlever.dev/api/wikidata\n\nIndex types used:\n\n\nSPARQL prefixes for use in function calls:\n- bd: http://www.bigdata.com/rdf#\n- cc: http://creativecommons.org/ns#\n- data: https://www.wikidata.org/wiki/Special:EntityData/\n- dc: http://purl.org/dc/elements/1.1/\n- dct: http://purl.org/dc/terms/\n- foaf: http://xmlns.com/foaf/0.1/\n- geo: http://www.opengis.net/ont/geosparql#\n- geof: http://www.opengis.net/def/function/geosparql/\n- gn: http://www.geonames.org/ontology#\n- hint: http://www.bigdata.com/queryHints#\n- imdb: https://www.imdb.com/\n- math: http://www.w3.org/2005/xpath-functions/math#\n- ontolex: http://www.w3.org/ns/lemon/ontolex#\n- owl: http://www.w3.org/2002/07/owl#\n- p: http://www.wikidata.org/prop/\n- pq: http://www.wikidata.org/prop/qualifier/\n- pqn: http://www.wikidata.org/prop/qualifier/value-normalized/\n- pqv: http://www.wikidata.org/prop/qualifier/value/\n- pr: http://www.wikidata.org/prop/reference/\n- prn: http://www.wikidata.org/prop/reference/value-normalized/\n- prov: http://www.w3.org/ns/prov#\n- prv: http://www.wikidata.org/prop/reference/value/\n- ps: http://www.wikidata.org/prop/statement/\n- psn: http://www.wikidata.org/prop/statement/value-normalized/\n- psv: http://www.wikidata.org/prop/statement/value/\n- qb: http://purl.org/linked-data/cube#\n- qfn: http://qlever.cs.uni-freiburg.de/function#\n- ql: http://qlever.cs.uni-freiburg.de/builtin-functions/\n- qlss: https://qlever.cs.uni-freiburg.de/spatialSearch/\n- rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#\n- rdfs: http://www.w3.org/2000/01/rdf-schema#\n- ref: http://www.wikidata.org/reference/\n- s: http://www.wikidata.org/entity/statement/\n- schema: http://schema.org/\n- skos: http://www.w3.org/2004/02/skos/core#\n- v: http://www.wikidata.org/value/\n- void: http://rdfs.org/ns/void#\n- wd: http://www.wikidata.org/entity/\n- wdno: http://www.wikidata.org/prop/novalue/\n- wdt: http://www.wikidata.org/prop/direct/\n- wdtn: http://www.wikidata.org/prop/direct-normalized/\n- wikibase: http://wikiba.se/ontology#\n- xsd: http://www.w3.org/2001/XMLSchema#\n\nAdditional rules to follow:\n- Explain your thought process before and after each step and function call.\n- Do not ask the user for clarification until you have made an initial attempt at completing the task. When the task input is incomplete or ambiguous, proceed based on reasonable assumptions.\n- Do not use \"SERVICE wikibase:label { bd:serviceParam wikibase:language ...\" in SPARQL queries. It is unsupported by the used QLever SPARQL endpoints. Use rdfs:label or similar properties to get labels instead.\n- Always execute your final SPARQL query before giving an answer to make sure it returns the expected results.\n- The SPARQL query should always return the actual identifiers / IRIs of the items in its result. It additionally may return labels or other human-readable information, but they are optional and should be put within optional clauses unless explicitly requested by the user.\n- Do not stop early if there are still obvious improvements to be made to the SPARQL query. For example, keep refining your SPARQL query if its result contains irrelevant items or is missing items you expected.\n- Do not perform additional computation (e.g. filtering, sorting, calculations) on the result of the SPARQL query to determine the answer. All computation should be done solely within SPARQL.\n- For questions with a \"True\" or \"False\" answer the SPARQL query should be an ASK query."
+      "content": "You are a question answering assistant. Your job is to generate a SPARQL query to answer a given user question.\n\nYou should follow a step-by-step approach to generate the SPARQL query:\n1. Determine possible entities and properties implied by the user question.\n2. Search for the entities and properties in the knowledge graphs. Where applicable, constrain the searches with already identified entities and properties.\n3. Gradually build up the SPARQL query using the identified entities and properties. Start with simple queries and add more complexity as needed. Execute intermediate queries to get feedback and to verify your assumptions. You may need to refine or rethink your current plan based on the query results and go back to step 2 if needed, possibly multiple times.\n4. Use the answer or cancel function to finalize your answer and stop the generation process.\n\nAvailable knowledge graphs:\n- \"wikidata\" at https://qlever.dev/api/wikidata\n  - \"entity\" index (type=\"fuzzy\"): Entities indexed by their labels and synonyms\n  - \"property\" index (type=\"embedding\", modalities=\"text\"): Properties indexed by their labels, synonyms, and identifiers\n\nIndex types used:\n- \"embedding\": Retrieves items by cosine similarity between their embeddings and the query embedding. The embedding model used depends on the index and may support text, images, or both.\n- \"fuzzy\": Retrieves items by overlap between their label words and the query keywords. The query keywords must not match label words exactly, but some fuzziness is allowed. The longer a query keyword is, the more it can deviate from a label word and still be considered a match, though it will also contribute less to the overall score. No special query operators like AND/OR are supported.\n\nSPARQL prefixes for use in function calls:\n- bd: http://www.bigdata.com/rdf#\n- cc: http://creativecommons.org/ns#\n- data: https://www.wikidata.org/wiki/Special:EntityData/\n- dc: http://purl.org/dc/elements/1.1/\n- dct: http://purl.org/dc/terms/\n- foaf: http://xmlns.com/foaf/0.1/\n- geo: http://www.opengis.net/ont/geosparql#\n- geof: http://www.opengis.net/def/function/geosparql/\n- gn: http://www.geonames.org/ontology#\n- hint: http://www.bigdata.com/queryHints#\n- imdb: https://www.imdb.com/\n- math: http://www.w3.org/2005/xpath-functions/math#\n- ontolex: http://www.w3.org/ns/lemon/ontolex#\n- owl: http://www.w3.org/2002/07/owl#\n- p: http://www.wikidata.org/prop/\n- pq: http://www.wikidata.org/prop/qualifier/\n- pqn: http://www.wikidata.org/prop/qualifier/value-normalized/\n- pqv: http://www.wikidata.org/prop/qualifier/value/\n- pr: http://www.wikidata.org/prop/reference/\n- prn: http://www.wikidata.org/prop/reference/value-normalized/\n- prov: http://www.w3.org/ns/prov#\n- prv: http://www.wikidata.org/prop/reference/value/\n- ps: http://www.wikidata.org/prop/statement/\n- psn: http://www.wikidata.org/prop/statement/value-normalized/\n- psv: http://www.wikidata.org/prop/statement/value/\n- qb: http://purl.org/linked-data/cube#\n- qfn: http://qlever.cs.uni-freiburg.de/function#\n- ql: http://qlever.cs.uni-freiburg.de/builtin-functions/\n- qlss: https://qlever.cs.uni-freiburg.de/spatialSearch/\n- rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#\n- rdfs: http://www.w3.org/2000/01/rdf-schema#\n- ref: http://www.wikidata.org/reference/\n- s: http://www.wikidata.org/entity/statement/\n- schema: http://schema.org/\n- skos: http://www.w3.org/2004/02/skos/core#\n- v: http://www.wikidata.org/value/\n- void: http://rdfs.org/ns/void#\n- wd: http://www.wikidata.org/entity/\n- wdno: http://www.wikidata.org/prop/novalue/\n- wdt: http://www.wikidata.org/prop/direct/\n- wdtn: http://www.wikidata.org/prop/direct-normalized/\n- wikibase: http://wikiba.se/ontology#\n- xsd: http://www.w3.org/2001/XMLSchema#\n\nAdditional rules to follow:\n- Explain your thought process before and after each step and function call.\n- Do not ask the user for clarification until you have made an initial attempt at completing the task. When the task input is incomplete or ambiguous, proceed based on reasonable assumptions.\n- Do not use \"SERVICE wikibase:label { bd:serviceParam wikibase:language ...\" in SPARQL queries. It is unsupported by the used QLever SPARQL endpoints. Use rdfs:label or similar properties to get labels instead.\n- Always execute your final SPARQL query before giving an answer to make sure it returns the expected results.\n- The SPARQL query should always return the actual identifiers / IRIs of the items in its result. It additionally may return labels or other human-readable information, but they are optional and should be put within optional clauses unless explicitly requested by the user.\n- Do not stop early if there are still obvious improvements to be made to the SPARQL query. For example, keep refining your SPARQL query if its result contains irrelevant items or is missing items you expected.\n- Do not perform additional computation (e.g. filtering, sorting, calculations) on the result of the SPARQL query to determine the answer. All computation should be done solely within SPARQL.\n- For questions with a \"True\" or \"False\" answer the SPARQL query should be an ASK query."
     },
     {
       "role": "user",
@@ -25,89 +25,283 @@
     {
       "role": "assistant",
       "content": {
-        "id": "71e47fb6bc19496690d7b5b1bfcc104e",
+        "id": "37ed809827cc4e138411a64828c30ac3",
         "message": null,
         "reasoning": {
-          "id": "d1b085575a744ea8814762f6da7c3343",
-          "content": "Okay, let's see. The user is asking \"who sang the song you got a friend in me\". Hmm, I know that song from Toy Story. I think it's Randy Newman. But I need to confirm using Wikidata.\n\nFirst, I should figure out the correct entity for the song. The song title is \"You've Got a Friend in Me\". Maybe the song is part of the Toy Story movie soundtrack. So I need to find the correct song entity in Wikidata.\n\nWait, I should search for the song using the title. Let's use the search_entity function on Wikidata with the query \"you got a friend in me\". But maybe the exact title is slightly different. The song might be listed as \"You've Got a Friend in Me\" with an apostrophe. But the user wrote \"you got a friend in me\", so maybe that's the version they're referring to.\n\nLet me try searching for the song title. Using search_entity(kg=\"wikidata\", query=\"you got a friend in me\"). Wait, maybe first check the correct title. But I'll proceed with the search.\n\nAfter getting the song entity, I need to find the artist. The song is sung by Randy Newman and is featured in the Toy Story movies. So, the property for the artist would be P86 (sung by) or maybe P175 (performed by). Wait, in Wikidata, the property for the person who sang the song would be P175 (performer) or maybe P86 (sung by). Let's verify that.\n\nWait, P175 is \"performer\" which is the standard property for who performed a song. So for the song entity, we can look for p175.\n\nSo steps:\n\n1. Find the song entity with title \"You've Got a Friend in Me\".\n2. Get the performer from that entity.\n\nBut first, confirm the correct entity ID for the song. Let's use search_entity to find the song.\n\nWait, maybe search_entity isn't precise. Maybe I should use list to see properties related to the title. But the user provided the song title as the query, so using search_entity makes sense.\n\nLet me call search_entity with the query \"you got a friend in me\" to see if Wikidata has it. The actual title is \"You've Got a Friend in Me\", but maybe the search will handle it. Let's see.\n\nWait, maybe the title is in the rdfs:label, so search_entity should find it. Let's do that."
+          "id": "7d604a598ab249afb5f3384a6be4d3f6",
+          "content": "Okay, let's see. The user is asking \"who sang the song you got a friend in me\". Hmm, I know that song from Toy Story. I think it's Randy Newman. But I need to confirm using Wikidata.\n\nFirst, I should figure out the right approach. The song title is \"You've Got a Friend in Me\", right? Wait, the user wrote \"you got a friend in me\" which is a bit off, but probably refers to that song.\n\nSo I need to find the artist associated with that song on Wikidata. Let's start by searching for the song title.\n\nUsing the search_entity function on Wikidata with the query \"you got a friend in me\". Wait, the exact title might be \"You've Got a Friend in Me\" with an apostrophe. The user might have mistyped it, but I'll try both.\n\nWait, the song is officially \"You've Got a Friend in Me\" from Toy Story. Let me check using search_entity. Let me use the correct title first. Maybe the user missed the apostrophe.\n\nSo I'll call search_entity with kg=\"wikidata\", query=\"you've got a friend in me\". But the function expects a query string. Let's try that.\n\nWait, the tool function search_entity might handle the fuzzy search. Let me try that first.\n\nWait, the exact title in Wikidata might be \"You've Got a Friend in Me\". Let me check if the function can find it.\n\nBut maybe I should first find the song's entity. So using search_entity for the song title.\n\nAssuming the correct song title, the artist is Randy Newman. Let me verify.\n\nAlternatively, maybe I should use search_property to find the artist. But first, need the song entity.\n\nWait, step by step. Let's use search_entity for the song title.\n\nSo call search_entity with query \"you've got a friend in me\".\n\nWait, the user's question has \"you got a friend in me\" without the apostrophe. So maybe the query is \"you got a friend in me\". But maybe the system will still match.\n\nSo I'll run search_entity with that query.\n\nWait, the tool's search_entity uses the entity index (fuzzy), so it might find the right song even with the typo.\n\nLet me call search_entity(kg = \"wikidata\", query = \"you got a friend in me\").\n\nOnce I get the song entity, I can then look for the artist.\n\nThe artist would be related via the \"performed by\" property or \"composer\" or \"singer\". In Wikidata, for songs, the main artist is usually under the \"performer\" property or \"singer\" (P161).\n\nWait, for songs, the property for the performer might be \"composer\" (P800) or \"singer\" (P2048), but I think for a song like this, it's the artist who performed it.\n\nWait, \"You've Got a Friend in Me\" is by Randy Newman, and he also composed it. So the composer would be P800, and the performer might be similar.\n\nLet me check. Suppose I find the song's entity, then look for its composer or main performer.\n\nSo first, find the song entity with search_entity.\n\nOnce I have the entity, I can use list or search_property to find the relevant property.\n\nAlternatively, after getting the song entity, use a SPARQL query to find the performer.\n\nBut since I need to build the SPARQL step by step, let's proceed.\n\nFirst, search_entity for the song title."
         },
         "tool_calls": [
           {
-            "id": "chatcmpl-tool-8227cf3829920035",
+            "id": "chatcmpl-tool-b5bb4a18b5947d67",
             "name": "search_entity",
             "args": {
               "kg": "wikidata",
               "query": "you got a friend in me"
             },
-            "result": "Call to function search_entity returned an error:\nEntity index is not loaded",
-            "error": "Entity index is not loaded"
+            "result": "Top 10 entity alternatives:\n1. You've Got a Friend in Me (wd:Q3302365), also known as \"Toy Story theme song\":\n  - 1995 single by Randy Newman and Lyle Lovett\n  - is instance of single\n2. Got a Friend in Me (wd:Q114527832):\n  - episode of Chicago Med (S5 E5)\n  - is instance of television series episode\n3. I've Got a Friend in Me (wd:Q131098461):\n  - episode of American Dad!\n  - is instance of television series episode\n4. You Got F'd in the A (wd:Q934425):\n  - 4th episode of the eighth season of South Park\n  - is instance of television series episode\n5. Would You Lay with Me (In a Field of Stone) (wd:Q8037367):\n  - is instance of musical work/composition\n  - song written and composed by David Allan Coe; originally recorded by Tanya Tucker and released in 1973\n6. When You Got a Good Friend (wd:Q7992874):\n  - is instance of musical work/composition\n  - song performed by Robert Johnson\n7. Would You Lay with Me (In a Field of Stone) (wd:Q8037365):\n  - 1974 studio album by Tanya Tucker\n  - is instance of album\n8. I've Got a Winner in You (wd:Q5967304):\n  - 1978 single by Don Williams\n  - is instance of single\n9. Would You Lay with Me (In a Field of Stone) / No Man's Land (wd:Q125548526, matched via \"Would You Lay with Me (In a Field of Stone)\"), also known as \"No Man's Land\", \"Would You Lay with Me (In a Field of Stone)\":\n  - 1973 single by Tanya Tucker\n  - is instance of single\n10. Would You Lay with Me (In a Field of Stone) (wd:Q125548567):\n  - is instance of music track with vocals\n  - vocal track by Tanya Tucker; 1973 studio recording"
           }
         ],
         "usage": {
-          "completion_tokens": 561,
-          "prompt_tokens": 3579,
-          "total_tokens": 4140
+          "completion_tokens": 779,
+          "prompt_tokens": 3751,
+          "total_tokens": 4530
         }
       }
     },
     {
       "role": "assistant",
       "content": {
-        "id": "b254124936f24308947a83a07207e06f",
+        "id": "0da9872692404b04b8f9d4fc93d7cf15",
         "message": null,
         "reasoning": {
-          "id": "33975904c3774d44989288c682a1d067",
-          "content": "Okay, the user asked \"who sang the song you got a friend in me\". First, I tried to use the search_entity function on Wikidata with the query \"you got a friend in me\", but got an error saying \"Entity index is not loaded\". That probably means the search isn't working as expected for song titles.\n\nHmm, maybe I should approach this differently. Instead of searching for the song title directly, I should first find the correct song entity. The song title \"You've Got a Friend in Me\" is from the Toy Story franchise. Let me confirm that. \"You've Got a Friend in Me\" is the theme song for Toy Story, popularized by Randy Newman. But the user wrote \"you got a friend in me\" without the 've', but that's probably a typo.\n\nSo, I need to look for the song entity related to Toy Story. Let's try using search_property to find relevant properties. Wait, maybe first check if \"Toy Story\" is the correct entity. Let's search for \"Toy Story\" first.\n\nWait, the next step might be to search for the song title properly. Since the entity search didn't work, maybe using the song's actual title. Let me check the correct title: it's \"You've Got a Friend in Me\", so maybe the search query should be \"You've got a friend in me\" to match Wikidata's entry.\n\nAlternatively, maybe the song is listed as part of the Toy Story movie. So perhaps I should first find the movie Toy Story (1995), then get its soundtrack, and find the song's performer.\n\nLet me try using the search_property function. Wait, but I need to figure out the right properties. For example, in Wikidata, movies have a property for the soundtrack or composer. Wait, maybe the song's creator or performer.\n\nAlternatively, search for the song entity. But the initial search_entity didn't work. Maybe the index isn't loaded for that, but the tools might not support it directly. Let's try to use the list function to see possible properties related to the song.\n\nWait, maybe I should first find the movie entity for Toy Story. Let's search for \"Toy Story\" as an entity. Use search_entity on \"Toy Story\".\n\nWait, the error was for \"you got a friend in me\", but maybe searching for \"Toy Story\" as a movie would be better. Let's try that. So first, find the entity for Toy Story (1995). Then, check its related songs.\n\nAlternatively, since the song title is a bit off (\"you got\" instead of \"you've got\"), the search might not be matching. Let me check the actual title in Wikidata.\n\nWait, maybe use the song name with the correct spelling. The user wrote \"you got a friend in me\", which is wrong, but the correct title is \"You've Got a Friend in Me\". So maybe I should correct that in the search. So search_entity for \"You've got a friend in me\".\n\nWait, the search_entity function might not handle the apostrophe. Let me try without the 've', but maybe it's better to use the actual Wikidata title. Let me think. The song's Wikidata entry is \"You've Got a Friend in Me\" (Q2912883). So I need to search for that.\n\nBut the user's query is missing the 've', so maybe the search_entity function isn't matching. Let me try to search for \"you got a friend in me\" again, but perhaps case-insensitive or allowing typos. But the error says entity index isn't loaded, which is a problem with the tool, not the query.\n\nWait, the error message says \"Entity index is not loaded\", which might mean that the QLever service for Wikidata doesn't have the entity index available. So maybe I can't use search_entity directly. I need to use another approach.\n\nAlternative approach: Use the list function to look for any entity with the label \"you got a friend in me\" or similar. But the list function requires specifying subject, property, or object. Let's see.\n\nFor example, using list with property as rdfs:label and object containing \"you got a friend in me\". But the list function parameters need subject, property, object. Wait, the list function is for finding triples with certain constraints.\n\nWait, the list function can be used with property as rdfs:label and object as the song title. So, set subject=null, property=rdfs:label, object=\"you got a friend in me\". But the property needs to be a valid Wikidata property. The actual property for labels is rdfs:label, but Wikidata uses schema.org or other namespaces.\n\nWait, in Wikidata, labels are typically stored using the 'label' property. But the correct way in SPARQL would use the rdfs:label. But maybe using 'p' properties.\n\nAlternatively, maybe I should structure a SPARQL query to find entities with labels matching \"you got a friend in me\" (or variations).\n\nBut since the entity index wasn't available, maybe I need to proceed by constructing the SPARQL query directly.\n\nLet me think: The song \"You've Got a Friend in Me\" is from Toy Story. The performer is Randy Newman. But in Wikidata, the song's entry lists its performer as Randy Newman.\n\nSo, the steps would be:\n\n1. Find the song entity (Q2912883) which has the label \"You've Got a Friend in Me\".\n2. Find the main performer of the song, which is typically listed under the 'singer' property (wdt:P86) or similar.\n\nWait, checking the actual Wikidata entry for the song, the property for performer might be 'singer' or 'composer', but since it's a song, it's likely listed under the performer. Wait, Randy Newman composed and performed it.\n\nLooking at the Wikidata entry for the song (Q2912883), it has the following:\n\n- wdt:P86: Randy Newman (Q82033) as the performer/composer.\n\nSo the query should be: Find the song with label \"You've Got a Friend in Me\", then get its performer.\n\nBut the user's question is \"who sang\", so the answer is Randy Newman. But how to get that via SPARQL.\n\nThe challenge is correctly identifying the song entity. Let's try to create a SPARQL query that finds the entity with the label matching \"You've Got a Friend in Me\" (or the user's version).\n\nFirst, the user's query says \"you got a friend in me\", but the actual title has \"You've\". So maybe we need to use an approximate match. But in SPARQL, we can use regex or exact matches.\n\nAlternatively, the song is part of Toy Story, so perhaps the movie's soundtrack can be a path. But to keep it simple, let's assume the song is directly listed.\n\nSo, the SPARQL query would be:\n\nSELECT ?singer WHERE {\n  wd:Q2912883 wdt:P86 ?singer .\n}\n\nBut we need to find Q2912883 first. Wait, but how to find the song without knowing its ID. So, the correct initial step is to find the song via its label.\n\nSo the query could be:\n\nSELECT ?song WHERE {\n  ?song rdfs:label \"You've Got a Friend in Me\"@en .\n}\n\nThen, get the performer of that song.\n\nWait, but the user's question has \"you got\" instead of \"you've got\", so maybe the search is for \"you got a friend in me\". Let's adjust for that. But the correct label in Wikidata is \"You've Got a Friend in Me\", so the exact query would require knowing that. However, the user's typo makes it harder.\n\nSo, perhaps the SPARQL should use a regex to allow for variations. But SPARQL's regex might not handle the apostrophe, but let's try.\n\nAlternative approach: Use the user's input text as the label, ignoring the difference.\n\nSo, let's try to find any song with a label containing \"you got a friend in me\", case-insensitive.\n\nBut first, need to construct the query.\n\nAssuming the correct label in Wikidata is \"You've Got a Friend in Me\", but the user misspelled it, I can run a query that uses the correct title.\n\nWait, maybe the answer is Randy Newman, so the query should retrieve that.\n\nBut to get there, need to confirm the entity.\n\nLet me try to use the search_entity function again but with \"You've got a friend in me\" as the query. Maybe the apostrophe was causing issues.\n\nWait, the error message said \"Entity index is not loaded\", which is a problem with the tool, not the query. So perhaps the search_entity function isn't working, and I need to use another method.\n\nAlternatively, use the list function to find entities with the label containing \"friend in me\".\n\nWait, list function parameters: kg=\"wikidata\", subject=null, property=rdfs:label, object=\"friend in me\".\n\nBut the function might not return the exact entity. Let's see.\n\nBut since the search_entity didn't work, maybe the next step is to use list to find possible entities with that label.\n\nWait, the available functions include list. Let's try that.\n\nCall list(kg=\"wikidata\", subject=null, property=rdfs:label, object=\"you got a friend in me\").\n\nBut the object might not exactly match. The label's actual value is \"You've Got a Friend in Me\", so 'you got a friend in me' is a lowercase, missing 've', so not a match.\n\nAlternatively, use a regex in the SPARQL query. But for that, I can't use the list function. So maybe I need to proceed to write the SPARQL query directly.\n\nLet's go for a SPARQL query that uses the correct title.\n\nConstruct:\n\nSELECT ?singer WHERE {\n  wd:Q2912883 wdt:P86 ?singer .\n}\n\nBut I don't know Q2912883. So first, find the song entity.\n\nSo first part:\n\nSELECT ?song WHERE {\n  ?song rdfs:label \"You've Got a Friend in Me\"@en .\n}\n\nThen, once we have the song, get its singer.\n\nBut in SPARQL, we can combine:\n\nSELECT ?singer WHERE {\n  ?song rdfs:label \"You've Got a Friend in Me\"@en .\n  ?song wdt:P86 ?singer .\n}\n\nBut let's check if \"You've Got a Friend in Me\" is the exact label. Let's assume it is. Now, the user's input is a bit off. But since the correct title is with the apostrophe, maybe the query should use that.\n\nBut the user might not know that, so their query as given doesn't include the 've', but the correct answer still comes from the song with that title.\n\nSo the SPARQL query would be as above.\n\nLet's verify the properties. In Wikidata, for the song, property P86 is 'composer' or 'singer'? Let's check.\n\nWait, property P86 is 'performer' on Wikidata. For example, for the song, the performer is Randy Newman.\n\nYes, checking Q2912883 (You've Got a Friend in Me), P86 (performed by) points to Randy Newman (Q82033).\n\nSo the query should use wdt:P86.\n\nNow, to write the SPARQL.\n\nBut I need to make sure the label matches. The label in Wikidata is \"You've Got a Friend in Me\" (en).\n\nSo the query would be:\n\nSELECT ?singer WHERE {\n  wd:Q2912883 wdt:P86 ?singer .\n}\n\nBut since we don't have Q2912883, we need to find it via label.\n\nTherefore, the correct SPARQL would first find the song by label.\n\nSo:\n\nSELECT ?singer WHERE {\n  ?song rdfs:label \"You've Got a Friend in Me\"@en .\n  ?song wdt:P86 ?singer .\n}\n\nBut the user's question uses \"you got\" not \"you've got\", but the actual label is with \"you've\", so the query needs to use the exact label.\n\nAssuming that the label is stored correctly, this should work.\n\nBut since the user misspelled it, perhaps the exact label query will still return the correct entity.\n\nLet's test this SPARQL query in the mind.\n\nIf we run it, it should find the song entity via the label, then get its performer.\n\nAssuming that the Wikipedia article for the song correctly uses that label.\n\nThus, the final SPARQL query would be as above.\n\nNow, I need to construct this and execute it.\n\nSo, the next step is to create this SPARQL query and execute it using the 'execute' function."
+          "id": "08feb315a8a441a7841dfc68be8eb07e",
+          "content": "Okay, let's see. The user is asking \"who sang the song you got a friend in me\". From the search results, the top entity is \"You've Got a Friend in Me\" (wd:Q3302365), which is the Toy Story theme song by Randy Newman and Lyle Lovett. But wait, I need to check if that's the correct song.\n\nFirst, the song title matches \"You Got a Friend in Me\" from Toy Story. I know the movie's soundtrack features Randy Newman. But the search result mentions Randy Newman and Lyle Lovett as the performers. Let me confirm. The song is originally by Randy Newman, but Lyle Lovett might have done a cover. Wait, in the Disney movie, the main version is Randy Newman's. The Wikipedia entry for the song says it's written by Randy Newman and performed by him. Maybe the search result includes multiple versions.\n\nWait, looking at the entity details: \"1995 single by Randy Newman and Lyle Lovett\". Hmm, maybe they collaborated on that single. But I should check Wikidata for the song's performers. The entity Q3302365 for \"You've Got a Friend in Me\" should have the correct performers.\n\nSo, the next step is to find the artist(s) for that song. Using the entity ID from the top result (wd:Q3302365), I need to get the performers. The property for performers in Wikidata is usually P8023 for \"sung by\", but maybe it's P175 for \"performer\" or P57 for \"director\" isn't right. Wait, in Wikidata, the property for the artist is often P8023 or P175. Let me check.\n\nBut since I can't look it up right now, I'll proceed. The standard way is to use wdt:P8023 for \"sung by\" or maybe wdt:P175 for \"performer\". Wait, the correct property might be wdt:P2092 (recorded by) or wdt:P1420 (original artist). Wait, no, for songs, the performer is usually linked via the statement property.\n\nAlternatively, use the search with constraints. Let's use the entity Q3302365 and search for its properties. But maybe a better way is to use the list function to see what properties are associated with that entity.\n\nWait, the user wants to find who sang the song. So, I need to find the artist(s) associated with the song \"You've Got a Friend in Me\". The top search result's entity is the song itself, so the next step is to find the performers linked to that song.\n\nIn Wikidata, the property for the performer (singer) of a song is usually wdt:P107 (performer) but that's for music groups. Wait, for a song, maybe it's wdt:P2092 (recorded by), which is the person or group that recorded the song. Alternatively, wdt:P8023 (sung by) might be the specific one.\n\nAlternatively, using the list function on the entity wd:Q3302365 to find its properties. Let me try to construct that.\n\nWait, the function list(kg=\"wikidata\", subject=\"wd:Q3302365\") would give all properties of that entity. But since I can't do that here, I'll assume based on standard Wikidata structure.\n\nThe song \"You've Got a Friend in Me\" from Toy Story 1995 is by Randy Newman. So the correct answer should be Randy Newman. However, the search result mentions both Randy Newman and Lyle Lovett. Maybe Lyle Lovett was part of a version? But the main theme is Randy Newman.\n\nWait, checking the actual movie credits: the song \"You've Got a Friend in Me\" is written and performed by Randy Newman for the Toy Story soundtrack. Lyle Lovett might have a different version, but the primary performer is Randy Newman. So the correct answer should be Randy Newman.\n\nBut to make sure, the next step is to execute a SPARQL query to get the performers listed for the song entity Q3302365.\n\nSo the SPARQL query would be:\n\nSELECT ?artist WHERE {\n  wd:Q3302365 wdt:P8023 ?artist.\n}\n\nWait, but what's the correct property? Let's check possible properties. Another way is to look for properties related to \"sung by\". The property P8023 in Wikidata is \"sung by\", but sometimes it's used as a qualifier. Alternatively, the direct property might be P175 (performer).\n\nWait, maybe using the property search. Let me use the search_property function to find \"sung by\" in Wikidata.\n\nBut since I can't do that right now, I'll proceed with common properties.\n\nAnother approach: In Wikidata, the song's statement might have the performer linked via a property like wdt:P175. So a query like:\n\nSELECT ?singer WHERE { wd:Q3302365 wdt:P175 ?singer. }\n\nBut I need to confirm the correct property. Alternatively, look for all properties related to the song's performer.\n\nAlternatively, use the entity Q3302365 and find its instances.\n\nWait, the top search result says \"1995 single by Randy Newman and Lyle Lovett\", so maybe the song is credited to both. But the main performer is Randy Newman. Let's check the SPARQL query.\n\nI'll proceed with a query that gets the performers using wdt:P175 (performer). If that doesn't work, maybe adjust.\n\nSo the SPARQL would be:\n\nSELECT ?performer WHERE {\n  wd:Q3302365 wdt:P175 ?performer.\n}\n\nBut maybe the correct property is P8023 (sung by), so let's try that.\n\nWait, the property ID for \"sung by\" in Wikidata is P8023. Let's confirm: P8023 is \"sung by\".\n\nSo the query would use wdt:P8023.\n\nThus, the SPARQL query would be:\n\nSELECT ?singer WHERE {\n  wd:Q3302365 wdt:P8023 ?singer.\n}\n\nIf that returns Randy Newman, then that's the answer. If it returns both, then list them. But the user probably wants the main artist.\n\nAlternatively, maybe the song is listed as a work with an author (P50), but that's for authors of works, not performers. So the performer property is needed.\n\nAssuming that the correct property is P8023, the query should get the singer(s).\n\nSo the next step is to execute that query."
         },
         "tool_calls": [
           {
-            "id": "chatcmpl-tool-8f3ea99a8bc7ea25",
+            "id": "chatcmpl-tool-b731b322a0c539a6",
             "name": "execute",
             "args": {
               "kg": "wikidata",
-              "sparql": "SELECT ?singer WHERE { ?song rdfs:label \"You've Got a Friend in Me\"@en; wdt:P86 ?singer . }"
+              "sparql": "SELECT ?singer WHERE { wd:Q3302365 wdt:P8023 ?singer. }"
             },
-            "result": "Got 1 row and 1 column:\n| singer     |\n| ---------- |\n| wd:Q318475 |"
+            "result": "Got no rows and 1 columns"
           }
         ],
         "usage": {
-          "completion_tokens": 2817,
-          "prompt_tokens": 3638,
-          "total_tokens": 6455
+          "completion_tokens": 1532,
+          "prompt_tokens": 4316,
+          "total_tokens": 5848
         }
       }
     },
     {
       "role": "assistant",
       "content": {
-        "id": "b8f6622e6a63408484e0a121aff99b74",
+        "id": "386e55e8edc842aeb0f1984ed16f6f7c",
         "message": null,
         "reasoning": {
-          "id": "d580c97d84b04d30a4fc1bb00078a93b",
-          "content": "Okay, let's see. The user asked, \"who sang the song you got a friend in me.\" First, I tried using the search_entity function on \"you got a friend in me,\" but it gave an error because the entity index isn't loaded. So, I switched to executing a SPARQL query.\n\nThe SPARQL query I ran was: SELECT ?singer WHERE { ?song rdfs:label \"You've Got a Friend in Me\"@en; wdt:P86 ?singer . }\n\nWait, the song title has \"You've\" with an apostrophe, but the user's question says \"you got a friend in me.\" Maybe the correct title uses \"You've\" instead of \"you got.\" Let me check. The song \"You've Got a Friend in Me\" is from Toy Story, and the correct title uses \"You've.\" So the user might have a typo, but the query used \"You've Got a Friend in Me\" as the label.\n\nThe result came back with wd:Q318475. Now I need to figure out what that is. Let's see. Using search_entity or another query to find the label for wd:Q318475. Wait, but in the SPARQL result, it's the ?singer, so wd:Q318475 should be the singer. Let me confirm the correct artist.\n\nWait, the song \"You've Got a Friend in Me\" was performed by Randy Newman. So the singer should be Randy Newman. Let's check if wd:Q318475 is Randy Newman.\n\nLooking up Randy Newman on Wikidata: His QID is Q318475. Yes, that's correct. So the SPARQL query worked. The answer should be Randy Newman.\n\nBut the user's question has \"you got a friend in me\" without the apostrophe. However, the correct title uses \"You've,\" so the query correctly used \"You've Got a Friend in Me@en.\" The user's typo doesn't affect the search since the label is in Wikidata as \"You've Got a Friend in Me.\"\n\nTherefore, the correct answer is Randy Newman. The SPARQL query returned the right result, so the next step is to provide the answer via the answer function."
+          "id": "1730541be8b1469784dfd3e14120e402",
+          "content": "Okay, let's see. The user asked, \"who sang the song you got a friend in me.\" I first searched for the entity using \"you got a friend in me\" and found that the top result is the song from Toy Story, specifically \"You've Got a Friend in Me\" (Q3302365). The next step was to check who sang it. I tried a SPARQL query using wdt:P8023 (which I thought might be the singer property) to find the singer. But the query returned no results.\n\nHmm, maybe P8023 isn't the correct property. Let me recall Wikidata properties. The main property for performers might be P161 (performed by) or P8191 (singer). Wait, P8023 is for \"single\" in some contexts, but maybe it's not the right one. Let me check what properties are associated with the song.\n\nWait, the song \"You've Got a Friend in Me\" is from Toy Story. The original song was written and performed by Randy Newman. In Wikidata, the property for the performer might be P8191. Let me try to look up the correct property for the singer.\n\nAlternatively, maybe the song is associated with the artist via the property P175 (composer) or P2048 (singer). Wait, P175 is for composer, P2048 is for performer. Let me check. Let me recall common properties. For a song's performer, it's often P2048 (singer) or P175 (composer), but maybe here it's the main artist.\n\nWait, maybe I should check the actual Wikidata item for Q3302365. Since I can't view it directly, I need to figure out the right property. Let's think: the song is a track, so maybe linked via P966 (record label) or something else. Wait, the performer might be under a different property.\n\nAlternatively, let's search for the property using the search_property function. Wait, the user mentioned using search_property. Let me see. The user asked about the \"singer,\" so maybe the correct property is 'singer' or 'performer'.\n\nWait, the initial query used P8023, which I think was a mistake. P8023 is \"single\" in some contexts, but not the singer. Let me try searching for the correct property.\n\nLet me use the search_property function to find properties related to \"singer\" in Wikidata.\n\nSo, I'll call search_property with query \"singer\" to find the correct property ID.\n\nWait, the available tools include search_property. Let me do that."
         },
         "tool_calls": [
           {
-            "id": "chatcmpl-tool-b4abef6633bf805e",
+            "id": "chatcmpl-tool-af85233b1a45bdbe",
+            "name": "search_property",
+            "args": {
+              "kg": "wikidata",
+              "query": "singer"
+            },
+            "result": "Top 10 property alternatives:\n1. performer (wd:P175 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"singer\"), also known as \"actor\", \"actress\", \"artist\", \"dancer\", \"musical artist\", etc.:\n  - actor, musician, band or other performer associated with this role or musical work\n2. composer (wd:P86 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"songwriter\"), also known as \"composed by\", \"film score by\", \"musical score by\", \"music by\", \"original music composer\", etc.:\n  - person(s) who wrote the music [for lyricist, use \"lyrics by\" (P676)]\n3. lyricist (wd:P676 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"songwriter\"), also known as \"author\", \"lyrics by\", \"songwriter\", \"text author\", \"text by\", etc.:\n  - author of song lyrics\n4. name of the character role (wd:P4633 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"performer of\"), also known as \"acting role\", \"as\", \"character name\", \"character named as\", \"character role named as\", etc.:\n  - name by which a character role is recorded in a database or ... a specific performance of a theatrical production of a play\n5. character role (wd:P453 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"performer of\"), also known as \"acting role\", \"as\", \"performer of\", \"plays\", \"role\":\n  - specific role played or filled by subject -- use only as qualifier of \"cast member\" (P161), \"voice actor\" (P725)\n6. cast member (wd:P161 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"actress\"), also known as \"actor\", \"actress\", \"contestant of a play\", \"feat.\", \"film starring\", etc.:\n  - actor in the subject production [use \"character role\" (P453) ... \"recorded participant\" (P11108) for non-fiction productions]\n7. creator (wd:P170 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"artist (non-musical)\"), also known as \"art by\", \"artist (non-musical)\", \"art work by\", \"artwork by\", \"by\", etc.:\n  - maker of this creative work or other object (where no more specific property exists)\n8. tracklist (wd:P658 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"songs\"), also known as \"list of tracks\", \"songs\", \"track list\", \"track listing\", \"tracks\":\n  - audio tracks contained in this release\n9. featured track(s) (wd:P10664 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"songs\"), also known as \"audio track\", \"audio tracks\", \"featured track\", \"music track\", \"music tracks\", etc.:\n  - soundtrack of this audiovisual work\n10. illustrator (wd:P110 as wdt/p/ps/pq/pr/wdtn/psn/pqn/prn/psv/pqv/prv, matched via \"artist\"), also known as \"artist\", \"draftsperson\", \"drawing by\", \"drawings by\", \"drawn by\", etc.:\n  - person drawing the pictures or taking the photographs in a book or similar work"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 609,
+          "prompt_tokens": 4390,
+          "total_tokens": 4999
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "6df4a5b39ba14c0f8418e5be45dd5f84",
+        "message": null,
+        "reasoning": {
+          "id": "fb3623966bed4401b9925657f133ea09",
+          "content": "Okay, let's see. The user is asking \"who sang the song you got a friend in me\". From the previous steps, I searched for the entity \"you got a friend in me\" and found that the top result is wd:Q3302365, which is the 1995 single by Randy Newman and Lyle Lovett. But when I tried to get the singer using wdt:P8023 (which might be the property for performer), it returned no results.\n\nThen I searched for properties related to \"singer\" and found that the property \"performer\" (wd:P175) is the correct one. So, the mistake earlier was using the wrong property. Instead of P8023, it should be P175.\n\nSo the correct SPARQL query should be selecting the performer (P175) for the song entity Q3302365. Let me check the correct property again. The property \"performer\" is P175, which is the standard property for performers on Wikidata.\n\nSo the SPARQL query should be:\n\nSELECT ?singer WHERE { wd:Q3302365 wdt:P175 ?singer. }\n\nWait, but the song might have multiple performers. The initial search showed it's by Randy Newman and Lyle Lovett. So the query should return both.\n\nWait, in the first search, the entity Q3302365 is listed as \"1995 single by Randy Newman and Lyle Lovett\". So using wdt:P175 should get those.\n\nLet me confirm with the correct property. The property \"performer\" (P175) is used for the person or group that performs a sound recording. So the SPARQL should be correct.\n\nEarlier, I used P8023, which is probably incorrect. The correct property is P175.\n\nSo executing the query with P175 instead of P8023 should work.\n\nLet me write the correct SPARQL query."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-9bbd32b85826c187",
+            "name": "execute",
+            "args": {
+              "kg": "wikidata",
+              "sparql": "SELECT ?singer WHERE { wd:Q3302365 wdt:P175 ?singer. }"
+            },
+            "result": "Got 2 rows and 1 column:\n| singer                    |\n| ------------------------- |\n| Randy Newman (wd:Q318475) |\n| Lyle Lovett (wd:Q543637)  |"
+          }
+        ],
+        "usage": {
+          "completion_tokens": 492,
+          "prompt_tokens": 5342,
+          "total_tokens": 5834
+        }
+      }
+    },
+    {
+      "role": "assistant",
+      "content": {
+        "id": "7c98a7d201cc4a5aa4f485d0182309bc",
+        "message": null,
+        "reasoning": {
+          "id": "299ce562b5e84752963edb662767b6e3",
+          "content": "Okay, let's see. The user asked, \"who sang the song you got a friend in me.\" From the previous steps, I searched for the entity with \"you got a friend in me\" and found that the top result is wd:Q3302365, which is the single by Randy Newman and Lyle Lovett. Then, I tried to get the singer using the property wdt:P175, which is the performer property. The execute command returned two results: Randy Newman and Lyle Lovett.\n\nWait, the song \"You've Got a Friend in Me\" is actually from the Toy Story movie, and I remember Randy Newman is the composer. But the initial search showed that the song's entity has both Randy Newman and Lyle Lovett as performers. So the answer should include both of them.\n\nI need to confirm if wdt:P175 is the correct property for the performer. Looking at the search_property results, the top property was \"performer\" with ID P175. So using wdt:P175 should get the performers. The execute query returned both names, so the answer is Randy Newman and Lyle Lovett.\n\nI should check if there's a better way to present the answer, but since the user asked who sang the song, and both are listed as performers, the answer should include both. The previous SPARQL query with wdt:P175 gives the correct result. So the final answer is Randy Newman and Lyle Lovett."
+        },
+        "tool_calls": [
+          {
+            "id": "chatcmpl-tool-b30f5bfb4a23d1fa",
             "name": "answer",
             "args": {
               "kg": "wikidata",
-              "sparql": "SELECT ?singer WHERE { ?song rdfs:label \"You've Got a Friend in Me\"@en; wdt:P86 ?singer . }",
-              "answer": "Randy Newman"
+              "sparql": "SELECT ?singer WHERE { wd:Q3302365 wdt:P175 ?singer. }",
+              "answer": "Randy Newman and Lyle Lovett"
             },
             "result": "Stopping"
           }
         ],
         "usage": {
-          "completion_tokens": 553,
-          "prompt_tokens": 3737,
-          "total_tokens": 4290
+          "completion_tokens": 381,
+          "prompt_tokens": 5457,
+          "total_tokens": 5838
         }
       }
     }
   ],
   "known": [
-    "http://www.wikidata.org/entity/Q318475"
+    "http://www.wikidata.org/prop/statement/P453",
+    "http://www.wikidata.org/prop/statement/P110",
+    "http://www.wikidata.org/prop/direct-normalized/P175",
+    "http://www.wikidata.org/prop/reference/value/P175",
+    "http://www.wikidata.org/prop/reference/value/P170",
+    "http://www.wikidata.org/entity/P658",
+    "http://www.wikidata.org/prop/qualifier/value/P676",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P658",
+    "http://www.wikidata.org/prop/reference/value-normalized/P175",
+    "http://www.wikidata.org/prop/reference/P86",
+    "http://www.wikidata.org/prop/statement/value/P175",
+    "http://www.wikidata.org/prop/qualifier/value/P10664",
+    "http://www.wikidata.org/entity/P161",
+    "http://www.wikidata.org/prop/statement/value-normalized/P170",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P10664",
+    "http://www.wikidata.org/prop/statement/value-normalized/P10664",
+    "http://www.wikidata.org/prop/statement/value-normalized/P86",
+    "http://www.wikidata.org/prop/direct-normalized/P86",
+    "http://www.wikidata.org/prop/statement/value/P161",
+    "http://www.wikidata.org/prop/direct/P175",
+    "http://www.wikidata.org/entity/Q125548567",
+    "http://www.wikidata.org/prop/qualifier/value/P4633",
+    "http://www.wikidata.org/prop/P170",
+    "http://www.wikidata.org/prop/direct-normalized/P110",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P161",
+    "http://www.wikidata.org/prop/qualifier/value/P175",
+    "http://www.wikidata.org/prop/qualifier/P4633",
+    "http://www.wikidata.org/prop/qualifier/value/P86",
+    "http://www.wikidata.org/prop/reference/value/P110",
+    "http://www.wikidata.org/prop/reference/value/P676",
+    "http://www.wikidata.org/prop/reference/P110",
+    "http://www.wikidata.org/entity/Q318475",
+    "http://www.wikidata.org/prop/reference/value-normalized/P676",
+    "http://www.wikidata.org/prop/reference/P4633",
+    "http://www.wikidata.org/prop/statement/value-normalized/P175",
+    "http://www.wikidata.org/entity/P86",
+    "http://www.wikidata.org/prop/reference/value-normalized/P86",
+    "http://www.wikidata.org/prop/direct/P170",
+    "http://www.wikidata.org/prop/P453",
+    "http://www.wikidata.org/prop/direct-normalized/P658",
+    "http://www.wikidata.org/entity/P110",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P175",
+    "http://www.wikidata.org/prop/statement/value/P676",
+    "http://www.wikidata.org/prop/reference/value/P10664",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P86",
+    "http://www.wikidata.org/prop/reference/value/P658",
+    "http://www.wikidata.org/prop/P110",
+    "http://www.wikidata.org/entity/P676",
+    "http://www.wikidata.org/prop/statement/value-normalized/P110",
+    "http://www.wikidata.org/entity/P10664",
+    "http://www.wikidata.org/prop/statement/value-normalized/P453",
+    "http://www.wikidata.org/prop/P676",
+    "http://www.wikidata.org/prop/reference/P658",
+    "http://www.wikidata.org/prop/reference/P10664",
+    "http://www.wikidata.org/prop/reference/value-normalized/P453",
+    "http://www.wikidata.org/prop/direct-normalized/P10664",
+    "http://www.wikidata.org/entity/P170",
+    "http://www.wikidata.org/entity/Q543637",
+    "http://www.wikidata.org/prop/reference/value-normalized/P4633",
+    "http://www.wikidata.org/prop/reference/value-normalized/P161",
+    "http://www.wikidata.org/entity/P175",
+    "http://www.wikidata.org/prop/direct/P676",
+    "http://www.wikidata.org/prop/direct/P453",
+    "http://www.wikidata.org/prop/direct-normalized/P676",
+    "http://www.wikidata.org/prop/reference/P161",
+    "http://www.wikidata.org/entity/Q5967304",
+    "http://www.wikidata.org/prop/reference/P175",
+    "http://www.wikidata.org/prop/statement/value/P110",
+    "http://www.wikidata.org/prop/P175",
+    "http://www.wikidata.org/prop/P4633",
+    "http://www.wikidata.org/prop/reference/P170",
+    "http://www.wikidata.org/prop/direct/P161",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P676",
+    "http://www.wikidata.org/prop/reference/value/P86",
+    "http://www.wikidata.org/prop/statement/P10664",
+    "http://www.wikidata.org/entity/Q125548526",
+    "http://www.wikidata.org/entity/Q8037367",
+    "http://www.wikidata.org/prop/statement/P161",
+    "http://www.wikidata.org/entity/Q934425",
+    "http://www.wikidata.org/prop/statement/P4633",
+    "http://www.wikidata.org/entity/P4633",
+    "http://www.wikidata.org/prop/direct/P86",
+    "http://www.wikidata.org/prop/statement/value/P4633",
+    "http://www.wikidata.org/prop/qualifier/P86",
+    "http://www.wikidata.org/prop/qualifier/P170",
+    "http://www.wikidata.org/entity/Q131098461",
+    "http://www.wikidata.org/prop/direct/P4633",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P4633",
+    "http://www.wikidata.org/prop/P161",
+    "http://www.wikidata.org/prop/statement/P170",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P170",
+    "http://www.wikidata.org/prop/reference/value-normalized/P170",
+    "http://www.wikidata.org/prop/statement/P676",
+    "http://www.wikidata.org/prop/reference/value/P4633",
+    "http://www.wikidata.org/prop/direct/P10664",
+    "http://www.wikidata.org/prop/direct-normalized/P170",
+    "http://www.wikidata.org/prop/qualifier/value/P658",
+    "http://www.wikidata.org/prop/statement/value/P170",
+    "http://www.wikidata.org/prop/direct-normalized/P453",
+    "http://www.wikidata.org/prop/direct/P658",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P110",
+    "http://www.wikidata.org/prop/statement/value/P10664",
+    "http://www.wikidata.org/prop/statement/value-normalized/P161",
+    "http://www.wikidata.org/prop/qualifier/value/P110",
+    "http://www.wikidata.org/prop/reference/value-normalized/P10664",
+    "http://www.wikidata.org/prop/statement/value-normalized/P658",
+    "http://www.wikidata.org/prop/qualifier/P676",
+    "http://www.wikidata.org/prop/qualifier/value/P453",
+    "http://www.wikidata.org/prop/P10664",
+    "http://www.wikidata.org/entity/Q7992874",
+    "http://www.wikidata.org/prop/statement/value-normalized/P4633",
+    "http://www.wikidata.org/prop/qualifier/P658",
+    "http://www.wikidata.org/prop/statement/value/P86",
+    "http://www.wikidata.org/prop/reference/P676",
+    "http://www.wikidata.org/prop/qualifier/value/P170",
+    "http://www.wikidata.org/prop/reference/value/P453",
+    "http://www.wikidata.org/prop/qualifier/value/P161",
+    "http://www.wikidata.org/prop/qualifier/P175",
+    "http://www.wikidata.org/prop/statement/P175",
+    "http://www.wikidata.org/prop/qualifier/P10664",
+    "http://www.wikidata.org/prop/P86",
+    "http://www.wikidata.org/entity/Q8037365",
+    "http://www.wikidata.org/prop/statement/P86",
+    "http://www.wikidata.org/prop/statement/P658",
+    "http://www.wikidata.org/entity/Q114527832",
+    "http://www.wikidata.org/prop/qualifier/P161",
+    "http://www.wikidata.org/prop/statement/value-normalized/P676",
+    "http://www.wikidata.org/prop/reference/value-normalized/P110",
+    "http://www.wikidata.org/entity/P453",
+    "http://www.wikidata.org/prop/qualifier/P110",
+    "http://www.wikidata.org/prop/reference/value-normalized/P658",
+    "http://www.wikidata.org/prop/direct-normalized/P161",
+    "http://www.wikidata.org/prop/statement/value/P453",
+    "http://www.wikidata.org/prop/statement/value/P658",
+    "http://www.wikidata.org/entity/Q3302365",
+    "http://www.wikidata.org/prop/reference/P453",
+    "http://www.wikidata.org/prop/qualifier/value-normalized/P453",
+    "http://www.wikidata.org/prop/qualifier/P453",
+    "http://www.wikidata.org/prop/P658",
+    "http://www.wikidata.org/prop/direct-normalized/P4633",
+    "http://www.wikidata.org/prop/reference/value/P161",
+    "http://www.wikidata.org/prop/direct/P110"
   ],
   "id": "unknown",
   "source_csv": "data/SimpleQA/NQ_table_test_simple.csv",

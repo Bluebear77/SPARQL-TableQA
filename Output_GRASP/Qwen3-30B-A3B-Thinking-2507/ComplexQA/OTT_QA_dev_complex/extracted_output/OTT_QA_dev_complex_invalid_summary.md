@@ -2,14 +2,14 @@
 
 Total JSON files: 400
 
-Valid cases: 41 (10.25%)
-Invalid cases: 359 (89.75%)
+Valid cases: 83 (20.75%)
+Invalid cases: 317 (79.25%)
 
 ## Invalid case breakdown
 
-- null_output: 49 (12.25%)
-- no_sparql_generated: 4 (1.00%)
-- empty_sparql_result: 263 (65.75%)
-- sparql_execution_failed (execution): 32 (8.00%)
-- sparql_execution_failed (preprocessing): 11 (2.75%)
+- null_output: 45 (11.25%)
+- no_sparql_generated: 3 (0.75%)
+- empty_sparql_result: 254 (63.50%)
+- sparql_execution_failed (execution): 2 (0.50%)
+- sparql_execution_failed (preprocessing): 13 (3.25%)
 - invalid_json: 0 (0.00%)

@@ -1,323 +1,597 @@
 question,gold_answer,result_cleaned,result,sparql,file_path
-"The team , which participated in 2017–18 Korisliiga season , from the town at the mouth of the Kymi River has played in the Korisliiga since which year",1957,,"| firstYear |
-| --------- |","SELECT(MIN(YEAR(?startYear)) AS ?firstYear) WHERE {
-  ?team wdt:P276 wd:Q206337 .
-  ?team wdt:P1328 ?season .
-  ?season wdt:P585 ?startYear .
-  ?season wdt:P1453 wd:Q2523727 .
-}",ComplexQA/OTT_QA_dev_complex/00059.json
-"At the Sanremo Music Festival Big Artists section , how many MTV Italian Music Award nominations were received by the person who sang the song produced by Palmasi",three,0,"| count       |
+"For the German athlete medalist at the 2013 World Aquatics Championships is a former world record holder in the 200 meter breastroke , what month did he win silver",2 August,1,"| month       |
 | ----------- |
-| 0 (xsd:int) |","SELECT(COUNT(?nom) AS ?count) WHERE {
-  ?song wdt:P179 wd:Q1108392 ; wdt:P364 ?producer .
-  ?producer rdfs:label ?label .
-  FILTER(CONTAINS(LCASE(?label) , ""palmasi""))
-  ?song wdt:P175 ?artist .
-  ?artist wdt:P1574 ?award .
-  ?award wdt:P31 wd:Q4551020 .
-}",ComplexQA/OTT_QA_dev_complex/00061.json
-"What is the total area of this country from which this two-time Nebelhorn Trophy champion , who competed at World Junior Figure Skating Championships in 1998 , comes","17,125,200 square kilometres",357587.77,"| area                    |
-| ----------------------- |
-| 357587.77 (xsd:decimal) |","SELECT ?area WHERE {
-  wd:Q183 wdt:P2046 ?area
-}",ComplexQA/OTT_QA_dev_complex/00065.json
-What is the colloquial name of the team in which the player from the 2016-17 Flyers season who was selected 210th in the 2006 NHL draft played for,the Pens,Category:Contents (lang:en),"| teamLabel                   |
-| --------------------------- |
-| Category:Contents (lang:en) |","SELECT ?teamLabel WHERE {
-  wd:Q1281 rdfs:label ?teamLabel .
-  FILTER(lang(?teamLabel) = ""en"")
-}",ComplexQA/OTT_QA_dev_complex/00066.json
-What is the population of the city which is the location of a Malaysian Diplomatic Consulate mission of a country that lies about 137 kilometres above the equator,"497,097",3898747.0,"| population              |
-| ----------------------- |
-| 3898747.0 (xsd:decimal) |","SELECT ?population WHERE {
-  wd:Q65 wdt:P1082 ?population .
-}",ComplexQA/OTT_QA_dev_complex/00083.json
-Kyle Neypes who was drafted in the fourth round of the '17 PBA draft is from a country with a population of at least how many people,100 million,17942942.0,"| population               |
-| ------------------------ |
-| 17942942.0 (xsd:decimal) |","SELECT ?population WHERE {
-  wd:Q55 wdt:P1082 ?population .
-}",ComplexQA/OTT_QA_dev_complex/00092.json
-What is the difference between the number of Republicans and Democrats including both those who left and those who replaced them in the 36th United States Congress,15,0,"| diff        |
-| ----------- |
-| 0 (xsd:int) |","SELECT(?republicans - ?democrats AS ?diff) WHERE {
-  {
-    SELECT(COUNT(?rep) AS ?republicans) WHERE {
-      wd:Q1670187 p:P1733 ?membership .
-      ?membership ps:P1733 ?rep .
-      ?rep wdt:P102 wd:Q2006338 .
-    }
-  }
-  {
-    SELECT(COUNT(?dem) AS ?democrats) WHERE {
-      wd:Q1670187 p:P1733 ?membership .
-      ?membership ps:P1733 ?dem .
-      ?dem wdt:P102 wd:Q174409 .
-    }
-  }
-}",ComplexQA/OTT_QA_dev_complex/00094.json
-What year was the winning team formed at the 2002 Formula Renault 2000 Eurocup circuit where the pole position was a driver born and raised in Stevenage,1990,,"| teamYear |
-| -------- |","SELECT ?teamYear WHERE {
-}",ComplexQA/OTT_QA_dev_complex/00109.json
-What is the traditional area of the Sami people whose religion 's name variation is noted for a rock of the shape resembling a ragged woman goddess,Sápmi,Zeitschrift für romanische Philologie (lang:en),"| areaLabel                                       |
-| ----------------------------------------------- |
-| Zeitschrift für romanische Philologie (lang:en) |","SELECT ?areaLabel WHERE {
-  wd:Q186828 rdfs:label ?areaLabel .
-  FILTER(LANG(?areaLabel) = 'en')
-}",ComplexQA/OTT_QA_dev_complex/00124.json
-"What is the name of the Montserrat sport with a 1982 record in female athletics , involving a person throwing a heavy bar as far as possible",Shot put,wd:Q184865,"| event      |
-| ---------- |
-| wd:Q184865 |","SELECT ?event WHERE {
-  ?event rdfs:label 'hammer throw' @en
-}",ComplexQA/OTT_QA_dev_complex/00130.json
-Who is the current mayor of the municipality that was the venue of the Grande Premio Internacional en Marcha Atletica in the 2010 IAAF Race Walking Challenge,Isaura Morais,wd:Q74512|Helma Orosz (lang:en),"| mayor     | mayorLabel            |
-| --------- | --------------------- |
-| wd:Q74512 | Helma Orosz (lang:en) |","SELECT ?mayor ?mayorLabel WHERE {
-  wd:Q44498 wdt:P6 ?mayor .
-  ?mayor rdfs:label ?mayorLabel .
-  FILTER(LANG(?mayorLabel) = ""en"")
-}",ComplexQA/OTT_QA_dev_complex/00139.json
-How many LCM events were held at the most recent international 50m meet where the result for Federica Pellegrini 's 4x100 medley was DSQ ( h ),40,0,"| count       |
-| ----------- |
-| 0 (xsd:int) |","SELECT(COUNT(?event) AS ?count) WHERE {
-  ?event wdt:P1670 ?competition .
-  ?eventInstance wdt:P1094 wd:Q379328 ; wdt:P1829 ""DSQ (h)"" ; wdt:P1670 ?competition .
-  ?eventInstance p:P557 [ ps:P557 wd:Q501326 ] .
-  ?competition wdt:P585 ?date .
-}
-ORDER BY DESC(?date)
-LIMIT 1",ComplexQA/OTT_QA_dev_complex/00148.json
-"What is the population of the city where the team Poverty Bay Rugby Football Union , played in the 1975 Romania Rugby Union Tour of New Zealand","37,200",2333.0,"| population           |
-| -------------------- |
-| 2333.0 (xsd:decimal) |","SELECT ?population WHERE {
-  wd:Q22538 p:P1082 ?populationStatement .
-  ?populationStatement ps:P1082 ?population ; pq:P585 ?time .
-  FILTER(year(?time) = 1975)
-}",ComplexQA/OTT_QA_dev_complex/00151.json
-The team ranked number 8 at the 2014 Asian games in Handball has competed in the men 's 2014 Asian Men 's Handball Championships how many times,six times,0,"| count       |
+| 1 (xsd:int) |","SELECT ?month WHERE {
+  wd:Q14269987 wdt:P585 ?eventDate .
+  BIND(MONTH(?eventDate) AS ?month)
+}",ComplexQA/OTT_QA_dev_complex/00007.json
+The men 's middleweight weightlifting competition at the 1924 Olympics which featured third-lightest British weight lifter and allowed weightlifters of up to 75 kilograms was held on which date,"Wednesday , 23 July 1924",1924-01-01T00:00:00Z,"| date                                |
+| ----------------------------------- |
+| 1924-01-01T00:00:00Z (xsd:dateTime) |","SELECT ?date WHERE {
+  wd:Q7979929 wdt:P585 ?date
+}",ComplexQA/OTT_QA_dev_complex/00011.json
+"The event , a part of ITTF World Tour in 2018 , with the largest prize took place in a city that became an international port in which year",1883,1850-01-01T00:00:00Z,"| year                                |
+| ----------------------------------- |
+| 1850-01-01T00:00:00Z (xsd:dateTime) |","SELECT ?year WHERE {
+  wd:Q3861 wdt:P571 ?year
+}",ComplexQA/OTT_QA_dev_complex/00013.json
+"When was the release of Brother Louie , the music used by the couple eliminated in the TV show Dancing with the Stars ( South Korean season 3 )",27 January 1986,1986-01-27T00:00:00Z,"| releaseDate                         |
+| ----------------------------------- |
+| 1986-01-27T00:00:00Z (xsd:dateTime) |","SELECT ?releaseDate WHERE {
+  wd:Q1580342 wdt:P577 ?releaseDate
+}",ComplexQA/OTT_QA_dev_complex/00030.json
+How many times did the 2006 Tour de Pologne cyclist with a time of less than + 30 behind the winner finish in the top 10 at Grand Tours,eleven,0,"| count       |
 | ----------- |
 | 0 (xsd:int) |","SELECT(COUNT(*) AS ?count) WHERE {
-  wd:Q4892039 wdt:P102 ?event .
-  ?event wdt:P168 wd:Q47338 .
-  ?event wdt:P2548 8 .
-  ?event wdt:P172 ?team .
-  wd:Q787519 wdt:P1014 ""Asian Men's Handball Championship"" @en .
-  wd:Q787519 wdt:P585 ?date .
-  FILTER(YEAR(?date) = 2014)
-  .
-  wd:Q787519 wdt:P172 ?team .
-}",ComplexQA/OTT_QA_dev_complex/00152.json
-How many residents does the capital city of the country represented by the 2015 Kangaroo Cup single 's player to finally retire in Sept 2017 have,38 million,689545.0,"| population             |
+  wd:Q1971533 wdt:P710 ?cyclist .
+  ?cyclist wdt:P2781 ?time_diff .
+  FILTER(?time_diff < ""PT30M"" ^^ xsd:duration)
+  ?cyclist wdt:P802 ?grand_tour .
+  VALUES ?grand_tour {
+    wd:Q3717 wd:Q371445 wd:Q112253
+  }
+  ?cyclist wdt:P1042 ?placement .
+  FILTER(?placement <= 10)
+}",ComplexQA/OTT_QA_dev_complex/00035.json
+"Over what years was the rider for the 1986 Tour de France team in general classification listed as the most successful cycling team of all time , professional",1985 to 1997,1984-01-01T00:00:00Z|1991-01-01T00:00:00Z,"| inception                           | dissolved                           |
+| ----------------------------------- | ----------------------------------- |
+| 1984-01-01T00:00:00Z (xsd:dateTime) | 1991-01-01T00:00:00Z (xsd:dateTime) |","SELECT ?inception ?dissolved WHERE {
+  wd:Q1432490 wdt:P571 ?inception .
+  wd:Q1432490 wdt:P576 ?dissolved .
+}",ComplexQA/OTT_QA_dev_complex/00039.json
+What song do the opponents of the team whose nickname comes from a poem come out to in the First round 2nd leg of the 1972–73 Texaco Cup,Local Hero,Abide with Me (lang:en),"| song                    |
+| ----------------------- |
+| Abide with Me (lang:en) |","SELECT ?song WHERE {
+  wd:Q2476190 wdt:P1476 ?song
+}",ComplexQA/OTT_QA_dev_complex/00046.json
+"Held in Nagoya with 2000 attendance at the 40th Japan National University Rugby Championship , what was the original name of the away school in the knockout round",Teikyo Commercial High School,Kanto Gakuin University Rugby Football Club (lang:en),"| schoolLabel                                           |
+| ----------------------------------------------------- |
+| Kanto Gakuin University Rugby Football Club (lang:en) |","SELECT ?schoolLabel WHERE {
+  wd:Q4637473 wdt:P1346 wd:Q11655946 .
+  wd:Q11655946 rdfs:label ?schoolLabel .
+  FILTER(LANG(?schoolLabel) = 'en')
+}",ComplexQA/OTT_QA_dev_complex/00047.json
+What was the first film directed by the man that won the MTV Movie Award for Best New Filmmaker in 1999 for a movie he wrote and directed,The Hard Case,Mass Of The Electron,"| film                                 |
+| ------------------------------------ |
+| Mass Of The Electron (wd:Q123307766) |","SELECT ?film WHERE {
+  ?film wdt:P57 wd:Q489831 .
+  ?film wdt:P577 ?year .
+}
+ORDER BY ASC(?year)
+LIMIT 1",ComplexQA/OTT_QA_dev_complex/00052.json
+"At the Sanremo Music Festival Big Artists section , how many MTV Italian Music Award nominations were received by the person who sang the song produced by Palmasi",three,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(*) AS ?count) WHERE {
+  wd:Q0 wdt:P162 wd:Q0 .
+  ?song wdt:P162 wd:Q0 ; wdt:P1056 ?artist .
+  ?artist wdt:P5614 ?awardNominations .
+}",ComplexQA/OTT_QA_dev_complex/00061.json
+"What is the total amount of people in the city with the call sign DXKO , which is served by Kalayaan Broadcasting System , Inc. Gold FM station","169,393",722059.0,"| population             |
 | ---------------------- |
-| 689545.0 (xsd:decimal) |","SELECT ?population WHERE {
-  wd:Q30 wdt:P36 ?capital .
+| 722059.0 (xsd:decimal) |","SELECT ?population WHERE {
+  wd:Q594275 wdt:P1082 ?population
+}",ComplexQA/OTT_QA_dev_complex/00062.json
+"What is the total area of this country from which this two-time Nebelhorn Trophy champion , who competed at World Junior Figure Skating Championships in 1998 , comes","17,125,200 square kilometres",Germany (lang:en)|357587.77,"| country           | area                    |
+| ----------------- | ----------------------- |
+| Germany (lang:en) | 357587.77 (xsd:decimal) |","SELECT DISTINCT ?country ?area WHERE {
+  wd:Q183 wdt:P2046 ?area ; rdfs:label ?country .
+  FILTER(LANG(?country) = 'en')
+}",ComplexQA/OTT_QA_dev_complex/00065.json
+What is the colloquial name of the team in which the player from the 2016-17 Flyers season who was selected 210th in the 2006 NHL draft played for,the Pens,Philadelphia Flyers (lang:en),"| teamLabel                     |
+| ----------------------------- |
+| Philadelphia Flyers (lang:en) |","SELECT ?teamLabel WHERE {
+  wd:Q192083 rdfs:label ?teamLabel
+  FILTER(LANG(?teamLabel) = 'en')
+  FILTER(CONTAINS(LCASE(?teamLabel) , 'flyers'))
+}",ComplexQA/OTT_QA_dev_complex/00066.json
+Where was the Men 's long jump athlete in the 1967 European Indoor Games born who competed for a country that includes the northeastern part of an island,Nantymoel,Lynn Davies|Nant-y-moel,"| athlete                  | birthplace                |
+| ------------------------ | ------------------------- |
+| Lynn Davies (wd:Q725365) | Nant-y-moel (wd:Q6964400) |","SELECT ?athlete ?birthplace WHERE {
+  wd:Q63073849 wdt:P1346 ?athlete .
+  ?athlete wdt:P19 ?birthplace .
+}",ComplexQA/OTT_QA_dev_complex/00078.json
+What is the population of the city which is the location of a Malaysian Diplomatic Consulate mission of a country that lies about 137 kilometres above the equator,"497,097",5866139.0,"| population              |
+| ----------------------- |
+| 5866139.0 (xsd:decimal) |","SELECT ?population WHERE {
+  wd:Q334 wdt:P1082 ?population
+}",ComplexQA/OTT_QA_dev_complex/00083.json
+The 2008 Korea National League top scorer who joined the Pohang Steelers for the 2004 season played for a club that was owned and run by which company,Busan Transportation Corporation,POSCO (lang:en),"| ownerLabel      |
+| --------------- |
+| POSCO (lang:en) |","SELECT ?ownerLabel WHERE {
+  wd:Q169985 wdt:P127 ?owner .
+  ?owner rdfs:label ?ownerLabel .
+  FILTER(LANG(?ownerLabel) = 'en')
+}",ComplexQA/OTT_QA_dev_complex/00091.json
+Kyle Neypes who was drafted in the fourth round of the '17 PBA draft is from a country with a population of at least how many people,100 million,177.0,"| population          |
+| ------------------- |
+| 177.0 (xsd:decimal) |","SELECT ?population WHERE {
+  wd:Q610 wdt:P1082 ?population .
+}",ComplexQA/OTT_QA_dev_complex/00092.json
+What is the difference between the number of Republicans and Democrats including both those who left and those who replaced them in the 36th United States Congress,15,0|0,"| republican_count | democrat_count |
+| ---------------- | -------------- |
+| 0 (xsd:int)      | 0 (xsd:int)    |","SELECT(SUM(IF(?party = wd:Q29468 , 1 , 0)) AS ?republican_count)(SUM(IF(?party = wd:Q35887 , 1 , 0)) AS ?democrat_count) WHERE {
+  ?person wdt:P1335 wd:Q4635787 .
+  ?person wdt:P102 ?party .
+  FILTER(?party IN(wd:Q29468 , wd:Q35887))
+}",ComplexQA/OTT_QA_dev_complex/00094.json
+"During the Legend Grand Slam tournament ATP final double , with Martin Emmrich being the partner of Andre Begemann , what country was the tournament held in",Austria,Germany (lang:en),"| countryLabel      |
+| ----------------- |
+| Germany (lang:en) |","SELECT ?countryLabel WHERE {
+  wd:Q696794 wdt:P17 ?country .
+  ?country rdfs:label ?countryLabel .
+  FILTER(LANG(?countryLabel) = 'en')
+}",ComplexQA/OTT_QA_dev_complex/00097.json
+Who wrote the song performed on the Norwegian X Factor season 2 that was used in a film based on the play Everybody Comes to Rick 's,Herman Hupfeld,"Frances E. Williams
+Rudy Vallée & His Connecticut Yankees","| composer                                             |
+| ---------------------------------------------------- |
+| Frances E. Williams (wd:Q16013558)                   |
+| Rudy Vallée & His Connecticut Yankees (wd:Q91013320) |","SELECT ?composer WHERE {
+  wd:Q719975 wdt:P175 ?composer
+}",ComplexQA/OTT_QA_dev_complex/00107.json
+The 7th seeded player in the 2019 U.S. Men 's Clay Court Championships singles tournament is from a country that is how many square kilometres in area,"7,617,930",9826675.0,"| area                    |
+| ----------------------- |
+| 9826675.0 (xsd:decimal) |","SELECT ?area WHERE {
+  wd:Q30 wdt:P2046 ?area
+}",ComplexQA/OTT_QA_dev_complex/00108.json
+The television series featuring a role played by Seo Shin-ae which was shown by the company whose name was made legal in March 2000 was aired when,"from February 2 to April 21 , 2013",2016-03-14T00:00:00Z,"| start_time                          |
+| ----------------------------------- |
+| 2016-03-14T00:00:00Z (xsd:dateTime) |","SELECT ?start_time WHERE {
+  wd:Q23995009 wdt:P580 ?start_time
+}",ComplexQA/OTT_QA_dev_complex/00123.json
+"What is the name of the Montserrat sport with a 1982 record in female athletics , involving a person throwing a heavy bar as far as possible",Shot put,shot put (lang:en),"| sportLabel         |
+| ------------------ |
+| shot put (lang:en) |","SELECT ?sportLabel WHERE {
+  wd:Q180935 rdfs:label ?sportLabel
+  FILTER(LANG(?sportLabel) = 'en')
+}",ComplexQA/OTT_QA_dev_complex/00130.json
+Who is the author of the novels the 1999 TVB series that was based on whose theme song was by the God of Songs of Hong Kong,Louis Cha,"Hanoi|Hanoi (lang:en)
+Tuyên Quang|Tuyên Quang (lang:en)
+Iu Mien|Iu Mien (lang:en)
+Thái Nguyên|Thái Nguyên (lang:en)
+Thái Nguyên|Thái Nguyên (lang:en)
+...|...
+Nung|Nung (lang:en)
+Sông Công|Sông Công (lang:en)
+Võ Nhai|Võ Nhai (lang:en)
+Vietnam|Vietnam (lang:en)
+Category:Thái Nguyên province|Category:Thái Nguyên province (lang:en)","| author                                      | authorLabel                             |
+| ------------------------------------------- | --------------------------------------- |
+| Hanoi (wd:Q1858)                            | Hanoi (lang:en)                         |
+| Tuyên Quang (wd:Q2332060)                   | Tuyên Quang (lang:en)                   |
+| Iu Mien (wd:Q2498808)                       | Iu Mien (lang:en)                       |
+| Thái Nguyên (wd:Q26581)                     | Thái Nguyên (lang:en)                   |
+| Thái Nguyên (wd:Q26581)                     | Thái Nguyên (lang:en)                   |
+| ...                                         | ...                                     |
+| Nung (wd:Q72695)                            | Nung (lang:en)                          |
+| Sông Công (wd:Q7666269)                     | Sông Công (lang:en)                     |
+| Võ Nhai (wd:Q7939153)                       | Võ Nhai (lang:en)                       |
+| Vietnam (wd:Q881)                           | Vietnam (lang:en)                       |
+| Category:Thái Nguyên province (wd:Q8845614) | Category:Thái Nguyên province (lang:en) |","SELECT ?author ?authorLabel WHERE {
+  wd:Q26575 ?p ?author .
+  ?author rdfs:label ?authorLabel .
+  FILTER(LANG(?authorLabel) = ""en"")
+  .
+}",ComplexQA/OTT_QA_dev_complex/00132.json
+"Where is the college located of the school whose Metro Atlantic Athletic Conference Men 's Basketball Player of the Year who was born November 5 , 1962","New Rochelle , New York",Stillwater (lang:en),"| locationLabel        |
+| -------------------- |
+| Stillwater (lang:en) |","SELECT ?locationLabel WHERE {
+  wd:Q749718 wdt:P131 ?location .
+  ?location rdfs:label ?locationLabel .
+  FILTER(LANGMATCHES(LANG(?locationLabel) , 'en'))
+}",ComplexQA/OTT_QA_dev_complex/00137.json
+What church is the current home of the B2 division club which played in Cypriot Second Division in 2013/14 and that was established in Lysi known for,Church of Saint Lazarus,Church of Saint Euphemianos (lang:en),"| churchLabel                           |
+| ------------------------------------- |
+| Church of Saint Euphemianos (lang:en) |","SELECT ?churchLabel WHERE {
+  wd:Q4245084 rdfs:label ?churchLabel .
+  FILTER(LANG(?churchLabel) = 'en')
+}",ComplexQA/OTT_QA_dev_complex/00146.json
+How many LCM events were held at the most recent international 50m meet where the result for Federica Pellegrini 's 4x100 medley was DSQ ( h ),40,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(*) AS ?count) WHERE {
+  wd:Q234758 wdt:P1344 ?event .
+  ?event wdt:P1650 wd:Q9352235 .
+  ?event p:P1344 ?participation .
+  ?participation pq:P1545 wd:Q1229261 .
+}",ComplexQA/OTT_QA_dev_complex/00148.json
+"What is the population of the city where the team Poverty Bay Rugby Football Union , played in the 1975 Romania Rugby Union Tour of New Zealand","37,200","34527.0
+35500.0
+37000.0","| population            |
+| --------------------- |
+| 34527.0 (xsd:decimal) |
+| 35500.0 (xsd:decimal) |
+| 37000.0 (xsd:decimal) |","SELECT ?population WHERE {
+  wd:Q233467 wdt:P1082 ?population
+}",ComplexQA/OTT_QA_dev_complex/00151.json
+How many residents does the capital city of the country represented by the 2015 Kangaroo Cup single 's player to finally retire in Sept 2017 have,38 million,21893095.0,"| population               |
+| ------------------------ |
+| 21893095.0 (xsd:decimal) |","SELECT ?population WHERE {
+  wd:Q148 wdt:P36 ?capital .
   ?capital wdt:P1082 ?population .
 }",ComplexQA/OTT_QA_dev_complex/00162.json
+"What triggered the person who directed the Icelandic submission for the Academy Award for Best International Feature Film , Deep Winter , to transition into politics",financial crisis,"film director
+screenwriter","| occupation                  |
+| --------------------------- |
+| film director (wd:Q2526255) |
+| screenwriter (wd:Q28389)    |","SELECT ?occupation WHERE {
+  wd:Q31509858 wdt:P106 ?occupation
+}",ComplexQA/OTT_QA_dev_complex/00166.json
 "How many seasons did the club that won the '09–10 Azerbaijan Cup 1st round first leg with highest margin , play in the Azerbaijan Premier League",18 seasons,0,"| count       |
 | ----------- |
 | 0 (xsd:int) |","SELECT(COUNT(DISTINCT ?season) AS ?count) WHERE {
+  ?season wdt:P1545 wd:Q326859 ; wd:P1415 wd:Q54988 .
 }",ComplexQA/OTT_QA_dev_complex/00169.json
 How many provinces are in the country that has a Malaysian Diplomatic Consulate mission in the city that lies near the mouth of the Kelantan River,76,0,"| count       |
 | ----------- |
 | 0 (xsd:int) |","SELECT(COUNT(?state) AS ?count) WHERE {
-  ?state wdt:P31 wd:Q109556 ; wdt:P17 wd:Q155 .
+  ?state wdt:P31 wd:Q197480 .
+  ?state wdt:P17 wd:Q30
 }",ComplexQA/OTT_QA_dev_complex/00172.json
-What country borders the north of the country whose Men 's long jump athlete 's result was less than 5.00 in the 1967 European Indoor Games,Slovakia,wd:Q1377356,"| event       |
+"What is the area of this bay that held the competition consisting of five classes , each consisting of seven races at the 1956 Summer Olympics","1,930 square kilometres",1930.0,"| area                 |
+| -------------------- |
+| 1930.0 (xsd:decimal) |","SELECT ?area WHERE {
+  wd:Q1324526 wdt:P2046 ?area .
+}",ComplexQA/OTT_QA_dev_complex/00178.json
+"At what arena did the player in the 2008 pre-season draft , of the 2007 AFL draft , selected by the Dockers , make his debut",Subiaco Oval,"Fremantle Oval
+Subiaco Oval
+Perth Stadium","| stadium                      |
+| ---------------------------- |
+| Fremantle Oval (wd:Q5501496) |
+| Subiaco Oval (wd:Q585927)    |
+| Perth Stadium (wd:Q7170896)  |","SELECT ?stadium WHERE {
+  wd:Q278043 wdt:P115 ?stadium
+}",ComplexQA/OTT_QA_dev_complex/00179.json
+"What is the% change for the metropolitan statistical area in the United States which includes Bridgeport , New Haven , Stamford , Waterbury , and Norwalk",+2.11%,957419.0|2020-04-01T00:00:00Z,"| population             | time                                |
+| ---------------------- | ----------------------------------- |
+| 957419.0 (xsd:decimal) | 2020-04-01T00:00:00Z (xsd:dateTime) |","SELECT ?population ?time WHERE {
+  wd:Q5600468 p:P1082 ?populationStatement .
+  ?populationStatement ps:P1082 ?population .
+  ?populationStatement pq:P585 ?time .
+  FILTER(isNumeric(?population))
+}
+ORDER BY DESC(?time)
+LIMIT 2",ComplexQA/OTT_QA_dev_complex/00180.json
+"How many gold medals were won at the 1998 Asian Games in Bangkok , Thailand by the country represented by the wrestling athlete born in Mashhad",10,0,"| goldCount   |
 | ----------- |
-| wd:Q1377356 |","SELECT ?event WHERE {
-  ?event rdfs:label ""1967 European Indoor Games"" @en .
-}",ComplexQA/OTT_QA_dev_complex/00186.json
-"What sea contains the Lampedusa , the enclosed part of the nation that hosted the Primavera Rosa in the 2003 UCI Women 's Road World Cup",Tunisian,Facebook (lang:en),"| sea                |
-| ------------------ |
-| Facebook (lang:en) |","SELECT ?sea WHERE {
-  wd:Q355 rdfs:label ?sea .
-  FILTER(LANG(?sea) = 'en')
+| 0 (xsd:int) |","SELECT(COUNT(DISTINCT ?medalStatement) AS ?goldCount) WHERE {
+  ?athlete wdt:P19 wd:Q121157 ; wdt:P106 wd:Q12658 ; wdt:P27 wd:Q30 .
+  ?athlete p:P166 ?medalStatement .
+  ?medalStatement ps:P166 wd:Q6154310 .
+  ?medalStatement pq:P808 wd:Q2454767 .
+}",ComplexQA/OTT_QA_dev_complex/00188.json
+Who was the adoptive son of this ruler after whom this eponymous street in Metro Manila plaza bounded by Roxas Boulevard to the west was named,Agustin de Legaspi,Gerry Roxas|Gerry Roxas (lang:en),"| child                    | childLabel            |
+| ------------------------ | --------------------- |
+| Gerry Roxas (wd:Q517438) | Gerry Roxas (lang:en) |","SELECT ?child ?childLabel WHERE {
+  ?child wdt:P22 wd:Q223419 .
+  ?child rdfs:label ?childLabel .
+  FILTER(LANG(?childLabel) = 'en')
+}",ComplexQA/OTT_QA_dev_complex/00203.json
+Which national team did the rider who was second place in the 2007 UCI Mountain Bike World Cup Men 's 4X ride for in the Olympics,Czech,Australia,"| nationality         |
+| ------------------- |
+| Australia (wd:Q408) |","SELECT ?nationality WHERE {
+  wd:Q1161716 wdt:P27 ?nationality .
+}",ComplexQA/OTT_QA_dev_complex/00205.json
+"What sea contains the Lampedusa , the enclosed part of the nation that hosted the Primavera Rosa in the 2003 UCI Women 's Road World Cup",Tunisian,Mediterranean Sea,"| sea                          |
+| ---------------------------- |
+| Mediterranean Sea (wd:Q4918) |","SELECT ?sea WHERE {
+  wd:Q107338 wdt:P206 ?sea
 }",ComplexQA/OTT_QA_dev_complex/00208.json
+"What color is the mascot of the 2007 AFL draft club who 's player is younger brother of former Collingwood and Fremantle player , Chris Tarrant",grey,Robbie Tarrant,"| brother                      |
+| ---------------------------- |
+| Robbie Tarrant (wd:Q7341007) |","SELECT ?brother WHERE {
+  wd:Q5108226 wdt:P3373 ?brother
+}",ComplexQA/OTT_QA_dev_complex/00211.json
+Which 16-bit home video game console platform is a remodelled export version known as the Famicom launched in 1983 from a company published Monthly in ASCII,Super Famicom,Nintendo Entertainment System (lang:en),"| name                                    |
+| --------------------------------------- |
+| Nintendo Entertainment System (lang:en) |","SELECT DISTINCT ?name WHERE {
+  wd:Q172742 rdfs:label ?name
+  FILTER(LANG(?name) = 'en')
+}",ComplexQA/OTT_QA_dev_complex/00212.json
+"What is the AD for the 1947 Venezuelan general election of the state who by means of the Constitution of 1909 , gained its current borders",11,Category:Amazonas (Venezuelan state) (lang:en),"| stateLabel                                     |
+| ---------------------------------------------- |
+| Category:Amazonas (Venezuelan state) (lang:en) |","SELECT ?stateLabel WHERE {
+  wd:Q7146660 rdfs:label ?stateLabel .
+  FILTER(lang(?stateLabel) = 'en')
+}",ComplexQA/OTT_QA_dev_complex/00214.json
+The older artist whose song was played during the dance which resulted in elimination in week 7 of Strictly Come Dancing series 17 was born when,17 February 1991,1942-12-12T00:00:00Z,"| birth                               |
+| ----------------------------------- |
+| 1942-12-12T00:00:00Z (xsd:dateTime) |","SELECT ?birth WHERE {
+  wd:Q78004 wdt:P569 ?birth
+}",ComplexQA/OTT_QA_dev_complex/00215.json
+"What is the name of the Philippine shopping mall that is located in the city of the Caraga region that has a population of 154,137 people",Gaisano Capital Surigao,SM City Butuan (lang:en),"| mallLabel                |
+| ------------------------ |
+| SM City Butuan (lang:en) |","SELECT ?mallLabel WHERE {
+  wd:Q104867974 rdfs:label ?mallLabel .
+  FILTER(LANG(?mallLabel) = 'en')
+}",ComplexQA/OTT_QA_dev_complex/00216.json
 How many events for men at the 1956 Summer Olympics were held for this competition that took place at the venue damaged during the 1991 fire,six for men,0,"| count       |
 | ----------- |
 | 0 (xsd:int) |","SELECT(COUNT(DISTINCT ?event) AS ?count) WHERE {
-  ?fireEvent wdt:P31 wd:Q7198 ; wdt:P571 ?fireDate ; wdt:P1798 ?venue .
-  FILTER(YEAR(?fireDate) = 1991)
-  ?event wdt:P21 wd:Q6581097 ; wdt:P1142 ?venue ; wdt:P585 ?eventDate ; wdt:P1630 wd:Q8903 .
-  FILTER(YEAR(?eventDate) = 1956)
+  wd:Q8411 p:P817 ?eventStatement ; p:P21 wd:Q6581072 .
+  ?eventStatement ps:P817 ?event .
+  ?event wdt:P110 ?venue .
+  ?venue wdt:P3525 ?fireEvent .
+  ?fireEvent wdt:P585 ?fireDate .
+  FILTER(STRSTARTS(STR(?fireDate) , ""1991-""))
 }",ComplexQA/OTT_QA_dev_complex/00217.json
+Which track and field event was contested by the Men 's wrestling medalist at the 2005 Mediterranean Games athlete beaten by the competitor born in Istanbul,110 metres hurdles,2005 Mediterranean Games,"| weightClass                            |
+| -------------------------------------- |
+| 2005 Mediterranean Games (wd:Q1138792) |","SELECT ?weightClass WHERE {
+  wd:Q3267940 wdt:P361 ?weightClass
+}",ComplexQA/OTT_QA_dev_complex/00221.json
+What is the name of the first book written by the ex-student of the Royal Melbourne Institute of Technology who used to be a journalist,The Pocketbook of Aussie Patriotism,The Voyage of the Poppykettle|The Voyage of the Poppykettle (lang:en),"| book                                        | bookLabel                               |
+| ------------------------------------------- | --------------------------------------- |
+| The Voyage of the Poppykettle (wd:Q7773124) | The Voyage of the Poppykettle (lang:en) |","SELECT ?book ?bookLabel WHERE {
+  ?person wdt:P69 wd:Q1057890 ; wdt:P106 wd:Q36180 .
+  ?book wdt:P50 ?person ; wdt:P577 ?date .
+  ?book rdfs:label ?bookLabel .
+  FILTER(LANG(?bookLabel) = ""en"")
+}
+ORDER BY ?date
+LIMIT 1",ComplexQA/OTT_QA_dev_complex/00233.json
 "How many Olympic teams did the Men 's 1997 European Judo Championships athlete compete in , whose country is located mostly on the Anatolian peninsula",three,0,"| count       |
 | ----------- |
-| 0 (xsd:int) |","SELECT(COUNT(DISTINCT ?olympic) AS ?count) WHERE {
-  wd:Q2700064 p:P534 ?participant .
-  ?participant ps:P534 ?athlete .
-  ?athlete wdt:P27 wd:Q78 .
-  ?athlete p:P198 ?olympicStatement ; ps:P198 ?olympic .
+| 0 (xsd:int) |","SELECT(COUNT(DISTINCT ?olympic_event) AS ?count) WHERE {
+  wd:Q2775602 wdt:P1581 ?athlete .
+  ?athlete wdt:P21 wd:Q6581097 .
+  ?athlete wdt:P17 wd:Q78 .
+  ?athlete wdt:P1581 ?olympic_event .
+  ?olympic_event wdt:P31 wd:Q12612 .
 }",ComplexQA/OTT_QA_dev_complex/00241.json
-What is the 2010 Meath Senior Football Championship Position of the participating club that reached the Meath Senior Football Championship final in 1945 and 1998,Relegation Play Off,wd:Q6804309,"| championship |
-| ------------ |
-| wd:Q6804309  |","SELECT ?championship WHERE {
-  ?championship rdfs:label ""Meath Senior Football Championship"" @en .
-}",ComplexQA/OTT_QA_dev_complex/00257.json
-How many inhabited islands are in the location of the South Korean show `` Three Meals a Day '' with the fewest total episodes shown,111,0,"| inhabitedIslands |
-| ---------------- |
-| 0 (xsd:int)      |","SELECT(COUNT(?island) AS ?inhabitedIslands) WHERE {
-  wd:Q18230303 wdt:P154 ?season .
-  ?season wdt:P1225 ?episodes .
-  FILTER(isNumeric(?episodes))
-  .
-  ?season wdt:P1552 ?location .
-  ?island wdt:P31 wd:Q528030 .
-  ?island wdt:P1770 wd:Q506594 .
-  ?island wdt:P131 ?location .
-}
-ORDER BY ?episodes
-LIMIT 1",ComplexQA/OTT_QA_dev_complex/00264.json
-The stadium that is named after a former Argentinian Primera B Metropolitana Club president is found in a city that was federalized in what year,1880,2002,"| year           |
+"When was the B2 division club which played in Cypriot Second Division in 2013/14 , based in the second largest urban area in Cyprus founded",1956,1930-10-03T00:00:00Z,"| foundationYear                      |
+| ----------------------------------- |
+| 1930-10-03T00:00:00Z (xsd:dateTime) |","SELECT ?foundationYear WHERE {
+  wd:Q367788 wdt:P571 ?foundationYear
+}",ComplexQA/OTT_QA_dev_complex/00251.json
+"Of the games published by Aksys Games , the official sequel to BlazBlue : Calamity Trigger was developed by a company founded in what year",1988,"1988
+1988","| year           |
 | -------------- |
-| 2002 (xsd:int) |","SELECT(YEAR(?date) AS ?year) WHERE {
-  wd:Q151 wdt:P571 ?date
-}",ComplexQA/OTT_QA_dev_complex/00279.json
-"Which label released the album produced by Bee Hive Records featuring Joe Newman , Al Grey , Junior Mance , George Duvivier and Panama Francis",Bee Hive Label,"La Goulue (lang:br)
-La Goulue (lang:ca)
-La Goulue (lang:cs)
-La Goulue (lang:da)
-La Goulue (lang:de)
-...
-لا گولو (lang:fa)
-لويز ويبر (lang:ar)
-라굴루 (lang:ko)
-ラ・グーリュ (lang:ja)
-拉·古留 (lang:zh)","| label               |
-| ------------------- |
-| La Goulue (lang:br) |
-| La Goulue (lang:ca) |
-| La Goulue (lang:cs) |
-| La Goulue (lang:da) |
-| La Goulue (lang:de) |
-| ...                 |
-| لا گولو (lang:fa)   |
-| لويز ويبر (lang:ar) |
-| 라굴루 (lang:ko)       |
-| ラ・グーリュ (lang:ja)    |
-| 拉·古留 (lang:zh)      |","SELECT ?label WHERE {
-  wd:Q258975 rdfs:label ?label .
-}",ComplexQA/OTT_QA_dev_complex/00281.json
-How many events did the Indian Gold medalist athlete from Barsar village of Hamirpur district of Himachal Pradesh participate in at the 2010 Commonwealth Games,2,0,"| number_of_events |
-| ---------------- |
-| 0 (xsd:int)      |","SELECT(COUNT(DISTINCT ?event) AS ?number_of_events) WHERE {
-  ?athlete wdt:P27 wd:Q21 ; wdt:P19 ?birthplace .
-  ?birthplace rdfs:label ?placeLabel .
-  FILTER(LCASE(?placeLabel) = ""barsar"")
-  ?birthplace wdt:P131 wd:Q55036 .
-  ?medal wdt:P1346 ?athlete ; wdt:P155 ?event ; wdt:P121 wd:Q1627387 ; wdt:P162 wd:Q9403 .
-}",ComplexQA/OTT_QA_dev_complex/00292.json
-What is the population of protected areas of the Philippines that is in the province that is within the Bangsamoro Autonomous Region in Muslim Mindanao,"4,727",0,"| total       |
+| 1988 (xsd:int) |
+| 1988 (xsd:int) |","SELECT(YEAR(?founded) AS ?year) WHERE {
+  wd:Q2617855 wdt:P571 ?founded .
+}",ComplexQA/OTT_QA_dev_complex/00252.json
+What is the translated title of the Danish court in which people or other entities who can not repay debts to creditors can seek relief,The Agent,"Danish bankruptcy quarantine register (lang:en)
+Danish state bankruptcy of 1813 (lang:en)","| label                                           |
+| ----------------------------------------------- |
+| Danish bankruptcy quarantine register (lang:en) |
+| Danish state bankruptcy of 1813 (lang:en)       |","SELECT DISTINCT ?label WHERE {
+  ?court wdt:P17 wd:Q35 ; rdfs:label ?label .
+  FILTER(LANG(?label) = 'en' && CONTAINS(STR(?label) , 'bankruptcy'))
+}",ComplexQA/OTT_QA_dev_complex/00260.json
+How many inhabited islands are in the location of the South Korean show `` Three Meals a Day '' with the fewest total episodes shown,111,0,"| count       |
 | ----------- |
-| 0 (xsd:int) |","SELECT(SUM(?population) AS ?total) WHERE {
-  ?protectedArea wdt:P31 wd:Q1909625 ; wdt:P131 ?province .
-  ?province wdt:P31 wd:Q1086 ; wdt:P131 wd:Q291911 ; wdt:P1082 ?population .
+| 0 (xsd:int) |","SELECT(COUNT(DISTINCT ?island) AS ?count) WHERE {
+  ?island wdt:P31 wd:Q445655 ; wdt:P131 wd:Q168243 ; wdt:P1082 ?population .
+  FILTER(?population > 0)
+}",ComplexQA/OTT_QA_dev_complex/00264.json
+Where is the first release location of the song of the Dancing with the Stars ( American season 6 ) couple with the highest score,Australia,United States,"| location               |
+| ---------------------- |
+| United States (wd:Q30) |","SELECT ?location WHERE {
+  wd:Q540941 wdt:P449 ?broadcaster .
+  ?broadcaster wdt:P17 ?location
+}",ComplexQA/OTT_QA_dev_complex/00265.json
+"The only mound of uncertain date , listed on the List of burial mounds in the United States , is also known by what name",Hodge Mound II,Arenaways (lang:en),"| moundLabel          |
+| ------------------- |
+| Arenaways (lang:en) |","SELECT ?moundLabel WHERE {
+  wd:Q641671 rdfs:label ?moundLabel .
+  FILTER(lang(?moundLabel) = 'en')
+}",ComplexQA/OTT_QA_dev_complex/00270.json
+Of José Antonio Crespo 's opponent who once lost to Daniel Shirley and Sara Petersen what city is the tournament in that was played earliest,Santo Domingo,Ljubljana,"| city                |
+| ------------------- |
+| Ljubljana (wd:Q437) |","SELECT ?city WHERE {
+  ?event_c wdt:P710 wd:Q1708938 ; wdt:P710 ?opponent .
+  ?event_d wdt:P710 ?opponent ; wdt:P710 wd:Q1162702 .
+  ?event_s wdt:P710 ?opponent ; wdt:P710 wd:Q1317402 .
+  ?event_c wdt:P276 ?city .
+  ?event_c wdt:P580 ?date
+}
+ORDER BY ASC(?date)
+LIMIT 1",ComplexQA/OTT_QA_dev_complex/00273.json
+"Which label released the album produced by Bee Hive Records featuring Joe Newman , Al Grey , Junior Mance , George Duvivier and Panama Francis",Bee Hive Label,Bee Hive Records (lang:en),"| labelName                  |
+| -------------------------- |
+| Bee Hive Records (lang:en) |","SELECT ?labelName WHERE {
+  wd:Q4879507 rdfs:label ?labelName .
+  FILTER(lang(?labelName) = ""en"")
+}",ComplexQA/OTT_QA_dev_complex/00281.json
+What is the elite task force in the video game released in 1996 on the same day as the video game that follows Jean-Luc Lundi,S.T.A.R.S.,Bionic Commando: Elite Forces|Bionic Commando: Elite Forces (lang:en),"| game                                        | gameLabel                               |
+| ------------------------------------------- | --------------------------------------- |
+| Bionic Commando: Elite Forces (wd:Q4035127) | Bionic Commando: Elite Forces (lang:en) |","SELECT ?game ?gameLabel WHERE {
+  ?game wdt:P31 wd:Q7889 ; rdfs:label ?gameLabel ; wdt:P577 ?date .
+  FILTER(langMatches(lang(?gameLabel) , ""en""))
+  FILTER(CONTAINS(LCASE(?gameLabel) , ""elite force""))
+  FILTER(YEAR(?date) = 1999)
+}",ComplexQA/OTT_QA_dev_complex/00297.json
+What medal did International goal scorer Johnny Crossan 's opponent win in the Olympics of 1976 that he played against in the 2nd European Championship,silver,,"| medal |
+| ----- |","SELECT ?medal WHERE {
+  wd:Q3809714 wdt:P106 wd:Q937857 .
+}",ComplexQA/OTT_QA_dev_complex/00301.json
+What is the population of protected areas of the Philippines that is in the province that is within the Bangsamoro Autonomous Region in Muslim Mindanao,"4,727",6622226.0,"| totalPopulation         |
+| ----------------------- |
+| 6622226.0 (xsd:decimal) |","SELECT(SUM(?population) AS ?totalPopulation) WHERE {
+  ?province wdt:P131 wd:Q806550 .
+  ?province wdt:P1082 ?population .
 }",ComplexQA/OTT_QA_dev_complex/00304.json
-What is the 2004–05 ISU Junior Grand Prix 's country population where the 2004 JGP Ukrainian Souvenir was held on Sept. 29 - Oct. 3,42 million,340110988.0,"| population                |
-| ------------------------- |
-| 340110988.0 (xsd:decimal) |","SELECT DISTINCT ?population WHERE {
-  wd:Q30 wdt:P1082 ?population
-}",ComplexQA/OTT_QA_dev_complex/00306.json
-What is the competition during the Bangor City FC season that was the 57th season of Europe 's premier club football tournament organised by UEFA,UEFA Champions League,Eleutherius (lang:en),"| label                 |
-| --------------------- |
-| Eleutherius (lang:en) |","SELECT ?label WHERE {
-  wd:Q418282 rdfs:label ?label .
-  FILTER(LANG(?label) = 'en')
+What is the competition during the Bangor City FC season that was the 57th season of Europe 's premier club football tournament organised by UEFA,UEFA Champions League,UEFA Champions League (lang:en),"| competitionLabel                |
+| ------------------------------- |
+| UEFA Champions League (lang:en) |","SELECT ?competitionLabel WHERE {
+  wd:Q18756 rdfs:label ?competitionLabel .
+  FILTER(LANG(?competitionLabel) = 'en')
 }",ComplexQA/OTT_QA_dev_complex/00312.json
-What did members of the British military during WWI call the municipality that is home to the Belgian Fourth Division A team K.V.K . Westhoek,Wipers,Torso flexion loads and the fatigue failure of human lumbosacral motion segments (lang:en),"| label                                                                                      |
-| ------------------------------------------------------------------------------------------ |
-| Torso flexion loads and the fatigue failure of human lumbosacral motion segments (lang:en) |","SELECT ?label WHERE {
-  wd:Q23921179 rdfs:label ?label .
-  FILTER(LANG(?label) = 'en')
+What did members of the British military during WWI call the municipality that is home to the Belgian Fourth Division A team K.V.K . Westhoek,Wipers,Westhoek (lang:en),"| name               |
+| ------------------ |
+| Westhoek (lang:en) |","SELECT ?name WHERE {
+  wd:Q955543 rdfs:label ?name .
+  FILTER(lang(?name) = 'en')
 }",ComplexQA/OTT_QA_dev_complex/00316.json
+"In which year was this naval force founded that once had a vessel in Convoy SC 94 , which was sold to the Venezuelan Navy",1910,1546-01-01T00:00:00Z,"| foundingYear                        |
+| ----------------------------------- |
+| 1546-01-01T00:00:00Z (xsd:dateTime) |","SELECT ?foundingYear WHERE {
+  wd:Q172771 wdt:P571 ?foundingYear
+}",ComplexQA/OTT_QA_dev_complex/00317.json
+Where was the aircraft developed where the opponent of George Augustus Vaughn Jr. was the premier important unique design of Pfalz Flugzeugwerke in WW 1,the Royal Aircraft Factory,Speyer (lang:en),"| locationLabel    |
+| ---------------- |
+| Speyer (lang:en) |","SELECT ?locationLabel WHERE {
+  wd:Q324497 wdt:P159 ?location .
+  ?location rdfs:label ?locationLabel .
+  FILTER(lang(?locationLabel) = ""en"")
+  .
+}",ComplexQA/OTT_QA_dev_complex/00321.json
 How many historical buildings does the historical place off US Route 90 that was most recently added to the National Register of Historic Places have,47,0,"| count       |
 | ----------- |
 | 0 (xsd:int) |","SELECT(COUNT(?building) AS ?count) WHERE {
-  ?site wdt:P31 wd:Q255237 ; wdt:P403 wd:Q352413 ; wdt:P3295 ?nrhpRef ; wdt:P1201 ?date .
-  ?building wdt:P150 ?site ; wdt:P31 wd:Q1144842 .
+  ?site wdt:P31 wd:Q12168243 .
+  ?site wdt:P2286 wd:Q410756 .
+  ?site wdt:P577 ?date .
+  ?site wdt:P527 ?building .
 }
 ORDER BY DESC(?date)
 LIMIT 1",ComplexQA/OTT_QA_dev_complex/00322.json
-"The group whose guitarist is Billy Howerdel released an album that was photographed by Sean Murphy , and whose name means what in French",Sea of Names,"Ashes Divide (lang:fr)
-A Perfect Circle (lang:fr)","| frMeaning                  |
-| -------------------------- |
-| Ashes Divide (lang:fr)     |
-| A Perfect Circle (lang:fr) |","SELECT ?frMeaning WHERE {
-  wd:Q2350322 wdt:P463 ?band .
-  ?band rdfs:label ?frLabel .
-  FILTER(LANG(?frLabel) = 'fr')
-  .
-  BIND(REPLACE(?frLabel , ' ' , ' ') AS ?frMeaning)
-}",ComplexQA/OTT_QA_dev_complex/00332.json
-How many games did the 2013 New York Yankees American League Wild Card team who lost more than 100 games win against their rivals,2,0,"| wins        |
-| ----------- |
-| 0 (xsd:int) |","SELECT(COUNT(*) AS ?wins) WHERE {
-  wd:Q24820 wdt:P120 ?season .
-  ?season wdt:P585 ""2013-01-01T00:00:00Z"" ^^ xsd:dateTime .
-  ?season wdt:P2127 ?losses .
-  FILTER(?losses > 100)
-}",ComplexQA/OTT_QA_dev_complex/00334.json
-When was this circular fortification constructed on the 172-acre island in New York Harbor 732 m away from Manhattan Island in New York City,early 19th century,1807-01-01T00:00:00Z,"| constructionYear                    |
+What pair own the team of the 2015-16 Columbus Blue Jackets acquired free agent player who played junior ice hockey for the Windsor Spitfires,Bill and Denise Burke,John P. McConnell,"| owner                            |
+| -------------------------------- |
+| John P. McConnell (wd:Q16238901) |","SELECT ?owner WHERE {
+  wd:Q207507 wdt:P127 ?owner
+}",ComplexQA/OTT_QA_dev_complex/00338.json
+When was this circular fortification constructed on the 172-acre island in New York Harbor 732 m away from Manhattan Island in New York City,early 19th century,1807-01-01T00:00:00Z,"| constructionDate                    |
 | ----------------------------------- |
-| 1807-01-01T00:00:00Z (xsd:dateTime) |","SELECT ?constructionYear WHERE {
-  wd:Q1049532 wdt:P571 ?constructionYear
+| 1807-01-01T00:00:00Z (xsd:dateTime) |","SELECT ?constructionDate WHERE {
+  wd:Q1049532 wdt:P571 ?constructionDate
 }",ComplexQA/OTT_QA_dev_complex/00339.json
+Of the games played before October 28 who was the coach of the 1914 Army Cadets football team with the smallest margin of victory,George Sandy Sanford,Charles Dudley Daly,"| coach                             |
+| --------------------------------- |
+| Charles Dudley Daly (wd:Q5076988) |","SELECT ?coach WHERE {
+  wd:Q20805194 wdt:P286 ?coach .
+}",ComplexQA/OTT_QA_dev_complex/00340.json
 How many playable locations are there in the Aksys game developed by the company whose name means `` Soft development Innovation Multi Success ``,6,0,"| count       |
 | ----------- |
 | 0 (xsd:int) |","SELECT(COUNT(?location) AS ?count) WHERE {
-  wd:Q7303944 wdt:P176 ?game ; wdt:P1255 ?location .
+  ?game wdt:P170 wd:Q4048789 ; wdt:P31 wd:Q7889 ; wdt:P755 ?location .
 }",ComplexQA/OTT_QA_dev_complex/00342.json
-The Skip Magnus Ramsfjell is from a 2019 World Junior Curling Championship Men 's Round Robin country with a population of how many people,"5,312,300",5822863.0,"| population              |
+The Skip Magnus Ramsfjell is from a 2019 World Junior Curling Championship Men 's Round Robin country with a population of how many people,"5,312,300",5827463.0,"| population              |
 | ----------------------- |
-| 5822863.0 (xsd:decimal) |","SELECT ?population WHERE {
-  wd:Q35 wdt:P1082 ?population
+| 5827463.0 (xsd:decimal) |","SELECT ?population WHERE {
+  wd:Q35 p:P1082 ?population_statement .
+  ?population_statement ps:P1082 ?population .
+  ?population_statement pq:P585 ?date .
+  FILTER(STRSTARTS(STR(?date) , ""2019""))
 }",ComplexQA/OTT_QA_dev_complex/00346.json
+"On The 28th of September , Christopher Reeve was interviewed on Friday Night , Saturday Morning . What hero was he known for portraying",Superman,"Virgil Swann (lang:en)
+Superman (lang:en)
+Superman (lang:en)
+Superman (lang:en)
+Superman (lang:en)
+Superman (lang:en)","| characterLabel         |
+| ---------------------- |
+| Virgil Swann (lang:en) |
+| Superman (lang:en)     |
+| Superman (lang:en)     |
+| Superman (lang:en)     |
+| Superman (lang:en)     |
+| Superman (lang:en)     |","SELECT ?characterLabel WHERE {
+  ?work p:P161 ?statement .
+  ?statement ps:P161 wd:Q174311 .
+  ?statement pq:P453 ?character .
+  ?character rdfs:label ?characterLabel .
+  FILTER(langMatches(lang(?characterLabel) , 'en'))
+}",ComplexQA/OTT_QA_dev_complex/00348.json
+What color are the socks of the 2014–15 Sporting de Gijón season team that had a player who is an assistant manager transfer to,black,"white
+red","| color             |
+| ----------------- |
+| white (wd:Q23444) |
+| red (wd:Q3142)    |","SELECT ?color WHERE {
+  wd:Q12278 wdt:P6364 ?color
+}",ComplexQA/OTT_QA_dev_complex/00349.json
+Where was the manager for one team in the top Bulgarian football league born whose captain is now the goalkeeping coach at Litex Lovech,Dupnitsa,Stara Zagora,"| birthplace                |
+| ------------------------- |
+| Stara Zagora (wd:Q170415) |","SELECT ?birthplace WHERE {
+  wd:Q270420 wdt:P286 ?manager .
+  ?manager wdt:P19 ?birthplace .
+}",ComplexQA/OTT_QA_dev_complex/00354.json
+"When did the hometown of the tallest player who left Syracuse Orange men 's soccer team in 2019 , officially become a major city",1915,Scarborough|1850-01-01T00:00:00Z,"| hometown                  | city_date                           |
+| ------------------------- | ----------------------------------- |
+| Scarborough (wd:Q1025401) | 1850-01-01T00:00:00Z (xsd:dateTime) |","SELECT ?hometown ?city_date WHERE {
+  ?player wdt:P54 wd:Q9169796 .
+  ?player wdt:P2048 ?height .
+  ?player wdt:P19 ?hometown .
+  ?hometown wdt:P571 ?city_date .
+}
+ORDER BY DESC(?height)
+LIMIT 1",ComplexQA/OTT_QA_dev_complex/00355.json
+The person in their 4th year with the Cougars football team at Houston in 1973 attended a school that is part of what conference,Mountain West Conference,American Conference (lang:en),"| conferenceLabel               |
+| ----------------------------- |
+| American Conference (lang:en) |","SELECT ?conferenceLabel WHERE {
+  wd:Q5916446 wdt:P118 ?conference .
+  ?conference rdfs:label ?conferenceLabel .
+  FILTER(LANG(?conferenceLabel) = 'en')
+}",ComplexQA/OTT_QA_dev_complex/00359.json
+What was the 2010 population of the Florida town where the ESPN affiliate radio station used to host a concert called the 99Xmas Ball,"62,298","51923.0
+51923.0","| population            |
+| --------------------- |
+| 51923.0 (xsd:decimal) |
+| 51923.0 (xsd:decimal) |","SELECT ?population WHERE {
+  wd:Q486306 p:P1082 ?statement .
+  ?statement ps:P1082 ?population .
+  ?statement pq:P585 ?date .
+  FILTER(year(?date) = 2010)
+}",ComplexQA/OTT_QA_dev_complex/00372.json
+"How many championships were won by the Chinese football club whose home stadium is the Workers ' Stadium with a seating capacity of 66,161",7,0,"| count       |
+| ----------- |
+| 0 (xsd:int) |","SELECT(COUNT(DISTINCT ?championship) AS ?count) WHERE {
+  wd:Q814738 wdt:P118 ?stadium .
+  ?stadium wdt:P1082 66161 .
+  wd:Q814738 wdt:P2371 ?championship
+}",ComplexQA/OTT_QA_dev_complex/00373.json
 "How many medals has the female Italian athlete , who is a multiple winner , with the most titles won at an International competition",six medals,26,"| count        |
 | ------------ |
 | 26 (xsd:int) |","SELECT(COUNT(?medal) AS ?count) WHERE {
-  ?athlete wdt:P21 wd:Q6581072 .
-  ?athlete wdt:P27 wd:Q38 .
-  ?athlete wdt:P166 ?medal .
+  ?athlete wdt:P21 wd:Q6581072 ; wdt:P27 wd:Q38 ; wdt:P166 ?medal .
 }
 GROUP BY ?athlete
 ORDER BY DESC(?count)
 LIMIT 1",ComplexQA/OTT_QA_dev_complex/00378.json
-The Meeting de Marcha Atlética da Cidade de Olhao in the 2010 IAAF Race Walking Challenge was held in what region of southern Portugal,Algarve,"Olhão (lang:en)
-Faro (lang:en)
-Algarve (lang:en)
-Olhão (lang:en)","| regionLabel       |
-| ----------------- |
-| Olhão (lang:en)   |
-| Faro (lang:en)    |
-| Algarve (lang:en) |
-| Olhão (lang:en)   |","SELECT ?regionLabel WHERE {
-  ?place rdfs:label ""Olhão"" @en ; wdt:P131 ?region .
+The Meeting de Marcha Atlética da Cidade de Olhao in the 2010 IAAF Race Walking Challenge was held in what region of southern Portugal,Algarve,"Portugal (lang:en)
+Portugal (lang:en-ca)
+Portugal (lang:en-gb)
+Portugal (lang:en-us)","| regionLabel           |
+| --------------------- |
+| Portugal (lang:en)    |
+| Portugal (lang:en-ca) |
+| Portugal (lang:en-gb) |
+| Portugal (lang:en-us) |","SELECT ?regionLabel WHERE {
+  wd:Q740845 wdt:P131 ?district .
+  ?district wdt:P131 ?region .
   ?region rdfs:label ?regionLabel .
-  FILTER(LANG(?regionLabel) = 'en')
-  .
-  FILTER(?region NOT IN(wd:Q178073 , wd:Q176532))
+  FILTER(LANGMATCHES(LANG(?regionLabel) , 'en'))
 }",ComplexQA/OTT_QA_dev_complex/00379.json
 What is the area of the country represented in the 2018 Internazionali di Tennis Castel del Monte by the athlete coached by Claudio Galoppini,"301,340 km2",302068.0,"| area                   |
 | ---------------------- |
 | 302068.0 (xsd:decimal) |","SELECT ?area WHERE {
   wd:Q38 wdt:P2046 ?area
 }",ComplexQA/OTT_QA_dev_complex/00386.json
+What is the record label of the band with the single Drunken Lullabies that is available as a premium download in Rock Band Reloaded,Borstal Beat Records,SideOneDummy Records,"| label                             |
+| --------------------------------- |
+| SideOneDummy Records (wd:Q266645) |","SELECT ?label WHERE {
+  wd:Q917861 wdt:P264 ?label
+}",ComplexQA/OTT_QA_dev_complex/00388.json
+What is the capacity of the stadium where the 2014 Southeastern Conference SEC vs Power Conference game is played between two teams from Kentucky,"79,560",61000.0,"| capacity              |
+| --------------------- |
+| 61000.0 (xsd:decimal) |","SELECT ?capacity WHERE {
+  wd:Q517268 wdt:P1083 ?capacity
+}",ComplexQA/OTT_QA_dev_complex/00389.json
 How many states are served by the Air-rail alliance train company that stops at the first major airport in the New York metropolitan area,46,0,"| count       |
 | ----------- |
 | 0 (xsd:int) |","SELECT(COUNT(DISTINCT ?state) AS ?count) WHERE {
-  wd:Q255413 wdt:P1337 ?line .
-  ?line wdt:P1136 ?station .
-  ?station wdt:P131 ?location .
-  ?location wdt:P131 ?state .
-  ?state wdt:P31 wd:Q3624078 .
-  FILTER(?state = wd:Q209)
+  wd:Q1055811 wdt:P150 ?station .
+  ?station wdt:P276 ?city .
+  ?city wdt:P131 ?state .
 }",ComplexQA/OTT_QA_dev_complex/00390.json
-How many terms were served that were by the party with members in the Rajya Sabha from Maharashtra since 1952 once led by Ghandi,10,0,"| count       |
-| ----------- |
-| 0 (xsd:int) |","SELECT(COUNT(DISTINCT ?term) AS ?count) WHERE {
-  ?person p:P39 ?term .
-  ?term ps:P39 wd:Q14710699 .
-  ?term pq:P1291 wd:Q220578 .
-  ?term pq:P740 wd:Q281 .
-  ?term pq:P580 ?start .
-  FILTER(YEAR(?start) >= 1952)
-}",ComplexQA/OTT_QA_dev_complex/00394.json
+What is the name of the county which won its second All Stars Hurler of the Year title with the score 2-20 to 0-19,Kilkenny,County Waterford|County Waterford (lang:en),"| county                        | countyLabel                |
+| ----------------------------- | -------------------------- |
+| County Waterford (wd:Q184594) | County Waterford (lang:en) |","SELECT ?county ?countyLabel WHERE {
+  ?player wdt:P166 wd:Q4729678 ; wdt:P19 ?birthPlace .
+  ?birthPlace wdt:P131 ?county .
+  ?county rdfs:label ?countyLabel .
+  FILTER(LANG(?countyLabel) = 'en')
+}
+GROUP BY ?county ?countyLabel
+ORDER BY DESC(COUNT(?player))
+LIMIT 1
+OFFSET 1",ComplexQA/OTT_QA_dev_complex/00395.json

@@ -54,10 +54,8 @@ What is the running time of the first movie of The Hobbit series - The Hobbit: A
 As of 2020 how many FIFA Women's World Cup wins does the United States women's national soccer team have,4,0,"| wins        |
 | ----------- |
 | 0 (xsd:int) |","SELECT(COUNT(DISTINCT ?edition) AS ?wins) WHERE {
-  ?edition wdt:P361 wd:Q19323 .
-  ?edition wdt:P1257 wd:Q334526 .
-  ?edition wdt:P585 ?date .
-  FILTER(YEAR(?date) <= 2020)
+  wd:Q19323 wdt:P1545 ?edition .
+  ?edition wdt:P1096 wd:Q334526 .
 }",ComplexQA/CompMix_infobox_complex/00008.json
 What was the name of the author of the book on which the movie The Notebook was based on,Nicholas Sparks,Nicholas Sparks (lang:en),"| authorLabel               |
 | ------------------------- |
@@ -165,18 +163,23 @@ How many total awards did How I Met Your Mother eventually win through its full 
 | 7 (xsd:int) |","SELECT(COUNT(?award) AS ?total) WHERE {
   wd:Q147235 wdt:P166 ?award .
 }",ComplexQA/CompMix_infobox_complex/00028.json
-In which year was the author of the Book The Power of Habit Charles Duhigg was born,1974,1974-01-01T00:00:00Z,"| birthYear                           |
-| ----------------------------------- |
-| 1974-01-01T00:00:00Z (xsd:dateTime) |","SELECT ?birthYear WHERE {
-  wd:Q16979586 wdt:P50 wd:Q5076992 .
-  wd:Q5076992 wdt:P569 ?birthYear
+In which year was the author of the Book The Power of Habit Charles Duhigg was born,1974,1974,"| birthYear      |
+| -------------- |
+| 1974 (xsd:int) |","SELECT(YEAR(?birthDate) AS ?birthYear) WHERE {
+  wd:Q5076992 wdt:P569 ?birthDate .
 }",ComplexQA/CompMix_infobox_complex/00029.json
 After their 2018 FIFA World Cup win how many wins did France national football team have,2,0,"| wins        |
 | ----------- |
 | 0 (xsd:int) |","SELECT(COUNT(*) AS ?wins) WHERE {
-  ?event wdt:P1344 wd:Q47774 .
-  ?event wdt:P585 ?date .
-  FILTER(?date > ""2018-07-15"" ^^ xsd:date)
+  {
+    ?match wdt:P1514 wd:Q47774 ; wdt:P585 ?date ; wdt:P1815 ?franceGoals ; wdt:P1816 ?opponentGoals .
+    FILTER(?date > ""2018-07-15"" ^^ xsd:date)
+    FILTER(?franceGoals > ?opponentGoals)
+  } UNION {
+    ?match wdt:P136 wd:Q47774 ; wdt:P585 ?date ; wdt:P1815 ?franceGoals ; wdt:P1816 ?opponentGoals .
+    FILTER(?date > ""2018-07-15"" ^^ xsd:date)
+    FILTER(?franceGoals > ?opponentGoals)
+  }
 }",ComplexQA/CompMix_infobox_complex/00033.json
 What award did the book The Old Man and the Sea win in the year 1953,Pulitzer Prize for Fiction,"Bancarella Literary Prize|Bancarella Literary Prize (lang:en)
 Pulitzer Prize for Fiction|Pulitzer Prize for Fiction (lang:en)","| award                                     | awardLabel                           |
@@ -232,20 +235,31 @@ What is the date of birth of the The Chronicles of Narnia writer C. S. Lewis,29 
 As of 2020 how many gold medals has the United States women's national soccer team won,4,0,"| count       |
 | ----------- |
 | 0 (xsd:int) |","SELECT(COUNT(*) AS ?count) WHERE {
-  wd:Q334526 p:P2522 ?statement .
-  ?statement ps:P2522 ?competition .
-  ?statement pq:P1887 wd:Q21562002 .
-  ?competition wdt:P31 wd:Q22757 .
-  ?competition wdt:P585 ?eventDate .
-  FILTER(YEAR(?eventDate) <= 2020)
+  wd:Q334526 wdt:P2522 ?competition .
+  ?competition wdt:P31 wd:Q139525 .
 }",ComplexQA/CompMix_infobox_complex/00039.json
-What was the name of Megan Rapinoe's youth soccer team when she was in high school,Elk Grove Pride,United States women's national under-20 association football team (lang:en),"| label                                                                       |
-| --------------------------------------------------------------------------- |
-| United States women's national under-20 association football team (lang:en) |","SELECT ?label WHERE {
+What was the name of Megan Rapinoe's youth soccer team when she was in high school,Elk Grove Pride,"Chicago Stars FC|Chicago Stars FC (lang:en)
+OL Lyonnes|OL Lyonnes (lang:en)
+Seattle Reign FC|Seattle Reign FC (lang:en)
+Sydney FC|Sydney FC (lang:en)
+United States women's national under-20 association football team|United States women's national under-20 association football team (lang:en)
+Philadelphia Independence|Philadelphia Independence (lang:en)
+magicJack|magicJack (lang:en)
+United States women's national soccer team|United States women's national soccer team (lang:en)
+Seattle Sounders Women|Seattle Sounders Women (lang:en)","| team                                                                            | teamLabel                                                                   |
+| ------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| Chicago Stars FC (wd:Q1071986)                                                  | Chicago Stars FC (lang:en)                                                  |
+| OL Lyonnes (wd:Q1276685)                                                        | OL Lyonnes (lang:en)                                                        |
+| Seattle Reign FC (wd:Q1357111)                                                  | Seattle Reign FC (lang:en)                                                  |
+| Sydney FC (wd:Q15649515)                                                        | Sydney FC (lang:en)                                                         |
+| United States women's national under-20 association football team (wd:Q1671357) | United States women's national under-20 association football team (lang:en) |
+| Philadelphia Independence (wd:Q1973294)                                         | Philadelphia Independence (lang:en)                                         |
+| magicJack (wd:Q312181)                                                          | magicJack (lang:en)                                                         |
+| United States women's national soccer team (wd:Q334526)                         | United States women's national soccer team (lang:en)                        |
+| Seattle Sounders Women (wd:Q3491781)                                            | Seattle Sounders Women (lang:en)                                            |","SELECT DISTINCT ?team ?teamLabel WHERE {
   wd:Q260725 wdt:P54 ?team .
-  ?team rdfs:label ?label .
-  FILTER(LANG(?label) = ""en"")
-  FILTER(CONTAINS(STR(?label) , ""under-20""))
+  ?team rdfs:label ?teamLabel .
+  FILTER(LANG(?teamLabel) = 'en')
 }",ComplexQA/CompMix_infobox_complex/00040.json
 How many gold medals has the United States women's national soccer team won as of 2020,4,0,"| count       |
 | ----------- |
@@ -273,8 +287,16 @@ What was the original language of the All of Us Are Dead film or television show
   FILTER(lang(?languageLabel) = 'en')
 }",ComplexQA/CompMix_infobox_complex/00046.json
 "In what county is Highclere Castle, used in the TV Show Downton Abbey, actually located in",Hampshire,"Hampshire (lang:en)
+Hampshire (lang:en)
+England (lang:en)
+England (lang:en)
+Hampshire (lang:en)
 Hampshire (lang:en)","| countyLabel         |
 | ------------------- |
+| Hampshire (lang:en) |
+| Hampshire (lang:en) |
+| England (lang:en)   |
+| England (lang:en)   |
 | Hampshire (lang:en) |
 | Hampshire (lang:en) |","SELECT ?countyLabel WHERE {
   wd:Q1508450 wdt:P131 ?village .
@@ -288,19 +310,6 @@ The science fiction tv series Space: Above and Beyond originally aired on which 
 | Fox Broadcasting Company (wd:Q166419) |","SELECT ?network WHERE {
   wd:Q729265 wdt:P449 ?network
 }",ComplexQA/CompMix_infobox_complex/00048.json
-Who played the voice actor for Batman in the movie Batman: Death in the Family,Bruce Greenwood,"John DiMaggio
-Gary Cole
-Bruce Greenwood
-Zehra Fazal
-Vincent Martella","| voiceActor                    |
-| ----------------------------- |
-| John DiMaggio (wd:Q313266)    |
-| Gary Cole (wd:Q315864)        |
-| Bruce Greenwood (wd:Q342788)  |
-| Zehra Fazal (wd:Q59781891)    |
-| Vincent Martella (wd:Q948952) |","SELECT ?voiceActor WHERE {
-  wd:Q98537283 wdt:P725 ?voiceActor .
-}",ComplexQA/CompMix_infobox_complex/00049.json
 "What was the genre of the song I am not a woman, I’m a god","Rock,Pop",synth-pop (lang:en),"| genreLabel          |
 | ------------------- |
 | synth-pop (lang:en) |","SELECT ?genreLabel WHERE {
@@ -308,10 +317,11 @@ Vincent Martella","| voiceActor                    |
   ?genre rdfs:label ?genreLabel .
   FILTER(LANG(?genreLabel) = 'en')
 }",ComplexQA/CompMix_infobox_complex/00050.json
-In 1995 which Midway Games' fighting game franchise was turned into a live action movie,Mortal Kombat,Mortal Kombat,"| franchise                  |
-| -------------------------- |
-| Mortal Kombat (wd:Q241163) |","SELECT ?franchise WHERE {
-  wd:Q819196 wdt:P144 ?franchise
+In 1995 which Midway Games' fighting game franchise was turned into a live action movie,Mortal Kombat,Mortal Kombat (lang:en),"| franchiseLabel          |
+| ----------------------- |
+| Mortal Kombat (lang:en) |","SELECT ?franchiseLabel WHERE {
+  wd:Q241163 rdfs:label ?franchiseLabel .
+  FILTER(LANG(?franchiseLabel) = 'en')
 }",ComplexQA/CompMix_infobox_complex/00051.json
 "What was the genre of the song I am not a woman, I'm a god","Rock,Pop",synth-pop (lang:en),"| genreLabel          |
 | ------------------- |
@@ -375,12 +385,14 @@ What is the name of the actress playing the role of Carrie Mathison in Homeland,
   FILTER(LANG(?actressLabel) = ""en"")
   .
 }",ComplexQA/CompMix_infobox_complex/00065.json
-In what year was Megan Rapinoe named one of Time Magazine's 100 most influential people,2020,2022-01-01T00:00:00Z,"| date                                |
-| ----------------------------------- |
-| 2022-01-01T00:00:00Z (xsd:dateTime) |","SELECT ?date WHERE {
+In what year was Megan Rapinoe named one of Time Magazine's 100 most influential people,2020,2022,"| year           |
+| -------------- |
+| 2022 (xsd:int) |","SELECT ?year WHERE {
+  wd:Q260725 wdt:P166 wd:Q604370 .
   wd:Q260725 p:P166 ?statement .
   ?statement ps:P166 wd:Q604370 .
   ?statement pq:P585 ?date .
+  BIND(YEAR(?date) AS ?year)
 }",ComplexQA/CompMix_infobox_complex/00066.json
 What is the Publication date of the first book of the series His Dark Materials,9 July 1995,1995-07-09T00:00:00Z,"| pubDate                             |
 | ----------------------------------- |
@@ -422,10 +434,17 @@ Which tv network originally aired the science fiction tv series Space: Above and
   FILTER(lang(?networkLabel) = ""en"")
   .
 }",ComplexQA/CompMix_infobox_complex/00073.json
-Which character played the main love interest of Francine Fran Fine on The Nanny,Maxwell Sheffield,Danny Imperiali,"| character                     |
+How many matches did Freddy Adu played for United States men's national soccer team,17,2.0,"| count             |
+| ----------------- |
+| 2.0 (xsd:decimal) |","SELECT ?count WHERE {
+  wd:Q310369 p:P54 ?statement .
+  ?statement ps:P54 wd:Q164134 .
+  ?statement pq:P1351 ?count .
+}",ComplexQA/CompMix_infobox_complex/00074.json
+Which character played the main love interest of Francine Fran Fine on The Nanny,Maxwell Sheffield,Danny Imperiali,"| loveInterest                  |
 | ----------------------------- |
-| Danny Imperiali (wd:Q8353747) |","SELECT ?character WHERE {
-  wd:Q2720192 wdt:P451 ?character
+| Danny Imperiali (wd:Q8353747) |","SELECT ?loveInterest WHERE {
+  wd:Q2720192 wdt:P451 ?loveInterest .
 }",ComplexQA/CompMix_infobox_complex/00077.json
 "When was the final James Bond Movie, No Time to Die released in theaters",2021,"2021-09-28T00:00:00Z
 2021-09-30T00:00:00Z
@@ -529,6 +548,15 @@ Tom Soehn","| headCoach                           |
 | Tom Soehn (wd:Q7817645)             |","SELECT ?headCoach WHERE {
   wd:Q309095 wdt:P286 ?headCoach .
 }",ComplexQA/CompMix_infobox_complex/00092.json
+What is the name of the first book of the series The Farseer Trilogy,Assassin's Apprentice,Assassin's Apprentice|Assassin's Apprentice (lang:en),"| book                                | bookLabel                       |
+| ----------------------------------- | ------------------------------- |
+| Assassin's Apprentice (wd:Q2498822) | Assassin's Apprentice (lang:en) |","SELECT ?book ?bookLabel WHERE {
+  wd:Q2512889 wdt:P527 ?book .
+  ?book rdfs:label ?bookLabel .
+  FILTER(LANG(?bookLabel) = ""en"")
+}
+ORDER BY ?bookLabel
+LIMIT 1",ComplexQA/CompMix_infobox_complex/00093.json
 What was the nickname of the soccer club New York Red Bulls soccer team,The Red Bulls Metro,"MetroStars (lang:en)
 New York / New Jersey MetroStars (lang:en)
 New York Red Bulls (lang:en)
@@ -574,11 +602,6 @@ What is the name of the chairman of the football club Manchester City F.C.,Khald
 | Khaldoon Al Mubarak (wd:Q515133) |","SELECT ?chairman WHERE {
   wd:Q50602 wdt:P488 ?chairman
 }",ComplexQA/CompMix_infobox_complex/00100.json
-How many children did the director of Willy Wonka and the Chocolate Factory have,3,0,"| count       |
-| ----------- |
-| 0 (xsd:int) |","SELECT(COUNT(?child) AS ?count) WHERE {
-  wd:Q1380505 wdt:P40 ?child
-}",ComplexQA/CompMix_infobox_complex/00101.json
 "Who in the movie The Lord of the Rings, was the music produced by",Howard Shore,Howard Shore|Howard Shore (lang:en),"| composer                  | composerLabel          |
 | ------------------------- | ---------------------- |
 | Howard Shore (wd:Q207773) | Howard Shore (lang:en) |","SELECT ?composer ?composerLabel WHERE {
@@ -622,12 +645,6 @@ What is the date of publication of the first book of the Outland series,1 June 1
 }
 ORDER BY ASC(?pubDate)
 LIMIT 1",ComplexQA/CompMix_infobox_complex/00105.json
-"What country was Gianni Infantino originally from, who is the current president of FIFA",Switzerland,wd:Q39,"| country |
-| ------- |
-| wd:Q39  |","SELECT ?country WHERE {
-  wd:Q124138 wdt:P19 ?birthplace .
-  ?birthplace wdt:P17 ?country .
-}",ComplexQA/CompMix_infobox_complex/00106.json
 Who composed the music for the opening theme of the tv series The X-Files,Mark Snow,Mark Snow|Mark Snow (lang:en),"| composer               | composerName        |
 | ---------------------- | ------------------- |
 | Mark Snow (wd:Q534413) | Mark Snow (lang:en) |","SELECT ?composer ?composerName WHERE {
@@ -649,18 +666,12 @@ What is the name of the captain of the Croatia national association football tea
   ?captain rdfs:label ?captainLabel .
   FILTER(LANG(?captainLabel) = 'en')
 }",ComplexQA/CompMix_infobox_complex/00110.json
-What is the name of the first book of the series The Dark Tower,The Gunslinger,The Dark Tower: The Gunslinger|The Dark Tower: The Gunslinger (lang:en),"| book                                         | bookLabel                                |
-| -------------------------------------------- | ---------------------------------------- |
-| The Dark Tower: The Gunslinger (wd:Q1422318) | The Dark Tower: The Gunslinger (lang:en) |","SELECT ?book ?bookLabel WHERE {
-  ?book wdt:P179 wd:Q280898 .
-  ?book rdfs:label ?bookLabel .
+What is the name of the first book of the series The Dark Tower,The Gunslinger,The Dark Tower: The Gunslinger (lang:en),"| bookLabel                                |
+| ---------------------------------------- |
+| The Dark Tower: The Gunslinger (lang:en) |","SELECT ?bookLabel WHERE {
+  wd:Q1422318 rdfs:label ?bookLabel
   FILTER(LANG(?bookLabel) = 'en')
-  .
-  ?book wdt:P577 ?pubDate .
-  FILTER(year(?pubDate) > 0)
-}
-ORDER BY ASC(?pubDate)
-LIMIT 1",ComplexQA/CompMix_infobox_complex/00111.json
+}",ComplexQA/CompMix_infobox_complex/00111.json
 What is the country of origin for the serial All of Us Are Dead,South Korea,South Korea (lang:en),"| countryLabel          |
 | --------------------- |
 | South Korea (lang:en) |","SELECT ?countryLabel WHERE {
@@ -689,11 +700,11 @@ What is the name of the first book of the series The Expanse,Leviathan Wakes,Lev
 | ----------------------------- | ------------------------- |
 | Leviathan Wakes (wd:Q6535598) | Leviathan Wakes (lang:en) |","SELECT ?book ?bookLabel WHERE {
   wd:Q19610143 wdt:P527 ?book .
-  ?book wdt:P577 ?pubdate .
+  ?book wdt:P577 ?pubDate .
   ?book rdfs:label ?bookLabel .
   FILTER(LANG(?bookLabel) = 'en')
 }
-ORDER BY ASC(?pubdate)
+ORDER BY ?pubDate
 LIMIT 1",ComplexQA/CompMix_infobox_complex/00119.json
 What is the genre of the book series The Folk of the Air,Fantasy,romantic fantasy,"| genre                         |
 | ----------------------------- |
@@ -707,10 +718,10 @@ What is the genre of the book series The Folk of the Air,Fantasy,romantic fantas
   ?language rdfs:label ?languageLabel .
   FILTER(LANG(?languageLabel) = 'en')
 }",ComplexQA/CompMix_infobox_complex/00121.json
-what is the original tittle of the book  Crime and Punishment book,Преступленіе и наказаніе,Преступленіе и наказаніе (lang:ru-petr1708),"| title                                       |
+what is the original tittle of the book  Crime and Punishment book,Преступленіе и наказаніе,Преступленіе и наказаніе (lang:ru-petr1708),"| originalTitle                               |
 | ------------------------------------------- |
-| Преступленіе и наказаніе (lang:ru-petr1708) |","SELECT ?title WHERE {
-  wd:Q165318 wdt:P1476 ?title .
+| Преступленіе и наказаніе (lang:ru-petr1708) |","SELECT ?originalTitle WHERE {
+  wd:Q165318 wdt:P1476 ?originalTitle
 }",ComplexQA/CompMix_infobox_complex/00122.json
 Who was the head coach of the New York Red Bulls soccer team,Gerhard Struber,Michael Bradley,"| coach                        |
 | ---------------------------- |
@@ -778,10 +789,10 @@ Who is the publisher of the book The Monk Who Sold His Ferrari,HarperCollins,Har
   ?language rdfs:label ?languageLabel .
   FILTER(LANG(?languageLabel) = 'en')
 }",ComplexQA/CompMix_infobox_complex/00131.json
-What is the date of birth of the Queen's lead guitarist Brian May,19 July 1947,1947-07-19T00:00:00Z,"| dob                                 |
+What is the date of birth of the Queen's lead guitarist Brian May,19 July 1947,1947-07-19T00:00:00Z,"| birthDate                           |
 | ----------------------------------- |
-| 1947-07-19T00:00:00Z (xsd:dateTime) |","SELECT ?dob WHERE {
-  wd:Q15873 wdt:P569 ?dob
+| 1947-07-19T00:00:00Z (xsd:dateTime) |","SELECT ?birthDate WHERE {
+  wd:Q15873 wdt:P569 ?birthDate
 }",ComplexQA/CompMix_infobox_complex/00132.json
 Who is the writer of the books State of Fear and Jurassic Park,Michael Crichton,Michael Crichton,"| author                        |
 | ----------------------------- |
@@ -839,6 +850,11 @@ What was the country of the origin of the book To the Lighthouse,United Kingdom,
   ?country rdfs:label ?countryLabel .
   FILTER(LANG(?countryLabel) = 'en')
 }",ComplexQA/CompMix_infobox_complex/00143.json
+What is the name of the co-founder of Megadeth along with Dave Mustaine,David Ellefson,Dave Mustaine,"| founder                    |
+| -------------------------- |
+| Dave Mustaine (wd:Q187165) |","SELECT ?founder WHERE {
+  wd:Q83431 wdt:P112 ?founder .
+}",ComplexQA/CompMix_infobox_complex/00145.json
 Who is the head coach of the United States men's national soccer team,Gregg Berhalter,Mauricio Pochettino,"| coach                            |
 | -------------------------------- |
 | Mauricio Pochettino (wd:Q313000) |","SELECT ?coach WHERE {
@@ -903,14 +919,6 @@ What is the release date of the Jeff Russo's first album Lemon Parade,16 July 19
 | 1996-07-16T00:00:00Z (xsd:dateTime) |","SELECT ?releaseDate WHERE {
   wd:Q6521325 wdt:P577 ?releaseDate
 }",ComplexQA/CompMix_infobox_complex/00155.json
-What was the Association of the soccer United States men's national soccer team,United States Soccer Federation (USSF),United States Soccer Federation (lang:en),"| governingBodyLabel                        |
-| ----------------------------------------- |
-| United States Soccer Federation (lang:en) |","SELECT ?governingBodyLabel WHERE {
-  wd:Q164134 wdt:P1268 ?governingBody .
-  ?governingBody rdfs:label ?governingBodyLabel .
-  FILTER(LANG(?governingBodyLabel) = ""en"")
-  .
-}",ComplexQA/CompMix_infobox_complex/00156.json
 What was the nickname of the soccer United States men's national soccer team,Stars and Stripes The Yanks,"EUA (lang:ca)
 SUA (lang:ro)
 USA (lang:en)
@@ -929,10 +937,10 @@ What is the name of the producer of the film The Lion King,Don Hahn,Don Hahn|Don
   ?producer rdfs:label ?producerLabel .
   FILTER(LANG(?producerLabel) = 'en')
 }",ComplexQA/CompMix_infobox_complex/00159.json
-What's the name of the person who created the TV series The Sopranos,David Chase,Tim Van Patten (lang:en),"| creatorLabel             |
-| ------------------------ |
-| Tim Van Patten (lang:en) |","SELECT ?creatorLabel WHERE {
-  wd:Q23628 wdt:P57 ?creator .
+What's the name of the person who created the TV series The Sopranos,David Chase,David Chase|David Chase (lang:en),"| creator                  | creatorLabel          |
+| ------------------------ | --------------------- |
+| David Chase (wd:Q381982) | David Chase (lang:en) |","SELECT ?creator ?creatorLabel WHERE {
+  wd:Q23628 wdt:P170 ?creator .
   ?creator rdfs:label ?creatorLabel .
   FILTER(LANG(?creatorLabel) = 'en')
 }",ComplexQA/CompMix_infobox_complex/00162.json
@@ -957,11 +965,10 @@ When was the book The Mirror and the Light by Hilary Mantel published,5 March 20
 | 2020-03-05T00:00:00Z (xsd:dateTime) |","SELECT ?publicationDate WHERE {
   wd:Q7751674 wdt:P577 ?publicationDate
 }",ComplexQA/CompMix_infobox_complex/00166.json
-What is the total number of episodes in the TV series New Girl,146,146,"| total         |
-| ------------- |
-| 146 (xsd:int) |","SELECT(COUNT(?episode) AS ?total) WHERE {
-  wd:Q844059 wdt:P527 ?season .
-  ?season wdt:P527 ?episode .
+What is the total number of episodes in the TV series New Girl,146,146.0,"| episodes            |
+| ------------------- |
+| 146.0 (xsd:decimal) |","SELECT ?episodes WHERE {
+  wd:Q844059 wdt:P1113 ?episodes
 }",ComplexQA/CompMix_infobox_complex/00167.json
 What is the date of birth of the Permanent Roommates' actor Sumeet Vyas,27 July 1983,1983-07-27T00:00:00Z,"| dob                                 |
 | ----------------------------------- |
@@ -1024,7 +1031,7 @@ Jed Brophy|Jed Brophy (lang:en)","| performer                     | performerLab
 "What was the date of birth of Crime and Punishment's author, Fyodor Dostoevsky",09 February 1881,1821-11-11T00:00:00Z,"| birthDate                           |
 | ----------------------------------- |
 | 1821-11-11T00:00:00Z (xsd:dateTime) |","SELECT ?birthDate WHERE {
-  wd:Q991 wdt:P569 ?birthDate
+  wd:Q991 wdt:P569 ?birthDate .
 }",ComplexQA/CompMix_infobox_complex/00175.json
 The German football club that Oliver Kahn played for during his junior career,Karlsruher SC,"Karlsruher SC
 FC Bayern Munich
@@ -1078,9 +1085,9 @@ What is the name of production company for the TV series Breaking Bad,Sony Pictu
 How many matches have Eden Hazard played for Belgium national football team,116,126.0,"| matches             |
 | ------------------- |
 | 126.0 (xsd:decimal) |","SELECT ?matches WHERE {
-  wd:Q214204 p:P54 ?statement .
-  ?statement ps:P54 wd:Q166776 .
-  ?statement pq:P1350 ?matches .
+  wd:Q214204 p:P54 ?teamStatement .
+  ?teamStatement ps:P54 wd:Q166776 .
+  ?teamStatement pq:P1350 ?matches .
 }",ComplexQA/CompMix_infobox_complex/00184.json
 What is the sequel of the book The Adventures of Tom Sawyer,Adventures of Huckleberry Finn,"A Tramp Abroad|A Tramp Abroad (lang:en)
 Adventures of Huckleberry Finn|Adventures of Huckleberry Finn (lang:en)","| sequel                                      | sequelLabel                              |
@@ -1091,42 +1098,10 @@ Adventures of Huckleberry Finn|Adventures of Huckleberry Finn (lang:en)","| sequ
   ?sequel rdfs:label ?sequelLabel .
   FILTER(LANG(?sequelLabel) = 'en')
 }",ComplexQA/CompMix_infobox_complex/00186.json
-What is the current FIFA ranking for the Germany National Football Team,12th,1.0,"| ranking           |
-| ----------------- |
-| 1.0 (xsd:decimal) |","SELECT ?ranking WHERE {
-  wd:Q43310 p:P1352 ?statement .
-  ?statement ps:P1352 ?ranking .
-  ?statement pq:P585 ?date .
-  FILTER(isNumeric(?ranking))
-}
-ORDER BY DESC(?date)
-LIMIT 1",ComplexQA/CompMix_infobox_complex/00188.json
-which book does the tv series locke & key Based on,Locke & Key,"wd:Q27710023|Bulletin of the Los Angeles neurological societies (lang:ast)
-wd:Q27710023|Bulletin of the Los Angeles neurological societies (lang:en)
-wd:Q27710023|Bulletin of the Los Angeles neurological societies (lang:es)
-wd:Q27710023|Bulletin of the Los Angeles neurological societies (lang:fr)
-wd:Q27710023|Bulletin of the Los Angeles neurological societies (lang:ga)
-wd:Q27710023|Bulletin of the Los Angeles neurological societies (lang:it)
-wd:Q27710023|Bulletin of the Los Angeles neurological societies (lang:nl)","| book         | bookLabel                                                     |
-| ------------ | ------------------------------------------------------------- |
-| wd:Q27710023 | Bulletin of the Los Angeles neurological societies (lang:ast) |
-| wd:Q27710023 | Bulletin of the Los Angeles neurological societies (lang:en)  |
-| wd:Q27710023 | Bulletin of the Los Angeles neurological societies (lang:es)  |
-| wd:Q27710023 | Bulletin of the Los Angeles neurological societies (lang:fr)  |
-| wd:Q27710023 | Bulletin of the Los Angeles neurological societies (lang:ga)  |
-| wd:Q27710023 | Bulletin of the Los Angeles neurological societies (lang:it)  |
-| wd:Q27710023 | Bulletin of the Los Angeles neurological societies (lang:nl)  |","SELECT ?book ?bookLabel WHERE {
-  wd:Q70262859 wdt:P1433 ?book .
-  OPTIONAL {
-    ?book rdfs:label ?bookLabel
-  }
-}",ComplexQA/CompMix_infobox_complex/00189.json
-Who is the original broadcaster of the Locke & Key television series,Netflix,Netflix (lang:en),"| broadcasterLabel  |
-| ----------------- |
-| Netflix (lang:en) |","SELECT ?broadcasterLabel WHERE {
-  wd:Q56274745 wdt:P449 ?broadcaster .
-  ?broadcaster rdfs:label ?broadcasterLabel .
-  FILTER(LANG(?broadcasterLabel) = 'en')
+Who is the original broadcaster of the Locke & Key television series,Netflix,Netflix,"| broadcaster          |
+| -------------------- |
+| Netflix (wd:Q907311) |","SELECT ?broadcaster WHERE {
+  wd:Q56274745 wdt:P449 ?broadcaster
 }",ComplexQA/CompMix_infobox_complex/00190.json
 What was the name of director who directed Fruitvale Station English Movie,Ryan Coogler,Ryan Coogler (lang:en),"| directorLabel          |
 | ---------------------- |
@@ -1147,20 +1122,10 @@ What is the publication date of the novel The Colour of Magic,24 November 1983,1
 | 1983-11-24T00:00:00Z (xsd:dateTime) |","SELECT ?publicationDate WHERE {
   wd:Q32136 wdt:P577 ?publicationDate
 }",ComplexQA/CompMix_infobox_complex/00194.json
-Who is the top scorer on the El Salvador national football team,Raúl Díaz Arce,Frank Banham|9.0,"| player                     | goals             |
-| -------------------------- | ----------------- |
-| Frank Banham (wd:Q1442920) | 9.0 (xsd:decimal) |","SELECT ?player ?goals WHERE {
-  ?player wdt:P21 wd:Q6581097 .
-  ?player wdt:P1532 wd:Q28 .
-  ?player wdt:P6509 ?goals .
-}
-ORDER BY DESC(?goals)
-LIMIT 1",ComplexQA/CompMix_infobox_complex/00195.json
-What is the total number of episodes in the TV series Vikings,89,89,"| totalEpisodes |
-| ------------- |
-| 89 (xsd:int)  |","SELECT(COUNT(?episode) AS ?totalEpisodes) WHERE {
-  wd:Q2579463 wdt:P527 ?season .
-  ?season wdt:P527 ?episode .
+What is the total number of episodes in the TV series Vikings,89,89.0,"| number_of_episodes |
+| ------------------ |
+| 89.0 (xsd:decimal) |","SELECT ?number_of_episodes WHERE {
+  wd:Q2579463 wdt:P1113 ?number_of_episodes
 }",ComplexQA/CompMix_infobox_complex/00196.json
 What was the genre of the music Love Me Like You Do,electropop,"electropop (lang:en)
 pop music (lang:en)","| genreLabel           |
@@ -1171,6 +1136,11 @@ pop music (lang:en)","| genreLabel           |
   ?genre rdfs:label ?genreLabel .
   FILTER(LANG(?genreLabel) = 'en')
 }",ComplexQA/CompMix_infobox_complex/00197.json
+What is the book followed by the book Tarzan of the Apes,The Return of Tarzan,The Return of Tarzan,"| nextBook                           |
+| ---------------------------------- |
+| The Return of Tarzan (wd:Q2441302) |","SELECT ?nextBook WHERE {
+  wd:Q655296 wdt:P156 ?nextBook
+}",ComplexQA/CompMix_infobox_complex/00198.json
 Who is the composer of the TV Series The Wheel of Time,Lorne Balfe,Lorne Balfe,"| composer                 |
 | ------------------------ |
 | Lorne Balfe (wd:Q608628) |","SELECT ?composer WHERE {
@@ -1211,10 +1181,10 @@ What is the release date of the movie Dilwale Dulhania Le Jayenge,20 October 199
 | 2023-03-22T00:00:00Z (xsd:dateTime) |","SELECT ?releaseDate WHERE {
   wd:Q849343 wdt:P577 ?releaseDate
 }",ComplexQA/CompMix_infobox_complex/00205.json
-What is the name of the channel where the show Vikings premiered,History,History,"| channel               |
+What is the name of the channel where the show Vikings premiered,History,History,"| broadcaster           |
 | --------------------- |
-| History (wd:Q1621065) |","SELECT ?channel WHERE {
-  wd:Q2579463 wdt:P449 ?channel
+| History (wd:Q1621065) |","SELECT ?broadcaster WHERE {
+  wd:Q2579463 wdt:P449 ?broadcaster .
 }",ComplexQA/CompMix_infobox_complex/00207.json
 What year did Gareth Bale first play for the Wales national team,2006,2006,"| year           |
 | -------------- |
@@ -1343,7 +1313,7 @@ Tim Southam (lang:en)","| directorLabel             |
 who is the director of photography The Call of the Wild movie,Janusz Kamiński,Janusz Kamiński,"| cinematographer              |
 | ---------------------------- |
 | Janusz Kamiński (wd:Q365230) |","SELECT ?cinematographer WHERE {
-  wd:Q57982258 wdt:P344 ?cinematographer
+  wd:Q57982258 wdt:P344 ?cinematographer .
 }",ComplexQA/CompMix_infobox_complex/00225.json
 What is the second book of A Song of Ice and Fire,A Clash of Kings,A Clash of Kings (lang:en),"| bookLabel                  |
 | -------------------------- |
@@ -1474,11 +1444,10 @@ United Kingdom|英國 (lang:zh-tw)","| country                  | countryLabel  
   wd:Q969725 wdt:P27 ?country .
   ?country rdfs:label ?countryLabel .
 }",ComplexQA/CompMix_infobox_complex/00242.json
-Which country was the winner of the FIFA World Cup in 2010,Spain,Spain,"| country        |
-| -------------- |
-| Spain (wd:Q29) |","SELECT ?country WHERE {
-  wd:Q176883 wdt:P1346 ?team .
-  ?team wdt:P17 ?country .
+Which country was the winner of the FIFA World Cup in 2010,Spain,Spain men's national football team,"| winner                                         |
+| ---------------------------------------------- |
+| Spain men's national football team (wd:Q42267) |","SELECT ?winner WHERE {
+  wd:Q176883 wdt:P1346 ?winner
 }",ComplexQA/CompMix_infobox_complex/00243.json
 What was the country of origin of The Walking Dead TV series,United States,United States (lang:en),"| countryLabel            |
 | ----------------------- |
@@ -1492,6 +1461,13 @@ What is the date of birth of the soccer player Freddy Adu,2 June 1989,1989-06-02
 | 1989-06-02T00:00:00Z (xsd:dateTime) |","SELECT ?dob WHERE {
   wd:Q310369 wdt:P569 ?dob
 }",ComplexQA/CompMix_infobox_complex/00245.json
+How many matches has Joshua Kimmich played for Germany national football team,64,106.0,"| matches             |
+| ------------------- |
+| 106.0 (xsd:decimal) |","SELECT ?matches WHERE {
+  wd:Q13865408 p:P54 ?statement .
+  ?statement ps:P54 wd:Q43310 .
+  ?statement pq:P1350 ?matches
+}",ComplexQA/CompMix_infobox_complex/00246.json
 Who was the composer of music for the movie The Lion King,Hans Zimmer,"Nick Glennie-Smith
 Elton John
 Tim Rice
@@ -1518,19 +1494,15 @@ What was the first single released from the album On the 6,If You Had My Love,If
 }
 ORDER BY ASC(?releaseDate)
 LIMIT 1",ComplexQA/CompMix_infobox_complex/00249.json
-What is the name of the The Next Three Days film director,Paul Haggis,Paul Haggis (lang:en),"| directorLabel         |
-| --------------------- |
-| Paul Haggis (lang:en) |","SELECT ?directorLabel WHERE {
-  wd:Q263930 wdt:P57 ?director .
-  ?director rdfs:label ?directorLabel .
-  FILTER(LANG(?directorLabel) = ""en"")
+What is the name of the The Next Three Days film director,Paul Haggis,Paul Haggis,"| director                 |
+| ------------------------ |
+| Paul Haggis (wd:Q314935) |","SELECT ?director WHERE {
+  wd:Q263930 wdt:P57 ?director
 }",ComplexQA/CompMix_infobox_complex/00250.json
-who is the illustrator of the book the Tale of peter Rabbit,Beatrix Potter,Beatrix Potter|Beatrix Potter (lang:en),"| illustrator                 | illustratorLabel         |
-| --------------------------- | ------------------------ |
-| Beatrix Potter (wd:Q214565) | Beatrix Potter (lang:en) |","SELECT ?illustrator ?illustratorLabel WHERE {
+who is the illustrator of the book the Tale of peter Rabbit,Beatrix Potter,Beatrix Potter,"| illustrator                 |
+| --------------------------- |
+| Beatrix Potter (wd:Q214565) |","SELECT ?illustrator WHERE {
   wd:Q580463 wdt:P110 ?illustrator .
-  ?illustrator rdfs:label ?illustratorLabel .
-  FILTER(LANGMATCHES(LANG(?illustratorLabel) , ""en""))
 }",ComplexQA/CompMix_infobox_complex/00251.json
 Who are the creators of the TV show The Big Bang Theory,Chuck Lorre;Bill Prady,"Chuck Lorre|Chuck Lorre (lang:en)
 Bill Prady|Bill Prady (lang:en)","| creator                  | creatorLabel          |
@@ -1543,8 +1515,9 @@ Bill Prady|Bill Prady (lang:en)","| creator                  | creatorLabel     
 }",ComplexQA/CompMix_infobox_complex/00252.json
 How many times has Spain's Olympic football team played in the Olympics,5,0,"| count       |
 | ----------- |
-| 0 (xsd:int) |","SELECT(COUNT(*) AS ?count) WHERE {
-  ?event wdt:P31 wd:Q2471295 ; wdt:P154 wd:Q1481307 .
+| 0 (xsd:int) |","SELECT(COUNT(DISTINCT ?olympic) AS ?count) WHERE {
+  ?olympic wdt:P31 wd:Q182092 ; wdt:P156 ?event .
+  ?event wdt:P31 wd:Q2346262 ; wdt:P550 wd:Q1481307 .
 }",ComplexQA/CompMix_infobox_complex/00253.json
 What is the Genre  of the tv series wizards of waverly place,teen sitcom,"teen sitcom
 fantasy television series","| genre                                    |
@@ -1641,7 +1614,7 @@ Paris (lang:en)","| cityLabel        |
 | Paris (lang:en)  |","SELECT ?cityLabel WHERE {
   wd:Q308918 wdt:P840 ?city .
   ?city rdfs:label ?cityLabel .
-  FILTER(LANG(?cityLabel) = 'en')
+  FILTER(lang(?cityLabel) = 'en')
 }",ComplexQA/CompMix_infobox_complex/00270.json
 What is the country of the orign of the Big star band,United States of America,United States (lang:en),"| countryLabel            |
 | ----------------------- |
@@ -1698,12 +1671,16 @@ In what year did Cristiano Ronaldo join Manchester United the first time,2003,"2
   ?statement ps:P54 wd:Q18656 .
   ?statement pq:P580 ?startDate .
 }",ComplexQA/CompMix_infobox_complex/00282.json
-What is the name of the author of the book Treasure Island,Robert Louis Stevenson,Robert Louis Stevenson (lang:en),"| authorLabel                      |
-| -------------------------------- |
-| Robert Louis Stevenson (lang:en) |","SELECT ?authorLabel WHERE {
+What is the name of the author of the book Treasure Island,Robert Louis Stevenson,"Robert Louis Stevenson|Robert Louis Stevenson (lang:en)
+Robert Louis Stevenson|Robert Louis Stevenson (lang:en-ca)
+Robert Louis Stevenson|Robert Louis Stevenson (lang:en-gb)","| author                            | authorLabel                         |
+| --------------------------------- | ----------------------------------- |
+| Robert Louis Stevenson (wd:Q1512) | Robert Louis Stevenson (lang:en)    |
+| Robert Louis Stevenson (wd:Q1512) | Robert Louis Stevenson (lang:en-ca) |
+| Robert Louis Stevenson (wd:Q1512) | Robert Louis Stevenson (lang:en-gb) |","SELECT ?author ?authorLabel WHERE {
   wd:Q185118 wdt:P50 ?author .
   ?author rdfs:label ?authorLabel .
-  FILTER(lang(?authorLabel) = 'en')
+  FILTER(langMatches(lang(?authorLabel) , ""en""))
 }",ComplexQA/CompMix_infobox_complex/00283.json
 What is the place of birth of the soccer player Sadio Mané,"Bambali, Sédhiou, Senegal",Bambali (lang:en),"| placeLabel        |
 | ----------------- |
@@ -1777,6 +1754,11 @@ P. J. Pesce","| director                           |
 | P. J. Pesce (wd:Q7117319)          |","SELECT ?director WHERE {
   wd:Q2947967 wdt:P57 ?director
 }",ComplexQA/CompMix_infobox_complex/00291.json
+Which TV series with actor Charlie Sheen was created by Chuck Lorre,Two and a Half Men,The Big Bang Theory,"| series                         |
+| ------------------------------ |
+| The Big Bang Theory (wd:Q8539) |","SELECT ?series WHERE {
+  ?series wdt:P161 wd:Q103939 ; wdt:P162 wd:Q430844 .
+}",ComplexQA/CompMix_infobox_complex/00292.json
 Who is the director of photography of the movie The Matrix Revolutions,Bill Pope,Bill Pope (lang:en),"| cinematographerLabel |
 | -------------------- |
 | Bill Pope (lang:en)  |","SELECT ?cinematographerLabel WHERE {
