@@ -2,10 +2,6 @@
 
 This file summarizes the merged taxonomy-labeled QA CSV outputs.
 
-Simple heuristics rows from `all_valid_cases_with_taxonomy.csv` exclude `different_unclassified`.
-
-The taxonomy label `same` is normalized to `Same`.
-
 Each count is shown as:
 
 ```text
@@ -14,29 +10,29 @@ count (percentage within model)
 
 ## Total Rows by Model
 
-| Metric | Qwen3-4B-Instruct | Qwen3-235B-Thinking |
-| --- | --- | --- |
-| Total | 1165 | 1453 |
+| Metric | Qwen3-4B-Instruct | Qwen3-30B-Thinking | Qwen3-235B-Thinking |
+| --- | --- | --- | --- |
+| Total | 1165 | 1278 | 1453 |
 
 ## Taxonomy Distribution by Model
 
-| taxonomy_label | Qwen3-4B-Instruct | Qwen3-235B-Thinking |
-| --- | --- | --- |
-| Different answer | 648 (55.62%) | 607 (41.78%) |
-| Higher accuracy in KG than in Table | 104 (8.93%) | 144 (9.91%) |
-| Higher accuracy in Table than in KG | 80 (6.87%) | 130 (8.95%) |
-| Same | 320 (27.47%) | 538 (37.03%) |
-| Temporal changes | 13 (1.12%) | 34 (2.34%) |
+| taxonomy_label | Qwen3-4B-Instruct | Qwen3-30B-Thinking | Qwen3-235B-Thinking |
+| --- | --- | --- | --- |
+| Different answer | 638 (54.76%) | 546 (42.72%) | 600 (41.29%) |
+| Higher accuracy in KG than in Table | 139 (11.93%) | 147 (11.50%) | 164 (11.29%) |
+| Higher accuracy in Table than in KG | 87 (7.47%) | 125 (9.78%) | 139 (9.57%) |
+| Same | 288 (24.72%) | 427 (33.41%) | 522 (35.93%) |
+| Temporal changes | 13 (1.12%) | 33 (2.58%) | 28 (1.93%) |
+| Total | 1165 (100.00%) | 1278 (100.00%) | 1453 (100.00%) |
 
 ## Method Distribution by Model
 
-| method | Qwen3-4B-Instruct | Qwen3-235B-Thinking |
-| --- | --- | --- |
-| LLM-as-a-judge | 804 (69.01%) | 931 (64.07%) |
-| Simple heuristics | 361 (30.99%) | 522 (35.93%) |
+| method | Qwen3-4B-Instruct | Qwen3-30B-Thinking | Qwen3-235B-Thinking |
+| --- | --- | --- | --- |
+| LLM-as-a-judge | 743 (63.78%) | 720 (56.34%) | 810 (55.75%) |
+| Simple heuristics | 422 (36.22%) | 558 (43.66%) | 643 (44.25%) |
+| Total | 1165 (100.00%) | 1278 (100.00%) | 1453 (100.00%) |
 
 ## Skipped Pairs
 
-| Pair | Model | Reason | Missing Files |
-| --- | --- | --- | --- |
-| 30B | Qwen3-30B-Thinking | missing file(s) | /home/user/Documents/EURECOM/PhD2/SPARQL-TableQA/LLM-as-Judge/30B_judged.csv |
+None.
