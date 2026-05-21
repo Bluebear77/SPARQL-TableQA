@@ -1,4 +1,4 @@
-# KONTRAST: Cross-Modal Knowledge Inconsistency Detection
+# KONTRAST: Detecting Knowledge Inconsistencies Across Text, Tables, and Knowledge Graphs
 
 This repository contains the experimental record for **KONTRAST**, a framework for detecting and categorizing knowledge inconsistencies across **tables**, **text**, and **knowledge graphs**.
 
@@ -8,21 +8,6 @@ Wikipedia and Wikidata are central open knowledge resources for search, question
 
 The repository supports the paper’s task of **modality-level inconsistency detection**: identifying and categorizing mismatches between table-grounded answers and knowledge graph answers surfaced through Text-to-SPARQL generation.
 
-The workflow is:
-
-```text
-Raw Table-QA datasets
-        ↓
-Dataset filtering and split construction
-        ↓
-Text-to-SPARQL input
-        ↓
-Generated SPARQL and KG answers
-        ↓
-Simple heuristics + LLM-as-a-judge consistency labeling
-        ↓
-Modality-level inconsistency taxonomy and statistics
-```
 
 <img width="5748" height="2463" alt="triangulate_workflow_ultra" src="https://github.com/user-attachments/assets/e4354071-0aa8-488d-8063-57e3796c3d54" />
 
