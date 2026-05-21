@@ -2,16 +2,17 @@
 
 This directory contains the Text-to-SPARQL outputs used by KONTRAST to surface cross-modal knowledge differences.
 
-## Overview
-Experiment evaluating GRASP SPARQL generation for table-based question answering across **9 split of 6 datasets** divided into **SimpleQA** (3 datasets) and **ComplexQA** (6 datasets). 
+## Purpose
 
-Each dataset contains JSON files with questions, gold answers, generated SPARQL queries, and execution results.
+KONTRAST compares table-grounded answers with knowledge graph answers. This directory stores the intermediate evidence that makes that comparison possible:
 
-**Model used for GRASP** 
+- generated SPARQL queries;
+- Wikidata execution results;
+- model reasoning traces;
+- valid and invalid cases;
+- per-model statistics;
+- taxonomy preparation files.
 
-- Qwen3-4B-Instruct-2507
-- Qwen3-30B-A3B-Thinking-2507
-- Qwen3-235B-A22B-Thinking-2507-AWQ
 
 ## Scripts
 
