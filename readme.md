@@ -24,6 +24,9 @@ Simple heuristics + LLM-as-a-judge consistency labeling
 Modality-level inconsistency taxonomy and statistics
 ```
 
+<img width="5748" height="2463" alt="triangulate_workflow_ultra" src="https://github.com/user-attachments/assets/e4354071-0aa8-488d-8063-57e3796c3d54" />
+
+
 ## Directory map
 
 | Directory | Role in the workflow |
@@ -66,5 +69,3 @@ Start with the root workflow above, then follow the directories in order:
 
 
 
-
-<img width="5748" height="2463" alt="triangulate_workflow_ultra" src="https://github.com/user-attachments/assets/e4354071-0aa8-488d-8063-57e3796c3d54" />
