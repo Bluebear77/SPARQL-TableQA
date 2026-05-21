@@ -23,9 +23,9 @@ count (percentage within model)
 
 | Model | Rows removed by >10-row file_path filter | Rows removed as duplicate questions | Total removed by these two steps | Removed rows CSV |
 | --- | --- | --- | --- | --- |
-| Qwen3-4B-Instruct | 251 | 12 | 263 | /workspaces/KONTRAST/Modality_inconsistency_labelled/removed_files/removed_rows_4B.csv |
-| Qwen3-30B-Thinking | 97 | 14 | 111 | /workspaces/KONTRAST/Modality_inconsistency_labelled/removed_files/removed_rows_30B.csv |
-| Qwen3-235B-Thinking | 95 | 17 | 112 | /workspaces/KONTRAST/Modality_inconsistency_labelled/removed_files/removed_rows_235B.csv |
+| Qwen3-4B-Instruct | 251 | 12 | 263 | /KONTRAST/Modality_inconsistency_labelled/removed_files/removed_rows_4B.csv |
+| Qwen3-30B-Thinking | 97 | 14 | 111 | /KONTRAST/Modality_inconsistency_labelled/removed_files/removed_rows_30B.csv |
+| Qwen3-235B-Thinking | 95 | 17 | 112 | /KONTRAST/Modality_inconsistency_labelled/removed_files/removed_rows_235B.csv |
 | Total | 443 | 43 | 486 |  |
 
 ## Taxonomy Distribution by Model
