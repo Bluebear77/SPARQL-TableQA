@@ -2,9 +2,9 @@ from pathlib import Path
 import pandas as pd
 
 FILES = [
-    Path("Output_GRASP/merged_taxonomy_answers_4B.csv"),
-    Path("Output_GRASP/merged_taxonomy_answers_30B.csv"),
-    Path("Output_GRASP/merged_taxonomy_answers_235B.csv"),
+    Path("Modality_inconsistency_labelled/merged_taxonomy_answers_4B.csv"),
+    Path("Modality_inconsistency_labelled/merged_taxonomy_answers_30B.csv"),
+    Path("Modality_inconsistency_labelled/merged_taxonomy_answers_235B.csv"),
 ]
 
 TAXONOMY_ORDER = [
