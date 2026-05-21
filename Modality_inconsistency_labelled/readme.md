@@ -2,15 +2,48 @@
 
 This directory contains the final labeled modality-level inconsistency files used for KONTRAST analysis.
 
+It is the final analysis layer of the repository. It consolidates valid cases from the Text-to-SPARQL / KG-answer generation stage with heuristic and LLM-based taxonomy labels, then applies additional cleaning before producing the final CSV files.
+
 ## Purpose
 
-This is the final analysis layer of the repository. It consolidates valid cases from the Text-to-SPARQL stage with heuristic and LLM-based taxonomy labels.
+Use this directory to inspect the final cross-modal inconsistency annotations between table-grounded answers and KG answers generated from Wikidata.
 
-Use this directory to inspect the final cross-modal inconsistency annotations.
+The final merged CSV files are used for:
 
-## What the files represent
+- reporting taxonomy distributions;
+- comparing model settings;
+- analyzing modality-level disagreement patterns;
+- identifying cases that may need human review;
+- tracking removed rows caused by duplicate questions or overly long KG answers.
 
-The labeled files summarize how table-grounded answers compare with KG answers generated from Wikidata. Each row corresponds to a value-bearing comparison case and includes a taxonomy label such as:
+## Main files
+
+| File / directory | Description |
+|---|---|
+| `merged_taxonomy_answers_4B.csv` | Final cleaned taxonomy-labeled output for `Qwen3-4B-Instruct`. |
+| `merged_taxonomy_answers_30B.csv` | Final cleaned taxonomy-labeled output for `Qwen3-30B-Thinking`. |
+| `merged_taxonomy_answers_235B.csv` | Final cleaned taxonomy-labeled output for `Qwen3-235B-Thinking`. |
+| `taxonomy_statistics.md` | Summary statistics for the final merged files, including taxonomy distribution, method distribution, and row-removal counts. |
+| `removed_files/` | Stores rows removed during cleaning, with one CSV per model setting. |
+| `count.py` | Utility script for counting or inspecting the labeled outputs. |
+| `readme.md` | This documentation file. |
+
+## Final merged CSV files
+
+Each final merged CSV contains rows in the following schema:
+
+| Column | Description |
+|---|---|
+| `question` | Input natural-language question. |
+| `gold_answer` | Gold/reference answer from the table-based QA data. |
+| `KG answer` | Answer generated from the KG/Wikidata pipeline. |
+| `taxonomy_label` | Label describing the relationship between the table answer and KG answer. |
+| `method` | Labeling method, either heuristic-based or LLM-as-a-judge. |
+| `source` | Dataset/source category inferred from the original file path. |
+
+## Taxonomy labels
+
+Each row receives a taxonomy label such as:
 
 - `Same`
 - `Higher accuracy in KG than in Table`
@@ -18,22 +51,19 @@ The labeled files summarize how table-grounded answers compare with KG answers g
 - `Different answer`
 - `Temporal changes`
 
+These labels describe how the table-grounded answer compares with the KG answer.
 
-## How this directory connects to the experiment
+## Cleaning rules
 
-This directory is produced after:
+Before the final merged files are written, two cleaning steps are applied.
 
-1. input questions are selected in `Input_GRASP/`;
-2. SPARQL and KG answers are generated in `Output_GRASP/`;
-3. consistency labels are assigned in `LLM_as_a_Judge/`.
+### 1. Duplicate-question removal
 
-The files here are intended for final reporting, error analysis, and benchmark comparison.
+Within each final output CSV, duplicate rows with the same `question` are removed.
 
-## Recommended use
+Only the first occurrence of each question is kept, so every final output file contains unique questions.
 
-Use this directory when you want to answer questions such as:
+Removed duplicate rows are saved in the corresponding CSV under:
 
-- How often do table answers and KG answers agree?
-- Which inconsistency types are most common?
-- Which model setting surfaces more usable cross-modal comparisons?
-- Which cases are candidates for human review by Wikipedia or Wikidata editors?
+```text
+removed_files/
