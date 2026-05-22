@@ -31,5 +31,4 @@ The judging pipeline uses the following labels:
 This directory includes:
 
 - judged CSV files for different model outputs;
-- the LLM judging script;
-- intermediate outputs and statistics used to support the final taxonomy analysis.
+- the LLM judging script, including judeg prompt.
