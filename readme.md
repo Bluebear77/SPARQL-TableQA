@@ -1,6 +1,6 @@
 # KONTRAST: Detecting Knowledge Inconsistencies Across Text, Tables, and Knowledge Graphs
 
-This repository contains the experimental record for **KONTRAST**, a framework for detecting and categorizing knowledge inconsistencies across **tables**, **text**, and **knowledge graphs**.
+This repository contains the experimental record for **KONTRAST**, a system for detecting and categorizing knowledge inconsistencies across **tables**, **text**, and **knowledge graphs**.
 
 Wikipedia and Wikidata are central open knowledge resources for search, question answering, LLM training, and retrieval-augmented generation. Their knowledge is connected, but distributed across different modalities. KONTRAST studies when these modalities agree, when they disagree, and how such disagreements can become actionable signals for improving knowledge consistency.
 
