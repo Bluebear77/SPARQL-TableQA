@@ -4,7 +4,7 @@ This repository contains the experimental record for **KONTRAST**, a system for 
 
 Wikipedia and Wikidata are central open knowledge resources for search, question answering, LLM training, and retrieval-augmented generation. Their knowledge is connected, but distributed across different modalities. KONTRAST studies when these modalities agree, when they disagree, and how such disagreements can become actionable signals for improving knowledge consistency.
 
-## What this repository contains
+## Introduction
 
 The repository supports the paper’s task of **modality-level inconsistency detection**: identifying and categorizing mismatches between table-grounded answers and knowledge graph answers surfaced through Text-to-SPARQL generation.
 
