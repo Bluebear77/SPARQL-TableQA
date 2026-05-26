@@ -1,51 +1,68 @@
 #!/usr/bin/env python3
 """
-build_annotation_235B_top300_second10.py
+build_annotation_235B_top300_second10_inconsistent_source_first.py
 
 Summary
 -------
-This script builds two balanced annotation CSV files for the Qwen3-235B model
-using the same input files as the original merge_taxonomy_full.py pipeline.
+This script builds two balanced annotation CSV files for inconsistent Qwen3-235B
+cases using the same input files as the original merge_taxonomy_full.py
+pipeline.
 
 For the 235B model, the script:
 1. Reads the Simple-heuristics taxonomy CSV and the LLM-as-a-judge CSV.
 2. Drops Simple-heuristics rows whose taxonomy_label is different_unclassified.
-3. Preserves the complete original file_path in the public `source` column,
+3. Drops all rows whose normalized taxonomy_label is Same.
+4. Preserves the complete original file_path in the public `source` column,
    for example SimpleQA/NQ_table_test_simple/00503.json.
-4. Removes rows whose source/file_path appears in
+5. Removes rows whose source/file_path appears in
    Output_GRASP/script/large_results_report.txt, meaning the KG answer has
    more than 10 result rows.
-5. Merges Simple-heuristics and LLM-as-a-judge rows into one shared internal
+6. Merges Simple-heuristics and LLM-as-a-judge rows into one shared internal
    schema.
-6. Removes duplicate question rows, keeping the first occurrence.
-7. Sorts each QA-group/method bucket by the correct confidence signal:
+7. Removes duplicate question rows, keeping the first occurrence.
+8. Sorts each QA-group/method bucket by the correct confidence signal:
    - Simple-heuristics rows by similarity_score, high score first.
    - LLM-as-a-judge rows by difference_severity:
      major, moderate, minor, none.
-8. Writes the top balanced 300 cases.
-9. Writes the next balanced 10 cases for presentation.
+9. Writes the top balanced 300 inconsistent cases.
+10. Writes the next balanced 10 inconsistent cases for presentation.
 
-The top 300 cases are exactly balanced as:
+Balancing priority:
+1. Balance SimpleQA and ComplexQA exactly.
+2. Balance Simple heuristics and LLM-as-a-judge inside each source group when
+   enough rows are available.
+3. If one method is short inside a source group, fill the missing rows from the
+   other method inside the same source group.
+
+For the top 300 cases, the source balance is exact:
+
+    SimpleQA: 150
+    ComplexQA: 150
+
+The preferred method split inside each source group is:
 
     SimpleQA / Simple heuristics: 75
     SimpleQA / LLM-as-a-judge:   75
     ComplexQA / Simple heuristics: 75
     ComplexQA / LLM-as-a-judge:   75
 
-The second 10-case presentation slice is balanced as closely as possible while
-preserving exact SimpleQA/ComplexQA balance and exact method balance:
+If a method bucket is short, the deficit is filled from the other method within
+the same source group.
+
+For the second 10-case presentation slice, the source balance is exact:
+
+    SimpleQA: 5
+    ComplexQA: 5
+
+The preferred method split is:
 
     SimpleQA / Simple heuristics: 3
     SimpleQA / LLM-as-a-judge:   2
     ComplexQA / Simple heuristics: 2
     ComplexQA / LLM-as-a-judge:   3
 
-Therefore the second slice has:
-
-    SimpleQA: 5
-    ComplexQA: 5
-    Simple heuristics: 5
-    LLM-as-a-judge: 5
+If a method bucket is short, the deficit is filled from the other method within
+the same source group.
 
 The public output schema is exactly:
 
@@ -56,7 +73,7 @@ For LLM-as-a-judge rows, confidence is difference_severity.
 
 Run from the repository root with:
 
-    python build_annotation_235B_top300_second10.py
+    python build_annotation_235B_top300_second10_inconsistent_source_first.py
 """
 
 from __future__ import annotations
@@ -92,10 +109,6 @@ SECOND_SLICE_CASES = 10
 LARGE_RESULTS_REPORT = Path("Output_GRASP/script/large_results_report.txt")
 
 
-# Final output folder requested for the annotation CSV files.
-ANNOTATION_DIR = Path("Annotation")
-
-
 # Preferred order for LLM-as-a-judge difference severity.
 # Lower rank means more confident and therefore earlier in the output.
 DIFFERENCE_SEVERITY_ORDER = {
@@ -111,7 +124,7 @@ SIMPLE_METHOD = "Simple heuristics"
 LLM_METHOD = "LLM-as-a-judge"
 
 
-# QA groups used for balancing.
+# QA groups used for source-first balancing.
 SIMPLE_QA_GROUP = "SimpleQA"
 COMPLEX_QA_GROUP = "ComplexQA"
 
@@ -123,28 +136,51 @@ MODEL_PAIR = {
     "model": "Qwen3-235B-Thinking",
     "judged_csv": Path("LLM_as_a_Judge/235B_judged_filtered.csv"),
     "taxonomy_csv": Path("Output_GRASP/Qwen3-235B-A22B-Thinking-2507-AWQ/all_valid_cases_with_taxonomy.csv"),
-    "top300_csv": Path("Annotation/annotation_cases_235B_top300.csv"),
-    "second10_csv": Path("Annotation/annotation_cases_235B_second10.csv"),
-    "statistics_md": Path("Annotation/annotation_235B_selection_statistics.md"),
+    "top300_csv": Path("Annotation/annotation_cases_235B_top300_inconsistent.csv"),
+    "second10_csv": Path("Annotation/annotation_cases_235B_second10_inconsistent.csv"),
+    "statistics_md": Path("Annotation/annotation_235B_inconsistent_selection_statistics.md"),
 }
 
 
-# Exact balanced bucket quotas for the top 300 annotation set.
-TOP300_BUCKET_QUOTAS = {
-    (SIMPLE_QA_GROUP, SIMPLE_METHOD): 75,
-    (SIMPLE_QA_GROUP, LLM_METHOD): 75,
-    (COMPLEX_QA_GROUP, SIMPLE_METHOD): 75,
-    (COMPLEX_QA_GROUP, LLM_METHOD): 75,
+# Exact source quotas for the top 300 annotation set.
+TOP300_SOURCE_QUOTAS = {
+    SIMPLE_QA_GROUP: 150,
+    COMPLEX_QA_GROUP: 150,
 }
 
 
-# Exact balanced bucket quotas for the next 10 presentation cases.
-# This keeps SimpleQA=5, ComplexQA=5, Simple heuristics=5, LLM-as-a-judge=5.
-SECOND10_BUCKET_QUOTAS = {
-    (SIMPLE_QA_GROUP, SIMPLE_METHOD): 3,
-    (SIMPLE_QA_GROUP, LLM_METHOD): 2,
-    (COMPLEX_QA_GROUP, SIMPLE_METHOD): 2,
-    (COMPLEX_QA_GROUP, LLM_METHOD): 3,
+# Preferred method quotas inside each source group for the top 300.
+# These are preferences, not hard constraints.
+TOP300_METHOD_PREFERENCES = {
+    SIMPLE_QA_GROUP: {
+        SIMPLE_METHOD: 75,
+        LLM_METHOD: 75,
+    },
+    COMPLEX_QA_GROUP: {
+        SIMPLE_METHOD: 75,
+        LLM_METHOD: 75,
+    },
+}
+
+
+# Exact source quotas for the second 10-case presentation slice.
+SECOND10_SOURCE_QUOTAS = {
+    SIMPLE_QA_GROUP: 5,
+    COMPLEX_QA_GROUP: 5,
+}
+
+
+# Preferred method quotas inside each source group for the second 10.
+# These are preferences, not hard constraints.
+SECOND10_METHOD_PREFERENCES = {
+    SIMPLE_QA_GROUP: {
+        SIMPLE_METHOD: 3,
+        LLM_METHOD: 2,
+    },
+    COMPLEX_QA_GROUP: {
+        SIMPLE_METHOD: 2,
+        LLM_METHOD: 3,
+    },
 }
 
 
@@ -178,8 +214,18 @@ def normalize_taxonomy_label(label: str) -> str:
     return label
 
 
+def is_inconsistent_taxonomy_label(label: str) -> bool:
+    """Return True only for non-Same taxonomy labels."""
+    return normalize_taxonomy_label(label) != "Same"
+
+
 def should_keep_simple_heuristics_row(label: str) -> bool:
-    """Exclude Simple-heuristics rows that were not assigned a usable class."""
+    """
+    Exclude Simple-heuristics rows that were not assigned a usable class.
+
+    This does not remove Same rows by itself. Same rows are removed by the
+    inconsistent-case filter after normalization.
+    """
     return (label or "").strip().lower() != "different_unclassified"
 
 
@@ -292,19 +338,31 @@ def require_columns(csv_path: Path, rows: list[dict], required_columns: list[str
     return True
 
 
-def convert_taxonomy_rows(rows: list[dict]) -> tuple[list[dict], int]:
+def convert_taxonomy_rows(rows: list[dict]) -> tuple[list[dict], int, int]:
     """
     Convert all_valid_cases_with_taxonomy.csv rows to the internal schema.
 
     Simple-heuristics confidence is similarity_score.
+
+    Returns:
+        converted rows,
+        rows filtered because taxonomy_label is different_unclassified,
+        rows filtered because taxonomy_label is Same.
     """
     converted = []
-    filtered_out = 0
+    unclassified_filtered_out = 0
+    same_filtered_out = 0
 
     for row in rows:
         raw_label = row.get("taxonomy_label", "")
+
         if not should_keep_simple_heuristics_row(raw_label):
-            filtered_out += 1
+            unclassified_filtered_out += 1
+            continue
+
+        normalized_label = normalize_taxonomy_label(raw_label)
+        if not is_inconsistent_taxonomy_label(normalized_label):
+            same_filtered_out += 1
             continue
 
         file_path = normalize_file_path_key(row.get("file_path", ""))
@@ -316,7 +374,7 @@ def convert_taxonomy_rows(rows: list[dict]) -> tuple[list[dict], int]:
                 "question": row.get("question", ""),
                 "gold_answer": row.get("gold_answer", ""),
                 "KG answer": row.get("result_cleaned", ""),
-                "taxonomy_label": normalize_taxonomy_label(raw_label),
+                "taxonomy_label": normalized_label,
                 "confidence": similarity_score,
                 "method": SIMPLE_METHOD,
                 "source": file_path,
@@ -327,18 +385,28 @@ def convert_taxonomy_rows(rows: list[dict]) -> tuple[list[dict], int]:
             }
         )
 
-    return converted, filtered_out
+    return converted, unclassified_filtered_out, same_filtered_out
 
 
-def convert_judged_rows(rows: list[dict]) -> list[dict]:
+def convert_judged_rows(rows: list[dict]) -> tuple[list[dict], int]:
     """
     Convert *_judged_filtered.csv rows to the internal schema.
 
     LLM-as-a-judge confidence is difference_severity.
+
+    Returns:
+        converted rows,
+        rows filtered because taxonomy_label is Same.
     """
     converted = []
+    same_filtered_out = 0
 
     for row in rows:
+        normalized_label = normalize_taxonomy_label(row.get("taxonomy_label", ""))
+        if not is_inconsistent_taxonomy_label(normalized_label):
+            same_filtered_out += 1
+            continue
+
         file_path = normalize_file_path_key(row.get("file_path", ""))
         difference_severity = normalize_difference_severity(row.get("difference_severity", ""))
 
@@ -347,7 +415,7 @@ def convert_judged_rows(rows: list[dict]) -> list[dict]:
                 "question": row.get("question", ""),
                 "gold_answer": row.get("gold_answer", ""),
                 "KG answer": row.get("KG answer", ""),
-                "taxonomy_label": normalize_taxonomy_label(row.get("taxonomy_label", "")),
+                "taxonomy_label": normalized_label,
                 "confidence": difference_severity,
                 "method": LLM_METHOD,
                 "source": file_path,
@@ -358,7 +426,7 @@ def convert_judged_rows(rows: list[dict]) -> list[dict]:
             }
         )
 
-    return converted
+    return converted, same_filtered_out
 
 
 def public_row(row: dict) -> dict:
@@ -442,65 +510,218 @@ def bucket_rows(rows: list[dict]) -> dict[tuple[str, str], list[dict]]:
     return buckets
 
 
-def validate_bucket_capacity(
+def validate_source_capacity(
     buckets: dict[tuple[str, str], list[dict]],
-    top_quotas: dict[tuple[str, str], int],
-    second_quotas: dict[tuple[str, str], int],
+    source_quotas: dict[str, int],
+    already_used_counts: dict[tuple[str, str], int],
 ) -> None:
     """
-    Check that every bucket has enough rows for both outputs.
+    Check that each source group has enough remaining rows.
 
-    This script enforces exact balance. If a bucket is short, it raises an
-    error instead of silently breaking the requested distribution.
+    This enforces the main balancing priority: SimpleQA and ComplexQA must stay
+    balanced exactly. Method balance is preferred but not enforced if one method
+    bucket is short.
     """
     shortages = []
 
-    for key in sorted(top_quotas):
-        required = top_quotas[key] + second_quotas.get(key, 0)
-        available = len(buckets.get(key, []))
-        if available < required:
-            qa_group, method = key
+    for qa_group, source_quota in source_quotas.items():
+        available = 0
+        for method in [SIMPLE_METHOD, LLM_METHOD]:
+            key = (qa_group, method)
+            available += max(0, len(buckets.get(key, [])) - already_used_counts.get(key, 0))
+
+        if available < source_quota:
             shortages.append(
-                f"{qa_group} / {method}: required {required}, available {available}"
+                f"{qa_group}: required {source_quota}, available {available}"
             )
 
     if shortages:
         raise RuntimeError(
-            "Not enough eligible rows to build exact balanced top300 plus "
-            "second10 outputs:\n  - " + "\n  - ".join(shortages)
+            "Not enough eligible inconsistent rows to keep exact SimpleQA / "
+            "ComplexQA balance:\n  - " + "\n  - ".join(shortages)
         )
 
 
-def select_top_and_second_slice(
-    rows: list[dict],
-    top_quotas: dict[tuple[str, str], int],
-    second_quotas: dict[tuple[str, str], int],
-) -> tuple[list[dict], list[dict]]:
-    """
-    Select the top balanced set and the next balanced presentation slice.
+def take_from_bucket(
+    buckets: dict[tuple[str, str], list[dict]],
+    used_counts: dict[tuple[str, str], int],
+    key: tuple[str, str],
+    count: int,
+) -> list[dict]:
+    """Take the next count rows from one sorted bucket."""
+    if count <= 0:
+        return []
 
-    The second slice is taken immediately after the top quota inside each
-    QA-group/method bucket. This means it is the next most-confident balanced
-    10-case slice after the top 300.
+    bucket = buckets.get(key, [])
+    start = used_counts.get(key, 0)
+    end = min(start + count, len(bucket))
+
+    selected = bucket[start:end]
+    used_counts[key] = end
+
+    return selected
+
+
+def remaining_in_bucket(
+    buckets: dict[tuple[str, str], list[dict]],
+    used_counts: dict[tuple[str, str], int],
+    key: tuple[str, str],
+) -> int:
+    """Return the number of unused rows left in one bucket."""
+    return max(0, len(buckets.get(key, [])) - used_counts.get(key, 0))
+
+
+def select_source_group_rows(
+    buckets: dict[tuple[str, str], list[dict]],
+    used_counts: dict[tuple[str, str], int],
+    qa_group: str,
+    source_quota: int,
+    method_preferences: dict[str, int],
+) -> tuple[list[dict], list[str]]:
+    """
+    Select rows for one source group.
+
+    This function prioritizes the source quota. It first tries to follow the
+    preferred method split. If one method is short, it fills the deficit from
+    the other method inside the same source group.
+    """
+    selected = []
+    notes = []
+
+    simple_key = (qa_group, SIMPLE_METHOD)
+    llm_key = (qa_group, LLM_METHOD)
+
+    simple_preference = method_preferences.get(SIMPLE_METHOD, 0)
+    llm_preference = method_preferences.get(LLM_METHOD, 0)
+
+    simple_available = remaining_in_bucket(buckets, used_counts, simple_key)
+    llm_available = remaining_in_bucket(buckets, used_counts, llm_key)
+
+    simple_take = min(simple_preference, simple_available)
+    llm_take = min(llm_preference, llm_available)
+
+    selected.extend(take_from_bucket(buckets, used_counts, simple_key, simple_take))
+    selected.extend(take_from_bucket(buckets, used_counts, llm_key, llm_take))
+
+    deficit = source_quota - len(selected)
+
+    if deficit > 0:
+        simple_remaining = remaining_in_bucket(buckets, used_counts, simple_key)
+        llm_remaining = remaining_in_bucket(buckets, used_counts, llm_key)
+
+        if simple_take < simple_preference:
+            fill_method = LLM_METHOD
+            fill_key = llm_key
+            fill_available = llm_remaining
+        elif llm_take < llm_preference:
+            fill_method = SIMPLE_METHOD
+            fill_key = simple_key
+            fill_available = simple_remaining
+        else:
+            # This can happen when method preferences sum to less than the
+            # source quota. Fill from whichever method has more remaining rows.
+            if simple_remaining >= llm_remaining:
+                fill_method = SIMPLE_METHOD
+                fill_key = simple_key
+                fill_available = simple_remaining
+            else:
+                fill_method = LLM_METHOD
+                fill_key = llm_key
+                fill_available = llm_remaining
+
+        fill_count = min(deficit, fill_available)
+        selected.extend(take_from_bucket(buckets, used_counts, fill_key, fill_count))
+        deficit -= fill_count
+
+        if fill_count > 0:
+            notes.append(
+                f"{qa_group}: filled {fill_count} row(s) from {fill_method} "
+                "because the preferred method bucket was short."
+            )
+
+    if deficit > 0:
+        # Try one final source-preserving fill from both methods, ordered by
+        # method-specific confidence inside each method bucket.
+        for method in [SIMPLE_METHOD, LLM_METHOD]:
+            key = (qa_group, method)
+            fill_count = min(deficit, remaining_in_bucket(buckets, used_counts, key))
+            selected.extend(take_from_bucket(buckets, used_counts, key, fill_count))
+            deficit -= fill_count
+            if deficit == 0:
+                break
+
+    if len(selected) != source_quota:
+        raise RuntimeError(
+            f"Could not select {source_quota} rows for {qa_group}; "
+            f"selected only {len(selected)}."
+        )
+
+    return selected, notes
+
+
+def select_source_first_slice(
+    buckets: dict[tuple[str, str], list[dict]],
+    used_counts: dict[tuple[str, str], int],
+    source_quotas: dict[str, int],
+    method_preferences: dict[str, dict[str, int]],
+) -> tuple[list[dict], list[str]]:
+    """
+    Select one source-balanced slice.
+
+    SimpleQA and ComplexQA quotas are exact. Method quotas are preferred, but
+    shortages are complemented within the same source group.
+    """
+    validate_source_capacity(
+        buckets=buckets,
+        source_quotas=source_quotas,
+        already_used_counts=used_counts,
+    )
+
+    selected = []
+    notes = []
+
+    for qa_group in [SIMPLE_QA_GROUP, COMPLEX_QA_GROUP]:
+        group_rows, group_notes = select_source_group_rows(
+            buckets=buckets,
+            used_counts=used_counts,
+            qa_group=qa_group,
+            source_quota=source_quotas[qa_group],
+            method_preferences=method_preferences[qa_group],
+        )
+        selected.extend(group_rows)
+        notes.extend(group_notes)
+
+    selected = interleave_balanced_rows(selected)
+    return selected, notes
+
+
+def select_top_and_second_slice(rows: list[dict]) -> tuple[list[dict], list[dict], list[str]]:
+    """
+    Select the top 300 and then the next 10 presentation cases.
+
+    The top 300 consumes the highest-confidence rows from each source/method
+    bucket first. The second 10 then starts immediately after the rows already
+    consumed by the top 300.
     """
     buckets = bucket_rows(rows)
-    validate_bucket_capacity(buckets, top_quotas, second_quotas)
+    used_counts: dict[tuple[str, str], int] = defaultdict(int)
 
-    top_rows = []
-    second_rows = []
+    top_rows, top_notes = select_source_first_slice(
+        buckets=buckets,
+        used_counts=used_counts,
+        source_quotas=TOP300_SOURCE_QUOTAS,
+        method_preferences=TOP300_METHOD_PREFERENCES,
+    )
 
-    for key in sorted(top_quotas):
-        bucket = buckets[key]
-        top_quota = top_quotas[key]
-        second_quota = second_quotas.get(key, 0)
+    second_rows, second_notes = select_source_first_slice(
+        buckets=buckets,
+        used_counts=used_counts,
+        source_quotas=SECOND10_SOURCE_QUOTAS,
+        method_preferences=SECOND10_METHOD_PREFERENCES,
+    )
 
-        top_rows.extend(bucket[:top_quota])
-        second_rows.extend(bucket[top_quota:top_quota + second_quota])
-
-    top_rows = interleave_balanced_rows(top_rows)
-    second_rows = interleave_balanced_rows(second_rows)
-
-    return top_rows, second_rows
+    notes = top_notes + second_notes
+    return top_rows, second_rows, notes
 
 
 def interleave_balanced_rows(rows: list[dict]) -> list[dict]:
@@ -646,14 +867,22 @@ def write_statistics(
     top_rows: list[dict],
     second_rows: list[dict],
     cleaning_summary: dict,
+    selection_notes: list[str],
 ) -> None:
     """Write Markdown statistics for the two 235B annotation outputs."""
     statistics_path.parent.mkdir(parents=True, exist_ok=True)
 
     lines = []
-    lines.append("# 235B Annotation Selection Statistics")
+    lines.append("# 235B Inconsistent Annotation Selection Statistics")
     lines.append("")
-    lines.append("This file summarizes the balanced 235B annotation outputs.")
+    lines.append("This file summarizes the balanced 235B inconsistent-case annotation outputs.")
+    lines.append("")
+    lines.append("Rows whose normalized `taxonomy_label` is `Same` are excluded before selection.")
+    lines.append("")
+    lines.append("Balancing priority:")
+    lines.append("1. Keep SimpleQA and ComplexQA exactly balanced.")
+    lines.append("2. Prefer balanced methods inside each source group.")
+    lines.append("3. If one method is short, fill from the other method inside the same source group.")
     lines.append("")
     lines.append("Public output columns:")
     lines.append("")
@@ -670,22 +899,33 @@ def write_statistics(
             [
                 ["Simple heuristics input rows", str(cleaning_summary["taxonomy_input_rows"])],
                 ["LLM-as-a-judge input rows", str(cleaning_summary["judged_input_rows"])],
-                ["Simple rows filtered by taxonomy_label", str(cleaning_summary["filtered_simple_rows"])],
+                ["Simple rows filtered by different_unclassified", str(cleaning_summary["filtered_unclassified_simple_rows"])],
+                ["Simple rows filtered because taxonomy_label is Same", str(cleaning_summary["filtered_same_simple_rows"])],
+                ["LLM rows filtered because taxonomy_label is Same", str(cleaning_summary["filtered_same_judged_rows"])],
                 ["Rows removed by >10-row file_path filter", str(cleaning_summary["large_result_rows_removed"])],
                 ["Duplicate question rows removed", str(cleaning_summary["duplicate_question_rows_removed"])],
-                ["Eligible rows after cleaning", str(cleaning_summary["eligible_rows"])],
+                ["Eligible inconsistent rows after cleaning", str(cleaning_summary["eligible_rows"])],
             ],
         )
     )
     lines.append("")
 
-    lines.append("## Top 300 Output")
+    lines.append("## Selection Notes")
+    lines.append("")
+    if selection_notes:
+        for note in selection_notes:
+            lines.append(f"- {note}")
+    else:
+        lines.append("No method-bucket shortages were encountered.")
+    lines.append("")
+
+    lines.append("## Top 300 Inconsistent Output")
     lines.append("")
     lines.append(f"Rows written: {len(top_rows)}")
     lines.append("")
     lines.extend(build_distribution_tables(top_rows))
 
-    lines.append("## Second 10-Case Presentation Slice")
+    lines.append("## Second 10-Case Inconsistent Presentation Slice")
     lines.append("")
     lines.append(f"Rows written: {len(second_rows)}")
     lines.append("")
@@ -696,10 +936,11 @@ def write_statistics(
 
 
 def print_counts(label: str, rows: list[dict]) -> None:
-    """Print method, QA group, and 2x2 bucket counts."""
+    """Print method, QA group, 2x2 bucket, and taxonomy counts."""
     method_counts = count_by_method(rows)
     qa_group_counts = count_by_qa_group(rows)
     bucket_counts = count_by_bucket(rows)
+    taxonomy_counts = count_by_label(rows)
 
     print(f"  {label}:")
     print(f"    Rows: {len(rows)}")
@@ -714,10 +955,13 @@ def print_counts(label: str, rows: list[dict]) -> None:
     print(f"      {SIMPLE_QA_GROUP} / {LLM_METHOD}: {bucket_counts.get((SIMPLE_QA_GROUP, LLM_METHOD), 0)}")
     print(f"      {COMPLEX_QA_GROUP} / {SIMPLE_METHOD}: {bucket_counts.get((COMPLEX_QA_GROUP, SIMPLE_METHOD), 0)}")
     print(f"      {COMPLEX_QA_GROUP} / {LLM_METHOD}: {bucket_counts.get((COMPLEX_QA_GROUP, LLM_METHOD), 0)}")
+    print("    Taxonomy counts:")
+    for taxonomy_label, count in sorted(taxonomy_counts.items()):
+        print(f"      {taxonomy_label}: {count}")
 
 
 def main() -> None:
-    """Run the 235B-only clean, balance, select, and write pipeline."""
+    """Run the 235B-only inconsistent source-first selection pipeline."""
     try:
         project_root = find_project_root()
     except RuntimeError as exc:
@@ -785,8 +1029,12 @@ def main() -> None:
         return
 
     try:
-        converted_taxonomy_rows, filtered_simple_rows = convert_taxonomy_rows(taxonomy_rows)
-        converted_judged_rows = convert_judged_rows(judged_rows)
+        (
+            converted_taxonomy_rows,
+            unclassified_simple_filtered_count,
+            same_simple_filtered_count,
+        ) = convert_taxonomy_rows(taxonomy_rows)
+        converted_judged_rows, same_judged_filtered_count = convert_judged_rows(judged_rows)
     except ValueError as exc:
         print(f"ERROR: {exc}")
         return
@@ -806,11 +1054,7 @@ def main() -> None:
     merged_rows, duplicate_removed_count = deduplicate_by_question(merged_rows_before_dedup)
 
     try:
-        top300_rows, second10_rows = select_top_and_second_slice(
-            rows=merged_rows,
-            top_quotas=TOP300_BUCKET_QUOTAS,
-            second_quotas=SECOND10_BUCKET_QUOTAS,
-        )
+        top300_rows, second10_rows, selection_notes = select_top_and_second_slice(merged_rows)
     except RuntimeError as exc:
         print(f"ERROR: {exc}")
         return
@@ -821,7 +1065,9 @@ def main() -> None:
     cleaning_summary = {
         "taxonomy_input_rows": len(taxonomy_rows),
         "judged_input_rows": len(judged_rows),
-        "filtered_simple_rows": filtered_simple_rows,
+        "filtered_unclassified_simple_rows": unclassified_simple_filtered_count,
+        "filtered_same_simple_rows": same_simple_filtered_count,
+        "filtered_same_judged_rows": same_judged_filtered_count,
         "large_result_rows_removed": long_answer_removed_count,
         "duplicate_question_rows_removed": duplicate_removed_count,
         "eligible_rows": len(merged_rows),
@@ -832,22 +1078,31 @@ def main() -> None:
         top_rows=top300_rows,
         second_rows=second10_rows,
         cleaning_summary=cleaning_summary,
+        selection_notes=selection_notes,
     )
 
     print("Cleaning summary:")
     print(f"  Simple heuristics input rows: {len(taxonomy_rows)}")
     print(f"  LLM-as-a-judge input rows: {len(judged_rows)}")
-    print(f"  Simple rows filtered by taxonomy_label: {filtered_simple_rows}")
+    print(f"  Simple rows filtered by different_unclassified: {unclassified_simple_filtered_count}")
+    print(f"  Simple rows filtered because taxonomy_label is Same: {same_simple_filtered_count}")
+    print(f"  LLM rows filtered because taxonomy_label is Same: {same_judged_filtered_count}")
     print(f"  Rows removed by >10-row file_path filter: {long_answer_removed_count}")
     print(f"    - Simple heuristics removed: {taxonomy_large_removed}")
     print(f"    - LLM-as-a-judge removed:   {judged_large_removed}")
     print(f"  Duplicate question rows removed: {duplicate_removed_count}")
-    print(f"  Eligible rows after cleaning: {len(merged_rows)}")
+    print(f"  Eligible inconsistent rows after cleaning: {len(merged_rows)}")
     print()
 
-    print_counts("Top 300 balanced annotation cases", top300_rows)
+    if selection_notes:
+        print("Selection notes:")
+        for note in selection_notes:
+            print(f"  - {note}")
+        print()
+
+    print_counts("Top 300 balanced inconsistent annotation cases", top300_rows)
     print()
-    print_counts("Second 10 balanced presentation cases", second10_rows)
+    print_counts("Second 10 balanced inconsistent presentation cases", second10_rows)
     print()
 
     print("Outputs written:")
