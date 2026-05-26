@@ -16,7 +16,7 @@ Output:
 Each output file:
     - removes the confidence column
     - keeps a stable case_id for merging later
-    - adds dropdown column: taxonomy_label_correct
+    - adds dropdown column: label_correctness
     - adds dropdown column: wikidata_cause
     - adds free-text column: note
 
@@ -194,7 +194,7 @@ def find_column_index(header, target_name):
     Returns 1-based Excel column index.
 
     This function is more robust than:
-        header.index("taxonomy_label_correct")
+        header.index("label_correctness")
 
     because it cleans hidden BOM characters and surrounding spaces.
     """
@@ -222,7 +222,7 @@ def add_dropdowns_and_formatting(xlsx_path):
     Add dropdown menus and simple formatting to one Excel annotation file.
 
     Dropdown columns:
-        taxonomy_label_correct
+        label_correctness
         wikidata_cause
 
     Free-text column:
@@ -237,7 +237,7 @@ def add_dropdowns_and_formatting(xlsx_path):
     max_row = ws.max_row
 
     # Find target annotation columns.
-    taxonomy_col = find_column_index(header, "taxonomy_label_correct")
+    taxonomy_col = find_column_index(header, "label_correctness")
     cause_col = find_column_index(header, "wikidata_cause")
 
     # Convert column numbers to Excel letters.
@@ -314,7 +314,7 @@ def add_dropdowns_and_formatting(xlsx_path):
 
     # Highlight annotation columns in yellow.
     for col_name in [
-        "taxonomy_label_correct",
+        "label_correctness",
         "wikidata_cause",
         "note"
     ]:
@@ -333,7 +333,7 @@ def add_dropdowns_and_formatting(xlsx_path):
         "KG answer": 35,
         "taxonomy_label": 30,
         "source": 24,
-        "taxonomy_label_correct": 24,
+        "label_correctness": 24,
         "wikidata_cause": 30,
         "note": 45,
     }
@@ -432,7 +432,7 @@ def generate_annotation_files(
     #
     # These are empty at first.
     # Annotators fill them in Excel.
-    df["taxonomy_label_correct"] = ""
+    df["label_correctness"] = ""
     df["wikidata_cause"] = ""
     df["note"] = ""
 
@@ -444,7 +444,7 @@ def generate_annotation_files(
         "KG answer",
         "taxonomy_label",
         "source",
-        "taxonomy_label_correct",
+        "label_correctness",
         "wikidata_cause",
         "note"
     ]
