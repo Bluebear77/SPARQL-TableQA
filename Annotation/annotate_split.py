@@ -1,3 +1,5 @@
+# pip install pandas openpyxl
+
 """
 split.py
 
@@ -19,6 +21,7 @@ Each output file:
     - adds dropdown column: label_correctness
     - adds dropdown column: wikidata_cause
     - adds free-text column: note
+    - uses alternating row colors for better readability
 
 Important
 ---------
@@ -39,16 +42,12 @@ from openpyxl.utils import get_column_letter
 # Dropdown options
 # ---------------------------------------------------------------------
 
-# Annotators use this column to verify whether the assigned taxonomy label
-# is correct according to answer-level comparison.
 TAXONOMY_LABEL_CORRECT_OPTIONS = [
     "Correct",
     "Incorrect",
     "Unsure"
 ]
 
-# Annotators use this column after checking the corresponding Wikidata page.
-# These are the three structural KG incompleteness causes.
 WIKIDATA_CAUSE_OPTIONS = [
     "Missing edge",
     "Missing node",
@@ -65,10 +64,6 @@ WIKIDATA_CAUSE_OPTIONS = [
 def clean_column_names(df):
     """
     Clean CSV column names.
-
-    Why this is needed:
-    Sometimes CSV files contain invisible characters such as BOM '\\ufeff',
-    or spaces around column names.
 
     Example:
         ' taxonomy_label ' -> 'taxonomy_label'
@@ -104,31 +99,17 @@ def split_balanced(df, n_groups=3, stratify_cols=None):
     stratify_cols : list[str] or None
         Columns used for approximate stratified splitting.
 
-        Recommended:
-            stratify_cols=["taxonomy_label"]
-
-        Not recommended:
-            stratify_cols=["source"]
-
-        Why not use source?
-            In your file, source may be unique or almost unique for every row.
-            If we group by source directly, each source group has only one row.
-            A bad splitting function may then put every row into group 1.
-
     Returns
     -------
     list[pandas.DataFrame]
         A list of n_groups dataframes.
     """
 
-    # Reset index to make row order clean and stable.
     df = df.reset_index(drop=True).copy()
 
-    # Create empty containers for each group.
     groups = [[] for _ in range(n_groups)]
 
     if stratify_cols:
-        # Check that every stratification column exists.
         for col in stratify_cols:
             if col not in df.columns:
                 raise ValueError(
@@ -136,17 +117,8 @@ def split_balanced(df, n_groups=3, stratify_cols=None):
                     f"Available columns: {list(df.columns)}"
                 )
 
-        # Group rows by taxonomy label, or by any other selected columns.
         grouped = df.groupby(stratify_cols, sort=False, dropna=False)
 
-        # Global pointer ensures rows are distributed across all groups.
-        # This is the key fix.
-        #
-        # Bad behavior:
-        #     resetting i inside every tiny group can send all rows to group 1.
-        #
-        # Good behavior:
-        #     pointer keeps increasing across all groups.
         pointer = 0
 
         for _, sub_df in grouped:
@@ -158,18 +130,10 @@ def split_balanced(df, n_groups=3, stratify_cols=None):
                 pointer += 1
 
     else:
-        # Simple round-robin split without stratification.
-        #
-        # Example with 296 rows and 3 groups:
-        #     group 1 gets rows 1, 4, 7, ...
-        #     group 2 gets rows 2, 5, 8, ...
-        #     group 3 gets rows 3, 6, 9, ...
         for i, (_, row) in enumerate(df.iterrows()):
             group_id = i % n_groups
             groups[group_id].append(row)
 
-    # Convert each group back into a dataframe.
-    # Even if a group is empty, preserve the original columns.
     result = []
 
     for group_rows in groups:
@@ -192,11 +156,6 @@ def find_column_index(header, target_name):
     Find a column index in an Excel header row.
 
     Returns 1-based Excel column index.
-
-    This function is more robust than:
-        header.index("label_correctness")
-
-    because it cleans hidden BOM characters and surrounding spaces.
     """
 
     cleaned_header = [
@@ -219,113 +178,153 @@ def find_column_index(header, target_name):
 
 def add_dropdowns_and_formatting(xlsx_path):
     """
-    Add dropdown menus and simple formatting to one Excel annotation file.
+    Add dropdown menus and formatting to one Excel annotation file.
 
-    Dropdown columns:
-        label_correctness
-        wikidata_cause
-
-    Free-text column:
-        note
+    Formatting includes:
+        - blue header row
+        - alternating row colors for readability
+        - yellow annotation columns
+        - borders
+        - wrapped text
+        - frozen header
+        - filters
     """
 
     wb = load_workbook(xlsx_path)
     ws = wb.active
 
-    # Read the first row as header.
     header = [cell.value for cell in ws[1]]
     max_row = ws.max_row
+    max_col = ws.max_column
 
-    # Find target annotation columns.
     taxonomy_col = find_column_index(header, "label_correctness")
     cause_col = find_column_index(header, "wikidata_cause")
 
-    # Convert column numbers to Excel letters.
     taxonomy_col_letter = get_column_letter(taxonomy_col)
     cause_col_letter = get_column_letter(cause_col)
 
-    # Create dropdown validation for taxonomy label correctness.
+    # -----------------------------------------------------------------
+    # Dropdown validation
+    # -----------------------------------------------------------------
+
     dv_taxonomy = DataValidation(
         type="list",
         formula1=f'"{",".join(TAXONOMY_LABEL_CORRECT_OPTIONS)}"',
         allow_blank=True
     )
 
-    # Create dropdown validation for Wikidata cause.
     dv_cause = DataValidation(
         type="list",
         formula1=f'"{",".join(WIKIDATA_CAUSE_OPTIONS)}"',
         allow_blank=True
     )
 
-    # Add validations to worksheet.
     ws.add_data_validation(dv_taxonomy)
     ws.add_data_validation(dv_cause)
 
-    # Apply dropdowns from row 2 to the final row.
-    # Row 1 is the header row.
     if max_row >= 2:
         dv_taxonomy.add(f"{taxonomy_col_letter}2:{taxonomy_col_letter}{max_row}")
         dv_cause.add(f"{cause_col_letter}2:{cause_col_letter}{max_row}")
 
     # -----------------------------------------------------------------
-    # Formatting
+    # Formatting colors
     # -----------------------------------------------------------------
 
-    header_fill = PatternFill("solid", fgColor="D9EAF7")      # light blue
-    annotation_fill = PatternFill("solid", fgColor="FFF2CC")  # light yellow
+    header_fill = PatternFill("solid", fgColor="1F4E79")       # dark blue
+    header_font = Font(bold=True, color="FFFFFF")              # white text
+
+    row_fill_odd = PatternFill("solid", fgColor="FFFFFF")      # white
+    row_fill_even = PatternFill("solid", fgColor="EAF3F8")     # very light blue
+
+    annotation_fill_odd = PatternFill("solid", fgColor="FFF2CC")   # light yellow
+    annotation_fill_even = PatternFill("solid", fgColor="FCE4B2")  # slightly deeper yellow
+
     thin_side = Side(style="thin", color="D9D9D9")
 
-    # Format header row.
+    border = Border(
+        top=thin_side,
+        left=thin_side,
+        right=thin_side,
+        bottom=thin_side
+    )
+
+    # -----------------------------------------------------------------
+    # Header formatting
+    # -----------------------------------------------------------------
+
     for cell in ws[1]:
-        cell.font = Font(bold=True)
+        cell.font = header_font
         cell.fill = header_fill
         cell.alignment = Alignment(
             horizontal="center",
             vertical="center",
             wrap_text=True
         )
-        cell.border = Border(
-            top=thin_side,
-            left=thin_side,
-            right=thin_side,
-            bottom=thin_side
-        )
+        cell.border = border
 
-    # Format body cells.
-    for row in ws.iter_rows(min_row=2, max_row=max_row):
-        for cell in row:
-            cell.alignment = Alignment(
-                vertical="top",
-                wrap_text=True
-            )
-            cell.border = Border(
-                top=thin_side,
-                left=thin_side,
-                right=thin_side,
-                bottom=thin_side
-            )
+    ws.row_dimensions[1].height = 30
 
-    # Clean header again for formatting lookup.
+    # Clean header for column lookup.
     cleaned_header = [
         str(h).replace("\ufeff", "").strip() if h is not None else ""
         for h in header
     ]
 
-    # Highlight annotation columns in yellow.
-    for col_name in [
+    annotation_col_names = [
         "label_correctness",
         "wikidata_cause",
         "note"
-    ]:
+    ]
+
+    annotation_col_indices = []
+
+    for col_name in annotation_col_names:
         if col_name in cleaned_header:
-            col_idx = cleaned_header.index(col_name) + 1
+            annotation_col_indices.append(cleaned_header.index(col_name) + 1)
 
-            for row_idx in range(1, max_row + 1):
-                ws.cell(row=row_idx, column=col_idx).fill = annotation_fill
+    # -----------------------------------------------------------------
+    # Body formatting with alternating row colors
+    # -----------------------------------------------------------------
 
-    # Column widths.
-    # Text-heavy columns are made wider.
+    for row_idx in range(2, max_row + 1):
+        is_even_body_row = (row_idx % 2 == 0)
+
+        normal_fill = row_fill_even if is_even_body_row else row_fill_odd
+        annotation_fill = annotation_fill_even if is_even_body_row else annotation_fill_odd
+
+        for col_idx in range(1, max_col + 1):
+            cell = ws.cell(row=row_idx, column=col_idx)
+
+            if col_idx in annotation_col_indices:
+                cell.fill = annotation_fill
+            else:
+                cell.fill = normal_fill
+
+            cell.alignment = Alignment(
+                vertical="top",
+                wrap_text=True
+            )
+            cell.border = border
+
+    # -----------------------------------------------------------------
+    # Keep annotation headers yellow-ish so annotators notice them
+    # -----------------------------------------------------------------
+
+    for col_idx in annotation_col_indices:
+        cell = ws.cell(row=1, column=col_idx)
+        cell.fill = PatternFill("solid", fgColor="FFD966")
+        cell.font = Font(bold=True, color="000000")
+        cell.alignment = Alignment(
+            horizontal="center",
+            vertical="center",
+            wrap_text=True
+        )
+        cell.border = border
+
+    # -----------------------------------------------------------------
+    # Column widths
+    # -----------------------------------------------------------------
+
     widths = {
         "case_id": 10,
         "question": 45,
@@ -341,13 +340,19 @@ def add_dropdowns_and_formatting(xlsx_path):
     for i, col_name in enumerate(cleaned_header, start=1):
         ws.column_dimensions[get_column_letter(i)].width = widths.get(col_name, 22)
 
+    # -----------------------------------------------------------------
+    # Row heights
+    # -----------------------------------------------------------------
+
+    for row_idx in range(2, max_row + 1):
+        ws.row_dimensions[row_idx].height = 65
+
     # Freeze the header row.
     ws.freeze_panes = "A2"
 
     # Enable Excel filter.
     ws.auto_filter.ref = ws.dimensions
 
-    # Save changes.
     wb.save(xlsx_path)
 
 
@@ -380,8 +385,6 @@ def generate_annotation_files(
             ["taxonomy_label"]
 
         This keeps taxonomy label distribution more balanced across groups.
-
-        Use None if you only want simple round-robin balancing.
     """
 
     input_csv = Path(input_csv)
@@ -389,17 +392,10 @@ def generate_annotation_files(
 
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    # Read CSV.
-    #
-    # header=0 means:
-    #     The first row is the column title/header row.
-    #     It is NOT treated as data.
     df = pd.read_csv(input_csv, header=0)
 
-    # Clean column names.
     df = clean_column_names(df)
 
-    # Expected input columns.
     expected_cols = [
         "question",
         "gold_answer",
@@ -409,7 +405,6 @@ def generate_annotation_files(
         "source"
     ]
 
-    # Validate input columns.
     missing = [col for col in expected_cols if col not in df.columns]
 
     if missing:
@@ -418,25 +413,18 @@ def generate_annotation_files(
             f"Actual columns are: {list(df.columns)}"
         )
 
-    # Remove confidence column because the annotation task should not show it.
+    # Remove confidence column because annotators should not see it.
     df = df.drop(columns=["confidence"])
 
-    # Add stable case_id.
-    #
-    # This is very useful later when merging annotations from different files.
-    # It preserves the original row identity.
+    # Add stable case_id for later merging.
     if "case_id" not in df.columns:
         df.insert(0, "case_id", range(1, len(df) + 1))
 
-    # Add annotation columns BEFORE splitting.
-    #
-    # These are empty at first.
-    # Annotators fill them in Excel.
+    # Add annotation columns before splitting.
     df["label_correctness"] = ""
     df["wikidata_cause"] = ""
     df["note"] = ""
 
-    # Final column order in output files.
     final_cols = [
         "case_id",
         "question",
@@ -454,7 +442,6 @@ def generate_annotation_files(
     print("Final columns before splitting:")
     print(list(df.columns))
 
-    # Split into balanced groups.
     splits = split_balanced(
         df,
         n_groups=n_groups,
@@ -463,22 +450,18 @@ def generate_annotation_files(
 
     output_paths = []
 
-    # Save each group to an Excel file.
     for i, split_df in enumerate(splits, start=1):
         out_path = output_dir / f"annotation_group_{i}.xlsx"
 
         print(f"\nSaving group {i}: {len(split_df)} rows")
         print("Columns:", list(split_df.columns))
 
-        # Save dataframe to Excel.
         split_df.to_excel(out_path, index=False)
 
-        # Add dropdowns and formatting.
         add_dropdowns_and_formatting(out_path)
 
         output_paths.append(out_path)
 
-    # Print summary.
     print("\nFinished.")
     print(f"Total input data rows: {len(df)}")
 
@@ -486,6 +469,7 @@ def generate_annotation_files(
         print(f"group {i}: {len(split_df)} rows")
 
     print("\nOutput files:")
+
     for path in output_paths:
         print(path)
 
@@ -502,7 +486,7 @@ if __name__ == "__main__":
         output_dir="annotation_outputs",
         n_groups=3,
 
-        # Recommended for your task:
+        # Recommended:
         # balance the distribution of taxonomy labels across the 3 files.
         #
         # Do NOT stratify by source because source may be unique per row.
