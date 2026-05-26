@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-build_annotation_235B_top300_second10_inconsistent_source_first.py
+build_annotation_235B_interactive_balanced_inconsistent.py
 
 Summary
 -------
-This script builds two balanced annotation CSV files for inconsistent Qwen3-235B
+This script builds balanced annotation CSV files for inconsistent Qwen3-235B
 cases using the same input files as the original merge_taxonomy_full.py
 pipeline.
 
@@ -20,49 +20,26 @@ For the 235B model, the script:
 6. Merges Simple-heuristics and LLM-as-a-judge rows into one shared internal
    schema.
 7. Removes duplicate question rows, keeping the first occurrence.
-8. Sorts each QA-group/method bucket by the correct confidence signal:
-   - Simple-heuristics rows by similarity_score, high score first.
-   - LLM-as-a-judge rows by difference_severity:
-     major, moderate, minor, none.
-9. Writes the top balanced 300 inconsistent cases.
-10. Writes the next balanced 10 inconsistent cases for presentation.
-
-Balancing priority:
-1. Balance SimpleQA and ComplexQA exactly.
-2. Balance Simple heuristics and LLM-as-a-judge inside each source group when
-   enough rows are available.
-3. If one method is short inside a source group, fill the missing rows from the
-   other method inside the same source group.
-
-For the top 300 cases, the source balance is exact:
-
-    SimpleQA: 150
-    ComplexQA: 150
-
-The preferred method split inside each source group is:
-
-    SimpleQA / Simple heuristics: 75
-    SimpleQA / LLM-as-a-judge:   75
-    ComplexQA / Simple heuristics: 75
-    ComplexQA / LLM-as-a-judge:   75
-
-If a method bucket is short, the deficit is filled from the other method within
-the same source group.
-
-For the second 10-case presentation slice, the source balance is exact:
-
-    SimpleQA: 5
-    ComplexQA: 5
-
-The preferred method split is:
-
-    SimpleQA / Simple heuristics: 3
-    SimpleQA / LLM-as-a-judge:   2
-    ComplexQA / Simple heuristics: 2
-    ComplexQA / LLM-as-a-judge:   3
-
-If a method bucket is short, the deficit is filled from the other method within
-the same source group.
+8. Scans whether the requested target size can be perfectly balanced across
+   the 2x2 source/method buckets:
+   - SimpleQA / Simple heuristics
+   - SimpleQA / LLM-as-a-judge
+   - ComplexQA / Simple heuristics
+   - ComplexQA / LLM-as-a-judge
+9. If perfect 2x2 balance is impossible, prints the maximum possible perfect
+   balanced size and asks whether to use that smaller size.
+10. If the user enters y, writes the maximum perfect-balanced set.
+11. If the user enters n, writes the requested target size using source-first
+    balancing:
+    - SimpleQA and ComplexQA are balanced first.
+    - Method balance is preferred.
+    - If one method is short, the other method complements within the same
+      source group.
+12. Writes the next 10 inconsistent presentation cases:
+    - SimpleQA = 5
+    - ComplexQA = 5
+    - Method balance is preferred, but method shortages are complemented within
+      the same source group.
 
 The public output schema is exactly:
 
@@ -73,7 +50,7 @@ For LLM-as-a-judge rows, confidence is difference_severity.
 
 Run from the repository root with:
 
-    python build_annotation_235B_top300_second10_inconsistent_source_first.py
+    python build_annotation_235B_interactive_balanced_inconsistent.py
 """
 
 from __future__ import annotations
@@ -100,8 +77,13 @@ OUTPUT_COLUMNS = [
 ]
 
 
-# Target sizes for this script.
-TOP_SELECTION_CASES = 300
+# Requested target size for the main annotation set.
+# If this exact size cannot be perfectly 2x2 balanced, the script will ask
+# whether to use the maximum possible perfect-balanced size instead.
+TARGET_SELECTION_CASES = 300
+
+
+# Size for the presentation example slice after the main selected set.
 SECOND_SLICE_CASES = 10
 
 
@@ -124,7 +106,7 @@ SIMPLE_METHOD = "Simple heuristics"
 LLM_METHOD = "LLM-as-a-judge"
 
 
-# QA groups used for source-first balancing.
+# QA groups used for balancing.
 SIMPLE_QA_GROUP = "SimpleQA"
 COMPLEX_QA_GROUP = "ComplexQA"
 
@@ -136,51 +118,9 @@ MODEL_PAIR = {
     "model": "Qwen3-235B-Thinking",
     "judged_csv": Path("LLM_as_a_Judge/235B_judged_filtered.csv"),
     "taxonomy_csv": Path("Output_GRASP/Qwen3-235B-A22B-Thinking-2507-AWQ/all_valid_cases_with_taxonomy.csv"),
-    "top300_csv": Path("Annotation/annotation_cases_235B_top300_inconsistent.csv"),
+    "main_csv": Path("Annotation/annotation_cases_235B_main_inconsistent.csv"),
     "second10_csv": Path("Annotation/annotation_cases_235B_second10_inconsistent.csv"),
-    "statistics_md": Path("Annotation/annotation_235B_inconsistent_selection_statistics.md"),
-}
-
-
-# Exact source quotas for the top 300 annotation set.
-TOP300_SOURCE_QUOTAS = {
-    SIMPLE_QA_GROUP: 150,
-    COMPLEX_QA_GROUP: 150,
-}
-
-
-# Preferred method quotas inside each source group for the top 300.
-# These are preferences, not hard constraints.
-TOP300_METHOD_PREFERENCES = {
-    SIMPLE_QA_GROUP: {
-        SIMPLE_METHOD: 75,
-        LLM_METHOD: 75,
-    },
-    COMPLEX_QA_GROUP: {
-        SIMPLE_METHOD: 75,
-        LLM_METHOD: 75,
-    },
-}
-
-
-# Exact source quotas for the second 10-case presentation slice.
-SECOND10_SOURCE_QUOTAS = {
-    SIMPLE_QA_GROUP: 5,
-    COMPLEX_QA_GROUP: 5,
-}
-
-
-# Preferred method quotas inside each source group for the second 10.
-# These are preferences, not hard constraints.
-SECOND10_METHOD_PREFERENCES = {
-    SIMPLE_QA_GROUP: {
-        SIMPLE_METHOD: 3,
-        LLM_METHOD: 2,
-    },
-    COMPLEX_QA_GROUP: {
-        SIMPLE_METHOD: 2,
-        LLM_METHOD: 3,
-    },
+    "statistics_md": Path("Annotation/annotation_235B_interactive_inconsistent_statistics.md"),
 }
 
 
@@ -510,36 +450,146 @@ def bucket_rows(rows: list[dict]) -> dict[tuple[str, str], list[dict]]:
     return buckets
 
 
-def validate_source_capacity(
+def bucket_count_summary(buckets: dict[tuple[str, str], list[dict]]) -> dict[tuple[str, str], int]:
+    """Return candidate counts for each source/method bucket."""
+    return {
+        (SIMPLE_QA_GROUP, SIMPLE_METHOD): len(buckets.get((SIMPLE_QA_GROUP, SIMPLE_METHOD), [])),
+        (SIMPLE_QA_GROUP, LLM_METHOD): len(buckets.get((SIMPLE_QA_GROUP, LLM_METHOD), [])),
+        (COMPLEX_QA_GROUP, SIMPLE_METHOD): len(buckets.get((COMPLEX_QA_GROUP, SIMPLE_METHOD), [])),
+        (COMPLEX_QA_GROUP, LLM_METHOD): len(buckets.get((COMPLEX_QA_GROUP, LLM_METHOD), [])),
+    }
+
+
+def maximum_perfect_balanced_size(buckets: dict[tuple[str, str], list[dict]], requested_size: int) -> int:
+    """
+    Return the maximum perfect 2x2-balanced size up to the requested size.
+
+    Perfect 2x2 balance means all four source/method buckets have equal count.
+    Therefore the final size must be a multiple of 4.
+    """
+    counts = bucket_count_summary(buckets)
+    smallest_bucket = min(counts.values())
+    requested_per_bucket = requested_size // 4
+
+    possible_per_bucket = min(smallest_bucket, requested_per_bucket)
+    return possible_per_bucket * 4
+
+
+def is_exact_perfect_balance_possible(
     buckets: dict[tuple[str, str], list[dict]],
-    source_quotas: dict[str, int],
-    already_used_counts: dict[tuple[str, str], int],
-) -> None:
-    """
-    Check that each source group has enough remaining rows.
+    requested_size: int,
+) -> bool:
+    """Return True if the requested target can be exactly 2x2 balanced."""
+    if requested_size % 4 != 0:
+        return False
 
-    This enforces the main balancing priority: SimpleQA and ComplexQA must stay
-    balanced exactly. Method balance is preferred but not enforced if one method
-    bucket is short.
-    """
-    shortages = []
+    counts = bucket_count_summary(buckets)
+    required_per_bucket = requested_size // 4
+    return all(count >= required_per_bucket for count in counts.values())
 
+
+def prompt_for_perfect_balance(requested_size: int, max_perfect_size: int) -> bool:
+    """
+    Ask whether to use the maximum perfect-balanced set.
+
+    Returns True if the user enters y, otherwise False.
+    """
+    print()
+    print("=" * 72)
+    print("Perfect 2x2 balance check")
+    print("=" * 72)
+    print(f"Requested main target size: {requested_size}")
+    print(f"Maximum possible perfect-balanced size: {max_perfect_size}")
+    print()
+    print(
+        "The requested target cannot be perfectly balanced across "
+        "SimpleQA/ComplexQA and Simple heuristics/LLM-as-a-judge."
+    )
+    print()
+    print("Enter y to generate the maximum perfect-balanced set.")
+    print("Enter n to generate the requested target size using source-first balancing.")
+    print()
+
+    while True:
+        answer = input("Do you want to generate the maximum perfect-balanced set? [y/n]: ").strip().lower()
+        if answer in {"y", "yes"}:
+            return True
+        if answer in {"n", "no"}:
+            return False
+        print("Please enter y or n.")
+
+
+def build_exact_perfect_quotas(selection_size: int) -> dict[tuple[str, str], int]:
+    """Build exact 2x2 quotas for a perfect-balanced selection."""
+    if selection_size % 4 != 0:
+        raise ValueError("Perfect-balanced selection size must be divisible by 4.")
+
+    per_bucket = selection_size // 4
+    return {
+        (SIMPLE_QA_GROUP, SIMPLE_METHOD): per_bucket,
+        (SIMPLE_QA_GROUP, LLM_METHOD): per_bucket,
+        (COMPLEX_QA_GROUP, SIMPLE_METHOD): per_bucket,
+        (COMPLEX_QA_GROUP, LLM_METHOD): per_bucket,
+    }
+
+
+def build_source_quotas(selection_size: int) -> dict[str, int]:
+    """Build exact SimpleQA/ComplexQA quotas."""
+    if selection_size % 2 != 0:
+        raise ValueError("Source-balanced selection size must be even.")
+
+    per_source = selection_size // 2
+    return {
+        SIMPLE_QA_GROUP: per_source,
+        COMPLEX_QA_GROUP: per_source,
+    }
+
+
+def build_method_preferences_for_source_first(selection_size: int) -> dict[str, dict[str, int]]:
+    """
+    Build preferred method quotas inside each source group.
+
+    The quotas are preferences. If one method bucket is short, the deficit is
+    complemented from the other method inside the same source group.
+    """
+    source_quotas = build_source_quotas(selection_size)
+
+    preferences = {}
     for qa_group, source_quota in source_quotas.items():
-        available = 0
-        for method in [SIMPLE_METHOD, LLM_METHOD]:
-            key = (qa_group, method)
-            available += max(0, len(buckets.get(key, [])) - already_used_counts.get(key, 0))
+        simple_quota = source_quota // 2
+        llm_quota = source_quota - simple_quota
+        preferences[qa_group] = {
+            SIMPLE_METHOD: simple_quota,
+            LLM_METHOD: llm_quota,
+        }
 
-        if available < source_quota:
-            shortages.append(
-                f"{qa_group}: required {source_quota}, available {available}"
-            )
+    return preferences
 
-    if shortages:
-        raise RuntimeError(
-            "Not enough eligible inconsistent rows to keep exact SimpleQA / "
-            "ComplexQA balance:\n  - " + "\n  - ".join(shortages)
-        )
+
+def second10_source_quotas() -> dict[str, int]:
+    """Build source quotas for the second 10 presentation slice."""
+    return {
+        SIMPLE_QA_GROUP: 5,
+        COMPLEX_QA_GROUP: 5,
+    }
+
+
+def second10_method_preferences() -> dict[str, dict[str, int]]:
+    """
+    Build preferred method quotas for the second 10 presentation slice.
+
+    Source balance is exact. Method balance is preferred but can be complemented.
+    """
+    return {
+        SIMPLE_QA_GROUP: {
+            SIMPLE_METHOD: 3,
+            LLM_METHOD: 2,
+        },
+        COMPLEX_QA_GROUP: {
+            SIMPLE_METHOD: 2,
+            LLM_METHOD: 3,
+        },
+    }
 
 
 def take_from_bucket(
@@ -569,6 +619,85 @@ def remaining_in_bucket(
 ) -> int:
     """Return the number of unused rows left in one bucket."""
     return max(0, len(buckets.get(key, [])) - used_counts.get(key, 0))
+
+
+def validate_exact_bucket_capacity(
+    buckets: dict[tuple[str, str], list[dict]],
+    used_counts: dict[tuple[str, str], int],
+    quotas: dict[tuple[str, str], int],
+) -> None:
+    """Check that every exact source/method bucket quota can be satisfied."""
+    shortages = []
+
+    for key, quota in quotas.items():
+        available = remaining_in_bucket(buckets, used_counts, key)
+        if available < quota:
+            qa_group, method = key
+            shortages.append(
+                f"{qa_group} / {method}: required {quota}, available {available}"
+            )
+
+    if shortages:
+        raise RuntimeError(
+            "Not enough rows for exact perfect-balanced selection:\n  - "
+            + "\n  - ".join(shortages)
+        )
+
+
+def validate_source_capacity(
+    buckets: dict[tuple[str, str], list[dict]],
+    source_quotas: dict[str, int],
+    used_counts: dict[tuple[str, str], int],
+) -> None:
+    """
+    Check that each source group has enough remaining rows.
+
+    This enforces the main fallback priority: SimpleQA and ComplexQA must stay
+    balanced exactly. Method balance is preferred but not enforced if one method
+    bucket is short.
+    """
+    shortages = []
+
+    for qa_group, source_quota in source_quotas.items():
+        available = 0
+        for method in [SIMPLE_METHOD, LLM_METHOD]:
+            key = (qa_group, method)
+            available += remaining_in_bucket(buckets, used_counts, key)
+
+        if available < source_quota:
+            shortages.append(
+                f"{qa_group}: required {source_quota}, available {available}"
+            )
+
+    if shortages:
+        raise RuntimeError(
+            "Not enough eligible inconsistent rows to keep exact SimpleQA / "
+            "ComplexQA balance:\n  - " + "\n  - ".join(shortages)
+        )
+
+
+def select_exact_perfect_slice(
+    buckets: dict[tuple[str, str], list[dict]],
+    used_counts: dict[tuple[str, str], int],
+    quotas: dict[tuple[str, str], int],
+) -> list[dict]:
+    """Select one exact 2x2-balanced slice."""
+    validate_exact_bucket_capacity(
+        buckets=buckets,
+        used_counts=used_counts,
+        quotas=quotas,
+    )
+
+    selected = []
+    for key in [
+        (SIMPLE_QA_GROUP, SIMPLE_METHOD),
+        (SIMPLE_QA_GROUP, LLM_METHOD),
+        (COMPLEX_QA_GROUP, SIMPLE_METHOD),
+        (COMPLEX_QA_GROUP, LLM_METHOD),
+    ]:
+        selected.extend(take_from_bucket(buckets, used_counts, key, quotas[key]))
+
+    return interleave_balanced_rows(selected)
 
 
 def select_source_group_rows(
@@ -618,8 +747,6 @@ def select_source_group_rows(
             fill_key = simple_key
             fill_available = simple_remaining
         else:
-            # This can happen when method preferences sum to less than the
-            # source quota. Fill from whichever method has more remaining rows.
             if simple_remaining >= llm_remaining:
                 fill_method = SIMPLE_METHOD
                 fill_key = simple_key
@@ -640,8 +767,6 @@ def select_source_group_rows(
             )
 
     if deficit > 0:
-        # Try one final source-preserving fill from both methods, ordered by
-        # method-specific confidence inside each method bucket.
         for method in [SIMPLE_METHOD, LLM_METHOD]:
             key = (qa_group, method)
             fill_count = min(deficit, remaining_in_bucket(buckets, used_counts, key))
@@ -674,7 +799,7 @@ def select_source_first_slice(
     validate_source_capacity(
         buckets=buckets,
         source_quotas=source_quotas,
-        already_used_counts=used_counts,
+        used_counts=used_counts,
     )
 
     selected = []
@@ -695,33 +820,112 @@ def select_source_first_slice(
     return selected, notes
 
 
-def select_top_and_second_slice(rows: list[dict]) -> tuple[list[dict], list[dict], list[str]]:
+def choose_main_selection_mode(
+    buckets: dict[tuple[str, str], list[dict]],
+    requested_size: int,
+) -> tuple[str, int]:
     """
-    Select the top 300 and then the next 10 presentation cases.
+    Decide whether to use exact perfect balance or source-first fallback.
 
-    The top 300 consumes the highest-confidence rows from each source/method
-    bucket first. The second 10 then starts immediately after the rows already
-    consumed by the top 300.
+    Returns:
+        mode, main_selection_size
+
+    mode is one of:
+        perfect
+        source_first
+    """
+    print_bucket_scan(buckets)
+
+    exact_possible = is_exact_perfect_balance_possible(
+        buckets=buckets,
+        requested_size=requested_size,
+    )
+    max_perfect_size = maximum_perfect_balanced_size(
+        buckets=buckets,
+        requested_size=requested_size,
+    )
+
+    if exact_possible:
+        print()
+        print("=" * 72)
+        print("Perfect 2x2 balance check")
+        print("=" * 72)
+        print(f"Requested main target size: {requested_size}")
+        print("Exact perfect balance is possible.")
+        return "perfect", requested_size
+
+    use_perfect = prompt_for_perfect_balance(
+        requested_size=requested_size,
+        max_perfect_size=max_perfect_size,
+    )
+
+    if use_perfect:
+        return "perfect", max_perfect_size
+
+    return "source_first", requested_size
+
+
+def print_bucket_scan(buckets: dict[tuple[str, str], list[dict]]) -> None:
+    """Print candidate counts before deciding the balancing mode."""
+    counts = bucket_count_summary(buckets)
+
+    print("=" * 72)
+    print("Eligible inconsistent candidate scan")
+    print("=" * 72)
+    print(f"{SIMPLE_QA_GROUP} / {SIMPLE_METHOD}: {counts[(SIMPLE_QA_GROUP, SIMPLE_METHOD)]}")
+    print(f"{SIMPLE_QA_GROUP} / {LLM_METHOD}: {counts[(SIMPLE_QA_GROUP, LLM_METHOD)]}")
+    print(f"{COMPLEX_QA_GROUP} / {SIMPLE_METHOD}: {counts[(COMPLEX_QA_GROUP, SIMPLE_METHOD)]}")
+    print(f"{COMPLEX_QA_GROUP} / {LLM_METHOD}: {counts[(COMPLEX_QA_GROUP, LLM_METHOD)]}")
+    print()
+
+
+def select_main_and_second_slice(
+    rows: list[dict],
+    requested_size: int,
+) -> tuple[list[dict], list[dict], str, int, list[str]]:
+    """
+    Select the main annotation set and then the next 10 presentation cases.
+
+    The main set is either:
+    - exact perfect 2x2-balanced, or
+    - source-first fallback, depending on the interactive decision.
+
+    The second 10 is always source-balanced. Method balance is preferred, but
+    method shortages are complemented within the same source group.
     """
     buckets = bucket_rows(rows)
-    used_counts: dict[tuple[str, str], int] = defaultdict(int)
-
-    top_rows, top_notes = select_source_first_slice(
+    mode, main_selection_size = choose_main_selection_mode(
         buckets=buckets,
-        used_counts=used_counts,
-        source_quotas=TOP300_SOURCE_QUOTAS,
-        method_preferences=TOP300_METHOD_PREFERENCES,
+        requested_size=requested_size,
     )
+
+    used_counts: dict[tuple[str, str], int] = defaultdict(int)
+    notes = []
+
+    if mode == "perfect":
+        main_rows = select_exact_perfect_slice(
+            buckets=buckets,
+            used_counts=used_counts,
+            quotas=build_exact_perfect_quotas(main_selection_size),
+        )
+    else:
+        main_rows, main_notes = select_source_first_slice(
+            buckets=buckets,
+            used_counts=used_counts,
+            source_quotas=build_source_quotas(main_selection_size),
+            method_preferences=build_method_preferences_for_source_first(main_selection_size),
+        )
+        notes.extend(main_notes)
 
     second_rows, second_notes = select_source_first_slice(
         buckets=buckets,
         used_counts=used_counts,
-        source_quotas=SECOND10_SOURCE_QUOTAS,
-        method_preferences=SECOND10_METHOD_PREFERENCES,
+        source_quotas=second10_source_quotas(),
+        method_preferences=second10_method_preferences(),
     )
+    notes.extend(second_notes)
 
-    notes = top_notes + second_notes
-    return top_rows, second_rows, notes
+    return main_rows, second_rows, mode, main_selection_size, notes
 
 
 def interleave_balanced_rows(rows: list[dict]) -> list[dict]:
@@ -864,31 +1068,40 @@ def build_distribution_tables(rows: list[dict]) -> list[str]:
 
 def write_statistics(
     statistics_path: Path,
-    top_rows: list[dict],
+    main_rows: list[dict],
     second_rows: list[dict],
     cleaning_summary: dict,
+    selection_mode: str,
+    main_selection_size: int,
     selection_notes: list[str],
 ) -> None:
-    """Write Markdown statistics for the two 235B annotation outputs."""
+    """Write Markdown statistics for the 235B annotation outputs."""
     statistics_path.parent.mkdir(parents=True, exist_ok=True)
 
     lines = []
-    lines.append("# 235B Inconsistent Annotation Selection Statistics")
+    lines.append("# 235B Interactive Inconsistent Annotation Selection Statistics")
     lines.append("")
     lines.append("This file summarizes the balanced 235B inconsistent-case annotation outputs.")
     lines.append("")
     lines.append("Rows whose normalized `taxonomy_label` is `Same` are excluded before selection.")
-    lines.append("")
-    lines.append("Balancing priority:")
-    lines.append("1. Keep SimpleQA and ComplexQA exactly balanced.")
-    lines.append("2. Prefer balanced methods inside each source group.")
-    lines.append("3. If one method is short, fill from the other method inside the same source group.")
     lines.append("")
     lines.append("Public output columns:")
     lines.append("")
     lines.append("```text")
     lines.append(",".join(OUTPUT_COLUMNS))
     lines.append("```")
+    lines.append("")
+
+    lines.append("## Selection Mode")
+    lines.append("")
+    lines.append(f"- Requested target size: {TARGET_SELECTION_CASES}")
+    lines.append(f"- Actual main selection size: {main_selection_size}")
+    lines.append(f"- Mode: {selection_mode}")
+    lines.append("")
+    if selection_mode == "perfect":
+        lines.append("The main set is exactly balanced across the four source/method buckets.")
+    else:
+        lines.append("The main set uses source-first balancing with method complementing.")
     lines.append("")
 
     lines.append("## Cleaning Summary")
@@ -919,11 +1132,11 @@ def write_statistics(
         lines.append("No method-bucket shortages were encountered.")
     lines.append("")
 
-    lines.append("## Top 300 Inconsistent Output")
+    lines.append("## Main Inconsistent Output")
     lines.append("")
-    lines.append(f"Rows written: {len(top_rows)}")
+    lines.append(f"Rows written: {len(main_rows)}")
     lines.append("")
-    lines.extend(build_distribution_tables(top_rows))
+    lines.extend(build_distribution_tables(main_rows))
 
     lines.append("## Second 10-Case Inconsistent Presentation Slice")
     lines.append("")
@@ -961,7 +1174,7 @@ def print_counts(label: str, rows: list[dict]) -> None:
 
 
 def main() -> None:
-    """Run the 235B-only inconsistent source-first selection pipeline."""
+    """Run the 235B-only interactive inconsistent selection pipeline."""
     try:
         project_root = find_project_root()
     except RuntimeError as exc:
@@ -975,7 +1188,7 @@ def main() -> None:
     model = pair["model"]
     judged_csv = project_root / pair["judged_csv"]
     taxonomy_csv = project_root / pair["taxonomy_csv"]
-    top300_csv = project_root / pair["top300_csv"]
+    main_csv = project_root / pair["main_csv"]
     second10_csv = project_root / pair["second10_csv"]
     statistics_md = project_root / pair["statistics_md"]
 
@@ -1054,12 +1267,21 @@ def main() -> None:
     merged_rows, duplicate_removed_count = deduplicate_by_question(merged_rows_before_dedup)
 
     try:
-        top300_rows, second10_rows, selection_notes = select_top_and_second_slice(merged_rows)
+        (
+            main_rows,
+            second10_rows,
+            selection_mode,
+            main_selection_size,
+            selection_notes,
+        ) = select_main_and_second_slice(
+            rows=merged_rows,
+            requested_size=TARGET_SELECTION_CASES,
+        )
     except RuntimeError as exc:
         print(f"ERROR: {exc}")
         return
 
-    write_csv(top300_csv, top300_rows)
+    write_csv(main_csv, main_rows)
     write_csv(second10_csv, second10_rows)
 
     cleaning_summary = {
@@ -1075,13 +1297,18 @@ def main() -> None:
 
     write_statistics(
         statistics_path=statistics_md,
-        top_rows=top300_rows,
+        main_rows=main_rows,
         second_rows=second10_rows,
         cleaning_summary=cleaning_summary,
+        selection_mode=selection_mode,
+        main_selection_size=main_selection_size,
         selection_notes=selection_notes,
     )
 
-    print("Cleaning summary:")
+    print()
+    print("=" * 72)
+    print("Cleaning summary")
+    print("=" * 72)
     print(f"  Simple heuristics input rows: {len(taxonomy_rows)}")
     print(f"  LLM-as-a-judge input rows: {len(judged_rows)}")
     print(f"  Simple rows filtered by different_unclassified: {unclassified_simple_filtered_count}")
@@ -1094,21 +1321,29 @@ def main() -> None:
     print(f"  Eligible inconsistent rows after cleaning: {len(merged_rows)}")
     print()
 
+    print("=" * 72)
+    print("Selection summary")
+    print("=" * 72)
+    print(f"  Requested main target size: {TARGET_SELECTION_CASES}")
+    print(f"  Actual main selection size: {main_selection_size}")
+    print(f"  Selection mode: {selection_mode}")
+    print()
+
     if selection_notes:
         print("Selection notes:")
         for note in selection_notes:
             print(f"  - {note}")
         print()
 
-    print_counts("Top 300 balanced inconsistent annotation cases", top300_rows)
+    print_counts("Main inconsistent annotation cases", main_rows)
     print()
     print_counts("Second 10 balanced inconsistent presentation cases", second10_rows)
     print()
 
     print("Outputs written:")
-    print(f"  Top 300 CSV:      {top300_csv}")
-    print(f"  Second 10 CSV:    {second10_csv}")
-    print(f"  Statistics file:  {statistics_md}")
+    print(f"  Main CSV:       {main_csv}")
+    print(f"  Second 10 CSV:  {second10_csv}")
+    print(f"  Statistics MD:  {statistics_md}")
     print()
     print("Done.")
 

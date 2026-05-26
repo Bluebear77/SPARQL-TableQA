@@ -1,19 +1,22 @@
-# 235B Inconsistent Annotation Selection Statistics
+# 235B Interactive Inconsistent Annotation Selection Statistics
 
 This file summarizes the balanced 235B inconsistent-case annotation outputs.
 
 Rows whose normalized `taxonomy_label` is `Same` are excluded before selection.
-
-Balancing priority:
-1. Keep SimpleQA and ComplexQA exactly balanced.
-2. Prefer balanced methods inside each source group.
-3. If one method is short, fill from the other method inside the same source group.
 
 Public output columns:
 
 ```text
 question,gold_answer,KG answer,taxonomy_label,confidence,source
 ```
+
+## Selection Mode
+
+- Requested target size: 300
+- Actual main selection size: 296
+- Mode: perfect
+
+The main set is exactly balanced across the four source/method buckets.
 
 ## Cleaning Summary
 
@@ -30,42 +33,41 @@ question,gold_answer,KG answer,taxonomy_label,confidence,source
 
 ## Selection Notes
 
-- ComplexQA: filled 1 row(s) from LLM-as-a-judge because the preferred method bucket was short.
 - ComplexQA: filled 2 row(s) from LLM-as-a-judge because the preferred method bucket was short.
 
-## Top 300 Inconsistent Output
+## Main Inconsistent Output
 
-Rows written: 300
+Rows written: 296
 
 Method distribution:
 
 | Method | Count |
 | --- | --- |
-| Simple heuristics | 149 |
-| LLM-as-a-judge | 151 |
+| Simple heuristics | 148 |
+| LLM-as-a-judge | 148 |
 
 QA group distribution:
 
 | QA Group | Count |
 | --- | --- |
-| SimpleQA | 150 |
-| ComplexQA | 150 |
+| SimpleQA | 148 |
+| ComplexQA | 148 |
 
 2x2 bucket distribution:
 
 | QA Group | Method | Count |
 | --- | --- | --- |
-| SimpleQA | Simple heuristics | 75 |
-| SimpleQA | LLM-as-a-judge | 75 |
+| SimpleQA | Simple heuristics | 74 |
+| SimpleQA | LLM-as-a-judge | 74 |
 | ComplexQA | Simple heuristics | 74 |
-| ComplexQA | LLM-as-a-judge | 76 |
+| ComplexQA | LLM-as-a-judge | 74 |
 
 Taxonomy distribution:
 
 | taxonomy_label | Count |
 | --- | --- |
-| Different answer | 151 |
-| Higher accuracy in KG than in Table | 106 |
+| Different answer | 148 |
+| Higher accuracy in KG than in Table | 105 |
 | Higher accuracy in Table than in KG | 40 |
 | Temporal changes | 3 |
 
@@ -100,6 +102,5 @@ Taxonomy distribution:
 
 | taxonomy_label | Count |
 | --- | --- |
-| Different answer | 4 |
-| Higher accuracy in KG than in Table | 5 |
-| Temporal changes | 1 |
+| Different answer | 6 |
+| Higher accuracy in KG than in Table | 4 |
