@@ -1,11 +1,40 @@
-﻿question,gold_answer,KG answer,taxonomy_label,confidence,source
-who is the highest selling r&b artist of all time,Michael Jackson,wd:Q2831|Michael Jackson|320000000.0,Higher accuracy in KG than in Table,0.573732953020187,SimpleQA/NQ_table_test_simple/00595.json
+﻿question,gold_answer,KG answer,taxonomy_label,sparql,confidence,source
+who is the highest selling r&b artist of all time,Michael Jackson,wd:Q2831|Michael Jackson|320000000.0,Higher accuracy in KG than in Table,"SELECT ?artist ?label(SUM(xsd:decimal(?sales)) AS ?totalSales) WHERE {
+  ?artist wdt:P31 wd:Q5 ; wdt:P136 / wdt:P279 * wd:Q45981 .
+  ?work wdt:P175 ?artist ; wdt:P2664 ?sales .
+  FILTER(xsd:decimal(?sales) > 0)
+  OPTIONAL {
+    ?artist rdfs:label ?label .
+    FILTER(LANG(?label) = ""en"")
+  }
+}
+GROUP BY ?artist ?label
+ORDER BY DESC(?totalSales)
+LIMIT 1",0.573732953020187,SimpleQA/NQ_table_test_simple/00595.json
 Name the CNN top brass and their titles.,"[['John Stankey', 'CEO of AT&T Inc.'], ['Ken Jautz', 'executive vice president'], ['Tony Maddox', 'executive vice president and managing director of CNN International'], ['Amy Entelis', 'Executive Vice President for Talent and Content Development for CNN Worldwide'], ['Andrew Morse', 'Executive Vice President and Chief Digital Officer']]","Damilola Odufuwa|Damilola Odufuwa (lang:en)|business executive (lang:en)
 Jeff Zucker|Jeff Zucker (lang:en)|chief executive officer (lang:en)
 Thomas Fenton|Thomas Fenton (lang:en)|media executive (lang:en)
-Christopher Cathcart|Christopher Cathcart (lang:en)|public relations executive (lang:en)",Different answer,major,ComplexQA/Monaco_time_complex/00065.json
-how is the governor of the bank of england appointed,Monarch on advice from the Prime Minister,monarchy of the United Kingdom,Different answer,major,SimpleQA/NQ_table_test_simple/00039.json
-What is record label of Pink Floyd?,Tower Records,Columbia Graphophone Co. Ltd.|Harvest|Columbia Records|EMI|Capitol Records|Parlophone|Warner Music Group|Tower Records|Sony Music,Higher accuracy in KG than in Table,0.567750865095884,SimpleQA/CompMix_table_simple_qa/00187.json
+Christopher Cathcart|Christopher Cathcart (lang:en)|public relations executive (lang:en)",Different answer,"SELECT ?person ?personLabel ?occupationLabel WHERE {
+  ?person wdt:P108 wd:Q48340 .
+  ?person wdt:P106 ?occupation .
+  ?occupation rdfs:label ?occupationLabel .
+  ?person rdfs:label ?personLabel .
+  FILTER(LANG(?personLabel) = ""en"")
+  .
+  FILTER(LANG(?occupationLabel) = ""en"")
+  .
+  FILTER(REGEX(?occupationLabel , ""executive|CEO|President|Chairman"" , ""i""))
+  .
+}
+ORDER BY ?occupationLabel",major,ComplexQA/Monaco_time_complex/00065.json
+how is the governor of the bank of england appointed,Monarch on advice from the Prime Minister,monarchy of the United Kingdom,Different answer,"SELECT ?appointer WHERE {
+  wd:Q2579905 wdt:P748 ?appointer .
+}",major,SimpleQA/NQ_table_test_simple/00039.json
+What is record label of Pink Floyd?,Tower Records,Columbia Graphophone Co. Ltd.|Harvest|Columbia Records|EMI|Capitol Records|Parlophone|Warner Music Group|Tower Records|Sony Music,Higher accuracy in KG than in Table,"SELECT ?recordLabelLabel WHERE {
+  wd:Q2306 wdt:P264 ?recordLabel .
+  ?recordLabel rdfs:label ?recordLabelLabel .
+  FILTER(LANG(?recordLabelLabel) = 'en')
+}",0.567750865095884,SimpleQA/CompMix_table_simple_qa/00187.json
 Name the eight most populous cities in Italy along with their number of residents and population density.,"[['Rome', '4,342,212', '2,236/km2'], ['Milan', '1,371,498', '7,800/km2'], ['Naples', '909,048 (30 June 2022)', '7,800/km2'], ['Turin', '848,885', '6,500/km2'], ['Palermo', '676,118', '3,900/km2'], ['Genoa', '560,688', '2,400/km2'], ['Bologna', '392,203', '2,800/km2'], ['Florence', '367,150', '3,600/km2']]","Rome|Rome (lang:en)|2748109.0|1287.36|2134.685713398
 Milan|Milan (lang:en)|1354196.0|181.67|7454.153134805
 Naples|Naples (lang:en)|913462.0|119.02|7674.861367837
@@ -13,9 +42,25 @@ Turin|Turin (lang:en)|841600.0|130.01|6473.348203984
 Palermo|Palermo (lang:en)|630167.0|160.59|3924.073728128
 Genoa|Genoa (lang:en)|558745.0|240.29|2325.29443589
 Bologna|Bologna (lang:en)|387971.0|140.86|2754.302143973
-Florence|Florence (lang:en)|360930.0|102.32|3527.462861611",Different answer,major,ComplexQA/Monaco_time_complex/00071.json
-how long is the famous suspension bridge in san francisco and what is it called,"8,981 ft (2,737.4 m),[2] about 1.7 mi (2.7 km)",Golden Gate Bridge (lang:en)|8981.0,Higher accuracy in KG than in Table,major,SimpleQA/NQ_table_test_simple/00928.json
-what is the Nick name of Man united?,Red Devils,Setan Merah|The Red Devils|红魔,Higher accuracy in KG than in Table,0.5377929165174798,SimpleQA/CompMix_table_simple_qa/00049.json
+Florence|Florence (lang:en)|360930.0|102.32|3527.462861611",Different answer,"SELECT ?city ?cityLabel(MAX(?pop) AS ?population)(MAX(?area) AS ?calculatedArea)((MAX(?pop) / MAX(?area)) AS ?density) WHERE {
+  ?city wdt:P17 wd:Q38 .
+  ?city wdt:P31 / wdt:P279 * wd:Q515 .
+  ?city wdt:P1082 ?pop .
+  ?city wdt:P2046 ?area .
+  ?city rdfs:label ?cityLabel .
+  FILTER(LANG(?cityLabel) = ""en"")
+  FILTER(?pop > 0 && ?area > 0)
+}
+GROUP BY ?city ?cityLabel
+ORDER BY DESC(?population)
+LIMIT 8",major,ComplexQA/Monaco_time_complex/00071.json
+how long is the famous suspension bridge in san francisco and what is it called,"8,981 ft (2,737.4 m),[2] about 1.7 mi (2.7 km)",Golden Gate Bridge (lang:en)|8981.0,Higher accuracy in KG than in Table,"SELECT ?name ?length WHERE {
+  wd:Q44440 rdfs:label ?name ; wdt:P2043 ?length .
+  FILTER(lang(?name) = 'en')
+}",major,SimpleQA/NQ_table_test_simple/00928.json
+what is the Nick name of Man united?,Red Devils,Setan Merah|The Red Devils|红魔,Higher accuracy in KG than in Table,"SELECT ?nickname WHERE {
+  wd:Q18656 wdt:P1449 ?nickname
+}",0.5377929165174798,SimpleQA/CompMix_table_simple_qa/00049.json
 "Of all the 50 largest companies by revenue, list the number of those companies per country.","[['United States', 15], ['Saudi Arabia', 1], ['China', 13], ['The Netherlands', 1], ['U.S.', 5], ['United Kingdom', 1], ['Singapore', 1], ['Germany', 4], ['Japan', 2], ['France', 1], ['Switzerland', 1], ['UK', 1], ['South Korea', 1], ['Taiwan', 1], ['Netherlands', 1], ['Russia', 1]]","Czech Republic (lang:en)|16
 South Korea (lang:en)|8
 United States (lang:en)|5
@@ -24,6 +69,28 @@ People's Republic of China (lang:en)|2
 Japan (lang:en)|2
 Empire of Japan (lang:en)|1
 Switzerland (lang:en)|1
-Saudi Arabia (lang:en)|1",Different answer,major,ComplexQA/Monaco_time_complex/00077.json
-"Of the Career Future Doubles finals matches played in September , one of Mauricio Echazú 's opponents played on the Davis Cup team for what country",Ecuador,Moldova (lang:en),Different answer,major,ComplexQA/OTT_QA_dev_complex/00170.json
-"Over what years was the rider for the 1986 Tour de France team in general classification listed as the most successful cycling team of all time , professional",1985 to 1997,1984|1991,Different answer,major,ComplexQA/OTT_QA_dev_complex/00039.json
+Saudi Arabia (lang:en)|1",Different answer,"SELECT ?countryLabel(COUNT(DISTINCT ?company) AS ?count) WHERE {
+  {
+    SELECT DISTINCT ?company WHERE {
+      ?company wdt:P31 wd:Q783794 ; wdt:P2139 ?revenue .
+      FILTER(ISNUMERIC(?revenue))
+      FILTER(?revenue > 0)
+    }
+    ORDER BY DESC(?revenue)
+    LIMIT 50
+  }
+  ?company(wdt:P159 / wdt:P17 | wdt:P17) ?country .
+  ?country rdfs:label ?countryLabel .
+  FILTER(LANG(?countryLabel) = ""en"")
+}
+GROUP BY ?country ?countryLabel
+ORDER BY DESC(?count)",major,ComplexQA/Monaco_time_complex/00077.json
+"Of the Career Future Doubles finals matches played in September , one of Mauricio Echazú 's opponents played on the Davis Cup team for what country",Ecuador,Moldova (lang:en),Different answer,"SELECT ?countryLabel WHERE {
+  wd:Q7361598 wdt:P27 ?country .
+  ?country rdfs:label ?countryLabel .
+  FILTER(LANG(?countryLabel) = ""en"")
+}",major,ComplexQA/OTT_QA_dev_complex/00170.json
+"Over what years was the rider for the 1986 Tour de France team in general classification listed as the most successful cycling team of all time , professional",1985 to 1997,1984|1991,Different answer,"SELECT(YEAR(?inception) AS ?startYear)(YEAR(?dissolved) AS ?endYear) WHERE {
+  wd:Q1432490 wdt:P571 ?inception .
+  wd:Q1432490 wdt:P576 ?dissolved .
+}",major,ComplexQA/OTT_QA_dev_complex/00039.json

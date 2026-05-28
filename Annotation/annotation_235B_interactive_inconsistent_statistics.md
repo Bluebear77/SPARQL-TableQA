@@ -7,7 +7,7 @@ Rows whose normalized `taxonomy_label` is `Same` are excluded before selection.
 Public output columns:
 
 ```text
-question,gold_answer,KG answer,taxonomy_label,confidence,source
+question,gold_answer,KG answer,taxonomy_label,sparql,confidence,source
 ```
 
 ## Selection Mode
