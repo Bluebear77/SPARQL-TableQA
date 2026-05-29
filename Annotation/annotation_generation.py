@@ -1905,17 +1905,18 @@ def add_assignment_metadata(df, group_id, annotator_name):
     else:
         df["group_id"] = f"group_{group_id}"
 
-    if "annotator" not in df.columns:
-        insert_after = list(df.columns).index("group_id") + 1
-        df.insert(insert_after, "annotator", annotator_name)
-    else:
-        df["annotator"] = annotator_name
+    #if "annotator" not in df.columns:
+     #   insert_after = list(df.columns).index("group_id") + 1
+     #   df.insert(insert_after, "annotator", annotator_name)
+   # else:
+     #   df["annotator"] = annotator_name
 
-    if "annotation_mode" not in df.columns:
-        insert_after = list(df.columns).index("annotator") + 1
-        df.insert(insert_after, "annotation_mode", "independent_duplicate")
-    else:
-        df["annotation_mode"] = "independent_duplicate"
+    if "annotator" in df.columns:
+        df = df.drop(columns=["annotator"])
+
+    df["annotator"] = annotator_name
+
+   
 
     return df
 
