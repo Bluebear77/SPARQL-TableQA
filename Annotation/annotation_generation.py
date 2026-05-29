@@ -1857,54 +1857,121 @@ def add_dropdowns_and_formatting(xlsx_path):
 
 
 # ---------------------------------------------------------------------
-# Main function
+# Main function: Option B independent double annotation
 # ---------------------------------------------------------------------
+
+# Each original annotation group is assigned to two annotators.
+# Option B means both annotators in the pair receive the SAME rows, so they can
+# annotate independently. This supports disagreement checking and adjudication.
+ANNOTATOR_PAIRS = {
+    1: ["veronique", "fanfu"],
+    2: ["nathalie", "raphael"],
+    3: ["mouna", "yoan"],
+}
+
+
+def safe_filename_part(value):
+    """
+    Convert a human-readable annotator name into a safe filename fragment.
+
+    Examples:
+        "Véronique" -> "veronique"
+        "Fanfu"     -> "fanfu"
+    """
+    import unicodedata
+
+    value = str(value).strip().lower()
+    value = unicodedata.normalize("NFKD", value)
+    value = "".join(ch for ch in value if not unicodedata.combining(ch))
+    value = re.sub(r"[^a-z0-9]+", "_", value)
+    value = re.sub(r"_+", "_", value).strip("_")
+    return value or "annotator"
+
+
+def add_assignment_metadata(df, group_id, annotator_name):
+    """
+    Add metadata columns for independent double annotation.
+
+    case_id remains unchanged, which is important for merging later.
+    group_id identifies the original balanced group.
+    annotator identifies who should fill the yellow annotation columns.
+    annotation_mode records that this is an independent duplicate assignment.
+    """
+    df = df.copy()
+
+    if "group_id" not in df.columns:
+        insert_after = 1 if "case_id" in df.columns else 0
+        df.insert(insert_after, "group_id", f"group_{group_id}")
+    else:
+        df["group_id"] = f"group_{group_id}"
+
+    if "annotator" not in df.columns:
+        insert_after = list(df.columns).index("group_id") + 1
+        df.insert(insert_after, "annotator", annotator_name)
+    else:
+        df["annotator"] = annotator_name
+
+    if "annotation_mode" not in df.columns:
+        insert_after = list(df.columns).index("annotator") + 1
+        df.insert(insert_after, "annotation_mode", "independent_duplicate")
+    else:
+        df["annotation_mode"] = "independent_duplicate"
+
+    return df
+
 
 def generate_annotation_files(
     input_csv,
     output_dir="annotation_outputs",
     n_groups=3,
-    stratify_cols=None
+    stratify_cols=None,
+    annotator_pairs=None,
 ):
     """
-    Generate balanced annotation Excel files from one input CSV.
+    Generate independent double-annotation Excel files from one input CSV.
 
-    Parameters
-    ----------
-    input_csv : str
-        Path to the input CSV.
+    This is Option B:
+        - First, split the input CSV into n balanced original groups.
+        - Then, for each original group, create one identical copy for each
+          assigned annotator in that group.
 
-    output_dir : str
-        Folder where output Excel files will be saved.
+    Example output with the default annotator_pairs:
+        annotation_group_1_veronique.xlsx
+        annotation_group_1_fanfu.xlsx
+        annotation_group_2_nathalie.xlsx
+        annotation_group_2_raphael.xlsx
+        annotation_group_3_mouna.xlsx
+        annotation_group_3_yoan.xlsx
 
-    n_groups : int
-        Number of annotation files to create.
-
-    stratify_cols : list[str] or None
-        Recommended:
-            ["taxonomy_label"]
-
-        This keeps taxonomy label distribution more balanced across groups.
-
-        Use None if you only want simple round-robin balancing.
+    Important:
+        The same case_id appears in both annotator files within a pair. This is
+        intentional and allows later comparison of independent annotations.
     """
 
     input_csv = Path(input_csv)
     output_dir = Path(output_dir)
-
     output_dir.mkdir(parents=True, exist_ok=True)
 
+    if annotator_pairs is None:
+        annotator_pairs = ANNOTATOR_PAIRS
+
+    missing_group_assignments = [
+        group_id for group_id in range(1, n_groups + 1)
+        if group_id not in annotator_pairs
+    ]
+    if missing_group_assignments:
+        raise ValueError(
+            "Missing annotator pair assignment(s) for group(s): "
+            f"{missing_group_assignments}"
+        )
+
     # Read CSV.
-    #
-    # header=0 means:
-    #     The first row is the column title/header row.
-    #     It is NOT treated as data.
+    # header=0 means the first row is the column title/header row, not data.
     df = pd.read_csv(input_csv, header=0)
 
     # Clean column names.
     df = clean_column_names(df)
 
-    # Expected input columns.
     expected_cols = [
         "question",
         "gold_answer",
@@ -1912,68 +1979,36 @@ def generate_annotation_files(
         "taxonomy_label",
         "sparql",
         "confidence",
-        "source"
+        "source",
     ]
 
-    # Validate input columns.
     missing = [col for col in expected_cols if col not in df.columns]
-
     if missing:
         raise ValueError(
             f"Missing expected columns: {missing}\n"
             f"Actual columns are: {list(df.columns)}"
         )
 
-    # Remove confidence column because the annotation task should not show it.
+    # Remove confidence column because annotators should not see it.
     df = df.drop(columns=["confidence"])
 
     # Rename sparql for the public Excel annotation sheet.
-    #
-    # The input CSV uses lowercase `sparql` so it can be carried directly from
-    # all_valid_cases_with_taxonomy.csv in step 1. The Excel sheet uses `SPARQL`
-    # to make the query column easier for annotators to scan.
     df = df.rename(columns={"sparql": "SPARQL"})
 
-    # Add stable case_id.
-    #
-    # This is useful later when merging annotations from different files.
-    # It preserves the original row identity.
+    # Add stable case_id if missing.
+    # Do not change this later; it is used to merge and compare annotations.
     if "case_id" not in df.columns:
         df.insert(0, "case_id", range(1, len(df) + 1))
 
-    # -----------------------------------------------------------------
-    # Add annotation columns before splitting
-    # -----------------------------------------------------------------
-
-    # This column is left empty by default.
-    #
-    # Annotators only fill it when the extracted SPARQL query is wrong or needs
-    # a corrected version.
+    # Add annotation columns before splitting.
     df["Corrected SPARQL"] = ""
-
-    # This column checks whether the automatic taxonomy label is correct.
     df["label_correctness"] = ""
-
-    # Wikidata structural cause columns.
-    #
-    # These replace the old single wikidata_cause column.
-    # Annotators can mark multiple causes as Yes.
-    #
-    # Example:
-    #     missing_edge = Yes
-    #     missing_node = No
-    #     missing_property_or_qualifier = Yes
-    #
-    # This means both a missing edge and a missing property/qualifier
-    # are relevant for the same case.
     df["missing_edge"] = ""
     df["missing_node"] = ""
     df["missing_property_or_qualifier"] = ""
-
-    # Free-text note column.
     df["note"] = ""
 
-    # Final column order in output files.
+    # Base column order before annotator-specific metadata is inserted.
     final_cols = [
         "case_id",
         "question",
@@ -1987,47 +2022,58 @@ def generate_annotation_files(
         "missing_edge",
         "missing_node",
         "missing_property_or_qualifier",
-        "note"
+        "note",
     ]
-
     df = df[final_cols]
 
-    print("Final columns before splitting:")
+    print("Final base columns before splitting:")
     print(list(df.columns))
 
-    # Split into balanced groups.
-    splits = split_balanced(
+    # Split into the original balanced groups.
+    original_group_splits = split_balanced(
         df,
         n_groups=n_groups,
-        stratify_cols=stratify_cols
+        stratify_cols=stratify_cols,
     )
 
     output_paths = []
 
-    # Save each group to an Excel file.
-    for i, split_df in enumerate(splits, start=1):
-        out_path = output_dir / f"annotation_group_{i}.xlsx"
+    # For each original group, create one identical copy per annotator.
+    for group_id, split_df in enumerate(original_group_splits, start=1):
+        annotators = annotator_pairs[group_id]
 
-        print(f"\nSaving group {i}: {len(split_df)} rows")
-        print("Columns:", list(split_df.columns))
+        if not annotators:
+            raise ValueError(f"Group {group_id} has no assigned annotators.")
 
-        # Save dataframe to Excel.
-        split_df.to_excel(out_path, index=False)
+        print(f"\nOriginal group {group_id}: {len(split_df)} rows")
+        print(f"Assigned annotators: {', '.join(annotators)}")
 
-        # Add dropdowns and formatting.
-        add_dropdowns_and_formatting(out_path)
+        for annotator_name in annotators:
+            annotator_df = add_assignment_metadata(
+                split_df,
+                group_id=group_id,
+                annotator_name=annotator_name,
+            )
 
-        output_paths.append(out_path)
+            annotator_file_part = safe_filename_part(annotator_name)
+            out_path = output_dir / f"annotation_group_{group_id}_{annotator_file_part}.xlsx"
 
-    # Print summary.
+            print(f"  Saving {annotator_name}: {len(annotator_df)} rows -> {out_path.name}")
+            print("  Columns:", list(annotator_df.columns))
+
+            annotator_df.to_excel(out_path, index=False)
+            add_dropdowns_and_formatting(out_path)
+            output_paths.append(out_path)
+
     print("\nFinished.")
     print(f"Total input data rows: {len(df)}")
+    print(f"Original balanced groups: {n_groups}")
+    print(f"Independent annotator files: {len(output_paths)}")
 
-    for i, split_df in enumerate(splits, start=1):
-        print(f"group {i}: {len(split_df)} rows")
+    for group_id, split_df in enumerate(original_group_splits, start=1):
+        print(f"group {group_id}: {len(split_df)} rows duplicated for {len(annotator_pairs[group_id])} annotators")
 
     print("\nOutput files:")
-
     for path in output_paths:
         print(path)
 
@@ -2053,23 +2099,15 @@ def main() -> None:
 
     print()
     print("=" * 72)
-    print("Step 2: Excel annotation split")
+    print("Step 2: Excel annotation split - Option B independent double annotation")
     print("=" * 72)
 
     generate_annotation_files(
         input_csv=main_csv,
         output_dir=output_dir,
         n_groups=3,
-
-        # Recommended for your task:
-        # balance the distribution of taxonomy labels across the 3 files.
-        #
-        # Do NOT stratify by source because source may be unique per row.
-        stratify_cols=["taxonomy_label"]
-
-        # Alternative:
-        # Use this if you want pure round-robin splitting:
-        # stratify_cols=None
+        stratify_cols=["taxonomy_label"],
+        annotator_pairs=ANNOTATOR_PAIRS,
     )
 
 
